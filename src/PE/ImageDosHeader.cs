@@ -13,7 +13,7 @@ namespace dnlib.PE {
 		/// <summary>
 		/// File offset of the NT headers
 		/// </summary>
-		public uint NTHeadersOffset => ntHeadersOffset;
+        public uint NTHeadersOffset { get { return ntHeadersOffset; } }
 
 		/// <summary>
 		/// Constructor

@@ -26,7 +26,7 @@ namespace dnlib.DotNet.Writer {
 		readonly bool alignFatBodies;
 		uint savedBytes;
 
-		readonly struct ReusedMethodInfo {
+		struct ReusedMethodInfo {
 			public readonly MethodBody MethodBody;
 			public readonly RVA RVA;
 			public ReusedMethodInfo(MethodBody methodBody, RVA rva) {
@@ -36,19 +36,19 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public FileOffset FileOffset => offset;
+		public FileOffset FileOffset { get { return offset; } }
 
 		/// <inheritdoc/>
-		public RVA RVA => rva;
+		public RVA RVA { get { return rva; } }
 
 		/// <summary>
 		/// Gets the number of bytes saved by re-using method bodies
 		/// </summary>
-		public uint SavedBytes => savedBytes;
+		public uint SavedBytes { get { return savedBytes; } }
 
 		internal bool CanReuseOldBodyLocation { get; set; }
-		internal bool ReusedAllMethodBodyLocations => tinyMethods.Count == 0 && fatMethods.Count == 0;
-		internal bool HasReusedMethods => reusedMethods.Count > 0;
+		internal bool ReusedAllMethodBodyLocations { get { return tinyMethods.Count == 0 && fatMethods.Count == 0; } }
+		internal bool HasReusedMethods { get { return reusedMethods.Count > 0; } }
 
 		/// <summary>
 		/// Constructor
@@ -72,13 +72,14 @@ namespace dnlib.DotNet.Writer {
 		/// </summary>
 		/// <param name="methodBody">The method body</param>
 		/// <returns>The cached method body</returns>
-		public MethodBody Add(MethodBody methodBody) => Add(methodBody, 0, 0);
+		public MethodBody Add(MethodBody methodBody) { return Add(methodBody, 0, 0); }
 
 		internal MethodBody Add(MethodBody methodBody, RVA origRva, uint origSize) {
 			if (setOffsetCalled)
 				throw new InvalidOperationException("SetOffset() has already been called");
 			if (CanReuseOldBodyLocation && origRva != 0 && origSize != 0 && methodBody.CanReuse(origRva, origSize)) {
-				if (rvaToReusedMethod.TryGetValue((uint)origRva, out var reusedMethod)) {
+                MethodBody reusedMethod;
+                if (rvaToReusedMethod.TryGetValue((uint)origRva, out reusedMethod)) {
 					if (methodBody.Equals(reusedMethod))
 						return reusedMethod;
 				}
@@ -90,7 +91,8 @@ namespace dnlib.DotNet.Writer {
 			}
 			if (shareBodies) {
 				var dict = methodBody.IsFat ? fatMethodsDict : tinyMethodsDict;
-				if (dict.TryGetValue(methodBody, out var cached)) {
+                MethodBody cached;
+                if (dict.TryGetValue(methodBody, out cached)) {
 					savedBytes += (uint)methodBody.GetApproximateSizeOfMethodBody();
 					return cached;
 				}
@@ -151,10 +153,10 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public uint GetFileLength() => length;
+		public uint GetFileLength() { return length; }
 
 		/// <inheritdoc/>
-		public uint GetVirtualSize() => GetFileLength();
+        public uint GetVirtualSize() { return GetFileLength(); }
 
 		/// <inheritdoc/>
 		public void WriteTo(DataWriter writer) {

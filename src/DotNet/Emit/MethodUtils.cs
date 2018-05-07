@@ -220,10 +220,10 @@ namespace dnlib.DotNet.Emit {
 
 		static T ReadList<T>(IList<T> list, int index) {
 			if (list == null)
-				return default;
+				return default(T);
 			if ((uint)index < (uint)list.Count)
 				return list[index];
-			return default;
+			return default(T);
 		}
 
 		/// <summary>

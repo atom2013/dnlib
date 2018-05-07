@@ -6,16 +6,16 @@ using dnlib.IO;
 
 namespace dnlib.DotNet.Pdb.Managed {
 	sealed class DbiVariable : SymbolVariable {
-		public override string Name => name;
+		public override string Name { get { return name; } }
 		string name;
 
-		public override PdbLocalAttributes Attributes => attributes;
+		public override PdbLocalAttributes Attributes { get { return attributes; } }
 		PdbLocalAttributes attributes;
 
-		public override int Index => index;
+		public override int Index { get { return index; } }
 		int index;
 
-		public override PdbCustomDebugInfo[] CustomDebugInfos => Array2.Empty<PdbCustomDebugInfo>();
+        public override PdbCustomDebugInfo[] CustomDebugInfos { get { return Array2.Empty<PdbCustomDebugInfo>(); } }
 
 		public void Read(ref DataReader reader) {
 			index = reader.ReadInt32();

@@ -19,23 +19,23 @@ namespace dnlib.DotNet {
 		protected uint rid;
 
 		/// <inheritdoc/>
-		public MDToken MDToken => new MDToken(Table.InterfaceImpl, rid);
+		public MDToken MDToken { get { return new MDToken(Table.InterfaceImpl, rid); } }
 
 		/// <inheritdoc/>
 		public uint Rid {
-			get => rid;
-			set => rid = value;
+			get { return rid; }
+			set { rid = value; }
 		}
 
 		/// <inheritdoc/>
-		public int HasCustomAttributeTag => 5;
+		public int HasCustomAttributeTag { get { return 5; } }
 
 		/// <summary>
 		/// From column InterfaceImpl.Interface
 		/// </summary>
 		public ITypeDefOrRef Interface {
-			get => @interface;
-			set => @interface = value;
+			get { return @interface; }
+			set { @interface = value; }
 		}
 		/// <summary/>
 		protected ITypeDefOrRef @interface;
@@ -53,17 +53,18 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected CustomAttributeCollection customAttributes;
 		/// <summary>Initializes <see cref="customAttributes"/></summary>
-		protected virtual void InitializeCustomAttributes() =>
+		protected virtual void InitializeCustomAttributes() {
 			Interlocked.CompareExchange(ref customAttributes, new CustomAttributeCollection(), null);
+        }
 
 		/// <inheritdoc/>
-		public bool HasCustomAttributes => CustomAttributes.Count > 0;
+		public bool HasCustomAttributes { get { return CustomAttributes.Count > 0; } }
 
 		/// <inheritdoc/>
-		public int HasCustomDebugInformationTag => 5;
+		public int HasCustomDebugInformationTag { get { return 5; } }
 
 		/// <inheritdoc/>
-		public bool HasCustomDebugInfos => CustomDebugInfos.Count > 0;
+		public bool HasCustomDebugInfos { get { return CustomDebugInfos.Count > 0; } }
 
 		/// <summary>
 		/// Gets all custom debug infos
@@ -78,10 +79,11 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected IList<PdbCustomDebugInfo> customDebugInfos;
 		/// <summary>Initializes <see cref="customDebugInfos"/></summary>
-		protected virtual void InitializeCustomDebugInfos() =>
+		protected virtual void InitializeCustomDebugInfos() {
 			Interlocked.CompareExchange(ref customDebugInfos, new List<PdbCustomDebugInfo>(), null);
+        }
 
-		bool IContainsGenericParameter.ContainsGenericParameter => TypeHelper.ContainsGenericParameter(this);
+		bool IContainsGenericParameter.ContainsGenericParameter { get { return TypeHelper.ContainsGenericParameter(this); } }
 	}
 
 	/// <summary>
@@ -98,7 +100,7 @@ namespace dnlib.DotNet {
 		/// Constructor
 		/// </summary>
 		/// <param name="interface">The interface the type implements</param>
-		public InterfaceImplUser(ITypeDefOrRef @interface) => this.@interface = @interface;
+		public InterfaceImplUser(ITypeDefOrRef @interface) { this.@interface = @interface; }
 	}
 
 	/// <summary>
@@ -112,7 +114,7 @@ namespace dnlib.DotNet {
 		readonly GenericParamContext gpContext;
 
 		/// <inheritdoc/>
-		public uint OrigRid => origRid;
+        public uint OrigRid { get { return origRid; } }
 
 		/// <inheritdoc/>
 		protected override void InitializeCustomAttributes() {
@@ -141,13 +143,14 @@ namespace dnlib.DotNet {
 			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.InterfaceImplTable.IsInvalidRID(rid))
-				throw new BadImageFormatException($"InterfaceImpl rid {rid} does not exist");
+				throw new BadImageFormatException( string.Format( "InterfaceImpl rid {0} does not exist", rid ) );
 #endif
 			origRid = rid;
 			this.rid = rid;
 			this.readerModule = readerModule;
 			this.gpContext = gpContext;
-			bool b = readerModule.TablesStream.TryReadInterfaceImplRow(origRid, out var row);
+            RawInterfaceImplRow row;
+            bool b = readerModule.TablesStream.TryReadInterfaceImplRow(origRid, out row);
 			Debug.Assert(b);
 			@interface = readerModule.ResolveTypeDefOrRef(row.Interface, gpContext);
 		}

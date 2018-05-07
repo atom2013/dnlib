@@ -9,7 +9,7 @@ namespace dnlib.DotNet.Pdb.Portable {
 	interface IPortablePdbCustomDebugInfoWriterHelper : IWriterError {
 	}
 
-	readonly struct PortablePdbCustomDebugInfoWriter {
+	struct PortablePdbCustomDebugInfoWriter {
 		readonly IPortablePdbCustomDebugInfoWriterHelper helper;
 		readonly SerializerMethodContext methodContext;
 		readonly Metadata systemMetadata;

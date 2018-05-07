@@ -26,38 +26,38 @@ namespace dnlib.DotNet.MD {
 		uint metadataBaseOffset;
 
 		/// <inheritdoc/>
-		public FileOffset StartOffset => (FileOffset)dataReader.StartOffset;
+		public FileOffset StartOffset { get { return (FileOffset)dataReader.StartOffset; } }
 
 		/// <inheritdoc/>
-		public FileOffset EndOffset => (FileOffset)dataReader.EndOffset;
+		public FileOffset EndOffset { get { return (FileOffset)dataReader.EndOffset; } }
 
 		/// <summary>
 		/// Gets the length of this stream in the metadata
 		/// </summary>
-		public uint StreamLength => dataReader.Length;
+		public uint StreamLength { get { return dataReader.Length; } }
 
 		/// <summary>
 		/// Gets the stream header
 		/// </summary>
-		public StreamHeader StreamHeader => streamHeader;
+		public StreamHeader StreamHeader { get { return streamHeader; } }
 
 		/// <summary>
 		/// Gets the name of the stream
 		/// </summary>
-		public string Name => streamHeader == null ? string.Empty : streamHeader.Name;
+		public string Name { get { return streamHeader == null ? string.Empty : streamHeader.Name; } }
 
 		/// <summary>
 		/// Gets a data reader that can read the full stream
 		/// </summary>
 		/// <returns></returns>
-		public DataReader CreateReader() => dataReader;
+		public DataReader CreateReader() { return dataReader; }
 
 		/// <summary>
 		/// Default constructor
 		/// </summary>
 		protected DotNetStream() {
 			streamHeader = null;
-			dataReader = default;
+            dataReader = default(DataReader);
 		}
 
 		/// <summary>
@@ -72,14 +72,14 @@ namespace dnlib.DotNet.MD {
 			this.mdReaderFactory = mdReaderFactory;
 			this.metadataBaseOffset = metadataBaseOffset;
 			this.streamHeader = streamHeader;
-			RecreateReader(mdReaderFactory, metadataBaseOffset, streamHeader, notifyThisClass: false);
+			RecreateReader(mdReaderFactory, metadataBaseOffset, streamHeader, /* notifyThisClass: */ false);
 		}
 
-		void DataReaderFactory_DataReaderInvalidated(object sender, EventArgs e) => RecreateReader(mdReaderFactory, metadataBaseOffset, streamHeader, notifyThisClass: true);
+		void DataReaderFactory_DataReaderInvalidated(object sender, EventArgs e) { RecreateReader(mdReaderFactory, metadataBaseOffset, streamHeader, /* notifyThisClass: */ true); }
 
 		void RecreateReader(DataReaderFactory mdReaderFactory, uint metadataBaseOffset, StreamHeader streamHeader, bool notifyThisClass) {
 			if (mdReaderFactory == null || streamHeader == null)
-				dataReader = default;
+                dataReader = default(DataReader);
 			else
 				dataReader = mdReaderFactory.CreateReader(metadataBaseOffset + streamHeader.Offset, streamHeader.StreamSize);
 			if (notifyThisClass)
@@ -116,14 +116,14 @@ namespace dnlib.DotNet.MD {
 		/// </summary>
 		/// <param name="index">The index</param>
 		/// <returns><c>true</c> if the index is valid</returns>
-		public virtual bool IsValidIndex(uint index) => IsValidOffset(index);
+		public virtual bool IsValidIndex(uint index) { return IsValidOffset(index); }
 
 		/// <summary>
 		/// Check whether an offset is within the stream
 		/// </summary>
 		/// <param name="offset">Stream offset</param>
 		/// <returns><c>true</c> if the offset is valid</returns>
-		public bool IsValidOffset(uint offset) => offset == 0 || offset < dataReader.Length;
+        public bool IsValidOffset(uint offset) { return offset == 0 || offset < dataReader.Length; }
 
 		/// <summary>
 		/// Check whether an offset is within the stream

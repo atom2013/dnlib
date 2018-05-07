@@ -20,12 +20,12 @@ namespace dnlib.PE {
 			public static bool TryGet_RuntimeInformation_Architecture(out Machine machine) =>
 				TryGetArchitecture((int)RuntimeInformation.ProcessArchitecture, out machine);
 #else
-			static Assembly RuntimeInformationAssembly => typeof(object).Assembly;
-			static Type System_Runtime_InteropServices_RuntimeInformation => RuntimeInformationAssembly.GetType("System.Runtime.InteropServices.RuntimeInformation", throwOnError: false);
+			static Assembly RuntimeInformationAssembly { get { return typeof(object).Assembly; } }
+			static Type System_Runtime_InteropServices_RuntimeInformation { get { return RuntimeInformationAssembly.GetType("System.Runtime.InteropServices.RuntimeInformation", /* throwOnError: */ false); } }
 
 			public static bool TryGet_RuntimeInformation_Architecture(out Machine machine) {
 				machine = 0;
-				var processArchitectureMethod = System_Runtime_InteropServices_RuntimeInformation?.GetMethod("get_ProcessArchitecture", Array2.Empty<Type>());
+				var processArchitectureMethod = System_Runtime_InteropServices_RuntimeInformation != null?System_Runtime_InteropServices_RuntimeInformation.GetMethod("get_ProcessArchitecture", Array2.Empty<Type>()) : null;
 				if ((object)processArchitectureMethod == null)
 					return false;
 
@@ -57,7 +57,7 @@ namespace dnlib.PE {
 					return true;
 
 				default:
-					Debug.Fail($"Unknown process architecture: {architecture}");
+                    Debug.Fail(string.Format("Unknown process architecture: {0}", architecture));
 					machine = 0;
 					return false;
 				}
@@ -65,7 +65,8 @@ namespace dnlib.PE {
 		}
 
 		static Machine GetProcessCpuArchitectureCore() {
-			if (WindowsUtils.TryGetProcessCpuArchitecture(out var machine))
+            Machine machine;
+			if (WindowsUtils.TryGetProcessCpuArchitecture(out machine))
 				return machine;
 			try {
 				if (RuntimeInformationUtils.TryGet_RuntimeInformation_Architecture(out machine))
@@ -108,7 +109,8 @@ namespace dnlib.PE {
 			public static bool TryGetProcessCpuArchitecture(out Machine machine) {
 				if (canTryGetSystemInfo) {
 					try {
-						GetSystemInfo(out var sysInfo);
+                        SYSTEM_INFO  sysInfo;
+						GetSystemInfo(out sysInfo);
 						switch ((ProcessorArchitecture)sysInfo.wProcessorArchitecture) {
 						case ProcessorArchitecture.INTEL:
 							Debug.Assert(IntPtr.Size == 4);

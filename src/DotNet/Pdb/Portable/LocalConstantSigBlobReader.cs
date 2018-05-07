@@ -15,7 +15,7 @@ namespace dnlib.DotNet.Pdb.Portable {
 			this.module = module;
 			this.reader = reader;
 			this.gpContext = gpContext;
-			recursionCounter = default;
+			recursionCounter = default(RecursionCounter);
 		}
 
 		public bool Read(out TypeSig type, out object value) {
@@ -165,7 +165,7 @@ namespace dnlib.DotNet.Pdb.Portable {
 
 			case ElementType.ValueType:
 				tdr = ReadTypeDefOrRef();
-				type = tdr.ToTypeSig();
+                type = Extensions.ToTypeSig(tdr, true);
 				value = null;
 				if (GetName(tdr, out ns, out name) && ns == stringSystem && tdr.DefinitionAssembly.IsCorLib()) {
 					if (name == stringDecimal) {
@@ -248,13 +248,15 @@ namespace dnlib.DotNet.Pdb.Portable {
 		static readonly UTF8String stringDateTime = new UTF8String("DateTime");
 
 		static bool GetName(ITypeDefOrRef tdr, out UTF8String @namespace, out UTF8String name) {
-			if (tdr is TypeRef tr) {
+            TypeRef tr;
+            if ((tr = tdr as TypeRef) != null) {
 				@namespace = tr.Namespace;
 				name = tr.Name;
 				return true;
 			}
 
-			if (tdr is TypeDef td) {
+            TypeDef td;
+            if ((td = tdr as TypeDef) != null) {
 				@namespace = td.Namespace;
 				name = td.Name;
 				return true;
@@ -270,8 +272,8 @@ namespace dnlib.DotNet.Pdb.Portable {
 			if (!reader.TryReadCompressedUInt32(out codedToken))
 				return null;
 			ISignatureReaderHelper helper = module;
-			var tdr = helper.ResolveTypeDefOrRef(codedToken, gpContext);
-			return tdr.ToTypeSig();
+            ITypeDefOrRef tdr = helper.ResolveTypeDefOrRef(codedToken, gpContext);
+            return Extensions.ToTypeSig(tdr, true);
 		}
 
 		ITypeDefOrRef ReadTypeDefOrRef() {

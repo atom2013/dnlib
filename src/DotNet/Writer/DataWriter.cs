@@ -12,14 +12,14 @@ namespace dnlib.DotNet.Writer {
 		readonly byte[] buffer;
 		const int BUFFER_LEN = 8;
 
-		internal Stream InternalStream => stream;
+		internal Stream InternalStream { get { return stream; } }
 
 		/// <summary>
 		/// Gets/sets the position
 		/// </summary>
 		public long Position {
-			get => stream.Position;
-			set => stream.Position = value;
+			get { return stream.Position; }
+			set { stream.Position = value; }
 		}
 
 		/// <summary>
@@ -28,31 +28,31 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="stream">Destination stream</param>
 		public DataWriter(Stream stream) {
 			if (stream == null)
-				ThrowArgumentNullException(nameof(stream));
+				ThrowArgumentNullException("stream");
 			this.stream = stream;
 			buffer = new byte[BUFFER_LEN];
 		}
 
-		static void ThrowArgumentNullException(string paramName) => throw new ArgumentNullException(paramName);
-		static void ThrowArgumentOutOfRangeException(string message) => throw new ArgumentOutOfRangeException(message);
+		static void ThrowArgumentNullException(string paramName) { throw new ArgumentNullException(paramName); }
+		static void ThrowArgumentOutOfRangeException(string message) { throw new ArgumentOutOfRangeException(message); }
 
 		/// <summary>
 		/// Writes a <see cref="bool"/>
 		/// </summary>
 		/// <param name="value">Value</param>
-		public void WriteBoolean(bool value) => stream.WriteByte(value ? (byte)1 : (byte)0);
+		public void WriteBoolean(bool value) { stream.WriteByte(value ? (byte)1 : (byte)0); }
 
 		/// <summary>
 		/// Writes a <see cref="sbyte"/>
 		/// </summary>
 		/// <param name="value">Value</param>
-		public void WriteSByte(sbyte value) => stream.WriteByte((byte)value);
+		public void WriteSByte(sbyte value) { stream.WriteByte((byte)value); }
 
 		/// <summary>
 		/// Writes a <see cref="byte"/>
 		/// </summary>
 		/// <param name="value">Value</param>
-		public void WriteByte(byte value) => stream.WriteByte(value);
+		public void WriteByte(byte value) { stream.WriteByte(value); }
 
 		/// <summary>
 		/// Writes a <see cref="short"/>
@@ -172,7 +172,7 @@ namespace dnlib.DotNet.Writer {
 		/// Writes bytes
 		/// </summary>
 		/// <param name="source">Bytes to write</param>
-		public void WriteBytes(byte[] source) => stream.Write(source, 0, source.Length);
+		public void WriteBytes(byte[] source) { stream.Write(source, 0, source.Length); }
 
 		/// <summary>
 		/// Writes bytes
@@ -180,7 +180,7 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="source">Bytes to write</param>
 		/// <param name="index">Index to start copying from</param>
 		/// <param name="length">Number of bytes to copy</param>
-		public void WriteBytes(byte[] source, int index, int length) => stream.Write(source, index, length);
+        public void WriteBytes(byte[] source, int index, int length) { stream.Write(source, index, length); }
 
 		/// <summary>
 		/// Writes a compressed <see cref="uint"/>

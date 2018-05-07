@@ -10,15 +10,15 @@ namespace dnlib.IO {
 		/// <summary>
 		/// The filename or null if the data is not from a file
 		/// </summary>
-		public override string Filename => filename;
+		public override string Filename { get { return filename; } }
 
 		/// <summary>
 		/// Gets the total length of the data
 		/// </summary>
-		public override uint Length => length;
+		public override uint Length { get { return length; } }
 
-		internal byte[] DataArray => data;
-		internal uint DataOffset => 0;
+		internal byte[] DataArray { get { return data; } }
+		internal uint DataOffset { get { return 0; } }
 
 		DataStream stream;
 		string filename;
@@ -40,7 +40,7 @@ namespace dnlib.IO {
 		/// <returns></returns>
 		public static ByteArrayDataReaderFactory Create(byte[] data, string filename) {
 			if (data == null)
-				throw new ArgumentNullException(nameof(data));
+				throw new ArgumentNullException("data");
 			return new ByteArrayDataReaderFactory(data, filename);
 		}
 
@@ -49,7 +49,7 @@ namespace dnlib.IO {
 		/// </summary>
 		/// <param name="data">Data</param>
 		/// <returns></returns>
-		public static DataReader CreateReader(byte[] data) => Create(data, filename: null).CreateReader();
+		public static DataReader CreateReader(byte[] data) { return Create(data, /* filename: */ null).CreateReader(); }
 
 		/// <summary>
 		/// Creates a data reader
@@ -57,7 +57,7 @@ namespace dnlib.IO {
 		/// <param name="offset">Offset of data</param>
 		/// <param name="length">Length of data</param>
 		/// <returns></returns>
-		public override DataReader CreateReader(uint offset, uint length) => CreateReader(stream, offset, length);
+        public override DataReader CreateReader(uint offset, uint length) { return CreateReader(stream, offset, length); }
 
 		/// <summary>
 		/// This method doesn't need to be called since a <see cref="ByteArrayDataReaderFactory"/> has nothing that must be cleaned up

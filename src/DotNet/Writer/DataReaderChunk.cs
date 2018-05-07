@@ -16,10 +16,10 @@ namespace dnlib.DotNet.Writer {
 		bool setOffsetCalled;
 
 		/// <inheritdoc/>
-		public FileOffset FileOffset => offset;
+		public FileOffset FileOffset { get { return offset; } }
 
 		/// <inheritdoc/>
-		public RVA RVA => rva;
+		public RVA RVA { get { return rva; } }
 
 		/// <summary>
 		/// Constructor
@@ -59,7 +59,7 @@ namespace dnlib.DotNet.Writer {
 		/// <summary>
 		/// Gets the data reader
 		/// </summary>
-		public DataReader CreateReader() => data;
+		public DataReader CreateReader() { return data; }
 
 		/// <summary>
 		/// Replaces the old data with new data. The new data must be the same size as the old data if
@@ -81,10 +81,10 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public uint GetFileLength() => (uint)data.Length;
+		public uint GetFileLength() { return (uint)data.Length; }
 
 		/// <inheritdoc/>
-		public uint GetVirtualSize() => virtualSize;
+        public uint GetVirtualSize() { return virtualSize; }
 
 		/// <inheritdoc/>
 		public void WriteTo(DataWriter writer) {

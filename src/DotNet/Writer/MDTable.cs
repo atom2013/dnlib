@@ -57,27 +57,27 @@ namespace dnlib.DotNet.Writer {
 		bool isReadOnly;
 
 		/// <inheritdoc/>
-		public Table Table => table;
+		public Table Table { get { return table; } }
 
 		/// <inheritdoc/>
-		public bool IsEmpty => cached.Count == 0;
+		public bool IsEmpty { get { return cached.Count == 0; } }
 
 		/// <inheritdoc/>
-		public int Rows => cached.Count;
+		public int Rows { get { return cached.Count; } } 
 
 		/// <inheritdoc/>
 		public bool IsSorted {
-			get => isSorted;
-			set => isSorted = value;
+			get { return isSorted; }
+			set { isSorted = value; }
 		}
 
 		/// <inheritdoc/>
-		public bool IsReadOnly => isReadOnly;
+		public bool IsReadOnly { get { return isReadOnly; } }
 
 		/// <inheritdoc/>
 		public TableInfo TableInfo {
-			get => tableInfo;
-			set => tableInfo = value;
+			get { return tableInfo; }
+			set { tableInfo = value; }
 		}
 
 		/// <summary>
@@ -85,8 +85,8 @@ namespace dnlib.DotNet.Writer {
 		/// </summary>
 		/// <param name="rid">The row ID</param>
 		public TRow this[uint rid] {
-			get => cached[(int)rid - 1];
-			set => cached[(int)rid - 1] = value;
+			get { return cached[(int)rid - 1]; }
+			set { cached[(int)rid - 1] = value; }
 		}
 
 		/// <summary>
@@ -101,7 +101,7 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public void SetReadOnly() => isReadOnly = true;
+		public void SetReadOnly() { isReadOnly = true; }
 
 		/// <summary>
 		/// Adds a row. If the row already exists, returns a rid to the existing one, else
@@ -111,8 +111,9 @@ namespace dnlib.DotNet.Writer {
 		/// <returns>The RID (row ID) of the row</returns>
 		public uint Add(TRow row) {
 			if (isReadOnly)
-				throw new ModuleWriterException($"Trying to modify table {table} after it's been set to read-only");
-			if (cachedDict.TryGetValue(row, out uint rid))
+				throw new ModuleWriterException( string.Format( "Trying to modify table {0} after it's been set to read-only", table ) );
+            uint rid;
+            if (cachedDict.TryGetValue(row, out rid))
 				return rid;
 			return Create(row);
 		}
@@ -124,7 +125,7 @@ namespace dnlib.DotNet.Writer {
 		/// <returns>The RID (row ID) of the row</returns>
 		public uint Create(TRow row) {
 			if (isReadOnly)
-				throw new ModuleWriterException($"Trying to modify table {table} after it's been set to read-only");
+				throw new ModuleWriterException( string.Format( "Trying to modify table {0} after it's been set to read-only", table ) );
 			uint rid = (uint)cached.Count + 1;
 			if (!cachedDict.ContainsKey(row))
 				cachedDict[row] = rid;
@@ -138,7 +139,7 @@ namespace dnlib.DotNet.Writer {
 		/// </summary>
 		public void ReAddRows() {
 			if (isReadOnly)
-				throw new ModuleWriterException($"Trying to modify table {table} after it's been set to read-only");
+				throw new ModuleWriterException( string.Format( "Trying to modify table {0} after it's been set to read-only", table ) );
 			cachedDict.Clear();
 			for (int i = 0; i < cached.Count; i++) {
 				uint rid = (uint)i + 1;
@@ -153,7 +154,7 @@ namespace dnlib.DotNet.Writer {
 		/// </summary>
 		public void Reset() {
 			if (isReadOnly)
-				throw new ModuleWriterException($"Trying to modify table {table} after it's been set to read-only");
+                throw new ModuleWriterException( string.Format( "Trying to modify table {0} after it's been set to read-only", table ) );
 			cachedDict.Clear();
 			cached.Clear();
 		}

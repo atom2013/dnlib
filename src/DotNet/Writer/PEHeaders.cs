@@ -161,7 +161,7 @@ namespace dnlib.DotNet.Writer {
 		/// Creates a new time date stamp using current time
 		/// </summary>
 		/// <returns>A new time date stamp</returns>
-		public static uint CreateNewTimeDateStamp() => (uint)(DateTime.UtcNow - Epoch).TotalSeconds;
+        public static uint CreateNewTimeDateStamp() { return (uint)(DateTime.UtcNow - Epoch).TotalSeconds; }
 		static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 	}
 
@@ -241,38 +241,38 @@ namespace dnlib.DotNet.Writer {
 		/// <summary>
 		/// Gets the image base
 		/// </summary>
-		public ulong ImageBase => imageBase;
+		public ulong ImageBase { get { return imageBase; } }
 
 		/// <summary>
 		/// Gets/sets a value indicating whether this is a EXE or a DLL file
 		/// </summary>
 		public bool IsExeFile {
-			get => isExeFile;
-			set => isExeFile = value;
+			get { return isExeFile; }
+			set { isExeFile = value; }
 		}
 
 		/// <inheritdoc/>
-		public FileOffset FileOffset => offset;
+		public FileOffset FileOffset { get { return offset; } }
 
 		/// <inheritdoc/>
-		public RVA RVA => rva;
+		public RVA RVA { get { return rva; } }
 
 		/// <summary>
 		/// Gets the section alignment
 		/// </summary>
-		public uint SectionAlignment => sectionAlignment;
+		public uint SectionAlignment { get { return sectionAlignment; } }
 
 		/// <summary>
 		/// Gets the file alignment
 		/// </summary>
-		public uint FileAlignment => fileAlignment;
+		public uint FileAlignment { get { return fileAlignment; } }
 
 		/// <summary>
 		/// Gets/sets the <see cref="PESection"/>s
 		/// </summary>
 		public IList<PESection> PESections {
-			get => sections;
-			set => sections = value;
+			get { return sections; }
+			set { sections = value; }
 		}
 
 		/// <summary>
@@ -320,10 +320,10 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public uint GetFileLength() => length;
+		public uint GetFileLength() { return length; }
 
 		/// <inheritdoc/>
-		public uint GetVirtualSize() => GetFileLength();
+		public uint GetVirtualSize() { return GetFileLength(); }
 
 		IEnumerable<SectionSizeInfo> GetSectionSizeInfos() {
 			foreach (var section in sections) {
@@ -465,9 +465,9 @@ namespace dnlib.DotNet.Writer {
 			writer.WriteUInt32(checkSum);
 		}
 
-		Machine GetMachine() => options.Machine ?? Machine.I386;
+		Machine GetMachine() { return options.Machine ?? Machine.I386; }
 
-		bool Use32BitOptionalHeader() => !GetMachine().Is64Bit();
+		bool Use32BitOptionalHeader() { return !GetMachine().Is64Bit(); }
 
 		Characteristics GetCharacteristics() {
 			var chr = options.Characteristics ?? GetDefaultCharacteristics();

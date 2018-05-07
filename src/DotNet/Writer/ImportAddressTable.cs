@@ -18,10 +18,10 @@ namespace dnlib.DotNet.Writer {
 		public ImportDirectory ImportDirectory { get; set; }
 
 		/// <inheritdoc/>
-		public FileOffset FileOffset => offset;
+		public FileOffset FileOffset { get { return offset; } }
 
 		/// <inheritdoc/>
-		public RVA RVA => rva;
+		public RVA RVA { get { return rva; } }
 
 		internal bool Enable { get; set; }
 
@@ -29,7 +29,7 @@ namespace dnlib.DotNet.Writer {
 		/// Constructor
 		/// </summary>
 		/// <param name="is64bit">true if it's a 64-bit PE file, false if it's a 32-bit PE file</param>
-		public ImportAddressTable(bool is64bit) => this.is64bit = is64bit;
+		public ImportAddressTable(bool is64bit) { this.is64bit = is64bit; }
 
 		/// <inheritdoc/>
 		public void SetOffset(FileOffset offset, RVA rva) {
@@ -45,7 +45,7 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public uint GetVirtualSize() => GetFileLength();
+        public uint GetVirtualSize() { return GetFileLength(); }
 
 		/// <inheritdoc/>
 		public void WriteTo(DataWriter writer) {

@@ -22,7 +22,7 @@ namespace dnlib.IO {
 			case Machine.ARM64:
 				return false;
 			default:
-				Debug.Fail($"Unknown CPU arch: {machine}");
+                Debug.Fail(string.Format("Unknown CPU arch: {0}", machine ));
 				return true;
 			}
 		}
@@ -34,7 +34,7 @@ namespace dnlib.IO {
 		/// <returns></returns>
 		public static DataStream Create(byte* data) {
 			if (data == null)
-				throw new ArgumentNullException(nameof(data));
+				throw new ArgumentNullException("data");
 			if (supportsUnalignedAccesses)
 				return new UnalignedNativeMemoryDataStream(data);
 			return new AlignedNativeMemoryDataStream(data);
@@ -47,7 +47,7 @@ namespace dnlib.IO {
 		/// <returns></returns>
 		public static DataStream Create(byte[] data) {
 			if (data == null)
-				throw new ArgumentNullException(nameof(data));
+				throw new ArgumentNullException("data");
 			if (supportsUnalignedAccesses)
 				return new UnalignedByteArrayDataStream(data);
 			return new AlignedByteArrayDataStream(data);

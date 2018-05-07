@@ -55,41 +55,41 @@ namespace dnlib.DotNet {
 		protected ModuleContext context;
 
 		/// <inheritdoc/>
-		public MDToken MDToken => new MDToken(Table.Module, rid);
+		public MDToken MDToken { get { return new MDToken(Table.Module, rid); } }
 
 		/// <inheritdoc/>
 		public uint Rid {
-			get => rid;
-			set => rid = value;
+			get { return rid; }
+			set { rid = value; }
 		}
 
 		/// <inheritdoc/>
-		public int HasCustomAttributeTag => 7;
+		public int HasCustomAttributeTag { get { return 7; } }
 
 		/// <inheritdoc/>
-		public int ResolutionScopeTag => 0;
+		public int ResolutionScopeTag { get { return 0; } }
 
 		/// <summary>
 		/// Gets/sets a user value. This is never used by dnlib. This property isn't thread safe.
 		/// </summary>
 		public object Tag {
-			get => tag;
-			set => tag = value;
+			get { return tag; }
+			set { tag = value; }
 		}
 		object tag;
 
 		/// <inheritdoc/>
-		public ScopeType ScopeType => ScopeType.ModuleDef;
+		public ScopeType ScopeType { get { return ScopeType.ModuleDef; } }
 
 		/// <inheritdoc/>
-		public string ScopeName => FullName;
+		public string ScopeName { get { return FullName; } }
 
 		/// <summary>
 		/// Gets/sets Module.Generation column
 		/// </summary>
 		public ushort Generation {
-			get => generation;
-			set => generation = value;
+			get { return generation; }
+			set { generation = value; }
 		}
 		/// <summary/>
 		protected ushort generation;
@@ -98,8 +98,8 @@ namespace dnlib.DotNet {
 		/// Gets/sets Module.Name column
 		/// </summary>
 		public UTF8String Name {
-			get => name;
-			set => name = value;
+			get { return name; }
+			set { name = value; }
 		}
 		/// <summary>Name</summary>
 		protected UTF8String name;
@@ -108,8 +108,8 @@ namespace dnlib.DotNet {
 		/// Gets/sets Module.Mvid column
 		/// </summary>
 		public Guid? Mvid {
-			get => mvid;
-			set => mvid = value;
+			get { return mvid; }
+			set { mvid = value; }
 		}
 		/// <summary/>
 		protected Guid? mvid;
@@ -118,8 +118,8 @@ namespace dnlib.DotNet {
 		/// Gets/sets Module.EncId column
 		/// </summary>
 		public Guid? EncId {
-			get => encId;
-			set => encId = value;
+			get { return encId; }
+			set { encId = value; }
 		}
 		/// <summary/>
 		protected Guid? encId;
@@ -128,8 +128,8 @@ namespace dnlib.DotNet {
 		/// Gets/sets Module.EncBaseId column
 		/// </summary>
 		public Guid? EncBaseId {
-			get => encBaseId;
-			set => encBaseId = value;
+			get { return encBaseId; }
+			set { encBaseId = value; }
 		}
 		/// <summary/>
 		protected Guid? encBaseId;
@@ -147,14 +147,15 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected CustomAttributeCollection customAttributes;
 		/// <summary>Initializes <see cref="customAttributes"/></summary>
-		protected virtual void InitializeCustomAttributes() =>
+		protected virtual void InitializeCustomAttributes() {
 			Interlocked.CompareExchange(ref customAttributes, new CustomAttributeCollection(), null);
+        }
 
 		/// <inheritdoc/>
-		public int HasCustomDebugInformationTag => 7;
+		public int HasCustomDebugInformationTag { get { return 7; } }
 
 		/// <inheritdoc/>
-		public bool HasCustomDebugInfos => CustomDebugInfos.Count > 0;
+		public bool HasCustomDebugInfos { get { return CustomDebugInfos.Count > 0; } }
 
 		/// <summary>
 		/// Gets all custom debug infos
@@ -169,16 +170,17 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected IList<PdbCustomDebugInfo> customDebugInfos;
 		/// <summary>Initializes <see cref="customDebugInfos"/></summary>
-		protected virtual void InitializeCustomDebugInfos() =>
+		protected virtual void InitializeCustomDebugInfos() {
 			Interlocked.CompareExchange(ref customDebugInfos, new List<PdbCustomDebugInfo>(), null);
+        }
 
 		/// <summary>
 		/// Gets the module's assembly. To set this value, add this <see cref="ModuleDef"/>
 		/// to <see cref="AssemblyDef.Modules"/>.
 		/// </summary>
 		public AssemblyDef Assembly {
-			get => assembly;
-			internal set => assembly = value;
+			get { return assembly; }
+			internal set { assembly = value; }
 		}
 		/// <summary/>
 		protected AssemblyDef assembly;
@@ -196,8 +198,9 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected LazyList<TypeDef> types;
 		/// <summary>Initializes <see cref="types"/></summary>
-		protected virtual void InitializeTypes() =>
+		protected virtual void InitializeTypes() {
 			Interlocked.CompareExchange(ref types, new LazyList<TypeDef>(this), null);
+        }
 
 		/// <summary>
 		/// Gets a list of all <see cref="ExportedType"/>s
@@ -212,8 +215,9 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected IList<ExportedType> exportedTypes;
 		/// <summary>Initializes <see cref="exportedTypes"/></summary>
-		protected virtual void InitializeExportedTypes() =>
+		protected virtual void InitializeExportedTypes() {
 			Interlocked.CompareExchange(ref exportedTypes, new List<ExportedType>(), null);
+        }
 
 		/// <summary>
 		/// Gets/sets the native entry point. Only one of <see cref="NativeEntryPoint"/> and
@@ -282,35 +286,35 @@ namespace dnlib.DotNet {
 #endif
 		}
 		/// <summary>Called to initialize <see cref="nativeEntryPoint"/></summary>
-		protected virtual RVA GetNativeEntryPoint_NoLock() => 0;
+		protected virtual RVA GetNativeEntryPoint_NoLock() { return 0; }
 		/// <summary>Called to initialize <see cref="managedEntryPoint"/></summary>
-		protected virtual IManagedEntryPoint GetManagedEntryPoint_NoLock() => null;
+		protected virtual IManagedEntryPoint GetManagedEntryPoint_NoLock() { return null; }
 
 		/// <inheritdoc/>
-		public bool HasCustomAttributes => CustomAttributes.Count > 0;
+		public bool HasCustomAttributes { get { return CustomAttributes.Count > 0; } }
 
 		/// <summary>
 		/// Gets/sets the entry point method
 		/// </summary>
 		public MethodDef EntryPoint {
-			get => ManagedEntryPoint as MethodDef;
-			set => ManagedEntryPoint = value;
+			get { return ManagedEntryPoint as MethodDef; }
+			set { ManagedEntryPoint = value; }
 		}
 
 		/// <summary>
 		/// <c>true</c> if <see cref="NativeEntryPoint"/> is non-zero
 		/// </summary>
-		public bool IsNativeEntryPointValid => NativeEntryPoint != 0;
+		public bool IsNativeEntryPointValid { get { return NativeEntryPoint != 0; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="ManagedEntryPoint"/> is non-null
 		/// </summary>
-		public bool IsManagedEntryPointValid => ManagedEntryPoint != null;
+		public bool IsManagedEntryPointValid { get { return ManagedEntryPoint != null; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="EntryPoint"/> is non-null
 		/// </summary>
-		public bool IsEntryPointValid => EntryPoint != null;
+		public bool IsEntryPointValid { get { return EntryPoint != null; } }
 
 		/// <summary>
 		/// Gets a list of all <see cref="Resource"/>s
@@ -325,8 +329,9 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected ResourceCollection resources;
 		/// <summary>Initializes <see cref="resources"/></summary>
-		protected virtual void InitializeResources() =>
+		protected virtual void InitializeResources() {
 			Interlocked.CompareExchange(ref resources, new ResourceCollection(), null);
+        }
 
 		/// <summary>
 		/// Gets/sets the <see cref="VTableFixups"/>. This is <c>null</c> if there are no
@@ -368,32 +373,32 @@ namespace dnlib.DotNet {
 		}
 
 		/// <summary>Called to initialize <see cref="vtableFixups"/></summary>
-		protected virtual VTableFixups GetVTableFixups_NoLock() => null;
+		protected virtual VTableFixups GetVTableFixups_NoLock() { return null; }
 
 		/// <summary>
 		/// <c>true</c> if there's at least one <see cref="TypeDef"/> in <see cref="Types"/>
 		/// </summary>
-		public bool HasTypes => Types.Count > 0;
+		public bool HasTypes { get { return Types.Count > 0; } }
 
 		/// <summary>
 		/// <c>true</c> if there's at least one <see cref="ExportedType"/> in <see cref="ExportedTypes"/>
 		/// </summary>
-		public bool HasExportedTypes => ExportedTypes.Count > 0;
+		public bool HasExportedTypes { get { return ExportedTypes.Count > 0; } }
 
 		/// <summary>
 		/// <c>true</c> if there's at least one <see cref="Resource"/> in <see cref="Resources"/>
 		/// </summary>
-		public bool HasResources => Resources.Count > 0;
+		public bool HasResources { get { return Resources.Count > 0; } }
 
 		/// <inheritdoc/>
-		public string FullName => UTF8String.ToSystemStringOrEmpty(name);
+		public string FullName { get { return UTF8String.ToSystemStringOrEmpty(name); } }
 
 		/// <summary>
 		/// Gets/sets the path of the module or an empty string if it wasn't loaded from disk
 		/// </summary>
 		public string Location {
-			get => location;
-			set => location = value;
+			get { return location; }
+			set { location = value; }
 		}
 		/// <summary/>
 		protected string location;
@@ -401,7 +406,7 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// Gets the <see cref="ICorLibTypes"/>
 		/// </summary>
-		public ICorLibTypes CorLibTypes => corLibTypes;
+		public ICorLibTypes CorLibTypes { get { return corLibTypes; } }
 
 		/// <summary>
 		/// Gets the <see cref="TypeDefFinder"/> instance
@@ -423,7 +428,7 @@ namespace dnlib.DotNet {
 					Interlocked.CompareExchange(ref context, new ModuleContext(), null);
 				return context;
 			}
-			set => context = value ?? new ModuleContext();
+			set { context = value ?? new ModuleContext(); }
 		}
 
 		/// <summary>
@@ -439,8 +444,8 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <seealso cref="ResetTypeDefFindCache()"/>
 		public bool EnableTypeDefFindCache {
-			get => TypeDefFinder.IsCacheEnabled;
-			set => TypeDefFinder.IsCacheEnabled = value;
+			get { return TypeDefFinder.IsCacheEnabled; }
+			set { TypeDefFinder.IsCacheEnabled = value; }
 		}
 
 		/// <summary>
@@ -456,7 +461,7 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// Gets the global (aka. &lt;Module&gt;) type or <c>null</c> if there are no types
 		/// </summary>
-		public TypeDef GlobalType => Types.Count == 0 ? null : Types[0];
+		public TypeDef GlobalType { get { return Types.Count == 0 ? null : Types[0]; } }
 
 		/// <summary>
 		/// true if it's the core library module, false if it's not the core library module,
@@ -503,13 +508,13 @@ namespace dnlib.DotNet {
 		}
 
 		/// <summary>Called to initialize <see cref="win32Resources"/></summary>
-		protected virtual Win32Resources GetWin32Resources_NoLock() => null;
+		protected virtual Win32Resources GetWin32Resources_NoLock() { return null; }
 
 		/// <summary>
 		/// Gets the <see cref="dnlib.DotNet.Pdb.PdbState"/>. This is <c>null</c> if no PDB file
 		/// has been loaded or if no PDB file could be found.
 		/// </summary>
-		public PdbState PdbState => pdbState;
+		public PdbState PdbState { get { return pdbState; } }
 
 		/// <summary>
 		/// Module kind
@@ -532,7 +537,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <remarks>Not thread safe</remarks>
 		public string RuntimeVersion {
-			get => runtimeVersion;
+			get { return runtimeVersion; }
 			set {
 				if (runtimeVersion != value) {
 					runtimeVersion = value;
@@ -562,17 +567,17 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// <c>true</c> if this is a WinMD file
 		/// </summary>
-		public bool IsWinMD => WinMDStatus != WinMDStatus.None;
+		public bool IsWinMD { get { return WinMDStatus != WinMDStatus.None; } }
 
 		/// <summary>
 		/// <c>true</c> if this is a managed WinMD file
 		/// </summary>
-		public bool IsManagedWinMD => WinMDStatus == WinMDStatus.Managed;
+		public bool IsManagedWinMD { get { return WinMDStatus == WinMDStatus.Managed; } }
 
 		/// <summary>
 		/// <c>true</c> if this is a pure (non-managed) WinMD file
 		/// </summary>
-		public bool IsPureWinMD => WinMDStatus == WinMDStatus.Pure;
+		public bool IsPureWinMD { get { return WinMDStatus == WinMDStatus.Pure; } }
 
 		/// <summary>
 		/// Gets the CLR runtime version of the managed WinMD file or <c>null</c> if none. This is
@@ -661,65 +666,66 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// <c>true</c> if <see cref="RuntimeVersion"/> is the CLR v1.0 string
 		/// </summary>
-		public bool IsClr10Exactly =>
+		public bool IsClr10Exactly { get { return
 			RuntimeVersion == MDHeaderRuntimeVersion.MS_CLR_10 ||
 			RuntimeVersion == MDHeaderRuntimeVersion.MS_CLR_10_X86RETAIL ||
 			RuntimeVersion == MDHeaderRuntimeVersion.MS_CLR_10_RETAIL ||
 			RuntimeVersion == MDHeaderRuntimeVersion.MS_CLR_10_COMPLUS;
+        } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="RuntimeVersion"/> is the CLR v1.1 string (only the major
 		/// and minor version numbers are checked)
 		/// </summary>
-		public bool IsClr11 => (RuntimeVersion ?? string.Empty).StartsWith(MDHeaderRuntimeVersion.MS_CLR_11_PREFIX);
+		public bool IsClr11 { get { return (RuntimeVersion ?? string.Empty).StartsWith(MDHeaderRuntimeVersion.MS_CLR_11_PREFIX); } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="RuntimeVersion"/> is the CLR v1.1 string
 		/// </summary>
-		public bool IsClr11Exactly => RuntimeVersion == MDHeaderRuntimeVersion.MS_CLR_11;
+		public bool IsClr11Exactly { get { return RuntimeVersion == MDHeaderRuntimeVersion.MS_CLR_11; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="RuntimeVersion"/> is the CLR v1.0 or v1.1 string (only the
 		/// major and minor version numbers are checked)
 		/// </summary>
-		public bool IsClr1x => IsClr10 || IsClr11;
+		public bool IsClr1x { get { return IsClr10 || IsClr11; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="RuntimeVersion"/> is the CLR v1.0 or v1.1 string
 		/// </summary>
-		public bool IsClr1xExactly => IsClr10Exactly || IsClr11Exactly;
+		public bool IsClr1xExactly { get { return IsClr10Exactly || IsClr11Exactly; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="RuntimeVersion"/> is the CLR v2.0 string (only the major
 		/// and minor version numbers are checked)
 		/// </summary>
-		public bool IsClr20 => (RuntimeVersion ?? string.Empty).StartsWith(MDHeaderRuntimeVersion.MS_CLR_20_PREFIX);
+		public bool IsClr20 { get { return (RuntimeVersion ?? string.Empty).StartsWith(MDHeaderRuntimeVersion.MS_CLR_20_PREFIX); } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="RuntimeVersion"/> is the CLR v2.0 string
 		/// </summary>
-		public bool IsClr20Exactly => RuntimeVersion == MDHeaderRuntimeVersion.MS_CLR_20;
+		public bool IsClr20Exactly { get { return RuntimeVersion == MDHeaderRuntimeVersion.MS_CLR_20; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="RuntimeVersion"/> is the CLR v4.0 string (only the major
 		/// and minor version numbers are checked)
 		/// </summary>
-		public bool IsClr40 => (RuntimeVersion ?? string.Empty).StartsWith(MDHeaderRuntimeVersion.MS_CLR_40_PREFIX);
+		public bool IsClr40 { get { return (RuntimeVersion ?? string.Empty).StartsWith(MDHeaderRuntimeVersion.MS_CLR_40_PREFIX); } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="RuntimeVersion"/> is the CLR v4.0 string
 		/// </summary>
-		public bool IsClr40Exactly => RuntimeVersion == MDHeaderRuntimeVersion.MS_CLR_40;
+		public bool IsClr40Exactly { get { return RuntimeVersion == MDHeaderRuntimeVersion.MS_CLR_40; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="RuntimeVersion"/> is the ECMA 2002 string
 		/// </summary>
-		public bool IsEcma2002 => RuntimeVersion == MDHeaderRuntimeVersion.ECMA_2002;
+		public bool IsEcma2002 { get { return RuntimeVersion == MDHeaderRuntimeVersion.ECMA_2002; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="RuntimeVersion"/> is the ECMA 2005 string
 		/// </summary>
-		public bool IsEcma2005 => RuntimeVersion == MDHeaderRuntimeVersion.ECMA_2005;
+		public bool IsEcma2005 { get { return RuntimeVersion == MDHeaderRuntimeVersion.ECMA_2005; } }
 
 		/// <summary>
 		/// Gets/sets the <see cref="Machine"/> (from PE header)
@@ -729,34 +735,34 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// <c>true</c> if <see cref="Machine"/> is <see cref="PE.Machine.I386"/>, <see cref="PE.Machine.I386_Native_Apple"/>, ...
 		/// </summary>
-		public bool IsI386 => Machine.IsI386();
+		public bool IsI386 { get { return Machine.IsI386(); } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="Machine"/> is <see cref="PE.Machine.IA64"/>
 		/// </summary>
-		public bool IsIA64 => Machine == Machine.IA64;
+		public bool IsIA64 { get { return Machine == Machine.IA64; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="Machine"/> is <see cref="PE.Machine.AMD64"/>, <see cref="PE.Machine.AMD64_Native_Apple"/>, ...
 		/// </summary>
-		public bool IsAMD64 => Machine.IsAMD64();
+		public bool IsAMD64 { get { return Machine.IsAMD64(); } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="Machine"/> is <see cref="PE.Machine.ARMNT"/>, <see cref="PE.Machine.ARMNT_Native_Apple"/>, ...
 		/// </summary>
-		public bool IsARM => Machine.IsARMNT();
+		public bool IsARM { get { return Machine.IsARMNT(); } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="Machine"/> is <see cref="PE.Machine.ARM64"/>, <see cref="PE.Machine.ARM64_Native_Apple"/>, ...
 		/// </summary>
-		public bool IsARM64 => Machine.IsARM64();
+		public bool IsARM64 { get { return Machine.IsARM64(); } }
 
 		/// <summary>
 		/// Gets/sets the <see cref="Cor20HeaderFlags"/> (from .NET header)
 		/// </summary>
 		public ComImageFlags Cor20HeaderFlags {
-			get => (ComImageFlags)cor20HeaderFlags;
-			set => cor20HeaderFlags = (int)value;
+			get { return (ComImageFlags)cor20HeaderFlags; }
+			set { cor20HeaderFlags = (int)value; }
 		}
 		/// <summary/>
 		protected int cor20HeaderFlags;
@@ -809,40 +815,40 @@ namespace dnlib.DotNet {
 		/// Gets/sets the <see cref="ComImageFlags.ILOnly"/> bit
 		/// </summary>
 		public bool IsILOnly {
-			get => ((ComImageFlags)cor20HeaderFlags & ComImageFlags.ILOnly) != 0;
-			set => ModifyComImageFlags(value, ComImageFlags.ILOnly);
+			get { return ((ComImageFlags)cor20HeaderFlags & ComImageFlags.ILOnly) != 0; }
+			set { ModifyComImageFlags(value, ComImageFlags.ILOnly); }
 		}
 
 		/// <summary>
 		/// Gets/sets the <see cref="ComImageFlags.Bit32Required"/> bit
 		/// </summary>
 		public bool Is32BitRequired {
-			get => ((ComImageFlags)cor20HeaderFlags & ComImageFlags.Bit32Required) != 0;
-			set => ModifyComImageFlags(value, ComImageFlags.Bit32Required);
+			get { return ((ComImageFlags)cor20HeaderFlags & ComImageFlags.Bit32Required) != 0; }
+			set { ModifyComImageFlags(value, ComImageFlags.Bit32Required); }
 		}
 
 		/// <summary>
 		/// Gets/sets the <see cref="ComImageFlags.StrongNameSigned"/> bit
 		/// </summary>
 		public bool IsStrongNameSigned {
-			get => ((ComImageFlags)cor20HeaderFlags & ComImageFlags.StrongNameSigned) != 0;
-			set => ModifyComImageFlags(value, ComImageFlags.StrongNameSigned);
+			get { return ((ComImageFlags)cor20HeaderFlags & ComImageFlags.StrongNameSigned) != 0; }
+			set { ModifyComImageFlags(value, ComImageFlags.StrongNameSigned); }
 		}
 
 		/// <summary>
 		/// Gets/sets the <see cref="ComImageFlags.NativeEntryPoint"/> bit
 		/// </summary>
 		public bool HasNativeEntryPoint {
-			get => ((ComImageFlags)cor20HeaderFlags & ComImageFlags.NativeEntryPoint) != 0;
-			set => ModifyComImageFlags(value, ComImageFlags.NativeEntryPoint);
+			get { return ((ComImageFlags)cor20HeaderFlags & ComImageFlags.NativeEntryPoint) != 0; }
+			set { ModifyComImageFlags(value, ComImageFlags.NativeEntryPoint); }
 		}
 
 		/// <summary>
 		/// Gets/sets the <see cref="ComImageFlags.Bit32Preferred"/> bit
 		/// </summary>
 		public bool Is32BitPreferred {
-			get => ((ComImageFlags)cor20HeaderFlags & ComImageFlags.Bit32Preferred) != 0;
-			set => ModifyComImageFlags(value, ComImageFlags.Bit32Preferred);
+			get { return ((ComImageFlags)cor20HeaderFlags & ComImageFlags.Bit32Preferred) != 0; }
+			set { ModifyComImageFlags(value, ComImageFlags.Bit32Preferred); }
 		}
 
 		/// <inheritdoc/>
@@ -863,14 +869,14 @@ namespace dnlib.DotNet {
 				tdf.Dispose();
 				typeDefFinder = null;
 			}
-			pdbState?.Dispose();
+			if (pdbState != null) pdbState.Dispose();
 			pdbState = null;
 		}
 
 		/// <summary>
 		/// Gets all the types (including nested types) present in this module
 		/// </summary>
-		public IEnumerable<TypeDef> GetTypes() => AllTypesHelper.Types(Types);
+		public IEnumerable<TypeDef> GetTypes() { return AllTypesHelper.Types(Types); }
 
 		/// <summary>
 		/// Adds <paramref name="typeDef"/> as a non-nested type. If it's already nested, its
@@ -921,14 +927,14 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="type">The type</param>
 		/// <returns>The imported type or <c>null</c> if <paramref name="type"/> is invalid</returns>
-		public ITypeDefOrRef Import(Type type) => new Importer(this).Import(type);
+		public ITypeDefOrRef Import(Type type) { return new Importer(this).Import(type); }
 
 		/// <summary>
 		/// Imports a <see cref="Type"/> as a <see cref="TypeSig"/>
 		/// </summary>
 		/// <param name="type">The type</param>
 		/// <returns>The imported type or <c>null</c> if <paramref name="type"/> is invalid</returns>
-		public TypeSig ImportAsTypeSig(Type type) => new Importer(this).ImportAsTypeSig(type);
+		public TypeSig ImportAsTypeSig(Type type) { return new Importer(this).ImportAsTypeSig(type); }
 
 		/// <summary>
 		/// Imports a <see cref="FieldInfo"/> as a <see cref="MemberRef"/>
@@ -936,7 +942,7 @@ namespace dnlib.DotNet {
 		/// <param name="fieldInfo">The field</param>
 		/// <returns>The imported field or <c>null</c> if <paramref name="fieldInfo"/> is invalid
 		/// or if we failed to import the field</returns>
-		public MemberRef Import(FieldInfo fieldInfo) => (MemberRef)new Importer(this).Import(fieldInfo);
+		public MemberRef Import(FieldInfo fieldInfo) { return (MemberRef)new Importer(this).Import(fieldInfo); }
 
 		/// <summary>
 		/// Imports a <see cref="MethodBase"/> as a <see cref="IMethod"/>. This will be either
@@ -945,90 +951,90 @@ namespace dnlib.DotNet {
 		/// <param name="methodBase">The method</param>
 		/// <returns>The imported method or <c>null</c> if <paramref name="methodBase"/> is invalid
 		/// or if we failed to import the method</returns>
-		public IMethod Import(MethodBase methodBase) => new Importer(this).Import(methodBase);
+		public IMethod Import(MethodBase methodBase) { return new Importer(this).Import(methodBase); }
 
 		/// <summary>
 		/// Imports a <see cref="IType"/>
 		/// </summary>
 		/// <param name="type">The type</param>
 		/// <returns>The imported type or <c>null</c></returns>
-		public IType Import(IType type) => new Importer(this).Import(type);
+		public IType Import(IType type) { return new Importer(this).Import(type); }
 
 		/// <summary>
 		/// Imports a <see cref="TypeDef"/> as a <see cref="TypeRef"/>
 		/// </summary>
 		/// <param name="type">The type</param>
 		/// <returns>The imported type or <c>null</c></returns>
-		public TypeRef Import(TypeDef type) => (TypeRef)new Importer(this).Import(type);
+		public TypeRef Import(TypeDef type) { return (TypeRef)new Importer(this).Import(type); }
 
 		/// <summary>
 		/// Imports a <see cref="TypeRef"/>
 		/// </summary>
 		/// <param name="type">The type</param>
 		/// <returns>The imported type or <c>null</c></returns>
-		public TypeRef Import(TypeRef type) => (TypeRef)new Importer(this).Import(type);
+		public TypeRef Import(TypeRef type) { return (TypeRef)new Importer(this).Import(type); }
 
 		/// <summary>
 		/// Imports a <see cref="TypeSpec"/>
 		/// </summary>
 		/// <param name="type">The type</param>
 		/// <returns>The imported type or <c>null</c></returns>
-		public TypeSpec Import(TypeSpec type) => new Importer(this).Import(type);
+		public TypeSpec Import(TypeSpec type) { return new Importer(this).Import(type); }
 
 		/// <summary>
 		/// Imports a <see cref="TypeSig"/>
 		/// </summary>
 		/// <param name="type">The type</param>
 		/// <returns>The imported type or <c>null</c></returns>
-		public TypeSig Import(TypeSig type) => new Importer(this).Import(type);
+		public TypeSig Import(TypeSig type) { return new Importer(this).Import(type); }
 
 		/// <summary>
 		/// Imports a <see cref="IField"/>
 		/// </summary>
 		/// <param name="field">The field</param>
 		/// <returns>The imported type or <c>null</c> if <paramref name="field"/> is invalid</returns>
-		public MemberRef Import(IField field) => (MemberRef)new Importer(this).Import(field);
+		public MemberRef Import(IField field) { return (MemberRef)new Importer(this).Import(field); }
 
 		/// <summary>
 		/// Imports a <see cref="FieldDef"/> as a <see cref="MemberRef"/>
 		/// </summary>
 		/// <param name="field">The field</param>
 		/// <returns>The imported type or <c>null</c> if <paramref name="field"/> is invalid</returns>
-		public MemberRef Import(FieldDef field) => (MemberRef)new Importer(this).Import(field);
+		public MemberRef Import(FieldDef field) { return (MemberRef)new Importer(this).Import(field); }
 
 		/// <summary>
 		/// Imports a <see cref="IMethod"/>
 		/// </summary>
 		/// <param name="method">The method</param>
 		/// <returns>The imported method or <c>null</c> if <paramref name="method"/> is invalid</returns>
-		public IMethod Import(IMethod method) => new Importer(this).Import(method);
+		public IMethod Import(IMethod method) { return new Importer(this).Import(method); }
 
 		/// <summary>
 		/// Imports a <see cref="MethodDef"/> as a <see cref="MemberRef"/>
 		/// </summary>
 		/// <param name="method">The method</param>
 		/// <returns>The imported method or <c>null</c> if <paramref name="method"/> is invalid</returns>
-		public MemberRef Import(MethodDef method) => (MemberRef)new Importer(this).Import(method);
+		public MemberRef Import(MethodDef method) { return (MemberRef)new Importer(this).Import(method); }
 
 		/// <summary>
 		/// Imports a <see cref="MethodSpec"/>
 		/// </summary>
 		/// <param name="method">The method</param>
 		/// <returns>The imported method or <c>null</c> if <paramref name="method"/> is invalid</returns>
-		public MethodSpec Import(MethodSpec method) => new Importer(this).Import(method);
+		public MethodSpec Import(MethodSpec method) { return new Importer(this).Import(method); }
 
 		/// <summary>
 		/// Imports a <see cref="MemberRef"/>
 		/// </summary>
 		/// <param name="memberRef">The member ref</param>
 		/// <returns>The imported member ref or <c>null</c> if <paramref name="memberRef"/> is invalid</returns>
-		public MemberRef Import(MemberRef memberRef) => new Importer(this).Import(memberRef);
+		public MemberRef Import(MemberRef memberRef) { return new Importer(this).Import(memberRef); }
 
 		/// <summary>
 		/// Writes the module to a file on disk. If the file exists, it will be overwritten.
 		/// </summary>
 		/// <param name="filename">Filename</param>
-		public void Write(string filename) => Write(filename, null);
+		public void Write(string filename) { Write(filename, null); }
 
 		/// <summary>
 		/// Writes the module to a file on disk. If the file exists, it will be overwritten.
@@ -1044,7 +1050,7 @@ namespace dnlib.DotNet {
 		/// Writes the module to a stream.
 		/// </summary>
 		/// <param name="dest">Destination stream</param>
-		public void Write(Stream dest) => Write(dest, null);
+		public void Write(Stream dest) { Write(dest, null); }
 
 		/// <summary>
 		/// Writes the module to a stream.
@@ -1061,7 +1067,7 @@ namespace dnlib.DotNet {
 		/// <see cref="EnableTypeDefFindCache"/> to <c>true</c>. Use this method if the cache is
 		/// enabled but some of the types have been modified (eg. removed, added, renamed).
 		/// </summary>
-		public void ResetTypeDefFindCache() => TypeDefFinder.ResetCache();
+		public void ResetTypeDefFindCache() { TypeDefFinder.ResetCache(); }
 
 		/// <summary>
 		/// Finds a <see cref="ResourceData"/>
@@ -1070,13 +1076,13 @@ namespace dnlib.DotNet {
 		/// <param name="name">Name</param>
 		/// <param name="langId">Language ID</param>
 		/// <returns>The <see cref="ResourceData"/> or <c>null</c> if none found</returns>
-		public ResourceData FindWin32ResourceData(ResourceName type, ResourceName name, ResourceName langId) => Win32Resources?.Find(type, name, langId);
+		public ResourceData FindWin32ResourceData(ResourceName type, ResourceName name, ResourceName langId) { return Win32Resources != null?Win32Resources.Find(type, name, langId):null; }
 
 		/// <summary>
 		/// Creates a new <see cref="dnlib.DotNet.Pdb.PdbState"/>
 		/// </summary>
 		/// <param name="pdbFileKind">PDB file kind</param>
-		public void CreatePdbState(PdbFileKind pdbFileKind) => SetPdbState(new PdbState(this, pdbFileKind));
+		public void CreatePdbState(PdbFileKind pdbFileKind) { SetPdbState(new PdbState(this, pdbFileKind)); }
 
 		/// <summary>
 		/// Sets a <see cref="dnlib.DotNet.Pdb.PdbState"/>
@@ -1084,7 +1090,7 @@ namespace dnlib.DotNet {
 		/// <param name="pdbState">New <see cref="dnlib.DotNet.Pdb.PdbState"/></param>
 		public void SetPdbState(PdbState pdbState) {
 			if (pdbState == null)
-				throw new ArgumentNullException(nameof(pdbState));
+				throw new ArgumentNullException("pdbState");
 			var orig = Interlocked.CompareExchange(ref this.pdbState, pdbState, null);
 			if (orig != null)
 				throw new InvalidOperationException("PDB file has already been initialized");
@@ -1102,7 +1108,7 @@ namespace dnlib.DotNet {
 		/// if it can be 32-bit or 64-bit.
 		/// </summary>
 		/// <returns>Size of a pointer (4 or 8)</returns>
-		public int GetPointerSize() => GetPointerSize(4);
+		public int GetPointerSize() { return GetPointerSize(4); }
 
 		/// <summary>
 		/// Returns the size of a pointer
@@ -1110,7 +1116,7 @@ namespace dnlib.DotNet {
 		/// <param name="defaultPointerSize">Default pointer size if it's not known or if it
 		/// can be 32-bit or 64-bit</param>
 		/// <returns>Size of a pointer (4 or 8)</returns>
-		public int GetPointerSize(int defaultPointerSize) => GetPointerSize(defaultPointerSize, defaultPointerSize);
+		public int GetPointerSize(int defaultPointerSize) { return GetPointerSize(defaultPointerSize, defaultPointerSize); }
 
 		/// <summary>
 		/// Returns the size of a pointer
@@ -1178,7 +1184,7 @@ namespace dnlib.DotNet {
 		}
 
 		/// <inheritdoc/>
-		void IListListener<TypeDef>.OnRemove(int index, TypeDef value) => value.Module2 = null;
+		void IListListener<TypeDef>.OnRemove(int index, TypeDef value) { value.Module2 = null; }
 
 		/// <inheritdoc/>
 		void IListListener<TypeDef>.OnResize(int index) {
@@ -1199,7 +1205,7 @@ namespace dnlib.DotNet {
 		/// type names are separated by a <c>+</c> character. If <c>false</c>, nested type names
 		/// are separated by a <c>/</c> character.</param>
 		/// <returns>An existing <see cref="TypeDef"/> or <c>null</c> if it wasn't found.</returns>
-		public TypeDef Find(string fullName, bool isReflectionName) => TypeDefFinder.Find(fullName, isReflectionName);
+		public TypeDef Find(string fullName, bool isReflectionName) { return TypeDefFinder.Find(fullName, isReflectionName); }
 
 		/// <summary>
 		/// Finds a <see cref="TypeDef"/>. Its scope (i.e., module or assembly) is ignored when
@@ -1208,7 +1214,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="typeRef">The type ref</param>
 		/// <returns>An existing <see cref="TypeDef"/> or <c>null</c> if it wasn't found.</returns>
-		public TypeDef Find(TypeRef typeRef) => TypeDefFinder.Find(typeRef);
+		public TypeDef Find(TypeRef typeRef) { return TypeDefFinder.Find(typeRef); }
 
 		/// <summary>
 		/// Finds a <see cref="TypeDef"/>
@@ -1216,10 +1222,12 @@ namespace dnlib.DotNet {
 		/// <param name="typeRef">The type</param>
 		/// <returns>A <see cref="TypeDef"/> or <c>null</c> if it wasn't found</returns>
 		public TypeDef Find(ITypeDefOrRef typeRef) {
-			if (typeRef is TypeDef td)
+            TypeDef td;
+            if ((td = typeRef as TypeDef) != null)
 				return td.Module == this ? td : null;
 
-			if (typeRef is TypeRef tr)
+            TypeRef tr;
+            if ((tr = typeRef as TypeRef) != null)
 				return Find(tr);
 
 			var ts = typeRef as TypeSpec;
@@ -1247,7 +1255,7 @@ namespace dnlib.DotNet {
 		/// <param name="addOtherSearchPaths">If <c>true</c>, add other common assembly search
 		/// paths, not just the module search paths and the GAC.</param>
 		/// <returns>A new <see cref="ModuleContext"/> instance</returns>
-		public static ModuleContext CreateModuleContext(bool addOtherSearchPaths = true) {
+		public static ModuleContext CreateModuleContext(bool addOtherSearchPaths) {
 			var ctx = new ModuleContext();
 			var asmRes = new AssemblyResolver(ctx, addOtherSearchPaths);
 			var res = new Resolver(asmRes);
@@ -1256,22 +1264,37 @@ namespace dnlib.DotNet {
 			return ctx;
 		}
 
+        		/// <summary>
+		/// Creates a new <see cref="ModuleContext"/> instance. There should normally only be one
+		/// instance shared by all <see cref="ModuleDef"/>s.
+		/// </summary>
+		/// <returns>A new <see cref="ModuleContext"/> instance</returns>
+		public static ModuleContext CreateModuleContext() {
+			return CreateModuleContext(true);
+		}
+
 		/// <summary>
 		/// Load everything in this module. All types, fields, asm refs, etc are loaded, all their
 		/// properties are read to make sure everything is cached.
 		/// </summary>
 		/// <param name="cancellationToken">Cancellation token or <c>null</c></param>
-		public virtual void LoadEverything(ICancellationToken cancellationToken = null) => ModuleLoader.LoadAll(this, cancellationToken);
+		public virtual void LoadEverything(ICancellationToken cancellationToken) { ModuleLoader.LoadAll(this, cancellationToken); }
+
+        /// <summary>
+		/// Load everything in this module. All types, fields, asm refs, etc are loaded, all their
+		/// properties are read to make sure everything is cached.
+		/// </summary>
+		public virtual void LoadEverything() { LoadEverything(null); }
 
 		/// <inheritdoc/>
-		public override string ToString() => FullName;
+		public override string ToString() { return FullName; }
 
 		/// <summary>
 		/// Resolves a token
 		/// </summary>
 		/// <param name="mdToken">The metadata token</param>
 		/// <returns>A <see cref="IMDTokenProvider"/> or <c>null</c> if <paramref name="mdToken"/> is invalid</returns>
-		public IMDTokenProvider ResolveToken(MDToken mdToken) => ResolveToken(mdToken.Raw, new GenericParamContext());
+		public IMDTokenProvider ResolveToken(MDToken mdToken) { return ResolveToken(mdToken.Raw, new GenericParamContext()); }
 
 		/// <summary>
 		/// Resolves a token
@@ -1279,29 +1302,14 @@ namespace dnlib.DotNet {
 		/// <param name="mdToken">The metadata token</param>
 		/// <param name="gpContext">Generic parameter context</param>
 		/// <returns>A <see cref="IMDTokenProvider"/> or <c>null</c> if <paramref name="mdToken"/> is invalid</returns>
-		public IMDTokenProvider ResolveToken(MDToken mdToken, GenericParamContext gpContext) => ResolveToken(mdToken.Raw, gpContext);
+		public IMDTokenProvider ResolveToken(MDToken mdToken, GenericParamContext gpContext) { return ResolveToken(mdToken.Raw, gpContext); }
 
 		/// <summary>
 		/// Resolves a token
 		/// </summary>
 		/// <param name="token">The metadata token</param>
 		/// <returns>A <see cref="IMDTokenProvider"/> or <c>null</c> if <paramref name="token"/> is invalid</returns>
-		public IMDTokenProvider ResolveToken(int token) => ResolveToken((uint)token, new GenericParamContext());
-
-		/// <summary>
-		/// Resolves a token
-		/// </summary>
-		/// <param name="token">The metadata token</param>
-		/// <param name="gpContext">Generic parameter context</param>
-		/// <returns>A <see cref="IMDTokenProvider"/> or <c>null</c> if <paramref name="token"/> is invalid</returns>
-		public IMDTokenProvider ResolveToken(int token, GenericParamContext gpContext) => ResolveToken((uint)token, gpContext);
-
-		/// <summary>
-		/// Resolves a token
-		/// </summary>
-		/// <param name="token">The metadata token</param>
-		/// <returns>A <see cref="IMDTokenProvider"/> or <c>null</c> if <paramref name="token"/> is invalid</returns>
-		public IMDTokenProvider ResolveToken(uint token) => ResolveToken(token, new GenericParamContext());
+		public IMDTokenProvider ResolveToken(int token) { return ResolveToken((uint)token, new GenericParamContext()); }
 
 		/// <summary>
 		/// Resolves a token
@@ -1309,7 +1317,22 @@ namespace dnlib.DotNet {
 		/// <param name="token">The metadata token</param>
 		/// <param name="gpContext">Generic parameter context</param>
 		/// <returns>A <see cref="IMDTokenProvider"/> or <c>null</c> if <paramref name="token"/> is invalid</returns>
-		public virtual IMDTokenProvider ResolveToken(uint token, GenericParamContext gpContext) => null;
+		public IMDTokenProvider ResolveToken(int token, GenericParamContext gpContext) { return ResolveToken((uint)token, gpContext); }
+
+		/// <summary>
+		/// Resolves a token
+		/// </summary>
+		/// <param name="token">The metadata token</param>
+		/// <returns>A <see cref="IMDTokenProvider"/> or <c>null</c> if <paramref name="token"/> is invalid</returns>
+		public IMDTokenProvider ResolveToken(uint token) { return ResolveToken(token, new GenericParamContext()); }
+
+		/// <summary>
+		/// Resolves a token
+		/// </summary>
+		/// <param name="token">The metadata token</param>
+		/// <param name="gpContext">Generic parameter context</param>
+		/// <returns>A <see cref="IMDTokenProvider"/> or <c>null</c> if <paramref name="token"/> is invalid</returns>
+		public virtual IMDTokenProvider ResolveToken(uint token, GenericParamContext gpContext) { return null; }
 
 		/// <summary>
 		/// Gets all <see cref="AssemblyRef"/>s
@@ -1339,7 +1362,7 @@ namespace dnlib.DotNet {
 		/// Gets all <see cref="MemberRef"/>s. <see cref="MemberRef"/>s with generic parameters
 		/// aren't cached and a new copy is always returned.
 		/// </summary>
-		public IEnumerable<MemberRef> GetMemberRefs() => GetMemberRefs(new GenericParamContext());
+		public IEnumerable<MemberRef> GetMemberRefs() { return GetMemberRefs(new GenericParamContext()); }
 
 		/// <summary>
 		/// Gets all <see cref="MemberRef"/>s. <see cref="MemberRef"/>s with generic parameters
@@ -1400,12 +1423,13 @@ namespace dnlib.DotNet {
 		}
 
 		ITypeDefOrRef ISignatureReaderHelper.ResolveTypeDefOrRef(uint codedToken, GenericParamContext gpContext) {
-			if (!CodedToken.TypeDefOrRef.Decode(codedToken, out uint token))
+            uint token;
+            if (!CodedToken.TypeDefOrRef.Decode(codedToken, out token))
 				return null;
 			return ResolveToken(token) as ITypeDefOrRef;
 		}
 
-		TypeSig ISignatureReaderHelper.ConvertRTInternalAddress(IntPtr address) => null;
+		TypeSig ISignatureReaderHelper.ConvertRTInternalAddress(IntPtr address) { return null; }
 	}
 
 	/// <summary>
@@ -1480,7 +1504,7 @@ namespace dnlib.DotNet {
 		readonly uint origRid;
 
 		/// <inheritdoc/>
-		public uint OrigRid => origRid;
+		public uint OrigRid { get { return origRid; } }
 
 		/// <inheritdoc/>
 		protected override void InitializeCustomAttributes() {
@@ -1497,10 +1521,10 @@ namespace dnlib.DotNet {
 		}
 
 		/// <inheritdoc/>
-		protected override RVA GetNativeEntryPoint_NoLock() => readerModule.GetNativeEntryPoint();
+		protected override RVA GetNativeEntryPoint_NoLock() { return readerModule.GetNativeEntryPoint(); }
 
 		/// <inheritdoc/>
-		protected override IManagedEntryPoint GetManagedEntryPoint_NoLock() => readerModule.GetManagedEntryPoint();
+		protected override IManagedEntryPoint GetManagedEntryPoint_NoLock() { return readerModule.GetManagedEntryPoint(); }
 
 		/// <summary>
 		/// Constructor
@@ -1516,7 +1540,7 @@ namespace dnlib.DotNet {
 			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (rid != 1 && readerModule.TablesStream.ModuleTable.IsInvalidRID(rid))
-				throw new BadImageFormatException($"Module rid {rid} does not exist");
+				throw new BadImageFormatException( string.Format( "Module rid {0} does not exist", rid ) );
 #endif
 			origRid = rid;
 			this.rid = rid;
@@ -1540,7 +1564,8 @@ namespace dnlib.DotNet {
 		/// Initialize fields from the raw <c>Module</c> row
 		/// </summary>
 		protected void InitializeFromRawRow() {
-			bool b = readerModule.TablesStream.TryReadModuleRow(origRid, out var row);
+            RawModuleRow row;
+            bool b = readerModule.TablesStream.TryReadModuleRow(origRid, out row);
 			Debug.Assert(b);
 			generation = row.Generation;
 			mvid = readerModule.GuidStream.Read(row.Mvid);

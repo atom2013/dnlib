@@ -29,10 +29,12 @@ namespace dnlib.DotNet.Pdb.Portable {
 				if (debugDir.MinorVersion != DDW.PortablePdbConstants.PortableCodeViewVersionMagic)
 					return null;
 				bool validFormatVersion = debugDir.MajorVersion == DDW.PortablePdbConstants.FormatVersion;
-				Debug.Assert(validFormatVersion, $"New Portable PDB version: 0x{debugDir.MajorVersion:X4}");
+				Debug.Assert(validFormatVersion, string.Format( "New Portable PDB version: 0x{0:X4}", debugDir.MajorVersion ) );
 				if (!validFormatVersion)
 					return null;
-				if (!pdbContext.TryGetCodeViewData(out var pdbGuid, out uint age))
+                System.Guid pdbGuid;
+                uint age;
+                if (!pdbContext.TryGetCodeViewData(out pdbGuid, out age))
 					return null;
 
 				var reader = new PortablePdbReader(pdbStream, isEmbeddedPortablePdb ? PdbFileKind.EmbeddedPortablePDB : PdbFileKind.PortablePDB);
@@ -45,7 +47,7 @@ namespace dnlib.DotNet.Pdb.Portable {
 			}
 			finally {
 				if (disposePdbStream)
-					pdbStream?.Dispose();
+				{ if (pdbStream != null) pdbStream.Dispose(); }
 			}
 			return null;
 		}
@@ -83,8 +85,8 @@ namespace dnlib.DotNet.Pdb.Portable {
 					}
 					if (pos != decompressedBytes.Length)
 						return null;
-					var stream = ByteArrayDataReaderFactory.Create(decompressedBytes, filename: null);
-					return TryCreate(pdbContext, stream, isEmbeddedPortablePdb: true);
+					var stream = ByteArrayDataReaderFactory.Create(decompressedBytes, /* filename: */ null);
+					return TryCreate(pdbContext, stream, /* isEmbeddedPortablePdb: */ true);
 				}
 			}
 			catch (IOException) {

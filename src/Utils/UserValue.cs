@@ -32,7 +32,7 @@ namespace dnlib.Utils {
 		/// Set a delegate instance that will return the original value
 		/// </summary>
 		public Func<TValue> ReadOriginalValue {
-			set => readOriginalValue = value;
+			set { readOriginalValue = value; }
 		}
 
 		/// <summary>
@@ -81,7 +81,7 @@ namespace dnlib.Utils {
 				finally { theLock?.ExitReadLock(); }
 			}
 #else
-			get => isValueInitialized;
+			get { return isValueInitialized; }
 #endif
 		}
 
@@ -98,7 +98,7 @@ namespace dnlib.Utils {
 				finally { theLock?.ExitReadLock(); }
 			}
 #else
-			get => isUserValue;
+            get { return isUserValue; }
 #endif
 		}
 	}

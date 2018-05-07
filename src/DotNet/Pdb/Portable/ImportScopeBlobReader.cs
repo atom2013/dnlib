@@ -3,10 +3,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using dnlib.DotNet.MD;
+using dnlib.IO;
 
 namespace dnlib.DotNet.Pdb.Portable {
 	// https://github.com/dotnet/corefx/blob/master/src/System.Reflection.Metadata/specs/PortablePdb-Metadata.md#imports-blob
-	readonly struct ImportScopeBlobReader {
+	struct ImportScopeBlobReader {
 		readonly ModuleDef module;
 		readonly BlobStream blobStream;
 
@@ -23,7 +24,8 @@ namespace dnlib.DotNet.Pdb.Portable {
 		public void Read(uint imports, IList<PdbImport> result) {
 			if (imports == 0)
 				return;
-			if (!blobStream.TryCreateReader(imports, out var reader))
+            DataReader reader;
+			if (!blobStream.TryCreateReader(imports, out reader))
 				return;
 			while (reader.Position < reader.Length) {
 				var kind = ImportDefinitionKindUtils.ToPdbImportDefinitionKind(reader.ReadCompressedUInt32());
@@ -109,7 +111,8 @@ namespace dnlib.DotNet.Pdb.Portable {
 		}
 
 		ITypeDefOrRef TryReadType(uint codedToken) {
-			bool b = CodedToken.TypeDefOrRef.Decode(codedToken, out uint token);
+            uint token;
+			bool b = CodedToken.TypeDefOrRef.Decode(codedToken, out token);
 			Debug.Assert(b);
 			if (!b)
 				return null;
@@ -125,7 +128,8 @@ namespace dnlib.DotNet.Pdb.Portable {
 		}
 
 		string ReadUTF8(uint offset) {
-			if (!blobStream.TryCreateReader(offset, out var reader))
+            DataReader reader;
+			if (!blobStream.TryCreateReader(offset, out reader))
 				return string.Empty;
 			return reader.ReadUtf8String((int)reader.BytesLeft);
 		}

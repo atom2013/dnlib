@@ -54,7 +54,7 @@ namespace dnlib.DotNet.Emit {
 			readonly string fieldName1;
 			readonly string fieldName2;
 
-			public ReflectionFieldInfo(string fieldName) => fieldName1 = fieldName;
+			public ReflectionFieldInfo(string fieldName) { fieldName1 = fieldName; }
 
 			public ReflectionFieldInfo(string fieldName1, string fieldName2) {
 				this.fieldName1 = fieldName1;
@@ -65,7 +65,7 @@ namespace dnlib.DotNet.Emit {
 				if (fieldInfo == null)
 					InitializeField(instance.GetType());
 				if (fieldInfo == null)
-					throw new Exception($"Couldn't find field '{fieldName1}' or '{fieldName2}'");
+					throw new Exception( string.Format( "Couldn't find field '{0}' or '{1}'", fieldName1, fieldName2 ) );
 
 				return fieldInfo.GetValue(instance);
 			}
@@ -112,9 +112,10 @@ namespace dnlib.DotNet.Emit {
 			methodName = null;
 
 			if (obj == null)
-				throw new ArgumentNullException(nameof(obj));
+				throw new ArgumentNullException("obj");
 
-			if (obj is Delegate del) {
+            Delegate del;
+            if ((del = obj as Delegate) != null) {
 				obj = del.Method;
 				if (obj == null)
 					throw new Exception("Delegate.Method == null");
@@ -235,7 +236,8 @@ namespace dnlib.DotNet.Emit {
 		}
 
 		TypeSig GetReturnType(SR.MethodBase mb) {
-			if (mb is SR.MethodInfo mi)
+            SR.MethodInfo mi;
+            if ((mi = mb as SR.MethodInfo) != null)
 				return importer.ImportAsTypeSig(mi.ReturnType);
 			return module.CorLibTypes.Void;
 		}
@@ -353,22 +355,22 @@ namespace dnlib.DotNet.Emit {
 		}
 
 		/// <inheritdoc/>
-		protected override IField ReadInlineField(Instruction instr) => ReadToken(reader.ReadUInt32()) as IField;
+		protected override IField ReadInlineField(Instruction instr) { return ReadToken(reader.ReadUInt32()) as IField; }
 
 		/// <inheritdoc/>
-		protected override IMethod ReadInlineMethod(Instruction instr) => ReadToken(reader.ReadUInt32()) as IMethod;
+		protected override IMethod ReadInlineMethod(Instruction instr) { return ReadToken(reader.ReadUInt32()) as IMethod; }
 
 		/// <inheritdoc/>
-		protected override MethodSig ReadInlineSig(Instruction instr) => ReadToken(reader.ReadUInt32()) as MethodSig;
+		protected override MethodSig ReadInlineSig(Instruction instr) { return ReadToken(reader.ReadUInt32()) as MethodSig; }
 
 		/// <inheritdoc/>
-		protected override string ReadInlineString(Instruction instr) => ReadToken(reader.ReadUInt32()) as string ?? string.Empty;
+		protected override string ReadInlineString(Instruction instr) { return ReadToken(reader.ReadUInt32()) as string ?? string.Empty; }
 
 		/// <inheritdoc/>
-		protected override ITokenOperand ReadInlineTok(Instruction instr) => ReadToken(reader.ReadUInt32()) as ITokenOperand;
+		protected override ITokenOperand ReadInlineTok(Instruction instr) { return ReadToken(reader.ReadUInt32()) as ITokenOperand; }
 
 		/// <inheritdoc/>
-		protected override ITypeDefOrRef ReadInlineType(Instruction instr) => ReadToken(reader.ReadUInt32()) as ITypeDefOrRef;
+		protected override ITypeDefOrRef ReadInlineType(Instruction instr) { return ReadToken(reader.ReadUInt32()) as ITypeDefOrRef; }
 
 		object ReadToken(uint token) {
 			uint rid = token & 0x00FFFFFF;
@@ -415,7 +417,8 @@ namespace dnlib.DotNet.Emit {
 				obj = method;
 			}
 
-			if (obj is DynamicMethod dm)
+            DynamicMethod dm;
+            if ((dm = obj as DynamicMethod) != null)
 				throw new Exception("DynamicMethod calls another DynamicMethod");
 
 			return null;
@@ -475,7 +478,8 @@ namespace dnlib.DotNet.Emit {
 		}
 
 		ITypeDefOrRef ISignatureReaderHelper.ResolveTypeDefOrRef(uint codedToken, GenericParamContext gpContext) {
-			if (!CodedToken.TypeDefOrRef.Decode(codedToken, out uint token))
+            uint token;
+            if (!CodedToken.TypeDefOrRef.Decode(codedToken, out token))
 				return null;
 			uint rid = MDToken.ToRID(token);
 			switch (MDToken.ToTable(token)) {
@@ -487,6 +491,6 @@ namespace dnlib.DotNet.Emit {
 			return null;
 		}
 
-		TypeSig ISignatureReaderHelper.ConvertRTInternalAddress(IntPtr address) => importer.ImportAsTypeSig(MethodTableToTypeConverter.Convert(address));
+        TypeSig ISignatureReaderHelper.ConvertRTInternalAddress(IntPtr address) { return importer.ImportAsTypeSig(MethodTableToTypeConverter.Convert(address)); }
 	}
 }

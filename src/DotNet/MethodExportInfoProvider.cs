@@ -31,9 +31,9 @@ namespace dnlib.DotNet {
 			var exportHdr = peImage.ImageNTHeaders.OptionalHeader.DataDirectories[0];
 			if (exportHdr.VirtualAddress == 0 || exportHdr.Size < 0x28)
 				return;
-
-			if (!CpuArch.TryGetCpuArch(peImage.ImageNTHeaders.FileHeader.Machine, out var cpuArch)) {
-				Debug.Fail($"Exported methods: Unsupported machine: {peImage.ImageNTHeaders.FileHeader.Machine}");
+            CpuArch cpuArch;
+			if (!CpuArch.TryGetCpuArch(peImage.ImageNTHeaders.FileHeader.Machine, out cpuArch)) {
+				Debug.Fail( string.Format( "Exported methods: Unsupported machine: {0}", peImage.ImageNTHeaders.FileHeader.Machine ));
 				return;
 			}
 
@@ -54,7 +54,8 @@ namespace dnlib.DotNet {
 				while (numSlots-- > 0 && reader.CanRead(slotSize)) {
 					var tokenPos = reader.Position;
 					uint token = reader.ReadUInt32();
-					bool b = offsetToInfo.TryGetValue(tokenPos, out var exportInfo);
+                    MethodExportInfo exportInfo;
+					bool b = offsetToInfo.TryGetValue(tokenPos, out exportInfo);
 					Debug.Assert(token == 0 || b);
 					if (b) {
 						exportInfo = new MethodExportInfo(exportInfo.Name, exportInfo.Ordinal, exportOptions);
@@ -149,7 +150,8 @@ namespace dnlib.DotNet {
 		public MethodExportInfo GetMethodExportInfo(uint token) {
 			if (toInfo.Count == 0)
 				return null;
-			if (toInfo.TryGetValue(token, out var info))
+            MethodExportInfo info;
+			if (toInfo.TryGetValue(token, out info))
 				return new MethodExportInfo(info.Name, info.Ordinal, info.Options);
 			return null;
 		}

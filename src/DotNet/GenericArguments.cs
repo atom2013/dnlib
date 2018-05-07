@@ -3,7 +3,7 @@
 ﻿using System.Collections.Generic;
 
 namespace dnlib.DotNet {
-	readonly struct GenericArgumentsStack {
+	struct GenericArgumentsStack {
 		readonly List<IList<TypeSig>> argsStack;
 		readonly bool isTypeVar;
 
@@ -20,7 +20,7 @@ namespace dnlib.DotNet {
 		/// Pushes generic arguments
 		/// </summary>
 		/// <param name="args">The generic arguments</param>
-		public void Push(IList<TypeSig> args) => argsStack.Add(args);
+		public void Push(IList<TypeSig> args) { argsStack.Add(args); }
 
 		/// <summary>
 		/// Pops generic arguments
@@ -66,25 +66,25 @@ namespace dnlib.DotNet {
 		/// Pushes generic arguments
 		/// </summary>
 		/// <param name="typeArgs">The generic arguments</param>
-		public void PushTypeArgs(IList<TypeSig> typeArgs) => typeArgsStack.Push(typeArgs);
+        public void PushTypeArgs(IList<TypeSig> typeArgs) { typeArgsStack.Push(typeArgs); }
 
 		/// <summary>
 		/// Pops generic arguments
 		/// </summary>
 		/// <returns>The popped generic arguments</returns>
-		public IList<TypeSig> PopTypeArgs() => typeArgsStack.Pop();
+		public IList<TypeSig> PopTypeArgs() { return typeArgsStack.Pop(); }
 
 		/// <summary>
 		/// Pushes generic arguments
 		/// </summary>
 		/// <param name="methodArgs">The generic arguments</param>
-		public void PushMethodArgs(IList<TypeSig> methodArgs) => methodArgsStack.Push(methodArgs);
+		public void PushMethodArgs(IList<TypeSig> methodArgs) { methodArgsStack.Push(methodArgs); }
 
 		/// <summary>
 		/// Pops generic arguments
 		/// </summary>
 		/// <returns>The popped generic arguments</returns>
-		public IList<TypeSig> PopMethodArgs() => methodArgsStack.Pop();
+		public IList<TypeSig> PopMethodArgs() { return methodArgsStack.Pop(); }
 
 		/// <summary>
 		/// Replaces a generic type/method var with its generic argument (if any). If
@@ -100,14 +100,16 @@ namespace dnlib.DotNet {
 
 			var sig = typeSig;
 
-			if (sig is GenericMVar genericMVar) {
+            GenericMVar genericMVar;
+            if ((genericMVar = sig as GenericMVar) != null) {
 				var newSig = methodArgsStack.Resolve(genericMVar.Number);
 				if (newSig == null || newSig == sig)
 					return sig;
 				return newSig;
 			}
 
-			if (sig is GenericVar genericVar) {
+            GenericVar genericVar;
+            if ((genericVar = sig as GenericVar) != null) {
 				var newSig = typeArgsStack.Resolve(genericVar.Number);
 				if (newSig == null || newSig == sig)
 					return sig;

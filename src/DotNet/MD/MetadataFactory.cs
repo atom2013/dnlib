@@ -101,14 +101,14 @@ namespace dnlib.DotNet.MD {
 		/// </summary>
 		/// <param name="peImage">The PE image</param>
 		/// <returns>A new <see cref="MetadataBase"/> instance</returns>
-		internal static MetadataBase Load(IPEImage peImage) => Create(peImage, true);
+		internal static MetadataBase Load(IPEImage peImage) { return Create(peImage, true); }
 
 		/// <summary>
 		/// Create a <see cref="Metadata"/> instance
 		/// </summary>
 		/// <param name="peImage">The PE image</param>
 		/// <returns>A new <see cref="Metadata"/> instance</returns>
-		public static Metadata CreateMetadata(IPEImage peImage) => Create(peImage, true);
+		public static Metadata CreateMetadata(IPEImage peImage) { return Create(peImage, true); }
 
 		/// <summary>
 		/// Create a <see cref="Metadata"/> instance
@@ -116,7 +116,7 @@ namespace dnlib.DotNet.MD {
 		/// <param name="peImage">The PE image</param>
 		/// <param name="verify"><c>true</c> if we should verify that it's a .NET PE file</param>
 		/// <returns>A new <see cref="Metadata"/> instance</returns>
-		public static Metadata CreateMetadata(IPEImage peImage, bool verify) => Create(peImage, verify);
+        public static Metadata CreateMetadata(IPEImage peImage, bool verify) { return Create(peImage, verify); }
 
 		/// <summary>
 		/// Create a <see cref="MetadataBase"/> instance
@@ -204,7 +204,7 @@ namespace dnlib.DotNet.MD {
 				return md;
 			}
 			catch {
-				md?.Dispose();
+                if (md != null) md.Dispose();
 				throw;
 			}
 		}

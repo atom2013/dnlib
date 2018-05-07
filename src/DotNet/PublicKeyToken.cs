@@ -8,7 +8,7 @@
 		/// <summary>
 		/// Gets the <see cref="PublicKeyToken"/>
 		/// </summary>
-		public override PublicKeyToken Token => this;
+		public override PublicKeyToken Token { get { return this; } }
 
 		/// <summary>
 		/// Constructor
@@ -36,6 +36,6 @@
 		}
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => Utils.GetHashCode(Data);
+        public override int GetHashCode() { return Utils.GetHashCode(Data); }
 	}
 }

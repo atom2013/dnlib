@@ -49,7 +49,7 @@ namespace dnlib.DotNet.Writer {
 		/// Constructor
 		/// </summary>
 		/// <param name="flags">Flags</param>
-		public Cor20HeaderOptions(ComImageFlags flags) => Flags = flags;
+		public Cor20HeaderOptions(ComImageFlags flags) { Flags = flags; }
 
 		/// <summary>
 		/// Constructor
@@ -90,16 +90,16 @@ namespace dnlib.DotNet.Writer {
 		internal IChunk VtableFixups { get; set; }
 
 		/// <inheritdoc/>
-		public FileOffset FileOffset => offset;
+		public FileOffset FileOffset { get { return offset; } }
 
 		/// <inheritdoc/>
-		public RVA RVA => rva;
+		public RVA RVA { get { return rva; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="options">Options</param>
-		public ImageCor20Header(Cor20HeaderOptions options) => this.options = options;
+		public ImageCor20Header(Cor20HeaderOptions options) { this.options = options; }
 
 		/// <inheritdoc/>
 		public void SetOffset(FileOffset offset, RVA rva) {
@@ -108,10 +108,10 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public uint GetFileLength() => 0x48;
+		public uint GetFileLength() { return 0x48; }
 
 		/// <inheritdoc/>
-		public uint GetVirtualSize() => GetFileLength();
+        public uint GetVirtualSize() { return GetFileLength(); }
 
 		/// <inheritdoc/>
 		public void WriteTo(DataWriter writer) {

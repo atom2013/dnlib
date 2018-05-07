@@ -27,57 +27,57 @@ namespace dnlib.PE {
 		/// Returns the human readable section name, ignoring everything after
 		/// the first nul byte
 		/// </summary>
-		public string DisplayName => displayName;
+		public string DisplayName { get { return displayName; } }
 
 		/// <summary>
 		/// Returns the IMAGE_SECTION_HEADER.Name field
 		/// </summary>
-		public byte[] Name => name;
+		public byte[] Name { get { return name; } }
 
 		/// <summary>
 		/// Returns the IMAGE_SECTION_HEADER.VirtualSize field
 		/// </summary>
-		public uint VirtualSize => virtualSize;
+		public uint VirtualSize { get { return virtualSize; } }
 
 		/// <summary>
 		/// Returns the IMAGE_SECTION_HEADER.VirtualAddress field
 		/// </summary>
-		public RVA VirtualAddress => virtualAddress;
+		public RVA VirtualAddress { get { return virtualAddress; } }
 
 		/// <summary>
 		/// Returns the IMAGE_SECTION_HEADER.SizeOfRawData field
 		/// </summary>
-		public uint SizeOfRawData => sizeOfRawData;
+		public uint SizeOfRawData { get { return sizeOfRawData; } }
 
 		/// <summary>
 		/// Returns the IMAGE_SECTION_HEADER.PointerToRawData field
 		/// </summary>
-		public uint PointerToRawData => pointerToRawData;
+		public uint PointerToRawData { get { return pointerToRawData; } }
 
 		/// <summary>
 		/// Returns the IMAGE_SECTION_HEADER.PointerToRelocations field
 		/// </summary>
-		public uint PointerToRelocations => pointerToRelocations;
+		public uint PointerToRelocations { get { return pointerToRelocations; } }
 
 		/// <summary>
 		/// Returns the IMAGE_SECTION_HEADER.PointerToLinenumbers field
 		/// </summary>
-		public uint PointerToLinenumbers => pointerToLinenumbers;
+		public uint PointerToLinenumbers { get { return pointerToLinenumbers; } }
 
 		/// <summary>
 		/// Returns the IMAGE_SECTION_HEADER.NumberOfRelocations field
 		/// </summary>
-		public ushort NumberOfRelocations => numberOfRelocations;
+		public ushort NumberOfRelocations { get { return numberOfRelocations; } }
 
 		/// <summary>
 		/// Returns the IMAGE_SECTION_HEADER.NumberOfLinenumbers field
 		/// </summary>
-		public ushort NumberOfLinenumbers => numberOfLinenumbers;
+		public ushort NumberOfLinenumbers { get { return numberOfLinenumbers; } }
 
 		/// <summary>
 		/// Returns the IMAGE_SECTION_HEADER.Characteristics field
 		/// </summary>
-		public uint Characteristics => characteristics;
+        public uint Characteristics { get { return characteristics; } }
 
 		/// <summary>
 		/// Constructor

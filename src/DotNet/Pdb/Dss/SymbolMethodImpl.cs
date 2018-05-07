@@ -20,7 +20,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 
 		public override int Token {
 			get {
-				method.GetToken(out uint result);
+                uint result;
+				method.GetToken(out result);
 				return (int)result;
 			}
 		}
@@ -28,7 +29,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 		public override SymbolScope RootScope {
 			get {
 				if (rootScope == null) {
-					method.GetRootScope(out var scope);
+                    ISymUnmanagedScope scope;
+                    method.GetRootScope(out scope);
 					Interlocked.CompareExchange(ref rootScope, scope == null ? null : new SymbolScopeImpl(scope, this, null), null);
 				}
 				return rootScope;
@@ -39,7 +41,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 		public override IList<SymbolSequencePoint> SequencePoints {
 			get {
 				if (sequencePoints == null) {
-					method.GetSequencePointCount(out uint seqPointCount);
+                    uint seqPointCount;
+					method.GetSequencePointCount(out seqPointCount);
 					var seqPoints = new SymbolSequencePoint[seqPointCount];
 
 					var offsets = new int[seqPoints.Length];
@@ -49,8 +52,11 @@ namespace dnlib.DotNet.Pdb.Dss {
 					var endLines = new int[seqPoints.Length];
 					var endColumns = new int[seqPoints.Length];
 					var unDocs = new ISymUnmanagedDocument[seqPoints.Length];
-					if (seqPoints.Length != 0)
-						method.GetSequencePoints((uint)seqPoints.Length, out uint size, offsets, unDocs, lines, columns, endLines, endColumns);
+                    if (seqPoints.Length != 0)
+                    {
+                        uint size;
+                        method.GetSequencePoints((uint)seqPoints.Length, out size, offsets, unDocs, lines, columns, endLines, endColumns);
+                    }
 					for (int i = 0; i < seqPoints.Length; i++) {
 						seqPoints[i] = new SymbolSequencePoint {
 							Offset = offsets[i],
@@ -106,7 +112,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 		}
 		volatile SymbolAsyncStepInfo[] asyncStepInfos;
 
-		public override void GetCustomDebugInfos(MethodDef method, CilBody body, IList<PdbCustomDebugInfo> result) =>
-			reader.GetCustomDebugInfos(this, method, body, result);
+        public override void GetCustomDebugInfos(MethodDef method, CilBody body, IList<PdbCustomDebugInfo> result) {
+            reader.GetCustomDebugInfos(this, method, body, result);
+        }
 	}
 }

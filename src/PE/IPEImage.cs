@@ -139,7 +139,8 @@ namespace dnlib.PE {
 		/// <param name="name">Name</param>
 		/// <param name="langId">Language ID</param>
 		/// <returns>The <see cref="ResourceData"/> or <c>null</c> if none found</returns>
-		public static ResourceData FindWin32ResourceData(this IPEImage self, ResourceName type, ResourceName name, ResourceName langId) =>
-			self.Win32Resources?.Find(type, name, langId);
+		public static ResourceData FindWin32ResourceData(this IPEImage self, ResourceName type, ResourceName name, ResourceName langId) {
+			return self.Win32Resources != null?self.Win32Resources.Find(type, name, langId):null;
+        }
 	}
 }

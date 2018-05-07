@@ -6,11 +6,12 @@ namespace dnlib.DotNet.Pdb.Dss {
 	sealed class SymbolNamespaceImpl : SymbolNamespace {
 		readonly ISymUnmanagedNamespace ns;
 
-		public SymbolNamespaceImpl(ISymUnmanagedNamespace @namespace) => ns = @namespace;
+        public SymbolNamespaceImpl(ISymUnmanagedNamespace @namespace) { ns = @namespace; }
 
 		public override string Name {
 			get {
-				ns.GetName(0, out uint count, null);
+                uint count;
+				ns.GetName(0, out count, null);
 				var chars = new char[count];
 				ns.GetName((uint)chars.Length, out count, chars);
 				if (chars.Length == 0)

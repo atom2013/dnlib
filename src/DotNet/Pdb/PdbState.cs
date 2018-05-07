@@ -33,8 +33,8 @@ namespace dnlib.DotNet.Pdb {
 		/// Gets/sets the user entry point method.
 		/// </summary>
 		public MethodDef UserEntryPoint {
-			get => userEntryPoint;
-			set => userEntryPoint = value;
+			get { return userEntryPoint; }
+			set { userEntryPoint = value; }
 		}
 
 		/// <summary>
@@ -75,7 +75,7 @@ namespace dnlib.DotNet.Pdb {
 		/// <param name="pdbFileKind">PDB file kind</param>
 		public PdbState(ModuleDef module, PdbFileKind pdbFileKind) {
 			if (module == null)
-				throw new ArgumentNullException(nameof(module));
+				throw new ArgumentNullException("module");
 			compiler = CalculateCompiler(module);
 			PdbFileKind = pdbFileKind;
 			originalPdbFileKind = pdbFileKind;
@@ -88,8 +88,8 @@ namespace dnlib.DotNet.Pdb {
 		/// <param name="module">Owner module</param>
 		public PdbState(SymbolReader reader, ModuleDefMD module) {
 			if (module == null)
-				throw new ArgumentNullException(nameof(module));
-			this.reader = reader ?? throw new ArgumentNullException(nameof(reader));
+				throw new ArgumentNullException("module");
+            if (reader != null) this.reader = reader; else throw new ArgumentNullException("reader");
 			reader.Initialize(module);
 			PdbFileKind = reader.PdbFileKind;
 			originalPdbFileKind = reader.PdbFileKind;
@@ -120,7 +120,8 @@ namespace dnlib.DotNet.Pdb {
 		}
 
 		PdbDocument Add_NoLock(PdbDocument doc) {
-			if (docDict.TryGetValue(doc, out var orig))
+            PdbDocument orig;
+            if (docDict.TryGetValue(doc, out orig))
 				return orig;
 			docDict.Add(doc, doc);
 			return doc;
@@ -128,7 +129,8 @@ namespace dnlib.DotNet.Pdb {
 
 		PdbDocument Add_NoLock(SymbolDocument symDoc) {
 			var doc = PdbDocument.CreatePartialForCompare(symDoc);
-			if (docDict.TryGetValue(doc, out var orig))
+            PdbDocument orig;
+            if (docDict.TryGetValue(doc, out orig))
 				return orig;
 			// Expensive part, can read source code etc
 			doc.Initialize(symDoc);
@@ -161,7 +163,8 @@ namespace dnlib.DotNet.Pdb {
 #if THREAD_SAFE
 			theLock.EnterWriteLock(); try {
 #endif
-			docDict.TryGetValue(doc, out var orig);
+            PdbDocument orig;
+            docDict.TryGetValue(doc, out orig);
 			return orig;
 #if THREAD_SAFE
 			} finally { theLock.ExitWriteLock(); }
@@ -172,7 +175,7 @@ namespace dnlib.DotNet.Pdb {
 		/// Removes all documents
 		/// </summary>
 		/// <returns></returns>
-		public void RemoveAllDocuments() => RemoveAllDocuments(false);
+		public void RemoveAllDocuments() { RemoveAllDocuments(false); }
 
 		/// <summary>
 		/// Removes all documents and optionally returns them
@@ -193,7 +196,7 @@ namespace dnlib.DotNet.Pdb {
 #endif
 		}
 
-		internal Compiler Compiler => compiler;
+		internal Compiler Compiler { get { return compiler; } }
 
 		internal void InitializeMethodBody(ModuleDefMD module, MethodDef ownerMethod, CilBody body) {
 			if (reader == null)
@@ -439,10 +442,10 @@ do_return:
 
 		internal void InitializeCustomDebugInfos(MDToken token, GenericParamContext gpContext, IList<PdbCustomDebugInfo> result) {
 			Debug.Assert(token.Table != Table.Method, "Methods get initialized when reading the method bodies");
-			reader?.GetCustomDebugInfos(token.ToInt32(), gpContext, result);
+			if (reader != null) reader.GetCustomDebugInfos(token.ToInt32(), gpContext, result);
 		}
 
-		internal void Dispose() => reader?.Dispose();
+		internal void Dispose() { if (reader != null) reader.Dispose(); }
 	}
 
 	enum Compiler {

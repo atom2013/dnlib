@@ -19,23 +19,23 @@ namespace dnlib.DotNet {
 		protected uint rid;
 
 		/// <inheritdoc/>
-		public MDToken MDToken => new MDToken(Table.DeclSecurity, rid);
+		public MDToken MDToken { get { return new MDToken(Table.DeclSecurity, rid); } }
 
 		/// <inheritdoc/>
 		public uint Rid {
-			get => rid;
-			set => rid = value;
+			get { return rid; }
+			set { rid = value; }
 		}
 
 		/// <inheritdoc/>
-		public int HasCustomAttributeTag => 8;
+		public int HasCustomAttributeTag { get { return 8; } }
 
 		/// <summary>
 		/// From column DeclSecurity.Action
 		/// </summary>
 		public SecurityAction Action {
-			get => action;
-			set => action = value;
+			get { return action; }
+			set { action = value; }
 		}
 		/// <summary/>
 		protected SecurityAction action;
@@ -53,8 +53,9 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected IList<SecurityAttribute> securityAttributes;
 		/// <summary>Initializes <see cref="securityAttributes"/></summary>
-		protected virtual void InitializeSecurityAttributes() =>
+		protected virtual void InitializeSecurityAttributes() {
 			Interlocked.CompareExchange(ref securityAttributes, new List<SecurityAttribute>(), null);
+        }
 
 		/// <summary>
 		/// Gets all custom attributes
@@ -69,17 +70,18 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected CustomAttributeCollection customAttributes;
 		/// <summary>Initializes <see cref="customAttributes"/></summary>
-		protected virtual void InitializeCustomAttributes() =>
+		protected virtual void InitializeCustomAttributes() {
 			Interlocked.CompareExchange(ref customAttributes, new CustomAttributeCollection(), null);
+        }
 
 		/// <inheritdoc/>
-		public bool HasCustomAttributes => CustomAttributes.Count > 0;
+		public bool HasCustomAttributes { get { return CustomAttributes.Count > 0; } }
 
 		/// <inheritdoc/>
-		public int HasCustomDebugInformationTag => 8;
+		public int HasCustomDebugInformationTag { get { return 8; } }
 
 		/// <inheritdoc/>
-		public bool HasCustomDebugInfos => CustomDebugInfos.Count > 0;
+		public bool HasCustomDebugInfos { get { return CustomDebugInfos.Count > 0; } }
 
 		/// <summary>
 		/// Gets all custom debug infos
@@ -94,13 +96,14 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected IList<PdbCustomDebugInfo> customDebugInfos;
 		/// <summary>Initializes <see cref="customDebugInfos"/></summary>
-		protected virtual void InitializeCustomDebugInfos() =>
+		protected virtual void InitializeCustomDebugInfos() {
 			Interlocked.CompareExchange(ref customDebugInfos, new List<PdbCustomDebugInfo>(), null);
+        }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="SecurityAttributes"/> is not empty
 		/// </summary>
-		public bool HasSecurityAttributes => SecurityAttributes.Count > 0;
+		public bool HasSecurityAttributes { get { return SecurityAttributes.Count > 0; } }
 
 		/// <summary>
 		/// Gets the blob data or <c>null</c> if there's none
@@ -112,7 +115,7 @@ namespace dnlib.DotNet {
 		/// Returns the .NET 1.x XML string or null if it's not a .NET 1.x format
 		/// </summary>
 		/// <returns></returns>
-		public string GetNet1xXmlString() => GetNet1xXmlStringInternal(SecurityAttributes);
+		public string GetNet1xXmlString() { return GetNet1xXmlStringInternal(SecurityAttributes); }
 
 		internal static string GetNet1xXmlStringInternal(IList<SecurityAttribute> secAttrs) {
 			if (secAttrs == null || secAttrs.Count != 1)
@@ -133,7 +136,8 @@ namespace dnlib.DotNet {
 			var utf8 = arg.Value as UTF8String;
 			if ((object)utf8 != null)
 				return utf8;
-			if (arg.Value is string s)
+            string s;
+            if ((s = arg.Value as string) != null)
 				return s;
 			return null;
 		}
@@ -160,7 +164,7 @@ namespace dnlib.DotNet {
 		}
 
 		/// <inheritdoc/>
-		public override byte[] GetBlob() => null;
+		public override byte[] GetBlob() { return null; }
 	}
 
 	/// <summary>
@@ -174,7 +178,7 @@ namespace dnlib.DotNet {
 		readonly uint permissionSet;
 
 		/// <inheritdoc/>
-		public uint OrigRid => origRid;
+		public uint OrigRid { get { return origRid; } }
 
 		/// <inheritdoc/>
 		protected override void InitializeSecurityAttributes() {
@@ -210,18 +214,19 @@ namespace dnlib.DotNet {
 			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.DeclSecurityTable.IsInvalidRID(rid))
-				throw new BadImageFormatException($"DeclSecurity rid {rid} does not exist");
+				throw new BadImageFormatException( string.Format( "DeclSecurity rid {0} does not exist", rid ) );
 #endif
 			origRid = rid;
 			this.rid = rid;
 			this.readerModule = readerModule;
-			bool b = readerModule.TablesStream.TryReadDeclSecurityRow(origRid, out var row);
+            RawDeclSecurityRow row;
+            bool b = readerModule.TablesStream.TryReadDeclSecurityRow(origRid, out row);
 			Debug.Assert(b);
 			permissionSet = row.PermissionSet;
 			action = (SecurityAction)row.Action;
 		}
 
 		/// <inheritdoc/>
-		public override byte[] GetBlob() => readerModule.BlobStream.Read(permissionSet);
+        public override byte[] GetBlob() { return readerModule.BlobStream.Read(permissionSet); }
 	}
 }

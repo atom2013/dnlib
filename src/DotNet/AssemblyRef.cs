@@ -26,28 +26,28 @@ namespace dnlib.DotNet {
 		protected uint rid;
 
 		/// <inheritdoc/>
-		public MDToken MDToken => new MDToken(Table.AssemblyRef, rid);
+		public MDToken MDToken { get { return new MDToken(Table.AssemblyRef, rid); } }
 
 		/// <inheritdoc/>
 		public uint Rid {
-			get => rid;
-			set => rid = value;
+			get { return rid; }
+			set { rid = value; }
 		}
 
 		/// <inheritdoc/>
-		public int HasCustomAttributeTag => 15;
+		public int HasCustomAttributeTag { get { return 15; } }
 
 		/// <inheritdoc/>
-		public int ImplementationTag => 1;
+		public int ImplementationTag { get { return 1; } }
 
 		/// <inheritdoc/>
-		public int ResolutionScopeTag => 2;
+		public int ResolutionScopeTag { get { return 2; } }
 
 		/// <inheritdoc/>
-		public ScopeType ScopeType => ScopeType.AssemblyRef;
+		public ScopeType ScopeType { get { return ScopeType.AssemblyRef; } }
 
 		/// <inheritdoc/>
-		public string ScopeName => FullName;
+		public string ScopeName { get { return FullName; } }
 
 		/// <summary>
 		/// From columns AssemblyRef.MajorVersion, AssemblyRef.MinorVersion,
@@ -55,8 +55,8 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <exception cref="ArgumentNullException">If <paramref name="value"/> is <c>null</c></exception>
 		public Version Version {
-			get => version;
-			set => version = value ?? throw new ArgumentNullException(nameof(value));
+			get { return version; }
+			set { if (value != null) version = value; else throw new ArgumentNullException("value"); }
 		}
 		/// <summary/>
 		protected Version version;
@@ -65,8 +65,8 @@ namespace dnlib.DotNet {
 		/// From column AssemblyRef.Flags
 		/// </summary>
 		public AssemblyAttributes Attributes {
-			get => (AssemblyAttributes)attributes;
-			set => attributes = (int)value;
+			get { return (AssemblyAttributes)attributes; }
+			set { attributes = (int)value; }
 		}
 		/// <summary>Attributes</summary>
 		protected int attributes;
@@ -76,8 +76,8 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <exception cref="ArgumentNullException">If <paramref name="value"/> is <c>null</c></exception>
 		public PublicKeyBase PublicKeyOrToken {
-			get => publicKeyOrToken;
-			set => publicKeyOrToken = value ?? throw new ArgumentNullException(nameof(value));
+			get { return publicKeyOrToken; }
+			set { if (value != null) publicKeyOrToken = value; else throw new ArgumentNullException("value"); }
 		}
 		/// <summary/>
 		protected PublicKeyBase publicKeyOrToken;
@@ -86,8 +86,8 @@ namespace dnlib.DotNet {
 		/// From column AssemblyRef.Name
 		/// </summary>
 		public UTF8String Name {
-			get => name;
-			set => name = value;
+			get { return name; }
+			set { name = value; }
 		}
 		/// <summary>Name</summary>
 		protected UTF8String name;
@@ -96,8 +96,8 @@ namespace dnlib.DotNet {
 		/// From column AssemblyRef.Locale
 		/// </summary>
 		public UTF8String Culture {
-			get => culture;
-			set => culture = value;
+			get { return culture; }
+			set { culture = value; }
 		}
 		/// <summary>Culture</summary>
 		protected UTF8String culture;
@@ -106,8 +106,8 @@ namespace dnlib.DotNet {
 		/// From column AssemblyRef.HashValue
 		/// </summary>
 		public byte[] Hash {
-			get => hashValue;
-			set => hashValue = value;
+			get { return hashValue; }
+			set { hashValue = value; }
 		}
 		/// <summary/>
 		protected byte[] hashValue;
@@ -125,17 +125,18 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected CustomAttributeCollection customAttributes;
 		/// <summary>Initializes <see cref="customAttributes"/></summary>
-		protected virtual void InitializeCustomAttributes() =>
+		protected virtual void InitializeCustomAttributes() {
 			Interlocked.CompareExchange(ref customAttributes, new CustomAttributeCollection(), null);
+        }
 
 		/// <inheritdoc/>
-		public bool HasCustomAttributes => CustomAttributes.Count > 0;
+		public bool HasCustomAttributes { get { return CustomAttributes.Count > 0; } }
 
 		/// <inheritdoc/>
-		public int HasCustomDebugInformationTag => 15;
+		public int HasCustomDebugInformationTag { get { return 15; } }
 
 		/// <inheritdoc/>
-		public bool HasCustomDebugInfos => CustomDebugInfos.Count > 0;
+		public bool HasCustomDebugInfos { get { return CustomDebugInfos.Count > 0; } }
 
 		/// <summary>
 		/// Gets all custom debug infos
@@ -150,21 +151,22 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected IList<PdbCustomDebugInfo> customDebugInfos;
 		/// <summary>Initializes <see cref="customDebugInfos"/></summary>
-		protected virtual void InitializeCustomDebugInfos() =>
+		protected virtual void InitializeCustomDebugInfos() {
 			Interlocked.CompareExchange(ref customDebugInfos, new List<PdbCustomDebugInfo>(), null);
+        }
 
 		/// <inheritdoc/>
-		public string FullName => FullNameToken;
+		public string FullName { get { return FullNameToken; } }
 
 		/// <summary>
 		/// Same as <see cref="FullName"/>, except that it uses the <c>PublicKey</c> if available.
 		/// </summary>
-		public string RealFullName => Utils.GetAssemblyNameString(name, version, culture, publicKeyOrToken, Attributes);
+		public string RealFullName { get { return Utils.GetAssemblyNameString(name, version, culture, publicKeyOrToken, Attributes); } }
 
 		/// <summary>
 		/// Gets the full name of the assembly but use a public key token
 		/// </summary>
-		public string FullNameToken => Utils.GetAssemblyNameString(name, version, culture, PublicKeyBase.ToPublicKeyToken(publicKeyOrToken), Attributes);
+		public string FullNameToken { get { return Utils.GetAssemblyNameString(name, version, culture, PublicKeyBase.ToPublicKeyToken(publicKeyOrToken), Attributes); } }
 
 		/// <summary>
 		/// Modify <see cref="attributes"/> property: <see cref="attributes"/> =
@@ -172,8 +174,9 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="andMask">Value to <c>AND</c></param>
 		/// <param name="orMask">Value to OR</param>
-		void ModifyAttributes(AssemblyAttributes andMask, AssemblyAttributes orMask) =>
+		void ModifyAttributes(AssemblyAttributes andMask, AssemblyAttributes orMask) {
 			attributes = (attributes & (int)andMask) | (int)orMask;
+        }
 
 		/// <summary>
 		/// Set or clear flags in <see cref="attributes"/>
@@ -192,113 +195,113 @@ namespace dnlib.DotNet {
 		/// Gets/sets the <see cref="AssemblyAttributes.PublicKey"/> bit
 		/// </summary>
 		public bool HasPublicKey {
-			get => ((AssemblyAttributes)attributes & AssemblyAttributes.PublicKey) != 0;
-			set => ModifyAttributes(value, AssemblyAttributes.PublicKey);
+			get { return ((AssemblyAttributes)attributes & AssemblyAttributes.PublicKey) != 0; }
+			set { ModifyAttributes(value, AssemblyAttributes.PublicKey); }
 		}
 
 		/// <summary>
 		/// Gets/sets the processor architecture
 		/// </summary>
 		public AssemblyAttributes ProcessorArchitecture {
-			get => (AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask;
-			set => ModifyAttributes(~AssemblyAttributes.PA_Mask, value & AssemblyAttributes.PA_Mask);
+			get { return (AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask; }
+			set { ModifyAttributes(~AssemblyAttributes.PA_Mask, value & AssemblyAttributes.PA_Mask); }
 		}
 
 		/// <summary>
 		/// Gets/sets the processor architecture
 		/// </summary>
 		public AssemblyAttributes ProcessorArchitectureFull {
-			get => (AssemblyAttributes)attributes & AssemblyAttributes.PA_FullMask;
-			set => ModifyAttributes(~AssemblyAttributes.PA_FullMask, value & AssemblyAttributes.PA_FullMask);
+			get { return (AssemblyAttributes)attributes & AssemblyAttributes.PA_FullMask; }
+			set { ModifyAttributes(~AssemblyAttributes.PA_FullMask, value & AssemblyAttributes.PA_FullMask); }
 		}
 
 		/// <summary>
 		/// <c>true</c> if unspecified processor architecture
 		/// </summary>
-		public bool IsProcessorArchitectureNone => ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_None;
+		public bool IsProcessorArchitectureNone { get { return ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_None; } }
 
 		/// <summary>
 		/// <c>true</c> if neutral (PE32) architecture
 		/// </summary>
-		public bool IsProcessorArchitectureMSIL => ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_MSIL;
+		public bool IsProcessorArchitectureMSIL { get { return ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_MSIL; } }
 
 		/// <summary>
 		/// <c>true</c> if x86 (PE32) architecture
 		/// </summary>
-		public bool IsProcessorArchitectureX86 => ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_x86;
+		public bool IsProcessorArchitectureX86 { get { return ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_x86; } }
 
 		/// <summary>
 		/// <c>true</c> if IA-64 (PE32+) architecture
 		/// </summary>
-		public bool IsProcessorArchitectureIA64 => ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_IA64;
+		public bool IsProcessorArchitectureIA64 { get { return ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_IA64; } }
 
 		/// <summary>
 		/// <c>true</c> if x64 (PE32+) architecture
 		/// </summary>
-		public bool IsProcessorArchitectureX64 => ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_AMD64;
+		public bool IsProcessorArchitectureX64 { get { return ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_AMD64; } }
 
 		/// <summary>
 		/// <c>true</c> if ARM (PE32) architecture
 		/// </summary>
-		public bool IsProcessorArchitectureARM => ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_ARM;
+		public bool IsProcessorArchitectureARM { get { return ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_ARM; } }
 
 		/// <summary>
 		/// <c>true</c> if eg. reference assembly (not runnable)
 		/// </summary>
-		public bool IsProcessorArchitectureNoPlatform => ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_NoPlatform;
+		public bool IsProcessorArchitectureNoPlatform { get { return ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Mask) == AssemblyAttributes.PA_NoPlatform; } }
 
 		/// <summary>
 		/// Gets/sets the <see cref="AssemblyAttributes.PA_Specified"/> bit
 		/// </summary>
 		public bool IsProcessorArchitectureSpecified {
-			get => ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Specified) != 0;
-			set => ModifyAttributes(value, AssemblyAttributes.PA_Specified);
+			get { return ((AssemblyAttributes)attributes & AssemblyAttributes.PA_Specified) != 0; }
+			set { ModifyAttributes(value, AssemblyAttributes.PA_Specified); }
 		}
 
 		/// <summary>
 		/// Gets/sets the <see cref="AssemblyAttributes.EnableJITcompileTracking"/> bit
 		/// </summary>
 		public bool EnableJITcompileTracking {
-			get => ((AssemblyAttributes)attributes & AssemblyAttributes.EnableJITcompileTracking) != 0;
-			set => ModifyAttributes(value, AssemblyAttributes.EnableJITcompileTracking);
+			get { return ((AssemblyAttributes)attributes & AssemblyAttributes.EnableJITcompileTracking) != 0; }
+			set { ModifyAttributes(value, AssemblyAttributes.EnableJITcompileTracking); }
 		}
 
 		/// <summary>
 		/// Gets/sets the <see cref="AssemblyAttributes.DisableJITcompileOptimizer"/> bit
 		/// </summary>
 		public bool DisableJITcompileOptimizer {
-			get => ((AssemblyAttributes)attributes & AssemblyAttributes.DisableJITcompileOptimizer) != 0;
-			set => ModifyAttributes(value, AssemblyAttributes.DisableJITcompileOptimizer);
+			get { return ((AssemblyAttributes)attributes & AssemblyAttributes.DisableJITcompileOptimizer) != 0; }
+			set { ModifyAttributes(value, AssemblyAttributes.DisableJITcompileOptimizer); }
 		}
 
 		/// <summary>
 		/// Gets/sets the <see cref="AssemblyAttributes.Retargetable"/> bit
 		/// </summary>
 		public bool IsRetargetable {
-			get => ((AssemblyAttributes)attributes & AssemblyAttributes.Retargetable) != 0;
-			set => ModifyAttributes(value, AssemblyAttributes.Retargetable);
+			get { return ((AssemblyAttributes)attributes & AssemblyAttributes.Retargetable) != 0; }
+			set { ModifyAttributes(value, AssemblyAttributes.Retargetable); }
 		}
 
 		/// <summary>
 		/// Gets/sets the content type
 		/// </summary>
 		public AssemblyAttributes ContentType {
-			get => (AssemblyAttributes)attributes & AssemblyAttributes.ContentType_Mask;
-			set => ModifyAttributes(~AssemblyAttributes.ContentType_Mask, value & AssemblyAttributes.ContentType_Mask);
+			get { return (AssemblyAttributes)attributes & AssemblyAttributes.ContentType_Mask; }
+			set { ModifyAttributes(~AssemblyAttributes.ContentType_Mask, value & AssemblyAttributes.ContentType_Mask); }
 		}
 
 		/// <summary>
 		/// <c>true</c> if content type is <c>Default</c>
 		/// </summary>
-		public bool IsContentTypeDefault => ((AssemblyAttributes)attributes & AssemblyAttributes.ContentType_Mask) == AssemblyAttributes.ContentType_Default;
+		public bool IsContentTypeDefault { get { return ((AssemblyAttributes)attributes & AssemblyAttributes.ContentType_Mask) == AssemblyAttributes.ContentType_Default; } }
 
 		/// <summary>
 		/// <c>true</c> if content type is <c>WindowsRuntime</c>
 		/// </summary>
-		public bool IsContentTypeWindowsRuntime => ((AssemblyAttributes)attributes & AssemblyAttributes.ContentType_Mask) == AssemblyAttributes.ContentType_WindowsRuntime;
+		public bool IsContentTypeWindowsRuntime { get { return ((AssemblyAttributes)attributes & AssemblyAttributes.ContentType_Mask) == AssemblyAttributes.ContentType_WindowsRuntime; } }
 
 		/// <inheritdoc/>
-		public override string ToString() => FullName;
+		public override string ToString() { return FullName; }
 	}
 
 	/// <summary>
@@ -308,22 +311,22 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// Creates a reference to CLR 1.0's mscorlib
 		/// </summary>
-		public static AssemblyRefUser CreateMscorlibReferenceCLR10() => new AssemblyRefUser("mscorlib", new Version(1, 0, 3300, 0), new PublicKeyToken("b77a5c561934e089"));
+		public static AssemblyRefUser CreateMscorlibReferenceCLR10() { return new AssemblyRefUser("mscorlib", new Version(1, 0, 3300, 0), new PublicKeyToken("b77a5c561934e089")); }
 
 		/// <summary>
 		/// Creates a reference to CLR 1.1's mscorlib
 		/// </summary>
-		public static AssemblyRefUser CreateMscorlibReferenceCLR11() => new AssemblyRefUser("mscorlib", new Version(1, 0, 5000, 0), new PublicKeyToken("b77a5c561934e089"));
+		public static AssemblyRefUser CreateMscorlibReferenceCLR11() { return new AssemblyRefUser("mscorlib", new Version(1, 0, 5000, 0), new PublicKeyToken("b77a5c561934e089")); }
 
 		/// <summary>
 		/// Creates a reference to CLR 2.0's mscorlib
 		/// </summary>
-		public static AssemblyRefUser CreateMscorlibReferenceCLR20() => new AssemblyRefUser("mscorlib", new Version(2, 0, 0, 0), new PublicKeyToken("b77a5c561934e089"));
+		public static AssemblyRefUser CreateMscorlibReferenceCLR20() { return new AssemblyRefUser("mscorlib", new Version(2, 0, 0, 0), new PublicKeyToken("b77a5c561934e089")); }
 
 		/// <summary>
 		/// Creates a reference to CLR 4.0's mscorlib
 		/// </summary>
-		public static AssemblyRefUser CreateMscorlibReferenceCLR40() => new AssemblyRefUser("mscorlib", new Version(4, 0, 0, 0), new PublicKeyToken("b77a5c561934e089"));
+		public static AssemblyRefUser CreateMscorlibReferenceCLR40() { return new AssemblyRefUser("mscorlib", new Version(4, 0, 0, 0), new PublicKeyToken("b77a5c561934e089")); }
 
 		/// <summary>
 		/// Default constructor
@@ -372,11 +375,11 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentNullException">If any of the args is invalid</exception>
 		public AssemblyRefUser(UTF8String name, Version version, PublicKeyBase publicKey, UTF8String locale) {
 			if ((object)name == null)
-				throw new ArgumentNullException(nameof(name));
+				throw new ArgumentNullException("name");
 			if ((object)locale == null)
-				throw new ArgumentNullException(nameof(locale));
+				throw new ArgumentNullException("locale");
 			this.name = name;
-			this.version = version ?? throw new ArgumentNullException(nameof(version));
+            if (version != null) this.version = version; else throw new ArgumentNullException("version");
 			publicKeyOrToken = publicKey;
 			culture = locale;
 			attributes = (int)(publicKey is PublicKey ? AssemblyAttributes.PublicKey : AssemblyAttributes.None);
@@ -388,7 +391,7 @@ namespace dnlib.DotNet {
 		/// <param name="asmName">Assembly name info</param>
 		/// <exception cref="ArgumentNullException">If <paramref name="asmName"/> is <c>null</c></exception>
 		public AssemblyRefUser(AssemblyName asmName)
-			: this(new AssemblyNameInfo(asmName)) => attributes = (int)asmName.Flags;
+			: this(new AssemblyNameInfo(asmName)) { attributes = (int)asmName.Flags; }
 
 		/// <summary>
 		/// Constructor
@@ -416,7 +419,7 @@ namespace dnlib.DotNet {
 		readonly uint origRid;
 
 		/// <inheritdoc/>
-		public uint OrigRid => origRid;
+        public uint OrigRid { get { return origRid; } }
 
 		/// <inheritdoc/>
 		protected override void InitializeCustomAttributes() {
@@ -444,12 +447,13 @@ namespace dnlib.DotNet {
 			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.AssemblyRefTable.IsInvalidRID(rid))
-				throw new BadImageFormatException($"AssemblyRef rid {rid} does not exist");
+				throw new BadImageFormatException( string.Format( "AssemblyRef rid {0} does not exist", rid ) );
 #endif
 			origRid = rid;
 			this.rid = rid;
 			this.readerModule = readerModule;
-			bool b = readerModule.TablesStream.TryReadAssemblyRefRow(origRid, out var row);
+            RawAssemblyRefRow row;
+            bool b = readerModule.TablesStream.TryReadAssemblyRefRow(origRid, out row);
 			Debug.Assert(b);
 			version = new Version(row.MajorVersion, row.MinorVersion, row.BuildNumber, row.RevisionNumber);
 			attributes = (int)row.Flags;

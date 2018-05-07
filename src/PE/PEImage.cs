@@ -45,32 +45,32 @@ namespace dnlib.PE {
 #endif
 
 		sealed class FilePEType : IPEType {
-			public RVA ToRVA(PEInfo peInfo, FileOffset offset) => peInfo.ToRVA(offset);
-			public FileOffset ToFileOffset(PEInfo peInfo, RVA rva) => peInfo.ToFileOffset(rva);
+			public RVA ToRVA(PEInfo peInfo, FileOffset offset) { return peInfo.ToRVA(offset); }
+			public FileOffset ToFileOffset(PEInfo peInfo, RVA rva) { return peInfo.ToFileOffset(rva); }
 		}
 
 		sealed class MemoryPEType : IPEType {
-			public RVA ToRVA(PEInfo peInfo, FileOffset offset) => (RVA)offset;
-			public FileOffset ToFileOffset(PEInfo peInfo, RVA rva) => (FileOffset)rva;
+			public RVA ToRVA(PEInfo peInfo, FileOffset offset) { return (RVA)offset; }
+			public FileOffset ToFileOffset(PEInfo peInfo, RVA rva) { return (FileOffset)rva; }
 		}
 
 		/// <inheritdoc/>
-		public bool IsFileImageLayout => peType is FilePEType;
+		public bool IsFileImageLayout { get { return peType is FilePEType; } }
 
 		/// <inheritdoc/>
-		public bool MayHaveInvalidAddresses => !IsFileImageLayout;
+		public bool MayHaveInvalidAddresses { get { return !IsFileImageLayout; } }
 
 		/// <inheritdoc/>
-		public string Filename => dataReaderFactory.Filename;
+		public string Filename { get { return dataReaderFactory.Filename; } }
 
 		/// <inheritdoc/>
-		public ImageDosHeader ImageDosHeader => peInfo.ImageDosHeader;
+		public ImageDosHeader ImageDosHeader { get { return peInfo.ImageDosHeader; } }
 
 		/// <inheritdoc/>
-		public ImageNTHeaders ImageNTHeaders => peInfo.ImageNTHeaders;
+		public ImageNTHeaders ImageNTHeaders { get { return peInfo.ImageNTHeaders; } }
 
 		/// <inheritdoc/>
-		public IList<ImageSectionHeader> ImageSectionHeaders => peInfo.ImageSectionHeaders;
+		public IList<ImageSectionHeader> ImageSectionHeaders { get { return peInfo.ImageSectionHeaders; } }
 
 		/// <inheritdoc/>
 		public IList<ImageDebugDirectory> ImageDebugDirectories {
@@ -83,11 +83,11 @@ namespace dnlib.PE {
 		ImageDebugDirectory[] imageDebugDirectories;
 
 		/// <inheritdoc/>
-		public DataReaderFactory DataReaderFactory => dataReaderFactory;
+		public DataReaderFactory DataReaderFactory { get { return dataReaderFactory; } }
 
 		/// <inheritdoc/>
 		public Win32Resources Win32Resources {
-			get => win32Resources.Value;
+			get { return win32Resources.Value; }
 			set {
 				IDisposable origValue = null;
 				if (win32Resources.IsValueInitialized) {
@@ -242,7 +242,7 @@ namespace dnlib.PE {
 		/// <param name="imageLayout">Image layout</param>
 		/// <param name="verify">Verify PE file data</param>
 		public unsafe PEImage(IntPtr baseAddr, uint length, ImageLayout imageLayout, bool verify)
-			: this(NativeMemoryDataReaderFactory.Create((byte*)baseAddr, length, filename: null), imageLayout, verify) {
+			: this(NativeMemoryDataReaderFactory.Create((byte*)baseAddr, length, /* filename: */ null), imageLayout, verify) {
 		}
 
 		/// <summary>
@@ -271,7 +271,7 @@ namespace dnlib.PE {
 		/// <param name="imageLayout">Image layout</param>
 		/// <param name="verify">Verify PE file data</param>
 		public unsafe PEImage(IntPtr baseAddr, ImageLayout imageLayout, bool verify)
-			: this(NativeMemoryDataReaderFactory.Create((byte*)baseAddr, 0x10000, filename: null), imageLayout, verify) {
+			: this(NativeMemoryDataReaderFactory.Create((byte*)baseAddr, 0x10000, /* filename: */ null), imageLayout, verify) {
 			try {
 				((NativeMemoryDataReaderFactory)dataReaderFactory).SetLength(peInfo.GetImageSize());
 			}
@@ -299,17 +299,17 @@ namespace dnlib.PE {
 		}
 
 		/// <inheritdoc/>
-		public RVA ToRVA(FileOffset offset) => peType.ToRVA(peInfo, offset);
+		public RVA ToRVA(FileOffset offset) { return peType.ToRVA(peInfo, offset); }
 
 		/// <inheritdoc/>
-		public FileOffset ToFileOffset(RVA rva) => peType.ToFileOffset(peInfo, rva);
+		public FileOffset ToFileOffset(RVA rva) { return peType.ToFileOffset(peInfo, rva); }
 
 		/// <inheritdoc/>
 		public void Dispose() {
 			IDisposable id;
 			if (win32Resources.IsValueInitialized && (id = win32Resources.Value) != null)
 				id.Dispose();
-			dataReaderFactory?.Dispose();
+			if (dataReaderFactory != null) dataReaderFactory.Dispose();
 			win32Resources.Value = null;
 			dataReaderFactory = null;
 			peType = null;
@@ -317,24 +317,27 @@ namespace dnlib.PE {
 		}
 
 		/// <inheritdoc/>
-		public DataReader CreateReader(FileOffset offset) =>
-			DataReaderFactory.CreateReader((uint)offset, DataReaderFactory.Length - (uint)offset);
+		public DataReader CreateReader(FileOffset offset) {
+			return DataReaderFactory.CreateReader((uint)offset, DataReaderFactory.Length - (uint)offset);
+        }
 
 		/// <inheritdoc/>
-		public DataReader CreateReader(FileOffset offset, uint length) =>
-			DataReaderFactory.CreateReader((uint)offset, length);
+		public DataReader CreateReader(FileOffset offset, uint length) {
+			return DataReaderFactory.CreateReader((uint)offset, length);
+        }
 
 		/// <inheritdoc/>
-		public DataReader CreateReader(RVA rva) => CreateReader(ToFileOffset(rva));
+		public DataReader CreateReader(RVA rva) { return CreateReader(ToFileOffset(rva)); }
 
 		/// <inheritdoc/>
-		public DataReader CreateReader(RVA rva, uint length) => CreateReader(ToFileOffset(rva), length);
+		public DataReader CreateReader(RVA rva, uint length) { return CreateReader(ToFileOffset(rva), length); }
 
 		/// <inheritdoc/>
-		public DataReader CreateReader() => DataReaderFactory.CreateReader();
+		public DataReader CreateReader() { return DataReaderFactory.CreateReader(); }
 
 		void IInternalPEImage.UnsafeDisableMemoryMappedIO() {
-			if (dataReaderFactory is MemoryMappedDataReaderFactory creator)
+            MemoryMappedDataReaderFactory creator;
+            if ((creator = dataReaderFactory as MemoryMappedDataReaderFactory) != null)
 				creator.UnsafeDisableMemoryMappedIO();
 		}
 

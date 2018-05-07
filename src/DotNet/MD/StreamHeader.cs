@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using dnlib.IO;
+using System.Runtime.InteropServices;
 
 namespace dnlib.DotNet.MD {
 	/// <summary>
@@ -18,26 +19,27 @@ namespace dnlib.DotNet.MD {
 		/// <summary>
 		/// The offset of the stream relative to the start of the metadata header
 		/// </summary>
-		public uint Offset => offset;
+		public uint Offset { get { return offset; } }
 
 		/// <summary>
 		/// The size of the stream
 		/// </summary>
-		public uint StreamSize => streamSize;
+		public uint StreamSize { get { return streamSize; } }
 
 		/// <summary>
 		/// The name of the stream
 		/// </summary>
-		public string Name => name;
+        public string Name { get { return name; } }
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="reader">PE file reader pointing to the start of this section</param>
-		/// <param name="verify">Verify section</param>
-		/// <exception cref="BadImageFormatException">Thrown if verification fails</exception>
-		public StreamHeader(ref DataReader reader, bool verify)
-			: this(ref reader, verify, verify, out _) {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="reader">PE file reader pointing to the start of this section</param>
+        /// <param name="verify">Verify section</param>
+        /// <param name="failedVerification">the status of Verification failed</param>
+        /// <exception cref="BadImageFormatException">Thrown if verification fails</exception>
+        public StreamHeader(ref DataReader reader, bool verify, [Optional] out bool failedVerification)
+			: this(ref reader, verify, verify, out failedVerification) {
 		}
 
 		internal StreamHeader(ref DataReader reader, bool throwOnError, bool verify, out bool failedVerification) {
@@ -56,7 +58,7 @@ namespace dnlib.DotNet.MD {
 		internal StreamHeader(uint offset, uint streamSize, string name) {
 			this.offset = offset;
 			this.streamSize = streamSize;
-			this.name = name ?? throw new ArgumentNullException(nameof(name));
+            if (name != null) this.name = name; else throw new ArgumentNullException("name");
 		}
 
 		static string ReadString(ref DataReader reader, int maxLen, bool verify, ref bool failedVerification) {

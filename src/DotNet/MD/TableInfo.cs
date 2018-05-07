@@ -16,25 +16,25 @@ namespace dnlib.DotNet.MD {
 		/// <summary>
 		/// Returns the table type
 		/// </summary>
-		public Table Table => table;
+		public Table Table { get { return table; } }
 
 		/// <summary>
 		/// Returns the total size of a row in bytes
 		/// </summary>
 		public int RowSize {
-			get => rowSize;
-			internal set => rowSize = value;
+			get { return rowSize; }
+			internal set { rowSize = value; }
 		}
 
 		/// <summary>
 		/// Returns all the columns
 		/// </summary>
-		public ColumnInfo[] Columns => columns;
+		public ColumnInfo[] Columns { get { return columns; } }
 
 		/// <summary>
 		/// Returns the name of the table
 		/// </summary>
-		public string Name => name;
+        public string Name { get { return name; } }
 
 		/// <summary>
 		/// Constructor

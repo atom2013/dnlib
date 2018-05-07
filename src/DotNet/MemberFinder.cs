@@ -136,7 +136,7 @@ namespace dnlib.DotNet {
 				case ObjectType.TypeSig:		Add((TypeSig)o); break;
 				case ObjectType.TypeSpec:		Add((TypeSpec)o); break;
 				case ObjectType.ExportedType:	Add((ExportedType)o); break;
-				default: throw new InvalidOperationException($"Unknown type: {o.GetType()}");
+                default: throw new InvalidOperationException(string.Format("Unknown type: {0}", o.GetType()));
 				}
 			}
 		}
@@ -146,7 +146,8 @@ namespace dnlib.DotNet {
 			if (o == null)
 				return ObjectType.Unknown;
 			var type = o.GetType();
-			if (toObjectType.TryGetValue(type, out var mrType))
+            ObjectType mrType;
+            if (toObjectType.TryGetValue(type, out mrType))
 				return mrType;
 			mrType = GetObjectType2(o);
 			toObjectType[type] = mrType;
@@ -199,22 +200,26 @@ namespace dnlib.DotNet {
 			if (sig == null)
 				return;
 
-			if (sig is FieldSig fs) {
+            FieldSig fs;
+            if ((fs = sig as FieldSig) != null) {
 				Add(fs);
 				return;
 			}
 
-			if (sig is MethodBaseSig mbs) {
+            MethodBaseSig mbs;
+            if ((mbs = sig as MethodBaseSig) != null) {
 				Add(mbs);
 				return;
 			}
 
-			if (sig is LocalSig ls) {
+            LocalSig ls;
+            if ((ls = sig as LocalSig) != null) {
 				Add(ls);
 				return;
 			}
 
-			if (sig is GenericInstMethodSig gims) {
+            GenericInstMethodSig gims;
+            if ((gims = sig as GenericInstMethodSig) != null) {
 				Add(gims);
 				return;
 			}
@@ -317,17 +322,20 @@ namespace dnlib.DotNet {
 		}
 
 		void Add(ITypeDefOrRef tdr) {
-			if (tdr is TypeDef td) {
+            TypeDef td;
+            if ((td = tdr as TypeDef) != null) {
 				Add(td);
 				return;
 			}
 
-			if (tdr is TypeRef tr) {
+            TypeRef tr;
+            if ((tr = tdr as TypeRef) != null) {
 				Add(tr);
 				return;
 			}
 
-			if (tdr is TypeSpec ts) {
+            TypeSpec ts;
+            if ((ts = tdr as TypeSpec) != null) {
 				Add(ts);
 				return;
 			}
@@ -441,7 +449,8 @@ namespace dnlib.DotNet {
 		}
 
 		void Add(MethodBody mb) {
-			if (mb is CilBody cb)
+            CilBody cb;
+            if ((cb = mb as CilBody) != null)
 				Add(cb);
 		}
 

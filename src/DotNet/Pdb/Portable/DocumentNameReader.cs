@@ -30,9 +30,11 @@ namespace dnlib.DotNet.Pdb.Portable {
 
 		public string ReadDocumentName(uint offset) {
 			sb.Length = 0;
-			if (!blobStream.TryCreateReader(offset, out var reader))
+            DataReader reader;
+            if (!blobStream.TryCreateReader(offset, out reader))
 				return string.Empty;
-			var sepChars = ReadSeparatorChar(ref reader, out int sepCharsLength);
+            int sepCharsLength;
+            var sepChars = ReadSeparatorChar(ref reader, out sepCharsLength);
 			bool needSep = false;
 			while (reader.Position < reader.Length) {
 				if (needSep)
@@ -49,9 +51,11 @@ namespace dnlib.DotNet.Pdb.Portable {
 		}
 
 		string ReadDocumentNamePart(uint offset) {
-			if (docNamePartDict.TryGetValue(offset, out var name))
+            string name;
+            if (docNamePartDict.TryGetValue(offset, out name))
 				return name;
-			if (!blobStream.TryCreateReader(offset, out var reader))
+            DataReader reader;
+            if (!blobStream.TryCreateReader(offset, out reader))
 				return string.Empty;
 			name = reader.ReadUtf8String((int)reader.BytesLeft);
 			docNamePartDict.Add(offset, name);
@@ -87,7 +91,9 @@ namespace dnlib.DotNet.Pdb.Portable {
 					prevSepCharBytes[i] = b;
 				bytes[0] = b;
 				bool isLastByte = reader.Position + 1 == reader.Length;
-				decoder.Convert(bytes, 0, 1, prevSepChars, 0, prevSepChars.Length, isLastByte, out int bytesUsed, out prevSepCharsLength, out bool completed);
+                int bytesUsed;
+                bool completed;
+                decoder.Convert(bytes, 0, 1, prevSepChars, 0, prevSepChars.Length, isLastByte, out bytesUsed, out prevSepCharsLength, out completed);
 				if (prevSepCharsLength > 0)
 					break;
 			}

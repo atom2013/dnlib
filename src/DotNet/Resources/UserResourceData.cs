@@ -14,12 +14,12 @@ namespace dnlib.DotNet.Resources {
 		/// <summary>
 		/// Full name including assembly of type
 		/// </summary>
-		public string TypeName => type.Name;
+		public string TypeName { get { return type.Name; } }
 
 		/// <summary>
 		/// User type code
 		/// </summary>
-		public ResourceTypeCode Code => type.Code;
+		public ResourceTypeCode Code { get { return type.Code; } }
 
 		/// <inheritdoc/>
 		public FileOffset StartOffset { get; set; }
@@ -31,7 +31,7 @@ namespace dnlib.DotNet.Resources {
 		/// Constructor
 		/// </summary>
 		/// <param name="type">User resource type</param>
-		public UserResourceData(UserResourceType type) => this.type = type;
+		public UserResourceData(UserResourceType type) { this.type = type; }
 
 		/// <inheritdoc/>
 		public abstract void WriteData(BinaryWriter writer, IFormatter formatter);
@@ -46,7 +46,7 @@ namespace dnlib.DotNet.Resources {
 		/// <summary>
 		/// Gets the raw data
 		/// </summary>
-		public byte[] Data => data;
+		public byte[] Data { get { return data; } }
 
 		/// <summary>
 		/// Constructor
@@ -54,12 +54,12 @@ namespace dnlib.DotNet.Resources {
 		/// <param name="type">User resource type</param>
 		/// <param name="data">Raw serialized data</param>
 		public BinaryResourceData(UserResourceType type, byte[] data)
-			: base(type) => this.data = data;
+			: base(type) { this.data = data; }
 
 		/// <inheritdoc/>
-		public override void WriteData(BinaryWriter writer, IFormatter formatter) => writer.Write(data);
+		public override void WriteData(BinaryWriter writer, IFormatter formatter) { writer.Write(data); }
 
 		/// <inheritdoc/>
-		public override string ToString() => "Binary: Length: " + data.Length.ToString();
+        public override string ToString() { return "Binary: Length: " + data.Length.ToString(); }
 	}
 }

@@ -9,7 +9,7 @@ namespace dnlib.DotNet {
 	/// Strong name signs an assembly. It supports normal strong name signing and the new
 	/// (.NET 4.5) enhanced strong name signing.
 	/// </summary>
-	public readonly struct StrongNameSigner {
+	public struct StrongNameSigner {
 		readonly Stream stream;
 		readonly long baseOffset;
 

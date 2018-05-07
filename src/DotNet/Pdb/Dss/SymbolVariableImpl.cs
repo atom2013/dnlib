@@ -8,18 +8,20 @@ namespace dnlib.DotNet.Pdb.Dss {
 	sealed class SymbolVariableImpl : SymbolVariable {
 		readonly ISymUnmanagedVariable variable;
 
-		public SymbolVariableImpl(ISymUnmanagedVariable variable) => this.variable = variable;
+		public SymbolVariableImpl(ISymUnmanagedVariable variable) { this.variable = variable; }
 
 		public override int Index {
 			get {
-				variable.GetAddressField1(out uint result);
+                uint result;
+                variable.GetAddressField1(out result);
 				return (int)result;
 			}
 		}
 
 		public override PdbLocalAttributes Attributes {
 			get {
-				variable.GetAttributes(out uint result);
+                uint result;
+                variable.GetAttributes(out result);
 				if ((result & (uint)CorSymVarFlag.VAR_IS_COMP_GEN) != 0)
 					return PdbLocalAttributes.DebuggerHidden;
 				return PdbLocalAttributes.None;
@@ -28,7 +30,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 
 		public override string Name {
 			get {
-				variable.GetName(0, out uint count, null);
+                uint count;
+                variable.GetName(0, out count, null);
 				var chars = new char[count];
 				variable.GetName((uint)chars.Length, out count, chars);
 				if (chars.Length == 0)
@@ -37,6 +40,6 @@ namespace dnlib.DotNet.Pdb.Dss {
 			}
 		}
 
-		public override PdbCustomDebugInfo[] CustomDebugInfos => Array2.Empty<PdbCustomDebugInfo>();
+        public override PdbCustomDebugInfo[] CustomDebugInfos { get { return Array2.Empty<PdbCustomDebugInfo>(); } }
 	}
 }

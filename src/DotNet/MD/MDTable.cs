@@ -17,52 +17,52 @@ namespace dnlib.DotNet.MD {
 		DataReader dataReader;
 
 		// Fix for VS2015 expression evaluator: "The debugger is unable to evaluate this expression"
-		int Count => tableInfo.Columns.Length;
+		int Count { get { return tableInfo.Columns.Length; } }
 
 		/// <inheritdoc/>
-		public FileOffset StartOffset => (FileOffset)dataReader.StartOffset;
+		public FileOffset StartOffset { get { return (FileOffset)dataReader.StartOffset; } }
 
 		/// <inheritdoc/>
-		public FileOffset EndOffset => (FileOffset)dataReader.EndOffset;
+		public FileOffset EndOffset { get { return (FileOffset)dataReader.EndOffset; } }
 
 		/// <summary>
 		/// Gets the table
 		/// </summary>
-		public Table Table => table;
+		public Table Table { get { return table; } }
 
 		/// <summary>
 		/// Gets the name of this table
 		/// </summary>
-		public string Name => tableInfo.Name;
+		public string Name { get { return tableInfo.Name; } }
 
 		/// <summary>
 		/// Returns total number of rows
 		/// </summary>
-		public uint Rows => numRows;
+		public uint Rows { get { return numRows; } }
 
 		/// <summary>
 		/// Gets the total size in bytes of one row in this table
 		/// </summary>
-		public uint RowSize => (uint)tableInfo.RowSize;
+		public uint RowSize { get { return (uint)tableInfo.RowSize; } }
 
 		/// <summary>
 		/// Returns all the columns
 		/// </summary>
-		public IList<ColumnInfo> Columns => tableInfo.Columns;
+		public IList<ColumnInfo> Columns { get { return tableInfo.Columns; } }
 
 		/// <summary>
 		/// Returns <c>true</c> if there are no valid rows
 		/// </summary>
-		public bool IsEmpty => numRows == 0;
+		public bool IsEmpty { get { return numRows == 0; } }
 
 		/// <summary>
 		/// Returns info about this table
 		/// </summary>
-		public TableInfo TableInfo => tableInfo;
+		public TableInfo TableInfo { get { return tableInfo; } }
 
 		internal DataReader DataReader {
-			get => dataReader;
-			set => dataReader = value;
+			get { return dataReader; }
+			set { dataReader = value; }
 		}
 
 		/// <summary>
@@ -104,19 +104,19 @@ namespace dnlib.DotNet.MD {
 		/// Checks whether the row <paramref name="rid"/> exists
 		/// </summary>
 		/// <param name="rid">Row ID</param>
-		public bool IsValidRID(uint rid) => rid != 0 && rid <= numRows;
+		public bool IsValidRID(uint rid) { return rid != 0 && rid <= numRows; }
 
 		/// <summary>
 		/// Checks whether the row <paramref name="rid"/> does not exist
 		/// </summary>
 		/// <param name="rid">Row ID</param>
-		public bool IsInvalidRID(uint rid) => rid == 0 || rid > numRows;
+        public bool IsInvalidRID(uint rid) { return rid == 0 || rid > numRows; }
 
 		/// <inheritdoc/>
 		public void Dispose() {
 			numRows = 0;
 			tableInfo = null;
-			dataReader = default;
+			dataReader = default(DataReader);
 		}
 	}
 }

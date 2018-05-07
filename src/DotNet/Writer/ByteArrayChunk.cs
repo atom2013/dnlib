@@ -14,15 +14,15 @@ namespace dnlib.DotNet.Writer {
 		RVA rva;
 
 		/// <inheritdoc/>
-		public FileOffset FileOffset => offset;
+		public FileOffset FileOffset { get { return offset; } }
 
 		/// <inheritdoc/>
-		public RVA RVA => rva;
+		public RVA RVA { get { return rva; } }
 
 		/// <summary>
 		/// Gets the data
 		/// </summary>
-		public byte[] Data => array;
+		public byte[] Data { get { return array; } }
 
 		/// <summary>
 		/// Constructor
@@ -32,9 +32,9 @@ namespace dnlib.DotNet.Writer {
 		/// <see cref="GetHashCode"/> return value will be different if you modify the array). If
 		/// it's never inserted as a <c>key</c> in a dictionary, then the contents can be modified,
 		/// but shouldn't be resized after <see cref="SetOffset"/> has been called.</param>
-		public ByteArrayChunk(byte[] array) => this.array = array ?? Array2.Empty<byte>();
+		public ByteArrayChunk(byte[] array) { this.array = array ?? Array2.Empty<byte>(); }
 
-		bool IReuseChunk.CanReuse(RVA origRva, uint origSize) => (uint)array.Length <= origSize;
+		bool IReuseChunk.CanReuse(RVA origRva, uint origSize) { return (uint)array.Length <= origSize; }
 
 		/// <inheritdoc/>
 		public void SetOffset(FileOffset offset, RVA rva) {
@@ -43,16 +43,16 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public uint GetFileLength() => (uint)array.Length;
+		public uint GetFileLength() { return (uint)array.Length; }
 
 		/// <inheritdoc/>
-		public uint GetVirtualSize() => GetFileLength();
+		public uint GetVirtualSize() { return GetFileLength(); }
 
 		/// <inheritdoc/>
-		public void WriteTo(DataWriter writer) => writer.WriteBytes(array);
+		public void WriteTo(DataWriter writer) { writer.WriteBytes(array); }
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => Utils.GetHashCode(array);
+        public override int GetHashCode() { return Utils.GetHashCode(array); }
 
 		/// <inheritdoc/>
 		public override bool Equals(object obj) {

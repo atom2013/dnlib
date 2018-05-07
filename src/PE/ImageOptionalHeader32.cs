@@ -43,157 +43,157 @@ namespace dnlib.PE {
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.Magic field
 		/// </summary>
-		public ushort Magic => magic;
+		public ushort Magic { get { return magic; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.MajorLinkerVersion field
 		/// </summary>
-		public byte MajorLinkerVersion => majorLinkerVersion;
+		public byte MajorLinkerVersion { get { return majorLinkerVersion; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.MinorLinkerVersion field
 		/// </summary>
-		public byte MinorLinkerVersion => minorLinkerVersion;
+		public byte MinorLinkerVersion { get { return minorLinkerVersion; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.SizeOfCode field
 		/// </summary>
-		public uint SizeOfCode => sizeOfCode;
+		public uint SizeOfCode { get { return sizeOfCode; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.SizeOfInitializedData field
 		/// </summary>
-		public uint SizeOfInitializedData => sizeOfInitializedData;
+		public uint SizeOfInitializedData { get { return sizeOfInitializedData; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.SizeOfUninitializedData field
 		/// </summary>
-		public uint SizeOfUninitializedData => sizeOfUninitializedData;
+		public uint SizeOfUninitializedData { get { return sizeOfUninitializedData; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.AddressOfEntryPoint field
 		/// </summary>
-		public RVA AddressOfEntryPoint => addressOfEntryPoint;
+		public RVA AddressOfEntryPoint { get { return addressOfEntryPoint; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.BaseOfCode field
 		/// </summary>
-		public RVA BaseOfCode => baseOfCode;
+		public RVA BaseOfCode { get { return baseOfCode; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.BaseOfData field
 		/// </summary>
-		public RVA BaseOfData => baseOfData;
+		public RVA BaseOfData { get { return baseOfData; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.ImageBase field
 		/// </summary>
-		public ulong ImageBase => imageBase;
+		public ulong ImageBase { get { return imageBase; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.SectionAlignment field
 		/// </summary>
-		public uint SectionAlignment => sectionAlignment;
+		public uint SectionAlignment { get { return sectionAlignment; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.FileAlignment field
 		/// </summary>
-		public uint FileAlignment => fileAlignment;
+		public uint FileAlignment { get { return fileAlignment; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.MajorOperatingSystemVersion field
 		/// </summary>
-		public ushort MajorOperatingSystemVersion => majorOperatingSystemVersion;
+		public ushort MajorOperatingSystemVersion { get { return majorOperatingSystemVersion; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.MinorOperatingSystemVersion field
 		/// </summary>
-		public ushort MinorOperatingSystemVersion => minorOperatingSystemVersion;
+		public ushort MinorOperatingSystemVersion { get { return minorOperatingSystemVersion; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.MajorImageVersion field
 		/// </summary>
-		public ushort MajorImageVersion => majorImageVersion;
+		public ushort MajorImageVersion { get { return majorImageVersion; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.MinorImageVersion field
 		/// </summary>
-		public ushort MinorImageVersion => minorImageVersion;
+		public ushort MinorImageVersion { get { return minorImageVersion; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.MajorSubsystemVersion field
 		/// </summary>
-		public ushort MajorSubsystemVersion => majorSubsystemVersion;
+		public ushort MajorSubsystemVersion { get { return majorSubsystemVersion; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.MinorSubsystemVersion field
 		/// </summary>
-		public ushort MinorSubsystemVersion => minorSubsystemVersion;
+		public ushort MinorSubsystemVersion { get { return minorSubsystemVersion; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.Win32VersionValue field
 		/// </summary>
-		public uint Win32VersionValue => win32VersionValue;
+		public uint Win32VersionValue { get { return win32VersionValue; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.SizeOfImage field
 		/// </summary>
-		public uint SizeOfImage => sizeOfImage;
+		public uint SizeOfImage { get { return sizeOfImage; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.SizeOfHeaders field
 		/// </summary>
-		public uint SizeOfHeaders => sizeOfHeaders;
+		public uint SizeOfHeaders { get { return sizeOfHeaders; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.CheckSum field
 		/// </summary>
-		public uint CheckSum => checkSum;
+		public uint CheckSum { get { return checkSum; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.Subsystem field
 		/// </summary>
-		public Subsystem Subsystem => subsystem;
+		public Subsystem Subsystem { get { return subsystem; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.DllCharacteristics field
 		/// </summary>
-		public DllCharacteristics DllCharacteristics => dllCharacteristics;
+		public DllCharacteristics DllCharacteristics { get { return dllCharacteristics; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.SizeOfStackReserve field
 		/// </summary>
-		public ulong SizeOfStackReserve => sizeOfStackReserve;
+		public ulong SizeOfStackReserve { get { return sizeOfStackReserve; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.SizeOfStackCommit field
 		/// </summary>
-		public ulong SizeOfStackCommit => sizeOfStackCommit;
+		public ulong SizeOfStackCommit { get { return sizeOfStackCommit; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.SizeOfHeapReserve field
 		/// </summary>
-		public ulong SizeOfHeapReserve => sizeOfHeapReserve;
+		public ulong SizeOfHeapReserve { get { return sizeOfHeapReserve; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.SizeOfHeapCommit field
 		/// </summary>
-		public ulong SizeOfHeapCommit => sizeOfHeapCommit;
+		public ulong SizeOfHeapCommit { get { return sizeOfHeapCommit; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.LoaderFlags field
 		/// </summary>
-		public uint LoaderFlags => loaderFlags;
+		public uint LoaderFlags { get { return loaderFlags; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.NumberOfRvaAndSizes field
 		/// </summary>
-		public uint NumberOfRvaAndSizes => numberOfRvaAndSizes;
+		public uint NumberOfRvaAndSizes { get { return numberOfRvaAndSizes; } }
 
 		/// <summary>
 		/// Returns the IMAGE_OPTIONAL_HEADER.DataDirectories field
 		/// </summary>
-		public ImageDataDirectory[] DataDirectories => dataDirectories;
+        public ImageDataDirectory[] DataDirectories { get { return dataDirectories; } }
 
 		/// <summary>
 		/// Constructor

@@ -42,15 +42,15 @@ namespace dnlib.DotNet.Pdb {
 		public byte[] CheckSum { get; set; }
 
 		/// <inheritdoc/>
-		public int HasCustomDebugInformationTag => 22;
+		public int HasCustomDebugInformationTag { get { return 22; } }
 
 		/// <inheritdoc/>
-		public bool HasCustomDebugInfos => CustomDebugInfos.Count > 0;
+		public bool HasCustomDebugInfos { get { return CustomDebugInfos.Count > 0; } }
 
 		/// <summary>
 		/// Gets all custom debug infos
 		/// </summary>
-		public IList<PdbCustomDebugInfo> CustomDebugInfos => customDebugInfos;
+		public IList<PdbCustomDebugInfo> CustomDebugInfos { get { return customDebugInfos; } }
 		IList<PdbCustomDebugInfo> customDebugInfos;
 
 		/// <summary>
@@ -63,19 +63,20 @@ namespace dnlib.DotNet.Pdb {
 		/// Constructor
 		/// </summary>
 		/// <param name="symDoc">A <see cref="SymbolDocument"/> instance</param>
-		public PdbDocument(SymbolDocument symDoc) : this(symDoc, partial: false) {
+		public PdbDocument(SymbolDocument symDoc) : this(symDoc, /* partial: */ false) {
 		}
 
 		PdbDocument(SymbolDocument symDoc, bool partial) {
 			if (symDoc == null)
-				throw new ArgumentNullException(nameof(symDoc));
+				throw new ArgumentNullException("symDoc");
 			Url = symDoc.URL;
 			if (!partial)
 				Initialize(symDoc);
 		}
 
-		internal static PdbDocument CreatePartialForCompare(SymbolDocument symDoc) =>
-			new PdbDocument(symDoc, partial: true);
+		internal static PdbDocument CreatePartialForCompare(SymbolDocument symDoc) {
+			return new PdbDocument(symDoc, /* partial: */ true);
+        }
 
 		internal void Initialize(SymbolDocument symDoc) {
 			Language = symDoc.Language;
@@ -107,7 +108,7 @@ namespace dnlib.DotNet.Pdb {
 		}
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => StringComparer.OrdinalIgnoreCase.GetHashCode(Url ?? string.Empty);
+		public override int GetHashCode() { return StringComparer.OrdinalIgnoreCase.GetHashCode(Url ?? string.Empty); }
 
 		/// <inheritdoc/>
 		public override bool Equals(object obj) {

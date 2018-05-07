@@ -90,13 +90,14 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 				Error("Instruction is null");
 				return uint.MaxValue;
 			}
-			if (instructionToOffsetDict.TryGetValue(instr, out uint offset))
+            uint offset;
+            if (instructionToOffsetDict.TryGetValue(instr, out offset))
 				return offset;
 			Error("Instruction is missing in body but it's still being referenced by PDB data. Method {0} (0x{1:X8}), instruction: {2}", method, method.MDToken.Raw, instr);
 			return uint.MaxValue;
 		}
 
-		void Error(string message, params object[] args) => logger.Log(this, LoggerEvent.Error, message, args);
+        void Error(string message, params object[] args) { logger.Log(this, LoggerEvent.Error, message, args); }
 
 		byte[] Write(IList<PdbCustomDebugInfo> customDebugInfos) {
 			if (customDebugInfos.Count == 0)
@@ -185,8 +186,8 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 							writer.WriteInt32(0);
 						}
 						else {
-							writer.WriteUInt32(GetInstructionOffset(scope.Start, nullIsEndOfMethod: false));
-							writer.WriteUInt32(GetInstructionOffset(scope.End, nullIsEndOfMethod: true) - 1);
+							writer.WriteUInt32(GetInstructionOffset(scope.Start, /* nullIsEndOfMethod: */ false));
+							writer.WriteUInt32(GetInstructionOffset(scope.End, /* nullIsEndOfMethod: */ true) - 1);
 						}
 					}
 					break;
@@ -291,8 +292,8 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 						if (tupleInfo.Local == null) {
 							writer.WriteInt32(-1);
-							writer.WriteUInt32(GetInstructionOffset(tupleInfo.ScopeStart, nullIsEndOfMethod: false));
-							writer.WriteUInt32(GetInstructionOffset(tupleInfo.ScopeEnd, nullIsEndOfMethod: true));
+							writer.WriteUInt32(GetInstructionOffset(tupleInfo.ScopeStart, /* nullIsEndOfMethod: */ false));
+							writer.WriteUInt32(GetInstructionOffset(tupleInfo.ScopeEnd, /* nullIsEndOfMethod: */ true));
 						}
 						else {
 							writer.WriteInt32(tupleInfo.Local.Index);
@@ -380,7 +381,8 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 				return 0;
 			}
 
-			if (method is MethodDef md) {
+            MethodDef md;
+            if ((md = method as MethodDef) != null) {
 				uint rid = metadata.GetRid(md);
 				if (rid == 0) {
 					Error("Method {0} ({1:X8}) is not defined in this module ({2})", method, method.MDToken.Raw, metadata.Module);
@@ -389,7 +391,8 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 				return new MDToken(md.MDToken.Table, rid).Raw;
 			}
 
-			if (method is MemberRef mr && mr.IsMethodRef)
+            MemberRef mr;
+            if ((mr = method as MemberRef) != null && mr.IsMethodRef)
 				return metadata.GetToken(mr).Raw;
 
 			Error("Not a method");

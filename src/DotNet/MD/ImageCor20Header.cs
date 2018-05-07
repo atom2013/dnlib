@@ -25,67 +25,67 @@ namespace dnlib.DotNet.MD {
 		/// <summary>
 		/// Returns <c>true</c> if it has a native header
 		/// </summary>
-		public bool HasNativeHeader => (flags & ComImageFlags.ILLibrary) != 0;
+		public bool HasNativeHeader { get { return (flags & ComImageFlags.ILLibrary) != 0; } }
 
 		/// <summary>
 		/// Returns the IMAGE_COR20_HEADER.cb field
 		/// </summary>
-		public uint CB => cb;
+		public uint CB { get { return cb; } }
 
 		/// <summary>
 		/// Returns the IMAGE_COR20_HEADER.MajorRuntimeVersion field
 		/// </summary>
-		public ushort MajorRuntimeVersion => majorRuntimeVersion;
+		public ushort MajorRuntimeVersion { get { return majorRuntimeVersion; } }
 
 		/// <summary>
 		/// Returns the IMAGE_COR20_HEADER.MinorRuntimeVersion field
 		/// </summary>
-		public ushort MinorRuntimeVersion => minorRuntimeVersion;
+		public ushort MinorRuntimeVersion { get { return minorRuntimeVersion; } }
 
 		/// <summary>
 		/// Returns the IMAGE_COR20_HEADER.Metadata field
 		/// </summary>
-		public ImageDataDirectory Metadata => metadata;
+		public ImageDataDirectory Metadata { get { return metadata; } }
 
 		/// <summary>
 		/// Returns the IMAGE_COR20_HEADER.Flags field
 		/// </summary>
-		public ComImageFlags Flags => flags;
+		public ComImageFlags Flags { get { return flags; } }
 
 		/// <summary>
 		/// Returns the IMAGE_COR20_HEADER.EntryPointToken/EntryPointTokenRVA field
 		/// </summary>
-		public uint EntryPointToken_or_RVA => entryPointToken_or_RVA;
+		public uint EntryPointToken_or_RVA { get { return entryPointToken_or_RVA; } }
 
 		/// <summary>
 		/// Returns the IMAGE_COR20_HEADER.Resources field
 		/// </summary>
-		public ImageDataDirectory Resources => resources;
+		public ImageDataDirectory Resources { get { return resources; } }
 
 		/// <summary>
 		/// Returns the IMAGE_COR20_HEADER.StrongNameSignature field
 		/// </summary>
-		public ImageDataDirectory StrongNameSignature => strongNameSignature;
+		public ImageDataDirectory StrongNameSignature { get { return strongNameSignature; } }
 
 		/// <summary>
 		/// Returns the IMAGE_COR20_HEADER.CodeManagerTable field
 		/// </summary>
-		public ImageDataDirectory CodeManagerTable => codeManagerTable;
+		public ImageDataDirectory CodeManagerTable { get { return codeManagerTable; } }
 
 		/// <summary>
 		/// Returns the IMAGE_COR20_HEADER.VTableFixups field
 		/// </summary>
-		public ImageDataDirectory VTableFixups => vtableFixups;
+		public ImageDataDirectory VTableFixups { get { return vtableFixups; } }
 
 		/// <summary>
 		/// Returns the IMAGE_COR20_HEADER.ExportAddressTableJumps field
 		/// </summary>
-		public ImageDataDirectory ExportAddressTableJumps => exportAddressTableJumps;
+		public ImageDataDirectory ExportAddressTableJumps { get { return exportAddressTableJumps; } }
 
 		/// <summary>
 		/// Returns the IMAGE_COR20_HEADER.ManagedNativeHeader field
 		/// </summary>
-		public ImageDataDirectory ManagedNativeHeader => managedNativeHeader;
+        public ImageDataDirectory ManagedNativeHeader { get { return managedNativeHeader; } }
 
 		/// <summary>
 		/// Constructor

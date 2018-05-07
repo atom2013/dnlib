@@ -19,37 +19,37 @@ namespace dnlib.PE {
 		/// <summary>
 		/// Returns the IMAGE_FILE_HEADER.Machine field
 		/// </summary>
-		public Machine Machine => machine;
+		public Machine Machine { get { return machine; } }
 
 		/// <summary>
 		/// Returns the IMAGE_FILE_HEADER.NumberOfSections field
 		/// </summary>
-		public int NumberOfSections => numberOfSections;
+		public int NumberOfSections { get { return numberOfSections; } }
 
 		/// <summary>
 		/// Returns the IMAGE_FILE_HEADER.TimeDateStamp field
 		/// </summary>
-		public uint TimeDateStamp => timeDateStamp;
+		public uint TimeDateStamp { get { return timeDateStamp; } }
 
 		/// <summary>
 		/// Returns the IMAGE_FILE_HEADER.PointerToSymbolTable field
 		/// </summary>
-		public uint PointerToSymbolTable => pointerToSymbolTable;
+		public uint PointerToSymbolTable { get { return pointerToSymbolTable; } }
 
 		/// <summary>
 		/// Returns the IMAGE_FILE_HEADER.NumberOfSymbols field
 		/// </summary>
-		public uint NumberOfSymbols => numberOfSymbols;
+		public uint NumberOfSymbols { get { return numberOfSymbols; } }
 
 		/// <summary>
 		/// Returns the IMAGE_FILE_HEADER.SizeOfOptionalHeader field
 		/// </summary>
-		public uint SizeOfOptionalHeader => sizeOfOptionalHeader;
+		public uint SizeOfOptionalHeader { get { return sizeOfOptionalHeader; } }
 
 		/// <summary>
 		/// Returns the IMAGE_FILE_HEADER.Characteristics field
 		/// </summary>
-		public Characteristics Characteristics => characteristics;
+        public Characteristics Characteristics { get { return characteristics; } }
 
 		/// <summary>
 		/// Constructor

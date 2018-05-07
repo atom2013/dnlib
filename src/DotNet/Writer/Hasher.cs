@@ -12,7 +12,7 @@ namespace dnlib.DotNet.Writer {
 			case ChecksumAlgorithm.SHA256:		return SHA256.Create();
 			case ChecksumAlgorithm.SHA384:		return SHA384.Create();
 			case ChecksumAlgorithm.SHA512:		return SHA512.Create();
-			default: throw new ArgumentOutOfRangeException(nameof(checksumAlgorithm));
+			default: throw new ArgumentOutOfRangeException("checksumAlgorithm");
 			}
 		}
 
@@ -23,7 +23,7 @@ namespace dnlib.DotNet.Writer {
 			case ChecksumAlgorithm.SHA256:		return "SHA256";
 			case ChecksumAlgorithm.SHA384:		return "SHA384";
 			case ChecksumAlgorithm.SHA512:		return "SHA512";
-			default: throw new ArgumentOutOfRangeException(nameof(checksumAlgorithm));
+			default: throw new ArgumentOutOfRangeException("checksumAlgorithm");
 			}
 		}
 

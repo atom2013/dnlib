@@ -9,27 +9,27 @@ namespace dnlib.DotNet.Writer {
 	/// </summary>
 	public sealed class PdbHeap : HeapBase {
 		/// <inheritdoc/>
-		public override string Name => "#Pdb";
+		public override string Name { get { return "#Pdb"; } }
 
 		/// <summary>
 		/// Gets the PDB ID. This is always 20 bytes in size.
 		/// </summary>
-		public byte[] PdbId => pdbId;
+		public byte[] PdbId { get { return pdbId; } }
 		readonly byte[] pdbId;
 
 		/// <summary>
 		/// Gets/sets the entry point token
 		/// </summary>
 		public uint EntryPoint {
-			get => entryPoint;
-			set => entryPoint = value;
+			get { return entryPoint; }
+			set { entryPoint = value; }
 		}
 		uint entryPoint;
 
 		/// <summary>
 		/// Gets the offset of the 20-byte PDB ID
 		/// </summary>
-		public FileOffset PdbIdOffset => FileOffset;
+		public FileOffset PdbIdOffset { get { return FileOffset; } }
 
 		/// <summary>
 		/// Gets/sets the referenced type system tables
@@ -62,7 +62,7 @@ namespace dnlib.DotNet.Writer {
 		/// <summary>
 		/// Gets the type system table rows. This table has 64 elements.
 		/// </summary>
-		public uint[] TypeSystemTableRows => typeSystemTableRows;
+        public uint[] TypeSystemTableRows { get { return typeSystemTableRows; } }
 		readonly uint[] typeSystemTableRows;
 
 		/// <summary>

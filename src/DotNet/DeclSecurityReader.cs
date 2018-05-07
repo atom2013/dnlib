@@ -19,7 +19,7 @@ namespace dnlib.DotNet {
 		/// <param name="module">Module that will own the returned list</param>
 		/// <param name="sig"><c>#Blob</c> offset of <c>DeclSecurity</c> signature</param>
 		/// <returns>A list of <see cref="SecurityAttribute"/>s</returns>
-		public static IList<SecurityAttribute> Read(ModuleDefMD module, uint sig) => Read(module, module.BlobStream.CreateReader(sig), new GenericParamContext());
+		public static IList<SecurityAttribute> Read(ModuleDefMD module, uint sig) { return Read(module, module.BlobStream.CreateReader(sig), new GenericParamContext()); }
 
 		/// <summary>
 		/// Reads a <c>DeclSecurity</c> blob
@@ -28,7 +28,7 @@ namespace dnlib.DotNet {
 		/// <param name="sig"><c>#Blob</c> offset of <c>DeclSecurity</c> signature</param>
 		/// <param name="gpContext">Generic parameter context</param>
 		/// <returns>A list of <see cref="SecurityAttribute"/>s</returns>
-		public static IList<SecurityAttribute> Read(ModuleDefMD module, uint sig, GenericParamContext gpContext) => Read(module, module.BlobStream.CreateReader(sig), gpContext);
+		public static IList<SecurityAttribute> Read(ModuleDefMD module, uint sig, GenericParamContext gpContext) { return Read(module, module.BlobStream.CreateReader(sig), gpContext); }
 
 		/// <summary>
 		/// Reads a <c>DeclSecurity</c> blob
@@ -36,7 +36,7 @@ namespace dnlib.DotNet {
 		/// <param name="module">Module that will own the returned list</param>
 		/// <param name="blob"><c>DeclSecurity</c> blob</param>
 		/// <returns>A list of <see cref="SecurityAttribute"/>s</returns>
-		public static IList<SecurityAttribute> Read(ModuleDef module, byte[] blob) => Read(module, ByteArrayDataReaderFactory.CreateReader(blob), new GenericParamContext());
+		public static IList<SecurityAttribute> Read(ModuleDef module, byte[] blob) { return Read(module, ByteArrayDataReaderFactory.CreateReader(blob), new GenericParamContext()); }
 
 		/// <summary>
 		/// Reads a <c>DeclSecurity</c> blob
@@ -45,7 +45,7 @@ namespace dnlib.DotNet {
 		/// <param name="blob"><c>DeclSecurity</c> blob</param>
 		/// <param name="gpContext">Generic parameter context</param>/// 
 		/// <returns>A list of <see cref="SecurityAttribute"/>s</returns>
-		public static IList<SecurityAttribute> Read(ModuleDef module, byte[] blob, GenericParamContext gpContext) => Read(module, ByteArrayDataReaderFactory.CreateReader(blob), gpContext);
+		public static IList<SecurityAttribute> Read(ModuleDef module, byte[] blob, GenericParamContext gpContext) { return Read(module, ByteArrayDataReaderFactory.CreateReader(blob), gpContext); }
 
 		/// <summary>
 		/// Reads a <c>DeclSecurity</c> blob
@@ -53,7 +53,7 @@ namespace dnlib.DotNet {
 		/// <param name="module">Module that will own the returned list</param>
 		/// <param name="signature"><c>DeclSecurity</c> stream that will be owned by us</param>
 		/// <returns>A list of <see cref="SecurityAttribute"/>s</returns>
-		public static IList<SecurityAttribute> Read(ModuleDef module, DataReader signature) => Read(module, signature, new GenericParamContext());
+        public static IList<SecurityAttribute> Read(ModuleDef module, DataReader signature) { return Read(module, signature, new GenericParamContext()); }
 
 		/// <summary>
 		/// Reads a <c>DeclSecurity</c> blob

@@ -8,7 +8,7 @@ namespace dnlib.IO {
 	sealed unsafe class UnalignedNativeMemoryDataStream : DataStream {
 		readonly byte* data;
 
-		public UnalignedNativeMemoryDataStream(byte* data) => this.data = data;
+		public UnalignedNativeMemoryDataStream(byte* data) { this.data = data; }
 
 		public override void ReadBytes(uint offset, void* destination, int length) {
 			var ps = data + offset;
@@ -25,18 +25,19 @@ namespace dnlib.IO {
 				*pd = *ps;
 		}
 
-		public override void ReadBytes(uint offset, byte[] destination, int destinationIndex, int length) =>
+		public override void ReadBytes(uint offset, byte[] destination, int destinationIndex, int length) {
 			Marshal.Copy((IntPtr)(data + offset), destination, destinationIndex, length);
+        }
 
-		public override byte ReadByte(uint offset) => *(data + offset);
-		public override ushort ReadUInt16(uint offset) => *(ushort*)(data + offset);
-		public override uint ReadUInt32(uint offset) => *(uint*)(data + offset);
-		public override ulong ReadUInt64(uint offset) => *(ulong*)(data + offset);
-		public override float ReadSingle(uint offset) => *(float*)(data + offset);
-		public override double ReadDouble(uint offset) => *(double*)(data + offset);
-		public override Guid ReadGuid(uint offset) => *(Guid*)(data + offset);
-		public override string ReadUtf16String(uint offset, int chars) => new string((char*)(data + offset), 0, chars);
-		public override string ReadString(uint offset, int length, Encoding encoding) => new string((sbyte*)(data + offset), 0, length, encoding);
+		public override byte ReadByte(uint offset) { return *(data + offset); }
+		public override ushort ReadUInt16(uint offset) { return *(ushort*)(data + offset); }
+		public override uint ReadUInt32(uint offset) { return *(uint*)(data + offset); }
+		public override ulong ReadUInt64(uint offset) { return *(ulong*)(data + offset); }
+		public override float ReadSingle(uint offset) { return *(float*)(data + offset); }
+		public override double ReadDouble(uint offset) { return *(double*)(data + offset); }
+		public override Guid ReadGuid(uint offset) { return *(Guid*)(data + offset); }
+		public override string ReadUtf16String(uint offset, int chars) { return new string((char*)(data + offset), 0, chars); }
+        public override string ReadString(uint offset, int length, Encoding encoding) { return new string((sbyte*)(data + offset), 0, length, encoding); }
 
 		public override bool TryGetOffsetOf(uint offset, uint endOffset, byte value, out uint valueOffset) {
 			var pd = data;

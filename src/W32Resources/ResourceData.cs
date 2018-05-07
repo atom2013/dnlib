@@ -19,22 +19,22 @@ namespace dnlib.W32Resources {
 		/// Gets the data reader
 		/// </summary>
 		/// <returns></returns>
-		public DataReader CreateReader() => dataReaderFactory.CreateReader(resourceStartOffset, resourceLength);
+		public DataReader CreateReader() { return dataReaderFactory.CreateReader(resourceStartOffset, resourceLength); }
 
 		/// <summary>
 		/// Gets/sets the code page
 		/// </summary>
 		public uint CodePage {
-			get => codePage;
-			set => codePage = value;
+			get { return codePage; }
+			set { codePage = value; }
 		}
 
 		/// <summary>
 		/// Gets/sets the reserved field
 		/// </summary>
 		public uint Reserved {
-			get => reserved;
-			set => reserved = value;
+			get { return reserved; }
+			set { reserved = value; }
 		}
 
 		/// <summary>
@@ -42,7 +42,7 @@ namespace dnlib.W32Resources {
 		/// </summary>
 		/// <param name="name">Name</param>
 		public ResourceData(ResourceName name)
-			: this(name, ByteArrayDataReaderFactory.Create(Array2.Empty<byte>(), filename: null), 0, 0) {
+			: this(name, ByteArrayDataReaderFactory.Create(Array2.Empty<byte>(), /* filename: */ null), 0, 0) {
 		}
 
 		/// <summary>
@@ -67,7 +67,7 @@ namespace dnlib.W32Resources {
 		/// <param name="reserved">Reserved value</param>
 		public ResourceData(ResourceName name, DataReaderFactory dataReaderFactory, uint offset, uint length, uint codePage, uint reserved)
 			: base(name) {
-			this.dataReaderFactory = dataReaderFactory ?? throw new ArgumentNullException(nameof(dataReaderFactory));
+            if (dataReaderFactory != null) this.dataReaderFactory = dataReaderFactory; else throw new ArgumentNullException("dataReaderFactory");
 			resourceStartOffset = offset;
 			resourceLength = length;
 			this.codePage = codePage;

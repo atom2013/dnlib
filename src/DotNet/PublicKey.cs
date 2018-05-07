@@ -22,7 +22,7 @@ namespace dnlib.DotNet {
 		}
 
 		/// <inheritdoc/>
-		public override byte[] Data => data;
+		public override byte[] Data { get { return data; } }
 
 		/// <summary>
 		/// Constructor
@@ -57,6 +57,6 @@ namespace dnlib.DotNet {
 		}
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => Utils.GetHashCode(Data);
+        public override int GetHashCode() { return Utils.GetHashCode(Data); }
 	}
 }

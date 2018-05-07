@@ -15,17 +15,17 @@ namespace dnlib.PE {
 		/// <summary>
 		/// Returns the IMAGE_NT_HEADERS.Signature field
 		/// </summary>
-		public uint Signature => signature;
+		public uint Signature { get { return signature; } }
 
 		/// <summary>
 		/// Returns the IMAGE_NT_HEADERS.FileHeader field
 		/// </summary>
-		public ImageFileHeader FileHeader => imageFileHeader;
+		public ImageFileHeader FileHeader { get { return imageFileHeader; } }
 
 		/// <summary>
 		/// Returns the IMAGE_NT_HEADERS.OptionalHeader field
 		/// </summary>
-		public IImageOptionalHeader OptionalHeader => imageOptionalHeader;
+        public IImageOptionalHeader OptionalHeader { get { return imageOptionalHeader; } }
 
 		/// <summary>
 		/// Constructor

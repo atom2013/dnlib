@@ -56,7 +56,9 @@ namespace dnlib.DotNet.Pdb.Dss {
 				var debugDir = pdbContext.CodeViewDebugDirectory;
 				if (debugDir == null)
 					return null;
-				if (!pdbContext.TryGetCodeViewData(out var pdbGuid, out uint age))
+                Guid pdbGuid;
+                uint age;
+				if (!pdbContext.TryGetCodeViewData(out pdbGuid, out age))
 					return null;
 
 				unmanagedReader = CreateSymUnmanagedReader(pdbContext.Options);
@@ -84,11 +86,12 @@ namespace dnlib.DotNet.Pdb.Dss {
 			}
 			finally {
 				if (error) {
-					pdbStream?.Dispose();
-					symReader?.Dispose();
-					mdImporter?.Dispose();
-					comPdbStream?.Dispose();
-					(unmanagedReader as ISymUnmanagedDispose)?.Destroy();
+					if (pdbStream != null) pdbStream.Dispose();
+					if (symReader != null) symReader.Dispose();
+					if (mdImporter != null) mdImporter.Dispose();
+					if (comPdbStream != null) comPdbStream.Dispose();
+                    ISymUnmanagedDispose symUnmanagedDispose = unmanagedReader as ISymUnmanagedDispose;
+                    if (symUnmanagedDispose != null) symUnmanagedDispose.Destroy();
 				}
 			}
 			return null;
@@ -117,11 +120,12 @@ namespace dnlib.DotNet.Pdb.Dss {
 						break;
 
 					default:
-						Debug.Fail($"Microsoft.DiaSymReader.Native doesn't support this CPU arch: {machine}");
+						Debug.Fail( string.Format( "Microsoft.DiaSymReader.Native doesn't support this CPU arch: {0}", machine ) );
 						symReaderObj = null;
 						break;
 					}
-					if (symReaderObj is ISymUnmanagedReader symReader)
+                    ISymUnmanagedReader symReader;
+					if ((symReader = symReaderObj as ISymUnmanagedReader) != null)
 						return symReader;
 				}
 				catch (DllNotFoundException) {
@@ -161,11 +165,12 @@ namespace dnlib.DotNet.Pdb.Dss {
 						break;
 
 					default:
-						Debug.Fail($"Microsoft.DiaSymReader.Native doesn't support this CPU arch: {machine}");
+						Debug.Fail( string.Format( "Microsoft.DiaSymReader.Native doesn't support this CPU arch: {0}", machine ) );
 						symWriterObj = null;
 						break;
 					}
-					if (symWriterObj is ISymUnmanagedWriter2 symWriter)
+                    ISymUnmanagedWriter2 symWriter;
+                    if ((symWriter = symWriterObj as ISymUnmanagedWriter2) != null)
 						return symWriter;
 				}
 				catch (DllNotFoundException) {
@@ -185,10 +190,11 @@ namespace dnlib.DotNet.Pdb.Dss {
 		public static SymbolWriter Create(PdbWriterOptions options, string pdbFileName) {
 			if (File.Exists(pdbFileName))
 				File.Delete(pdbFileName);
-			return new SymbolWriterImpl(CreateSymUnmanagedWriter2(options), pdbFileName, File.Create(pdbFileName), options, ownsStream: true);
+			return new SymbolWriterImpl(CreateSymUnmanagedWriter2(options), pdbFileName, File.Create(pdbFileName), options, /* ownsStream: */ true);
 		}
 
-		public static SymbolWriter Create(PdbWriterOptions options, Stream pdbStream, string pdbFileName) =>
-			new SymbolWriterImpl(CreateSymUnmanagedWriter2(options), pdbFileName, pdbStream, options, ownsStream: false);
+		public static SymbolWriter Create(PdbWriterOptions options, Stream pdbStream, string pdbFileName) {
+			return new SymbolWriterImpl(CreateSymUnmanagedWriter2(options), pdbFileName, pdbStream, options, /* ownsStream: */ false);
+        }
 	}
 }

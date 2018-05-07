@@ -3,24 +3,28 @@
 using System;
 using dnlib.IO;
 using dnlib.PE;
+using System.Runtime.CompilerServices;
 
 namespace dnlib.DotNet.Pdb {
-	readonly struct PdbReaderContext {
+	struct PdbReaderContext {
+        [CompilerGenerated]
+        private readonly PdbReaderOptions Options__BackingField;
 		readonly IPEImage peImage;
 		readonly ImageDebugDirectory codeViewDebugDir;
-
-		public bool HasDebugInfo => codeViewDebugDir != null;
-		public ImageDebugDirectory CodeViewDebugDirectory => codeViewDebugDir;
-		public PdbReaderOptions Options { get; }
+        
+		public bool HasDebugInfo { get { return codeViewDebugDir != null; } }
+		public ImageDebugDirectory CodeViewDebugDirectory { get { return codeViewDebugDir; } }
+        public PdbReaderOptions Options { get { return Options__BackingField; } }
 
 		public PdbReaderContext(IPEImage peImage, PdbReaderOptions options) {
 			this.peImage = peImage;
-			Options = options;
+            Options__BackingField = options;
 			codeViewDebugDir = TryGetDebugDirectoryEntry(peImage, ImageDebugType.CodeView);
 		}
 
-		public ImageDebugDirectory TryGetDebugDirectoryEntry(ImageDebugType imageDebugType) =>
-			TryGetDebugDirectoryEntry(peImage, imageDebugType);
+		public ImageDebugDirectory TryGetDebugDirectoryEntry(ImageDebugType imageDebugType) {
+			return TryGetDebugDirectoryEntry(peImage, imageDebugType);
+        }
 
 		static ImageDebugDirectory TryGetDebugDirectoryEntry(IPEImage peImage, ImageDebugType imageDebugType) {
 			var list = peImage.ImageDebugDirectories;
@@ -33,7 +37,7 @@ namespace dnlib.DotNet.Pdb {
 			return null;
 		}
 
-		public bool TryGetCodeViewData(out Guid guid, out uint age) => TryGetCodeViewData(out guid, out age, out _);
+		public bool TryGetCodeViewData(out Guid guid, out uint age) { string pdbFilename;  return TryGetCodeViewData(out guid, out age, out pdbFilename); }
 
 		public bool TryGetCodeViewData(out Guid guid, out uint age, out string pdbFilename) {
 			guid = Guid.Empty;
@@ -53,16 +57,16 @@ namespace dnlib.DotNet.Pdb {
 
 		DataReader GetCodeViewDataReader() {
 			if (codeViewDebugDir == null)
-				return default;
+				return default(DataReader);
 			return CreateReader(codeViewDebugDir.PointerToRawData, codeViewDebugDir.SizeOfData);
 		}
 
 		public DataReader CreateReader(FileOffset offset, uint size) {
 			if (offset == 0 || size == 0)
-				return default;
+				return default(DataReader);
 			var reader = peImage.CreateReader(offset, size);
 			if (reader.Length != size)
-				return default;
+				return default(DataReader);
 			return reader;
 		}
 	}

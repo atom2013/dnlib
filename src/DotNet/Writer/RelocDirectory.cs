@@ -18,7 +18,7 @@ namespace dnlib.DotNet.Writer {
 		RVA rva;
 		uint totalSize;
 
-		readonly struct RelocInfo {
+		struct RelocInfo {
 			public readonly IChunk Chunk;
 			public readonly uint OffsetOrRva;
 			public RelocInfo(IChunk chunk, uint offset) {
@@ -28,18 +28,18 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public FileOffset FileOffset => offset;
+		public FileOffset FileOffset { get { return offset; } }
 
 		/// <inheritdoc/>
-		public RVA RVA => rva;
+		public RVA RVA { get { return rva; } }
 
-		internal bool NeedsRelocSection => allRelocRvas.Count != 0;
+		internal bool NeedsRelocSection { get { return allRelocRvas.Count != 0; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="machine">Machine</param>
-		public RelocDirectory(Machine machine) => this.machine = machine;
+		public RelocDirectory(Machine machine) { this.machine = machine; }
 
 		/// <inheritdoc/>
 		public void SetOffset(FileOffset offset, RVA rva) {
@@ -76,10 +76,10 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public uint GetFileLength() => totalSize;
+		public uint GetFileLength() { return totalSize; }
 
 		/// <inheritdoc/>
-		public uint GetVirtualSize() => GetFileLength();
+        public uint GetVirtualSize() { return GetFileLength(); }
 
 		/// <inheritdoc/>
 		public void WriteTo(DataWriter writer) {

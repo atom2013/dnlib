@@ -31,8 +31,9 @@ namespace dnlib.DotNet.Resources {
 		/// <param name="module">Owner module</param>
 		/// <param name="stream">Output stream</param>
 		/// <param name="resources">.NET resources</param>
-		public static void Write(ModuleDef module, Stream stream, ResourceElementSet resources) =>
-			new ResourceWriter(module, stream, resources).Write();
+        public static void Write(ModuleDef module, Stream stream, ResourceElementSet resources) {
+            new ResourceWriter(module, stream, resources).Write();
+        }
 
 		void Write() {
 			InitializeUserTypes();

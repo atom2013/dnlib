@@ -18,13 +18,13 @@ namespace dnlib.DotNet.Pdb.Dss {
 		readonly bool isDeterministic;
 		bool closeCalled;
 
-		public override bool IsDeterministic => isDeterministic;
-		public override bool SupportsAsyncMethods => asyncMethodWriter != null;
+		public override bool IsDeterministic { get { return isDeterministic; } }
+		public override bool SupportsAsyncMethods { get { return asyncMethodWriter != null; } }
 
 		public SymbolWriterImpl(ISymUnmanagedWriter2 writer, string pdbFileName, Stream pdbStream, PdbWriterOptions options, bool ownsStream) {
-			this.writer = writer ?? throw new ArgumentNullException(nameof(writer));
+            if (writer != null) this.writer = writer; else throw new ArgumentNullException("writer");
 			asyncMethodWriter = writer as ISymUnmanagedAsyncMethodPropertiesWriter;
-			this.pdbStream = pdbStream ?? throw new ArgumentNullException(nameof(pdbStream));
+            if (pdbStream != null) this.pdbStream = pdbStream; else throw new ArgumentNullException("pdbStream");
 			this.pdbFileName = pdbFileName;
 			this.ownsStream = ownsStream;
 			isDeterministic = (options & PdbWriterOptions.Deterministic) != 0 && writer is ISymUnmanagedWriter6;
@@ -37,8 +37,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 			writer.Close();
 		}
 
-		public override void CloseMethod() => writer.CloseMethod();
-		public override void CloseScope(int endOffset) => writer.CloseScope((uint)endOffset);
+		public override void CloseMethod() { writer.CloseMethod(); }
+		public override void CloseScope(int endOffset) { writer.CloseScope((uint)endOffset); }
 
 		public override void DefineAsyncStepInfo(uint[] yieldOffsets, uint[] breakpointOffset, uint[] breakpointMethod) {
 			if (asyncMethodWriter == null)
@@ -54,10 +54,11 @@ namespace dnlib.DotNet.Pdb.Dss {
 			asyncMethodWriter.DefineCatchHandlerILOffset(catchHandlerOffset);
 		}
 
-		public override void DefineConstant(string name, object value, uint sigToken) => writer.DefineConstant2(name, value, sigToken);
+		public override void DefineConstant(string name, object value, uint sigToken) { writer.DefineConstant2(name, value, sigToken); }
 
 		public override ISymbolDocumentWriter DefineDocument(string url, Guid language, Guid languageVendor, Guid documentType) {
-			writer.DefineDocument(url, ref language, ref languageVendor, ref documentType, out var unDocWriter);
+            ISymUnmanagedDocumentWriter unDocWriter;
+            writer.DefineDocument(url, ref language, ref languageVendor, ref documentType, out unDocWriter);
 			return unDocWriter == null ? null : new SymbolDocumentWriter(unDocWriter);
 		}
 
@@ -74,19 +75,20 @@ namespace dnlib.DotNet.Pdb.Dss {
 			writer.DefineSequencePoints(doc.SymUnmanagedDocumentWriter, arraySize, offsets, lines, columns, endLines, endColumns);
 		}
 
-		public override void OpenMethod(MDToken method) => writer.OpenMethod(method.Raw);
+		public override void OpenMethod(MDToken method) { writer.OpenMethod(method.Raw); }
 
 		public override int OpenScope(int startOffset) {
-			writer.OpenScope((uint)startOffset, out uint result);
+            uint result;
+            writer.OpenScope((uint)startOffset, out result);
 			return (int)result;
 		}
 
-		public override void SetSymAttribute(MDToken parent, string name, byte[] data) => writer.SetSymAttribute(parent.Raw, name, (uint)data.Length, data);
-		public override void SetUserEntryPoint(MDToken entryMethod) => writer.SetUserEntryPoint(entryMethod.Raw);
-		public override void UsingNamespace(string fullName) => writer.UsingNamespace(fullName);
+		public override void SetSymAttribute(MDToken parent, string name, byte[] data) { writer.SetSymAttribute(parent.Raw, name, (uint)data.Length, data); }
+		public override void SetUserEntryPoint(MDToken entryMethod) { writer.SetUserEntryPoint(entryMethod.Raw); }
+		public override void UsingNamespace(string fullName) { writer.UsingNamespace(fullName); }
 
 		public override unsafe bool GetDebugInfo(ChecksumAlgorithm pdbChecksumAlgorithm, ref uint pdbAge, out Guid guid, out uint stamp, out IMAGE_DEBUG_DIRECTORY pIDD, out byte[] codeViewData) {
-			pIDD = default;
+			pIDD = default(IMAGE_DEBUG_DIRECTORY);
 			codeViewData = null;
 
 			if (isDeterministic) {
@@ -95,39 +97,45 @@ namespace dnlib.DotNet.Pdb.Dss {
 				pdbStream.Position = 0;
 				var checksumBytes = Hasher.Hash(pdbChecksumAlgorithm, pdbStream, pdbStream.Length);
 				pdbStream.Position = oldPos;
-				if (writer is ISymUnmanagedWriter8 writer8) {
+                ISymUnmanagedWriter8 writer8;
+                ISymUnmanagedWriter7 writer7;
+                if ((writer8 = writer as ISymUnmanagedWriter8) != null) {
 					RoslynContentIdProvider.GetContentId(checksumBytes, out guid, out stamp);
 					writer8.UpdateSignature(guid, stamp, pdbAge);
 					return true;
 				}
-				else if (writer is ISymUnmanagedWriter7 writer7) {
+				else if ((writer7 = writer as ISymUnmanagedWriter7) != null) {
 					fixed (byte* p = checksumBytes)
 						writer7.UpdateSignatureByHashingContent(new IntPtr(p), (uint)checksumBytes.Length);
 				}
 			}
 
-			writer.GetDebugInfo(out pIDD, 0, out uint size, null);
+            uint size;
+            writer.GetDebugInfo(out pIDD, 0, out size, null);
 			codeViewData = new byte[size];
 			writer.GetDebugInfo(out pIDD, size, out size, codeViewData);
 
-			if (writer is IPdbWriter comPdbWriter) {
+            IPdbWriter comPdbWriter;
+            if ((comPdbWriter = writer as IPdbWriter) != null) {
 				var guidBytes = new byte[16];
 				Array.Copy(codeViewData, 4, guidBytes, 0, 16);
 				guid = new Guid(guidBytes);
-				comPdbWriter.GetSignatureAge(out stamp, out uint age);
+                uint age;
+                comPdbWriter.GetSignatureAge(out stamp, out age);
 				Debug.Assert(age == pdbAge);
 				pdbAge = age;
 				return true;
 			}
 
-			Debug.Fail($"COM PDB writer doesn't impl {nameof(IPdbWriter)}");
-			guid = default;
+			Debug.Fail( string.Format( "COM PDB writer doesn't impl {0}",  "IPdbWriter" ) );
+			guid = default(Guid);
 			stamp = 0;
 			return false;
 		}
 
-		public override void DefineLocalVariable(string name, uint attributes, uint sigToken, uint addrKind, uint addr1, uint addr2, uint addr3, uint startOffset, uint endOffset) =>
-			writer.DefineLocalVariable2(name, attributes, sigToken, addrKind, addr1, addr2, addr3, startOffset, endOffset);
+        public override void DefineLocalVariable(string name, uint attributes, uint sigToken, uint addrKind, uint addr1, uint addr2, uint addr3, uint startOffset, uint endOffset) {
+            writer.DefineLocalVariable2(name, attributes, sigToken, addrKind, addr1, addr2, addr3, startOffset, endOffset);
+        }
 
 		public override void Initialize(Metadata metadata) {
 			if (isDeterministic)
@@ -139,7 +147,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 		public override unsafe void SetSourceServerData(byte[] data) {
 			if (data == null)
 				return;
-			if (writer is ISymUnmanagedWriter8 writer8) {
+            ISymUnmanagedWriter8 writer8;
+            if ((writer8 = writer as ISymUnmanagedWriter8) != null) {
 				fixed (void* p = data)
 					writer8.SetSourceServerData(new IntPtr(p), (uint)data.Length);
 			}
@@ -148,7 +157,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 		public override unsafe void SetSourceLinkData(byte[] data) {
 			if (data == null)
 				return;
-			if (writer is ISymUnmanagedWriter8 writer8) {
+            ISymUnmanagedWriter8 writer8;
+            if ((writer8 = writer as ISymUnmanagedWriter8) != null) {
 				fixed (void* p = data)
 					writer8.SetSourceLinkData(new IntPtr(p), (uint)data.Length);
 			}

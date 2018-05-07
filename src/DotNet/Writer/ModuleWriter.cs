@@ -45,73 +45,73 @@ namespace dnlib.DotNet.Writer {
 		bool needStartupStub;
 
 		/// <inheritdoc/>
-		public override ModuleDef Module => module;
+		public override ModuleDef Module { get { return module; } }
 
 		/// <inheritdoc/>
-		public override ModuleWriterOptionsBase TheOptions => Options;
+		public override ModuleWriterOptionsBase TheOptions { get { return Options; } }
 
 		/// <summary>
 		/// Gets/sets the writer options. This is never <c>null</c>
 		/// </summary>
 		public ModuleWriterOptions Options {
-			get => options ?? (options = new ModuleWriterOptions(module));
-			set => options = value;
+			get { return options ?? (options = new ModuleWriterOptions(module)); }
+			set { options = value; }
 		}
 
 		/// <summary>
 		/// Gets all <see cref="PESection"/>s
 		/// </summary>
-		public override List<PESection> Sections => sections;
+		public override List<PESection> Sections { get { return sections; } }
 
 		/// <summary>
 		/// Gets the <c>.text</c> section
 		/// </summary>
-		public override PESection TextSection => textSection;
+		public override PESection TextSection { get { return textSection; } }
 
 		/// <summary>
 		/// Gets the <c>.sdata</c> section
 		/// </summary>
-		internal PESection SdataSection => sdataSection;
+		internal PESection SdataSection { get { return sdataSection; } }
 
 		/// <summary>
 		/// Gets the <c>.rsrc</c> section or null if none
 		/// </summary>
-		public override PESection RsrcSection => rsrcSection;
+		public override PESection RsrcSection { get { return rsrcSection; } }
 
 		/// <summary>
 		/// Gets the <c>.reloc</c> section
 		/// </summary>
-		public PESection RelocSection => relocSection;
+		public PESection RelocSection { get { return relocSection; } }
 
 		/// <summary>
 		/// Gets the PE headers
 		/// </summary>
-		public PEHeaders PEHeaders => peHeaders;
+		public PEHeaders PEHeaders { get { return peHeaders; } }
 
 		/// <summary>
 		/// Gets the IAT or <c>null</c> if there's none
 		/// </summary>
-		public ImportAddressTable ImportAddressTable => importAddressTable;
+		public ImportAddressTable ImportAddressTable { get { return importAddressTable; } }
 
 		/// <summary>
 		/// Gets the .NET header
 		/// </summary>
-		public ImageCor20Header ImageCor20Header => imageCor20Header;
+		public ImageCor20Header ImageCor20Header { get { return imageCor20Header; } }
 
 		/// <summary>
 		/// Gets the import directory or <c>null</c> if there's none
 		/// </summary>
-		public ImportDirectory ImportDirectory => importDirectory;
+		public ImportDirectory ImportDirectory { get { return importDirectory; } }
 
 		/// <summary>
 		/// Gets the startup stub or <c>null</c> if there's none
 		/// </summary>
-		public StartupStub StartupStub => startupStub;
+		public StartupStub StartupStub { get { return startupStub; } }
 
 		/// <summary>
 		/// Gets the reloc directory or <c>null</c> if there's none
 		/// </summary>
-		public RelocDirectory RelocDirectory => relocDirectory;
+		public RelocDirectory RelocDirectory { get { return relocDirectory; } }
 
 		/// <summary>
 		/// Constructor
@@ -150,7 +150,7 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		protected override Win32Resources GetWin32Resources() => Options.Win32Resources ?? module.Win32Resources;
+        protected override Win32Resources GetWin32Resources() { return Options.Win32Resources ?? module.Win32Resources; }
 
 		void CreateSections() {
 			sections = new List<PESection>();
@@ -283,10 +283,12 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		uint GetEntryPoint() {
-			if (module.ManagedEntryPoint is MethodDef methodEntryPoint)
+            MethodDef methodEntryPoint;
+            if ((methodEntryPoint = module.ManagedEntryPoint as MethodDef) != null)
 				return new MDToken(Table.Method, metadata.GetRid(methodEntryPoint)).Raw;
 
-			if (module.ManagedEntryPoint is FileDef fileEntryPoint)
+            FileDef fileEntryPoint;
+            if ((fileEntryPoint = module.ManagedEntryPoint as FileDef) != null)
 				return new MDToken(Table.File, metadata.GetRid(fileEntryPoint)).Raw;
 
 			uint nativeEntryPoint = (uint)module.NativeEntryPoint;

@@ -119,13 +119,15 @@
 		public static CorLibTypeSig GetCorLibTypeSig(this ICorLibTypes self, ITypeDefOrRef type) {
 			CorLibTypeSig corLibType;
 
-			if (type is TypeDef td &&
+            TypeDef td;
+			if ((td = type as TypeDef) != null &&
 				td.DeclaringType == null &&
 				(corLibType = self.GetCorLibTypeSig(td.Namespace, td.Name, td.DefinitionAssembly)) != null) {
 				return corLibType;
 			}
 
-			if (type is TypeRef tr &&
+            TypeRef tr;
+			if ((tr = type as TypeRef) != null &&
 				!(tr.ResolutionScope is TypeRef) &&
 				(corLibType = self.GetCorLibTypeSig(tr.Namespace, tr.Name, tr.DefinitionAssembly)) != null) {
 				return corLibType;
@@ -143,8 +145,9 @@
 		/// <param name="name">Name</param>
 		/// <param name="defAsm">Definition assembly</param>
 		/// <returns>A <see cref="CorLibTypeSig"/> or <c>null</c> if it didn't match any primitive type</returns>
-		public static CorLibTypeSig GetCorLibTypeSig(this ICorLibTypes self, UTF8String @namespace, UTF8String name, IAssembly defAsm) =>
-			self.GetCorLibTypeSig(UTF8String.ToSystemStringOrEmpty(@namespace), UTF8String.ToSystemStringOrEmpty(name), defAsm);
+        public static CorLibTypeSig GetCorLibTypeSig(this ICorLibTypes self, UTF8String @namespace, UTF8String name, IAssembly defAsm) {
+            return self.GetCorLibTypeSig(UTF8String.ToSystemStringOrEmpty(@namespace), UTF8String.ToSystemStringOrEmpty(name), defAsm);
+        }
 
 		/// <summary>
 		/// Gets a <see cref="CorLibTypeSig"/> if <paramref name="namespace"/> and

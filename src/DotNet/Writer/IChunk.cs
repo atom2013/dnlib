@@ -79,8 +79,9 @@ namespace dnlib.DotNet.Writer {
 				VerifyWriteToThrow(chunk);
 		}
 
-		static void VerifyWriteToThrow(IChunk chunk) =>
-			throw new IOException($"Did not write all bytes: {chunk.GetType().FullName}");
+		static void VerifyWriteToThrow(IChunk chunk) {
+            throw new IOException(string.Format("Did not write all bytes: {0}", chunk.GetType().FullName));
+        }
 
 		/// <summary>
 		/// Writes a data directory

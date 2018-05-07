@@ -19,23 +19,23 @@ namespace dnlib.DotNet {
 		protected uint rid;
 
 		/// <inheritdoc/>
-		public MDToken MDToken => new MDToken(Table.ManifestResource, rid);
+		public MDToken MDToken { get { return new MDToken(Table.ManifestResource, rid); } }
 
 		/// <inheritdoc/>
 		public uint Rid {
-			get => rid;
-			set => rid = value;
+			get { return rid; }
+			set { rid = value; }
 		}
 
 		/// <inheritdoc/>
-		public int HasCustomAttributeTag => 18;
+		public int HasCustomAttributeTag { get { return 18; } }
 
 		/// <summary>
 		/// From column ManifestResource.Offset
 		/// </summary>
 		public uint Offset {
-			get => offset;
-			set => offset = value;
+			get { return offset; }
+			set { offset = value; }
 		}
 		/// <summary/>
 		protected uint offset;
@@ -44,8 +44,8 @@ namespace dnlib.DotNet {
 		/// From column ManifestResource.Flags
 		/// </summary>
 		public ManifestResourceAttributes Flags {
-			get => (ManifestResourceAttributes)attributes;
-			set => attributes = (int)value;
+			get { return (ManifestResourceAttributes)attributes; }
+			set { attributes = (int)value; }
 		}
 		/// <summary>Attributes</summary>
 		protected int attributes;
@@ -54,8 +54,8 @@ namespace dnlib.DotNet {
 		/// From column ManifestResource.Name
 		/// </summary>
 		public UTF8String Name {
-			get => name;
-			set => name = value;
+			get { return name; }
+			set { name = value; }
 		}
 		/// <summary>Name</summary>
 		protected UTF8String name;
@@ -64,8 +64,8 @@ namespace dnlib.DotNet {
 		/// From column ManifestResource.Implementation
 		/// </summary>
 		public IImplementation Implementation {
-			get => implementation;
-			set => implementation = value;
+			get { return implementation; }
+			set { implementation = value; }
 		}
 		/// <summary/>
 		protected IImplementation implementation;
@@ -83,17 +83,18 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected CustomAttributeCollection customAttributes;
 		/// <summary>Initializes <see cref="customAttributes"/></summary>
-		protected virtual void InitializeCustomAttributes() =>
+		protected virtual void InitializeCustomAttributes() {
 			Interlocked.CompareExchange(ref customAttributes, new CustomAttributeCollection(), null);
+        }
 
 		/// <inheritdoc/>
-		public bool HasCustomAttributes => CustomAttributes.Count > 0;
+		public bool HasCustomAttributes { get { return CustomAttributes.Count > 0; } }
 
 		/// <inheritdoc/>
-		public int HasCustomDebugInformationTag => 18;
+		public int HasCustomDebugInformationTag { get { return 18; } }
 
 		/// <inheritdoc/>
-		public bool HasCustomDebugInfos => CustomDebugInfos.Count > 0;
+		public bool HasCustomDebugInfos { get { return CustomDebugInfos.Count > 0; } }
 
 		/// <summary>
 		/// Gets all custom debug infos
@@ -108,8 +109,9 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected IList<PdbCustomDebugInfo> customDebugInfos;
 		/// <summary>Initializes <see cref="customDebugInfos"/></summary>
-		protected virtual void InitializeCustomDebugInfos() =>
+		protected virtual void InitializeCustomDebugInfos() {
 			Interlocked.CompareExchange(ref customDebugInfos, new List<PdbCustomDebugInfo>(), null);
+        }
 
 		/// <summary>
 		/// Modify <see cref="attributes"/> property: <see cref="attributes"/> =
@@ -117,26 +119,27 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="andMask">Value to <c>AND</c></param>
 		/// <param name="orMask">Value to OR</param>
-		void ModifyAttributes(ManifestResourceAttributes andMask, ManifestResourceAttributes orMask) =>
+		void ModifyAttributes(ManifestResourceAttributes andMask, ManifestResourceAttributes orMask) {
 			attributes = (attributes & (int)andMask) | (int)orMask;
+        }
 
 		/// <summary>
 		/// Gets/sets the visibility
 		/// </summary>
 		public ManifestResourceAttributes Visibility {
-			get => (ManifestResourceAttributes)attributes & ManifestResourceAttributes.VisibilityMask;
-			set => ModifyAttributes(~ManifestResourceAttributes.VisibilityMask, value & ManifestResourceAttributes.VisibilityMask);
+			get { return (ManifestResourceAttributes)attributes & ManifestResourceAttributes.VisibilityMask; }
+			set { ModifyAttributes(~ManifestResourceAttributes.VisibilityMask, value & ManifestResourceAttributes.VisibilityMask); }
 		}
 
 		/// <summary>
 		/// <c>true</c> if <see cref="ManifestResourceAttributes.Public"/> is set
 		/// </summary>
-		public bool IsPublic => ((ManifestResourceAttributes)attributes & ManifestResourceAttributes.VisibilityMask) == ManifestResourceAttributes.Public;
+		public bool IsPublic { get { return ((ManifestResourceAttributes)attributes & ManifestResourceAttributes.VisibilityMask) == ManifestResourceAttributes.Public; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="ManifestResourceAttributes.Private"/> is set
 		/// </summary>
-		public bool IsPrivate => ((ManifestResourceAttributes)attributes & ManifestResourceAttributes.VisibilityMask) == ManifestResourceAttributes.Private;
+        public bool IsPrivate { get { return ((ManifestResourceAttributes)attributes & ManifestResourceAttributes.VisibilityMask) == ManifestResourceAttributes.Private; } }
 	}
 
 	/// <summary>
@@ -193,7 +196,7 @@ namespace dnlib.DotNet {
 		readonly uint origRid;
 
 		/// <inheritdoc/>
-		public uint OrigRid => origRid;
+		public uint OrigRid { get { return origRid; } }
 
 		/// <inheritdoc/>
 		protected override void InitializeCustomAttributes() {
@@ -221,12 +224,13 @@ namespace dnlib.DotNet {
 			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.ManifestResourceTable.IsInvalidRID(rid))
-				throw new BadImageFormatException($"ManifestResource rid {rid} does not exist");
+				throw new BadImageFormatException( string.Format( "ManifestResource rid {0} does not exist", rid ) );
 #endif
 			origRid = rid;
 			this.rid = rid;
 			this.readerModule = readerModule;
-			bool b = readerModule.TablesStream.TryReadManifestResourceRow(origRid, out var row);
+            RawManifestResourceRow row;
+            bool b = readerModule.TablesStream.TryReadManifestResourceRow(origRid, out row);
 			Debug.Assert(b);
 			offset = row.Offset;
 			attributes = (int)row.Flags;

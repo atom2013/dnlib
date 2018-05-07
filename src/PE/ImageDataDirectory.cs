@@ -16,12 +16,12 @@ namespace dnlib.PE {
 		/// <summary>
 		/// Returns the IMAGE_DATA_DIRECTORY.VirtualAddress field
 		/// </summary>
-		public RVA VirtualAddress => virtualAddress;
+		public RVA VirtualAddress { get { return virtualAddress; } }
 
 		/// <summary>
 		/// Returns the IMAGE_DATA_DIRECTORY.Size field
 		/// </summary>
-		public uint Size => dataSize;
+        public uint Size { get { return dataSize; } }
 
 		/// <summary>
 		/// Default constructor

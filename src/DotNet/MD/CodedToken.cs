@@ -96,12 +96,12 @@ namespace dnlib.DotNet.MD {
 		/// <summary>
 		/// Returns all types of tables
 		/// </summary>
-		public Table[] TableTypes => tableTypes;
+		public Table[] TableTypes { get { return tableTypes; } }
 
 		/// <summary>
 		/// Returns the number of bits that is used to encode table type
 		/// </summary>
-		public int Bits => bits;
+		public int Bits { get { return bits; } }
 
 		/// <summary>
 		/// Constructor
@@ -120,7 +120,7 @@ namespace dnlib.DotNet.MD {
 		/// <param name="token">The token</param>
 		/// <returns>Coded token</returns>
 		/// <seealso cref="Encode(MDToken,out uint)"/>
-		public uint Encode(MDToken token) => Encode(token.Raw);
+		public uint Encode(MDToken token) { return Encode(token.Raw); }
 
 		/// <summary>
 		/// Encodes a token
@@ -129,7 +129,8 @@ namespace dnlib.DotNet.MD {
 		/// <returns>Coded token</returns>
 		/// <seealso cref="Encode(uint,out uint)"/>
 		public uint Encode(uint token) {
-			Encode(token, out uint codedToken);
+            uint codedToken;
+            Encode(token, out codedToken);
 			return codedToken;
 		}
 
@@ -139,7 +140,7 @@ namespace dnlib.DotNet.MD {
 		/// <param name="token">The token</param>
 		/// <param name="codedToken">Coded token</param>
 		/// <returns><c>true</c> if successful</returns>
-		public bool Encode(MDToken token, out uint codedToken) => Encode(token.Raw, out codedToken);
+        public bool Encode(MDToken token, out uint codedToken) { return Encode(token.Raw, out codedToken); }
 
 		/// <summary>
 		/// Encodes a token
@@ -166,7 +167,8 @@ namespace dnlib.DotNet.MD {
 		/// <returns>Decoded token or 0 on failure</returns>
 		/// <seealso cref="Decode(uint,out MDToken)"/>
 		public MDToken Decode2(uint codedToken) {
-			Decode(codedToken, out uint token);
+            uint token;
+            Decode(codedToken, out token);
 			return new MDToken(token);
 		}
 
@@ -177,7 +179,8 @@ namespace dnlib.DotNet.MD {
 		/// <returns>Decoded token or 0 on failure</returns>
 		/// <seealso cref="Decode(uint,out uint)"/>
 		public uint Decode(uint codedToken) {
-			Decode(codedToken, out uint token);
+            uint token;
+            Decode(codedToken, out token);
 			return token;
 		}
 
@@ -188,7 +191,8 @@ namespace dnlib.DotNet.MD {
 		/// <param name="token">Decoded token</param>
 		/// <returns><c>true</c> if successful</returns>
 		public bool Decode(uint codedToken, out MDToken token) {
-			bool result = Decode(codedToken, out uint decodedToken);
+            uint decodedToken;
+            bool result = Decode(codedToken, out decodedToken);
 			token = new MDToken(decodedToken);
 			return result;
 		}

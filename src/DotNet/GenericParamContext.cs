@@ -4,7 +4,7 @@ namespace dnlib.DotNet {
 	/// <summary>
 	/// Generic parameter context
 	/// </summary>
-	public readonly struct GenericParamContext {
+	public struct GenericParamContext {
 		/// <summary>
 		/// Type context
 		/// </summary>
@@ -18,7 +18,7 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// true if <see cref="Type"/> and <see cref="Method"/> are both <c>null</c>
 		/// </summary>
-		public bool IsEmpty => Type == null && Method == null;
+		public bool IsEmpty { get { return Type == null && Method == null; } }
 
 		/// <summary>
 		/// Creates a new <see cref="GenericParamContext"/> instance and initializes the
@@ -40,7 +40,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="type">Type</param>
 		/// <returns>A new <see cref="GenericParamContext"/> instance</returns>
-		public static GenericParamContext Create(TypeDef type) => new GenericParamContext(type);
+        public static GenericParamContext Create(TypeDef type) { return new GenericParamContext(type); }
 
 		/// <summary>
 		/// Constructor

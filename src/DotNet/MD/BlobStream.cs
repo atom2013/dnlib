@@ -27,7 +27,8 @@ namespace dnlib.DotNet.MD {
 			// 0-length data, even if that first byte isn't 0 at all.
 			if (offset == 0)
 				return Array2.Empty<byte>();
-			if (!TryCreateReader(offset, out var reader))
+            DataReader reader;
+			if (!TryCreateReader(offset, out reader))
 				return null;
 			return reader.ToArray();
 		}
@@ -38,7 +39,7 @@ namespace dnlib.DotNet.MD {
 		/// </summary>
 		/// <param name="offset">Offset of data</param>
 		/// <returns>The data</returns>
-		public byte[] ReadNoNull(uint offset) => Read(offset) ?? Array2.Empty<byte>();
+		public byte[] ReadNoNull(uint offset) { return Read(offset) ?? Array2.Empty<byte>(); }
 
 		/// <summary>
 		/// Creates a reader that can access a blob
@@ -46,7 +47,8 @@ namespace dnlib.DotNet.MD {
 		/// <param name="offset">Offset of blob</param>
 		/// <returns>A new stream</returns>
 		public DataReader CreateReader(uint offset) {
-			TryCreateReader(offset, out var reader);
+            DataReader reader;
+			TryCreateReader(offset, out reader);
 			return reader;
 		}
 
@@ -61,7 +63,8 @@ namespace dnlib.DotNet.MD {
 			if (!IsValidOffset(offset))
 				return false;
 			reader.Position = offset;
-			if (!reader.TryReadCompressedUInt32(out uint length))
+            uint length;
+			if (!reader.TryReadCompressedUInt32(out length))
 				return false;
 			if (!reader.CanRead(length))
 				return false;

@@ -19,8 +19,8 @@ namespace dnlib.DotNet {
 		/// Gets the ordinal or null
 		/// </summary>
 		public ushort? Ordinal {
-			get => ordinal;
-			set => ordinal = value;
+			get { return ordinal; }
+			set { ordinal = value; }
 		}
 
 		/// <summary>
@@ -28,22 +28,22 @@ namespace dnlib.DotNet {
 		/// (<see cref="MethodDef.Name"/>) is used as the exported name.
 		/// </summary>
 		public string Name {
-			get => name;
-			set => name = value;
+			get { return name; }
+			set { name = value; }
 		}
 
 		/// <summary>
 		/// Gets the options
 		/// </summary>
 		public MethodExportInfoOptions Options {
-			get => options;
-			set => options = value;
+			get { return options; }
+			set { options = value; }
 		}
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public MethodExportInfo() => options = DefaultOptions;
+        public MethodExportInfo() { options = DefaultOptions; }
 
 		/// <summary>
 		/// Constructor

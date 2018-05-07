@@ -130,17 +130,17 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Gets the custom debug info kind
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => kind;
+		public override PdbCustomDebugInfoKind Kind { get { return kind; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => guid;
+		public override Guid Guid { get { return guid; } }
 
 		/// <summary>
 		/// Gets the data
 		/// </summary>
-		public byte[] Data => data;
+		public byte[] Data { get { return data; } }
 
 		/// <summary>
 		/// Constructor
@@ -149,7 +149,7 @@ namespace dnlib.DotNet.Pdb {
 		/// <param name="data">Raw custom debug info data</param>
 		public PdbUnknownCustomDebugInfo(PdbCustomDebugInfoKind kind, byte[] data) {
 			this.kind = kind;
-			this.data = data ?? throw new ArgumentNullException(nameof(data));
+            if (data != null) this.data = data; else throw new ArgumentNullException("data");
 			guid = Guid.Empty;
 		}
 
@@ -160,7 +160,7 @@ namespace dnlib.DotNet.Pdb {
 		/// <param name="data">Raw custom debug info data</param>
 		public PdbUnknownCustomDebugInfo(Guid guid, byte[] data) {
 			kind = PdbCustomDebugInfoKind.Unknown;
-			this.data = data ?? throw new ArgumentNullException(nameof(data));
+            if (data != null) this.data = data; else throw new ArgumentNullException("data");
 			this.guid = guid;
 		}
 	}
@@ -174,28 +174,28 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.UsingGroups"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.UsingGroups;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.UsingGroups; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => Guid.Empty;
+		public override Guid Guid { get { return Guid.Empty; } }
 
 		/// <summary>
 		/// Gets the using counts
 		/// </summary>
-		public IList<ushort> UsingCounts => usingCounts;
+		public IList<ushort> UsingCounts { get { return usingCounts; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public PdbUsingGroupsCustomDebugInfo() => usingCounts = new List<ushort>();
+		public PdbUsingGroupsCustomDebugInfo() { usingCounts = new List<ushort>(); }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="capacity">Initial capacity of <see cref="UsingCounts"/></param>
-		public PdbUsingGroupsCustomDebugInfo(int capacity) => usingCounts = new List<ushort>(capacity);
+		public PdbUsingGroupsCustomDebugInfo(int capacity) { usingCounts = new List<ushort>(capacity); }
 	}
 
 	/// <summary>
@@ -207,19 +207,19 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.ForwardMethodInfo"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.ForwardMethodInfo;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.ForwardMethodInfo; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => Guid.Empty;
+		public override Guid Guid { get { return Guid.Empty; } }
 
 		/// <summary>
 		/// Gets/sets the referenced method
 		/// </summary>
 		public IMethodDefOrRef Method {
-			get => method;
-			set => method = value;
+			get { return method; }
+			set { method = value; }
 		}
 
 		/// <summary>
@@ -232,7 +232,7 @@ namespace dnlib.DotNet.Pdb {
 		/// Constructor
 		/// </summary>
 		/// <param name="method">The referenced method</param>
-		public PdbForwardMethodInfoCustomDebugInfo(IMethodDefOrRef method) => this.method = method;
+		public PdbForwardMethodInfoCustomDebugInfo(IMethodDefOrRef method) { this.method = method; }
 	}
 
 	/// <summary>
@@ -244,19 +244,19 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.ForwardModuleInfo"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.ForwardModuleInfo;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.ForwardModuleInfo; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => Guid.Empty;
+		public override Guid Guid { get { return Guid.Empty; } }
 
 		/// <summary>
 		/// Gets/sets the referenced method
 		/// </summary>
 		public IMethodDefOrRef Method {
-			get => method;
-			set => method = value;
+			get { return method; }
+			set { method = value; }
 		}
 
 		/// <summary>
@@ -269,7 +269,7 @@ namespace dnlib.DotNet.Pdb {
 		/// Constructor
 		/// </summary>
 		/// <param name="method">The referenced method</param>
-		public PdbForwardModuleInfoCustomDebugInfo(IMethodDefOrRef method) => this.method = method;
+		public PdbForwardModuleInfoCustomDebugInfo(IMethodDefOrRef method) { this.method = method; }
 	}
 
 	/// <summary>
@@ -279,7 +279,7 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// true if it's a syntesized local (<see cref="Start"/> and <see cref="End"/> are both null)
 		/// </summary>
-		public bool IsSynthesizedLocal => Start == null && End == null;
+		public bool IsSynthesizedLocal { get { return Start == null && End == null; } }
 
 		/// <summary>
 		/// The instruction of the first operation in the scope. Can be null if it's a synthesized local
@@ -312,28 +312,28 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.StateMachineHoistedLocalScopes"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.StateMachineHoistedLocalScopes;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.StateMachineHoistedLocalScopes; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => CustomDebugInfoGuids.StateMachineHoistedLocalScopes;
+		public override Guid Guid { get { return CustomDebugInfoGuids.StateMachineHoistedLocalScopes; } }
 
 		/// <summary>
 		/// Gets the scopes
 		/// </summary>
-		public IList<StateMachineHoistedLocalScope> Scopes => scopes;
+		public IList<StateMachineHoistedLocalScope> Scopes { get { return scopes; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public PdbStateMachineHoistedLocalScopesCustomDebugInfo() => scopes = new List<StateMachineHoistedLocalScope>();
+		public PdbStateMachineHoistedLocalScopesCustomDebugInfo() { scopes = new List<StateMachineHoistedLocalScope>(); }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="capacity">Initial capacity of <see cref="Scopes"/></param>
-		public PdbStateMachineHoistedLocalScopesCustomDebugInfo(int capacity) => scopes = new List<StateMachineHoistedLocalScope>(capacity);
+		public PdbStateMachineHoistedLocalScopesCustomDebugInfo(int capacity) { scopes = new List<StateMachineHoistedLocalScope>(capacity); }
 	}
 
 	/// <summary>
@@ -343,12 +343,12 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.StateMachineTypeName"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.StateMachineTypeName;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.StateMachineTypeName; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => Guid.Empty;
+		public override Guid Guid { get { return Guid.Empty; } }
 
 		/// <summary>
 		/// Gets/sets the state machine type
@@ -365,7 +365,7 @@ namespace dnlib.DotNet.Pdb {
 		/// Constructor
 		/// </summary>
 		/// <param name="type">State machine type</param>
-		public PdbStateMachineTypeNameCustomDebugInfo(TypeDef type) => Type = type;
+		public PdbStateMachineTypeNameCustomDebugInfo(TypeDef type) { Type = type; }
 	}
 
 	/// <summary>
@@ -377,28 +377,28 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.DynamicLocals"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.DynamicLocals;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.DynamicLocals; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => Guid.Empty;
+		public override Guid Guid { get { return Guid.Empty; } }
 
 		/// <summary>
 		/// Gets the dynamic locals
 		/// </summary>
-		public IList<PdbDynamicLocal> Locals => locals;
+		public IList<PdbDynamicLocal> Locals { get { return locals; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public PdbDynamicLocalsCustomDebugInfo() => locals = new List<PdbDynamicLocal>();
+		public PdbDynamicLocalsCustomDebugInfo() { locals = new List<PdbDynamicLocal>(); }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="capacity">Initial capacity of <see cref="Locals"/></param>
-		public PdbDynamicLocalsCustomDebugInfo(int capacity) => locals = new List<PdbDynamicLocal>(capacity);
+		public PdbDynamicLocalsCustomDebugInfo(int capacity) { locals = new List<PdbDynamicLocal>(capacity); }
 	}
 
 	/// <summary>
@@ -412,7 +412,7 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Gets the dynamic flags
 		/// </summary>
-		public IList<byte> Flags => flags;
+		public IList<byte> Flags { get { return flags; } }
 
 		/// <summary>
 		/// Gets/sets the name of the local. The name must have at most 64 characters and no char can be NUL (0x0000).
@@ -423,39 +423,39 @@ namespace dnlib.DotNet.Pdb {
 				var n = name;
 				if (n != null)
 					return n;
-				return local?.Name;
+				return local != null?local.Name:null;
 			}
-			set => name = value;
+			set { name = value; }
 		}
 
 		/// <summary>
 		/// true if it's a constant and not a variable (<see cref="Local"/> is null)
 		/// </summary>
-		public bool IsConstant => Local == null;
+		public bool IsConstant { get { return Local == null; } }
 
 		/// <summary>
 		/// true if it's a variable (<see cref="Local"/> is not null)
 		/// </summary>
-		public bool IsVariable => Local != null;
+		public bool IsVariable { get { return Local != null; } }
 
 		/// <summary>
 		/// Gets/sets the local. Could be null if there's no local (it's a 'const' local).
 		/// </summary>
 		public Local Local {
-			get => local;
-			set => local = value;
+			get { return local; }
+			set { local = value; }
 		}
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public PdbDynamicLocal() => flags = new List<byte>();
+		public PdbDynamicLocal() { flags = new List<byte>(); }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="capacity">Initial capacity of <see cref="Flags"/></param>
-		public PdbDynamicLocal(int capacity) => flags = new List<byte>(capacity);
+		public PdbDynamicLocal(int capacity) { flags = new List<byte>(capacity); }
 	}
 
 	/// <summary>
@@ -467,23 +467,23 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.EditAndContinueLocalSlotMap"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.EditAndContinueLocalSlotMap;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.EditAndContinueLocalSlotMap; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => CustomDebugInfoGuids.EncLocalSlotMap;
+		public override Guid Guid { get { return CustomDebugInfoGuids.EncLocalSlotMap; } }
 
 		/// <summary>
 		/// Gets the data. Spec: https://github.com/dotnet/corefx/blob/master/src/System.Reflection.Metadata/specs/PortablePdb-Metadata.md#EditAndContinueLocalSlotMap
 		/// </summary>
-		public byte[] Data => data;
+		public byte[] Data { get { return data; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="data">Raw custom debug info data</param>
-		public PdbEditAndContinueLocalSlotMapCustomDebugInfo(byte[] data) => this.data = data ?? throw new ArgumentNullException(nameof(data));
+		public PdbEditAndContinueLocalSlotMapCustomDebugInfo(byte[] data) { if (data != null) this.data = data; else throw new ArgumentNullException("data"); }
 	}
 
 	/// <summary>
@@ -495,23 +495,23 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.EditAndContinueLambdaMap"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.EditAndContinueLambdaMap;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.EditAndContinueLambdaMap; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => CustomDebugInfoGuids.EncLambdaAndClosureMap;
+		public override Guid Guid { get { return CustomDebugInfoGuids.EncLambdaAndClosureMap; } }
 
 		/// <summary>
 		/// Gets the data. Spec: https://github.com/dotnet/corefx/blob/master/src/System.Reflection.Metadata/specs/PortablePdb-Metadata.md#EditAndContinueLambdaAndClosureMap
 		/// </summary>
-		public byte[] Data => data;
+		public byte[] Data { get { return data; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="data">Raw custom debug info data</param>
-		public PdbEditAndContinueLambdaMapCustomDebugInfo(byte[] data) => this.data = data ?? throw new ArgumentNullException(nameof(data));
+		public PdbEditAndContinueLambdaMapCustomDebugInfo(byte[] data) { if (data != null) this.data = data; else throw new ArgumentNullException("data"); }
 	}
 
 	/// <summary>
@@ -523,28 +523,28 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.TupleElementNames"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.TupleElementNames;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.TupleElementNames; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => Guid.Empty;
+		public override Guid Guid { get { return Guid.Empty; } }
 
 		/// <summary>
 		/// Gets the tuple element names
 		/// </summary>
-		public IList<PdbTupleElementNames> Names => names;
+		public IList<PdbTupleElementNames> Names { get { return names; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public PdbTupleElementNamesCustomDebugInfo() => names = new List<PdbTupleElementNames>();
+		public PdbTupleElementNamesCustomDebugInfo() { names = new List<PdbTupleElementNames>(); }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="capacity">Initial capacity of <see cref="Names"/></param>
-		public PdbTupleElementNamesCustomDebugInfo(int capacity) => names = new List<PdbTupleElementNames>(capacity);
+		public PdbTupleElementNamesCustomDebugInfo(int capacity) { names = new List<PdbTupleElementNames>(capacity); }
 	}
 
 	/// <summary>
@@ -564,60 +564,60 @@ namespace dnlib.DotNet.Pdb {
 				var n = name;
 				if (n != null)
 					return n;
-				return local?.Name;
+				return local != null?local.Name:null;
 			}
-			set => name = value;
+			set { name = value; }
 		}
 
 		/// <summary>
 		/// Gets/sets the local. It's null if it's a constant, and non-null if it's a variable
 		/// </summary>
 		public Local Local {
-			get => local;
-			set => local = value;
+			get { return local; }
+			set { local = value; }
 		}
 
 		/// <summary>
 		/// true if it's a constant. Constants have a scope (<see cref="ScopeStart"/> and <see cref="ScopeEnd"/>)
 		/// </summary>
-		public bool IsConstant => local == null;
+		public bool IsConstant { get { return local == null; } }
 
 		/// <summary>
 		/// true if it's a variable. Variables don't have a scope (<see cref="ScopeStart"/> and <see cref="ScopeEnd"/>)
 		/// </summary>
-		public bool IsVariable => local != null;
+		public bool IsVariable { get { return local != null; } }
 
 		/// <summary>
 		/// Gets/sets the start of the scope or null. Only constants have a scope.
 		/// </summary>
 		public Instruction ScopeStart {
-			get => scopeStart;
-			set => scopeStart = value;
+			get { return scopeStart; }
+			set { scopeStart = value; }
 		}
 
 		/// <summary>
 		/// Gets/sets the end of the scope or null if it has no scope or if the scope ends at the end of the body. Only constants have a scope.
 		/// </summary>
 		public Instruction ScopeEnd {
-			get => scopeEnd;
-			set => scopeEnd = value;
+			get { return scopeEnd; }
+			set { scopeEnd = value; }
 		}
 
 		/// <summary>
 		/// Gets the tuple element names
 		/// </summary>
-		public IList<string> TupleElementNames => tupleElementNames;
+		public IList<string> TupleElementNames { get { return tupleElementNames; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public PdbTupleElementNames() => tupleElementNames = new List<string>();
+		public PdbTupleElementNames() { tupleElementNames = new List<string>(); }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="capacity">Initial capacity of <see cref="TupleElementNames"/></param>
-		public PdbTupleElementNames(int capacity) => tupleElementNames = new List<string>(capacity);
+		public PdbTupleElementNames(int capacity) { tupleElementNames = new List<string>(capacity); }
 	}
 
 	/// <summary>
@@ -629,28 +629,28 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.TupleElementNames_PortablePdb"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.TupleElementNames_PortablePdb;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.TupleElementNames_PortablePdb; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => CustomDebugInfoGuids.TupleElementNames;
+		public override Guid Guid { get { return CustomDebugInfoGuids.TupleElementNames; } }
 
 		/// <summary>
 		/// Gets the tuple element names
 		/// </summary>
-		public IList<string> Names => names;
+		public IList<string> Names { get { return names; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public PortablePdbTupleElementNamesCustomDebugInfo() => names = new List<string>();
+		public PortablePdbTupleElementNamesCustomDebugInfo() { names = new List<string>(); }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="capacity">Initial capacity of <see cref="Names"/></param>
-		public PortablePdbTupleElementNamesCustomDebugInfo(int capacity) => names = new List<string>(capacity);
+		public PortablePdbTupleElementNamesCustomDebugInfo(int capacity) { names = new List<string>(capacity); }
 	}
 
 	/// <summary>
@@ -664,12 +664,12 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.Unknown"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.Unknown;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.Unknown; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => CustomDebugInfoGuids.AsyncMethodSteppingInformationBlob;
+		public override Guid Guid { get { return CustomDebugInfoGuids.AsyncMethodSteppingInformationBlob; } }
 
 		/// <summary>
 		/// Gets the catch handler instruction or null
@@ -679,12 +679,12 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Gets all async step infos
 		/// </summary>
-		public IList<PdbAsyncStepInfo> AsyncStepInfos => asyncStepInfos;
+		public IList<PdbAsyncStepInfo> AsyncStepInfos { get { return asyncStepInfos; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public PdbAsyncMethodSteppingInformationCustomDebugInfo() => asyncStepInfos = new List<PdbAsyncStepInfo>();
+		public PdbAsyncMethodSteppingInformationCustomDebugInfo() { asyncStepInfos = new List<PdbAsyncStepInfo>(); }
 	}
 
 	/// <summary>
@@ -694,12 +694,12 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.DefaultNamespace"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.DefaultNamespace;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.DefaultNamespace; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => CustomDebugInfoGuids.DefaultNamespace;
+		public override Guid Guid { get { return CustomDebugInfoGuids.DefaultNamespace; } }
 
 		/// <summary>
 		/// Gets the default namespace
@@ -716,7 +716,7 @@ namespace dnlib.DotNet.Pdb {
 		/// Constructor
 		/// </summary>
 		/// <param name="defaultNamespace">Default namespace</param>
-		public PdbDefaultNamespaceCustomDebugInfo(string defaultNamespace) => Namespace = defaultNamespace;
+		public PdbDefaultNamespaceCustomDebugInfo(string defaultNamespace) { Namespace = defaultNamespace; }
 	}
 
 	/// <summary>
@@ -726,12 +726,12 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.DynamicLocalVariables"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.DynamicLocalVariables;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.DynamicLocalVariables; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => CustomDebugInfoGuids.DynamicLocalVariables;
+		public override Guid Guid { get { return CustomDebugInfoGuids.DynamicLocalVariables; } }
 
 		/// <summary>
 		/// Gets/sets the dynamic flags
@@ -748,7 +748,7 @@ namespace dnlib.DotNet.Pdb {
 		/// Constructor
 		/// </summary>
 		/// <param name="flags">Dynamic flags</param>
-		public PdbDynamicLocalVariablesCustomDebugInfo(bool[] flags) => Flags = flags;
+		public PdbDynamicLocalVariablesCustomDebugInfo(bool[] flags) { Flags = flags; }
 	}
 
 	/// <summary>
@@ -758,12 +758,12 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.EmbeddedSource"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.EmbeddedSource;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.EmbeddedSource; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => CustomDebugInfoGuids.EmbeddedSource;
+		public override Guid Guid { get { return CustomDebugInfoGuids.EmbeddedSource; } }
 
 		/// <summary>
 		/// Gets the source code blob.
@@ -784,7 +784,7 @@ namespace dnlib.DotNet.Pdb {
 		/// Constructor
 		/// </summary>
 		/// <param name="sourceCodeBlob">Source code blob</param>
-		public PdbEmbeddedSourceCustomDebugInfo(byte[] sourceCodeBlob) => SourceCodeBlob = sourceCodeBlob;
+		public PdbEmbeddedSourceCustomDebugInfo(byte[] sourceCodeBlob) { SourceCodeBlob = sourceCodeBlob; }
 	}
 
 	/// <summary>
@@ -794,12 +794,12 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.SourceLink"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.SourceLink;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.SourceLink; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => CustomDebugInfoGuids.SourceLink;
+		public override Guid Guid { get { return CustomDebugInfoGuids.SourceLink; } }
 
 		/// <summary>
 		/// Gets the source link file contents
@@ -816,7 +816,7 @@ namespace dnlib.DotNet.Pdb {
 		/// Constructor
 		/// </summary>
 		/// <param name="fileBlob">Source link file contents</param>
-		public PdbSourceLinkCustomDebugInfo(byte[] fileBlob) => FileBlob = fileBlob;
+		public PdbSourceLinkCustomDebugInfo(byte[] fileBlob) { FileBlob = fileBlob; }
 	}
 
 	/// <summary>
@@ -826,12 +826,12 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.SourceServer"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.SourceServer;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.SourceServer; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => Guid.Empty;
+		public override Guid Guid { get { return Guid.Empty; } }
 
 		/// <summary>
 		/// Gets the source server file contents
@@ -848,7 +848,7 @@ namespace dnlib.DotNet.Pdb {
 		/// Constructor
 		/// </summary>
 		/// <param name="fileBlob">Source server file contents</param>
-		public PdbSourceServerCustomDebugInfo(byte[] fileBlob) => FileBlob = fileBlob;
+		public PdbSourceServerCustomDebugInfo(byte[] fileBlob) { FileBlob = fileBlob; }
 	}
 
 	/// <summary>
@@ -858,12 +858,12 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.AsyncMethod"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.AsyncMethod;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.AsyncMethod; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => Guid.Empty;
+		public override Guid Guid { get { return Guid.Empty; } }
 
 		readonly IList<PdbAsyncStepInfo> asyncStepInfos;
 
@@ -881,18 +881,18 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Gets all step infos used by the debugger
 		/// </summary>
-		public IList<PdbAsyncStepInfo> StepInfos => asyncStepInfos;
+		public IList<PdbAsyncStepInfo> StepInfos { get { return asyncStepInfos; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public PdbAsyncMethodCustomDebugInfo() => asyncStepInfos = new List<PdbAsyncStepInfo>();
+		public PdbAsyncMethodCustomDebugInfo() { asyncStepInfos = new List<PdbAsyncStepInfo>(); }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="stepInfosCapacity">Default capacity for <see cref="StepInfos"/></param>
-		public PdbAsyncMethodCustomDebugInfo(int stepInfosCapacity) => asyncStepInfos = new List<PdbAsyncStepInfo>(stepInfosCapacity);
+		public PdbAsyncMethodCustomDebugInfo(int stepInfosCapacity) { asyncStepInfos = new List<PdbAsyncStepInfo>(stepInfosCapacity); }
 	}
 
 	/// <summary>
@@ -934,12 +934,12 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.IteratorMethod"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.IteratorMethod;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.IteratorMethod; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => Guid.Empty;
+		public override Guid Guid { get { return Guid.Empty; } }
 
 		/// <summary>
 		/// Gets the kickoff method
@@ -956,6 +956,6 @@ namespace dnlib.DotNet.Pdb {
 		/// Constructor
 		/// </summary>
 		/// <param name="kickoffMethod">Kickoff method</param>
-		public PdbIteratorMethodCustomDebugInfo(MethodDef kickoffMethod) => KickoffMethod = kickoffMethod;
+        public PdbIteratorMethodCustomDebugInfo(MethodDef kickoffMethod) { KickoffMethod = kickoffMethod; }
 	}
 }

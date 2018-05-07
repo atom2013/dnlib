@@ -21,8 +21,8 @@ namespace dnlib.DotNet.Emit {
 		/// Gets/sets the RVA of the native method body
 		/// </summary>
 		public RVA RVA {
-			get => rva;
-			set => rva = value;
+			get { return rva; }
+			set { rva = value; }
 		}
 
 		/// <summary>
@@ -35,7 +35,7 @@ namespace dnlib.DotNet.Emit {
 		/// Constructor
 		/// </summary>
 		/// <param name="rva">RVA of method body</param>
-		public NativeMethodBody(RVA rva) => this.rva = rva;
+		public NativeMethodBody(RVA rva) { this.rva = rva; }
 	}
 
 	/// <summary>
@@ -60,16 +60,16 @@ namespace dnlib.DotNet.Emit {
 		/// Gets/sets a flag indicating whether the original max stack value should be used.
 		/// </summary>
 		public bool KeepOldMaxStack {
-			get => keepOldMaxStack;
-			set => keepOldMaxStack = value;
+			get { return keepOldMaxStack; }
+			set { keepOldMaxStack = value; }
 		}
 
 		/// <summary>
 		/// Gets/sets the init locals flag. This is only valid if the method has any locals.
 		/// </summary>
 		public bool InitLocals {
-			get => initLocals;
-			set => initLocals = value;
+			get { return initLocals; }
+			set { initLocals = value; }
 		}
 
 		/// <summary>
@@ -77,80 +77,80 @@ namespace dnlib.DotNet.Emit {
 		/// the header.
 		/// </summary>
 		public byte HeaderSize {
-			get => headerSize;
-			set => headerSize = value;
+			get { return headerSize; }
+			set { headerSize = value; }
 		}
 
 		/// <summary>
 		/// <c>true</c> if it was a small body header (<see cref="HeaderSize"/> is <c>1</c>)
 		/// </summary>
-		public bool IsSmallHeader => headerSize == SMALL_HEADER_SIZE;
+		public bool IsSmallHeader { get { return headerSize == SMALL_HEADER_SIZE; } }
 
 		/// <summary>
 		/// <c>true</c> if it was a big body header
 		/// </summary>
-		public bool IsBigHeader => headerSize != SMALL_HEADER_SIZE;
+		public bool IsBigHeader { get { return headerSize != SMALL_HEADER_SIZE; } }
 
 		/// <summary>
 		/// Gets/sets max stack value from the fat method header.
 		/// </summary>
 		public ushort MaxStack {
-			get => maxStack;
-			set => maxStack = value;
+			get { return maxStack; }
+			set { maxStack = value; }
 		}
 
 		/// <summary>
 		/// Gets/sets the locals metadata token
 		/// </summary>
 		public uint LocalVarSigTok {
-			get => localVarSigTok;
-			set => localVarSigTok = value;
+			get { return localVarSigTok; }
+			set { localVarSigTok = value; }
 		}
 
 		/// <summary>
 		/// <c>true</c> if <see cref="Instructions"/> is not empty
 		/// </summary>
-		public bool HasInstructions => instructions.Count > 0;
+		public bool HasInstructions { get { return instructions.Count > 0; } }
 
 		/// <summary>
 		/// Gets the instructions
 		/// </summary>
-		public IList<Instruction> Instructions => instructions;
+		public IList<Instruction> Instructions { get { return instructions; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="ExceptionHandlers"/> is not empty
 		/// </summary>
-		public bool HasExceptionHandlers => exceptionHandlers.Count > 0;
+		public bool HasExceptionHandlers { get { return exceptionHandlers.Count > 0; } }
 
 		/// <summary>
 		/// Gets the exception handlers
 		/// </summary>
-		public IList<ExceptionHandler> ExceptionHandlers => exceptionHandlers;
+		public IList<ExceptionHandler> ExceptionHandlers { get { return exceptionHandlers; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="Variables"/> is not empty
 		/// </summary>
-		public bool HasVariables => localList.Count > 0;
+		public bool HasVariables { get { return localList.Count > 0; } }
 
 		/// <summary>
 		/// Gets the locals
 		/// </summary>
-		public LocalList Variables => localList;
+		public LocalList Variables { get { return localList; } }
 
 		/// <summary>
 		/// Gets/sets the PDB method. This is <c>null</c> if no PDB has been loaded or if there's
 		/// no PDB info for this method.
 		/// </summary>
 		public PdbMethod PdbMethod {
-			get => pdbMethod;
-			set => pdbMethod = value;
+			get { return pdbMethod; }
+			set { pdbMethod = value; }
 		}
 		PdbMethod pdbMethod;
 
 		/// <summary>
 		/// <c>true</c> if <see cref="PdbMethod"/> is not <c>null</c>
 		/// </summary>
-		public bool HasPdbMethod => PdbMethod != null;
+		public bool HasPdbMethod { get { return PdbMethod != null; } }
 
 		/// <summary>
 		/// Gets the total size of the body in the PE file, including header, IL bytes, and exception handlers.
@@ -188,29 +188,29 @@ namespace dnlib.DotNet.Emit {
 		/// </summary>
 		/// <param name="parameters">All method parameters, including the hidden 'this' parameter
 		/// if it's an instance method. Use <see cref="MethodDef.Parameters"/>.</param>
-		public void SimplifyMacros(IList<Parameter> parameters) => instructions.SimplifyMacros(localList, parameters);
+		public void SimplifyMacros(IList<Parameter> parameters) { instructions.SimplifyMacros(localList, parameters); }
 
 		/// <summary>
 		/// Optimizes instructions by using the shorter form if possible. Eg. <c>Ldc_I4</c> <c>1</c>
 		/// will be replaced with <c>Ldc_I4_1</c>.
 		/// </summary>
-		public void OptimizeMacros() => instructions.OptimizeMacros();
+		public void OptimizeMacros() { instructions.OptimizeMacros(); }
 
 		/// <summary>
 		/// Short branch instructions are converted to the long form, eg. <c>Beq_S</c> is
 		/// converted to <c>Beq</c>.
 		/// </summary>
-		public void SimplifyBranches() => instructions.SimplifyBranches();
+		public void SimplifyBranches() { instructions.SimplifyBranches(); }
 
 		/// <summary>
 		/// Optimizes branches by using the smallest possible branch
 		/// </summary>
-		public void OptimizeBranches() => instructions.OptimizeBranches();
+		public void OptimizeBranches() { instructions.OptimizeBranches(); }
 
 		/// <summary>
 		/// Updates each instruction's offset
 		/// </summary>
 		/// <returns>Total size in bytes of all instructions</returns>
-		public uint UpdateInstructionOffsets() => instructions.UpdateInstructionOffsets();
+        public uint UpdateInstructionOffsets() { return instructions.UpdateInstructionOffsets(); }
 	}
 }

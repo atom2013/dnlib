@@ -4,6 +4,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using dnlib.DotNet.MD;
+using dnlib.IO;
 
 namespace dnlib.DotNet.Pdb.Dss {
 	sealed unsafe class ReaderMetaDataImport : MetaDataImport, IDisposable {
@@ -12,7 +13,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 		IntPtr addrToFree;
 
 		public ReaderMetaDataImport(Metadata metadata) {
-			this.metadata = metadata ?? throw new ArgumentNullException(nameof(metadata));
+			if (metadata != null) this.metadata = metadata; else throw new ArgumentNullException("metadata");
 			var reader = metadata.BlobStream.CreateReader();
 			addrToFree = Marshal.AllocHGlobal((int)reader.BytesLeft);
 			blobPtr = (byte*)addrToFree;
@@ -21,13 +22,14 @@ namespace dnlib.DotNet.Pdb.Dss {
 			reader.ReadBytes(blobPtr, (int)reader.BytesLeft);
 		}
 
-		~ReaderMetaDataImport() => Dispose(false);
+        ~ReaderMetaDataImport() { Dispose(false); }
 
 		public override void GetTypeRefProps(uint tr, uint* ptkResolutionScope, ushort* szName, uint cchName, uint* pchName) {
 			var token = new MDToken(tr);
 			if (token.Table != Table.TypeRef)
 				throw new ArgumentException();
-			if (!metadata.TablesStream.TryReadTypeRefRow(token.Rid, out var row))
+            RawTypeRefRow row;
+			if (!metadata.TablesStream.TryReadTypeRefRow(token.Rid, out row))
 				throw new ArgumentException();
 			if (ptkResolutionScope != null)
 				*ptkResolutionScope = row.ResolutionScope;
@@ -42,7 +44,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 			var token = new MDToken(td);
 			if (token.Table != Table.TypeDef)
 				throw new ArgumentException();
-			if (!metadata.TablesStream.TryReadTypeDefRow(token.Rid, out var row))
+            RawTypeDefRow row;
+			if (!metadata.TablesStream.TryReadTypeDefRow(token.Rid, out row))
 				throw new ArgumentException();
 			if (pdwTypeDefFlags != null)
 				*pdwTypeDefFlags = row.Flags;
@@ -59,9 +62,11 @@ namespace dnlib.DotNet.Pdb.Dss {
 			var token = new MDToken(mdSig);
 			if (token.Table != Table.StandAloneSig)
 				throw new ArgumentException();
-			if (!metadata.TablesStream.TryReadStandAloneSigRow(token.Rid, out var row))
+            RawStandAloneSigRow row;
+			if (!metadata.TablesStream.TryReadStandAloneSigRow(token.Rid, out row))
 				throw new ArgumentException();
-			if (!metadata.BlobStream.TryCreateReader(row.Signature, out var reader))
+            DataReader reader;
+			if (!metadata.BlobStream.TryCreateReader(row.Signature, out reader))
 				throw new ArgumentException();
 			if (ppvSig != null)
 				*ppvSig = blobPtr + (reader.StartOffset - (uint)metadata.BlobStream.StartOffset);

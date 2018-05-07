@@ -20,7 +20,7 @@ namespace dnlib.DotNet.Writer {
 		readonly Rows<TypeSpec> typeSpecInfos = new Rows<TypeSpec>();
 		readonly Rows<MethodSpec> methodSpecInfos = new Rows<MethodSpec>();
 
-		protected override int NumberOfMethods => methodDefInfos.Count;
+        protected override int NumberOfMethods { get { return methodDefInfos.Count; } }
 
 		public NormalMetadata(ModuleDef module, UniqueChunkList<ByteArrayChunk> constants, MethodBodyChunks methodBodies, NetResources netResources, MetadataOptions options, DebugMetadataKind debugKind, bool isStandaloneDebugMetadata)
 			: base(module, constants, methodBodies, netResources, options, debugKind, isStandaloneDebugMetadata) {
@@ -138,13 +138,15 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		public override uint GetRid(TypeRef tr) {
-			typeRefInfos.TryGetRid(tr, out uint rid);
+            uint rid;
+            typeRefInfos.TryGetRid(tr, out rid);
 			return rid;
 		}
 
 		/// <inheritdoc/>
 		public override uint GetRid(TypeDef td) {
-			if (typeDefInfos.TryGetRid(td, out uint rid))
+            uint rid;
+            if (typeDefInfos.TryGetRid(td, out rid))
 				return rid;
 			if (td == null)
 				Error("TypeDef is null");
@@ -155,7 +157,8 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		public override uint GetRid(FieldDef fd) {
-			if (fieldDefInfos.TryGetRid(fd, out uint rid))
+            uint rid;
+            if (fieldDefInfos.TryGetRid(fd, out rid))
 				return rid;
 			if (fd == null)
 				Error("Field is null");
@@ -166,7 +169,8 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		public override uint GetRid(MethodDef md) {
-			if (methodDefInfos.TryGetRid(md, out uint rid))
+            uint rid;
+            if (methodDefInfos.TryGetRid(md, out rid))
 				return rid;
 			if (md == null)
 				Error("Method is null");
@@ -177,7 +181,8 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		public override uint GetRid(ParamDef pd) {
-			if (paramDefInfos.TryGetRid(pd, out uint rid))
+            uint rid;
+            if (paramDefInfos.TryGetRid(pd, out rid))
 				return rid;
 			if (pd == null)
 				Error("Param is null");
@@ -188,19 +193,22 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		public override uint GetRid(MemberRef mr) {
-			memberRefInfos.TryGetRid(mr, out uint rid);
+            uint rid;
+            memberRefInfos.TryGetRid(mr, out rid);
 			return rid;
 		}
 
 		/// <inheritdoc/>
 		public override uint GetRid(StandAloneSig sas) {
-			standAloneSigInfos.TryGetRid(sas, out uint rid);
+            uint rid;
+            standAloneSigInfos.TryGetRid(sas, out rid);
 			return rid;
 		}
 
 		/// <inheritdoc/>
 		public override uint GetRid(EventDef ed) {
-			if (eventDefInfos.TryGetRid(ed, out uint rid))
+            uint rid;
+            if (eventDefInfos.TryGetRid(ed, out rid))
 				return rid;
 			if (ed == null)
 				Error("Event is null");
@@ -211,7 +219,8 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		public override uint GetRid(PropertyDef pd) {
-			if (propertyDefInfos.TryGetRid(pd, out uint rid))
+            uint rid;
+            if (propertyDefInfos.TryGetRid(pd, out rid))
 				return rid;
 			if (pd == null)
 				Error("Property is null");
@@ -222,13 +231,15 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		public override uint GetRid(TypeSpec ts) {
-			typeSpecInfos.TryGetRid(ts, out uint rid);
+            uint rid;
+            typeSpecInfos.TryGetRid(ts, out rid);
 			return rid;
 		}
 
 		/// <inheritdoc/>
 		public override uint GetRid(MethodSpec ms) {
-			methodSpecInfos.TryGetRid(ms, out uint rid);
+            uint rid;
+            methodSpecInfos.TryGetRid(ms, out rid);
 			return rid;
 		}
 
@@ -238,7 +249,8 @@ namespace dnlib.DotNet.Writer {
 				Error("TypeRef is null");
 				return 0;
 			}
-			if (typeRefInfos.TryGetRid(tr, out uint rid)) {
+            uint rid;
+            if (typeRefInfos.TryGetRid(tr, out rid)) {
 				if (rid == 0)
 					Error("TypeRef {0:X8} has an infinite ResolutionScope loop", tr.MDToken.Raw);
 				return rid;
@@ -260,7 +272,8 @@ namespace dnlib.DotNet.Writer {
 				Error("TypeSpec is null");
 				return 0;
 			}
-			if (typeSpecInfos.TryGetRid(ts, out uint rid)) {
+            uint rid;
+            if (typeSpecInfos.TryGetRid(ts, out rid)) {
 				if (rid == 0)
 					Error("TypeSpec {0:X8} has an infinite TypeSig loop", ts.MDToken.Raw);
 				return rid;
@@ -281,7 +294,8 @@ namespace dnlib.DotNet.Writer {
 				return 0;
 			}
 
-			if (memberRefInfos.TryGetRid(mr, out uint rid))
+            uint rid;
+            if (memberRefInfos.TryGetRid(mr, out rid))
 				return rid;
 			var row = new RawMemberRefRow(AddMemberRefParent(mr.Class),
 							stringsHeap.Add(mr.Name),
@@ -299,7 +313,8 @@ namespace dnlib.DotNet.Writer {
 				Error("StandAloneSig is null");
 				return 0;
 			}
-			if (standAloneSigInfos.TryGetRid(sas, out uint rid))
+            uint rid;
+            if (standAloneSigInfos.TryGetRid(sas, out rid))
 				return rid;
 			var row = new RawStandAloneSigRow(GetSignature(sas.Signature));
 			rid = tablesHeap.StandAloneSigTable.Add(row);
@@ -315,7 +330,8 @@ namespace dnlib.DotNet.Writer {
 				Error("MethodSpec is null");
 				return 0;
 			}
-			if (methodSpecInfos.TryGetRid(ms, out uint rid))
+            uint rid;
+            if (methodSpecInfos.TryGetRid(ms, out rid))
 				return rid;
 			var row = new RawMethodSpecRow(AddMethodDefOrRef(ms.Method),
 						GetSignature(ms.Instantiation));

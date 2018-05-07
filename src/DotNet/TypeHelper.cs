@@ -9,9 +9,9 @@ namespace dnlib.DotNet {
 	struct TypeHelper {
 		RecursionCounter recursionCounter;
 
-		internal static bool ContainsGenericParameter(StandAloneSig ss) => ss != null && TypeHelper.ContainsGenericParameter(ss.Signature);
-		internal static bool ContainsGenericParameter(InterfaceImpl ii) => ii != null && TypeHelper.ContainsGenericParameter(ii.Interface);
-		internal static bool ContainsGenericParameter(GenericParamConstraint gpc) => gpc != null && ContainsGenericParameter(gpc.Constraint);
+		internal static bool ContainsGenericParameter(StandAloneSig ss) { return ss != null && TypeHelper.ContainsGenericParameter(ss.Signature); }
+		internal static bool ContainsGenericParameter(InterfaceImpl ii) { return ii != null && TypeHelper.ContainsGenericParameter(ii.Interface); }
+		internal static bool ContainsGenericParameter(GenericParamConstraint gpc) { return gpc != null && ContainsGenericParameter(gpc.Constraint); }
 
 		internal static bool ContainsGenericParameter(MethodSpec ms) {
 			if (ms == null)
@@ -31,10 +31,12 @@ namespace dnlib.DotNet {
 
 			var cl = mr.Class;
 
-			if (cl is ITypeDefOrRef tdr)
+            ITypeDefOrRef tdr;
+            if ((tdr = cl as ITypeDefOrRef) != null)
 				return tdr.ContainsGenericParameter;
 
-			if (cl is MethodDef md)
+            MethodDef md;
+            if ((md = cl as MethodDef) != null)
 				return TypeHelper.ContainsGenericParameter(md.Signature);
 
 			return false;
@@ -48,16 +50,20 @@ namespace dnlib.DotNet {
 		/// <returns><c>true</c> if <paramref name="callConv"/> contains a <see cref="GenericVar"/>
 		/// or a <see cref="GenericMVar"/>.</returns>
 		public static bool ContainsGenericParameter(CallingConventionSig callConv) {
-			if (callConv is FieldSig fs)
+            FieldSig fs;
+            if ((fs = callConv as FieldSig) != null)
 				return ContainsGenericParameter(fs);
 
-			if (callConv is MethodBaseSig mbs)
+            MethodBaseSig mbs;
+            if ((mbs = callConv as MethodBaseSig) != null)
 				return ContainsGenericParameter(mbs);
 
-			if (callConv is LocalSig ls)
+            LocalSig ls;
+            if ((ls = callConv as LocalSig) != null)
 				return ContainsGenericParameter(ls);
 
-			if (callConv is GenericInstMethodSig gim)
+            GenericInstMethodSig gim;
+            if ((gim = callConv as GenericInstMethodSig) != null)
 				return ContainsGenericParameter(gim);
 
 			return false;
@@ -70,7 +76,7 @@ namespace dnlib.DotNet {
 		/// <param name="fieldSig">Field signature</param>
 		/// <returns><c>true</c> if <paramref name="fieldSig"/> contains a <see cref="GenericVar"/>
 		/// or a <see cref="GenericMVar"/>.</returns>
-		public static bool ContainsGenericParameter(FieldSig fieldSig) => new TypeHelper().ContainsGenericParameterInternal(fieldSig);
+		public static bool ContainsGenericParameter(FieldSig fieldSig) { return new TypeHelper().ContainsGenericParameterInternal(fieldSig); }
 
 		/// <summary>
 		/// Checks whether <paramref name="methodSig"/> contains a <see cref="GenericVar"/> or a
@@ -79,7 +85,7 @@ namespace dnlib.DotNet {
 		/// <param name="methodSig">Method or property signature</param>
 		/// <returns><c>true</c> if <paramref name="methodSig"/> contains a <see cref="GenericVar"/>
 		/// or a <see cref="GenericMVar"/>.</returns>
-		public static bool ContainsGenericParameter(MethodBaseSig methodSig) => new TypeHelper().ContainsGenericParameterInternal(methodSig);
+		public static bool ContainsGenericParameter(MethodBaseSig methodSig) { return new TypeHelper().ContainsGenericParameterInternal(methodSig); }
 
 		/// <summary>
 		/// Checks whether <paramref name="localSig"/> contains a <see cref="GenericVar"/> or a
@@ -88,7 +94,7 @@ namespace dnlib.DotNet {
 		/// <param name="localSig">Local signature</param>
 		/// <returns><c>true</c> if <paramref name="localSig"/> contains a <see cref="GenericVar"/>
 		/// or a <see cref="GenericMVar"/>.</returns>
-		public static bool ContainsGenericParameter(LocalSig localSig) => new TypeHelper().ContainsGenericParameterInternal(localSig);
+		public static bool ContainsGenericParameter(LocalSig localSig) { return new TypeHelper().ContainsGenericParameterInternal(localSig); }
 
 		/// <summary>
 		/// Checks whether <paramref name="gim"/> contains a <see cref="GenericVar"/> or a
@@ -97,7 +103,7 @@ namespace dnlib.DotNet {
 		/// <param name="gim">Generic method signature</param>
 		/// <returns><c>true</c> if <paramref name="gim"/> contains a <see cref="GenericVar"/>
 		/// or a <see cref="GenericMVar"/>.</returns>
-		public static bool ContainsGenericParameter(GenericInstMethodSig gim) => new TypeHelper().ContainsGenericParameterInternal(gim);
+		public static bool ContainsGenericParameter(GenericInstMethodSig gim) { return new TypeHelper().ContainsGenericParameterInternal(gim); }
 
 		/// <summary>
 		/// Checks whether <paramref name="type"/> contains a <see cref="GenericVar"/> or a
@@ -107,19 +113,24 @@ namespace dnlib.DotNet {
 		/// <returns><c>true</c> if <paramref name="type"/> contains a <see cref="GenericVar"/> or a
 		/// <see cref="GenericMVar"/>.</returns>
 		public static bool ContainsGenericParameter(IType type) {
-			if (type is TypeDef td)
+            TypeDef td;
+            if ((td = type as TypeDef) != null)
 				return ContainsGenericParameter(td);
 
-			if (type is TypeRef tr)
+            TypeRef tr;
+            if ((tr = type as TypeRef) != null)
 				return ContainsGenericParameter(tr);
 
-			if (type is TypeSpec ts)
+            TypeSpec ts;
+            if ((ts = type as TypeSpec) != null)
 				return ContainsGenericParameter(ts);
 
-			if (type is TypeSig sig)
+            TypeSig sig;
+            if ((sig = type as TypeSig) != null)
 				return ContainsGenericParameter(sig);
 
-			if (type is ExportedType et)
+            ExportedType et;
+            if ((et = type as ExportedType) != null)
 				return ContainsGenericParameter(et);
 
 			return false;
@@ -132,7 +143,7 @@ namespace dnlib.DotNet {
 		/// <param name="type">Type</param>
 		/// <returns><c>true</c> if <paramref name="type"/> contains a <see cref="GenericVar"/> or a
 		/// <see cref="GenericMVar"/>.</returns>
-		public static bool ContainsGenericParameter(TypeDef type) => new TypeHelper().ContainsGenericParameterInternal(type);
+		public static bool ContainsGenericParameter(TypeDef type) { return new TypeHelper().ContainsGenericParameterInternal(type); }
 
 		/// <summary>
 		/// Checks whether <paramref name="type"/> contains a <see cref="GenericVar"/> or a
@@ -141,7 +152,7 @@ namespace dnlib.DotNet {
 		/// <param name="type">Type</param>
 		/// <returns><c>true</c> if <paramref name="type"/> contains a <see cref="GenericVar"/> or a
 		/// <see cref="GenericMVar"/>.</returns>
-		public static bool ContainsGenericParameter(TypeRef type) => new TypeHelper().ContainsGenericParameterInternal(type);
+		public static bool ContainsGenericParameter(TypeRef type) { return new TypeHelper().ContainsGenericParameterInternal(type); }
 
 		/// <summary>
 		/// Checks whether <paramref name="type"/> contains a <see cref="GenericVar"/> or a
@@ -150,7 +161,7 @@ namespace dnlib.DotNet {
 		/// <param name="type">Type</param>
 		/// <returns><c>true</c> if <paramref name="type"/> contains a <see cref="GenericVar"/> or a
 		/// <see cref="GenericMVar"/>.</returns>
-		public static bool ContainsGenericParameter(TypeSpec type) => new TypeHelper().ContainsGenericParameterInternal(type);
+		public static bool ContainsGenericParameter(TypeSpec type) { return new TypeHelper().ContainsGenericParameterInternal(type); }
 
 		/// <summary>
 		/// Checks whether <paramref name="type"/> contains a <see cref="GenericVar"/> or a
@@ -159,7 +170,7 @@ namespace dnlib.DotNet {
 		/// <param name="type">Type</param>
 		/// <returns><c>true</c> if <paramref name="type"/> contains a <see cref="GenericVar"/> or a
 		/// <see cref="GenericMVar"/>.</returns>
-		public static bool ContainsGenericParameter(TypeSig type) => new TypeHelper().ContainsGenericParameterInternal(type);
+		public static bool ContainsGenericParameter(TypeSig type) { return new TypeHelper().ContainsGenericParameterInternal(type); }
 
 		/// <summary>
 		/// Checks whether <paramref name="type"/> contains a <see cref="GenericVar"/> or a
@@ -168,11 +179,11 @@ namespace dnlib.DotNet {
 		/// <param name="type">Type</param>
 		/// <returns><c>true</c> if <paramref name="type"/> contains a <see cref="GenericVar"/> or a
 		/// <see cref="GenericMVar"/>.</returns>
-		public static bool ContainsGenericParameter(ExportedType type) => new TypeHelper().ContainsGenericParameterInternal(type);
+		public static bool ContainsGenericParameter(ExportedType type) { return new TypeHelper().ContainsGenericParameterInternal(type); }
 
-		bool ContainsGenericParameterInternal(TypeDef type) => false;
+		bool ContainsGenericParameterInternal(TypeDef type) { return false; }
 
-		bool ContainsGenericParameterInternal(TypeRef type) => false;
+		bool ContainsGenericParameterInternal(TypeRef type) { return false; }
 
 		bool ContainsGenericParameterInternal(TypeSpec type) {
 			if (type == null)
@@ -269,19 +280,23 @@ namespace dnlib.DotNet {
 			return res;
 		}
 
-		bool ContainsGenericParameterInternal(ExportedType type) => false;
+        bool ContainsGenericParameterInternal(ExportedType type) { return false; }
 
 		bool ContainsGenericParameterInternal(CallingConventionSig callConv) {
-			if (callConv is FieldSig fs)
+            FieldSig fs;
+            if ((fs = callConv as FieldSig) != null)
 				return ContainsGenericParameterInternal(fs);
 
-			if (callConv is MethodBaseSig mbs)
+            MethodBaseSig mbs;
+            if ((mbs = callConv as MethodBaseSig) != null)
 				return ContainsGenericParameterInternal(mbs);
 
-			if (callConv is LocalSig ls)
+            LocalSig ls;
+            if ((ls = callConv as LocalSig) != null)
 				return ContainsGenericParameterInternal(ls);
 
-			if (callConv is GenericInstMethodSig gim)
+            GenericInstMethodSig gim;
+            if ((gim = callConv as GenericInstMethodSig) != null)
 				return ContainsGenericParameterInternal(gim);
 
 			return false;

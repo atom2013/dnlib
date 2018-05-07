@@ -26,7 +26,7 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// Gets the owner method
 		/// </summary>
-		public MethodDef Method => method;
+		public MethodDef Method { get { return method; } }
 
 		/// <summary>
 		/// Gets the number of parameters, including a possible hidden 'this' parameter
@@ -75,7 +75,7 @@ namespace dnlib.DotNet {
 				} finally { theLock.ExitReadLock(); }
 #endif
 			}
-			set => throw new NotSupportedException();
+			set { throw new NotSupportedException(); }
 		}
 
 		/// <summary>
@@ -259,10 +259,10 @@ namespace dnlib.DotNet {
 #endif
 		}
 
-		void IList<Parameter>.Insert(int index, Parameter item) => throw new NotSupportedException();
-		void IList<Parameter>.RemoveAt(int index) => throw new NotSupportedException();
-		void ICollection<Parameter>.Add(Parameter item) => throw new NotSupportedException();
-		void ICollection<Parameter>.Clear() => throw new NotSupportedException();
+		void IList<Parameter>.Insert(int index, Parameter item) { throw new NotSupportedException(); }
+		void IList<Parameter>.RemoveAt(int index) { throw new NotSupportedException(); }
+		void ICollection<Parameter>.Add(Parameter item) { throw new NotSupportedException(); }
+		void ICollection<Parameter>.Clear() { throw new NotSupportedException(); }
 
 		bool ICollection<Parameter>.Contains(Parameter item) {
 #if THREAD_SAFE
@@ -286,8 +286,8 @@ namespace dnlib.DotNet {
 #endif
 		}
 
-		bool ICollection<Parameter>.IsReadOnly => true;
-		bool ICollection<Parameter>.Remove(Parameter item) => throw new NotSupportedException();
+		bool ICollection<Parameter>.IsReadOnly { get { return true; } }
+		bool ICollection<Parameter>.Remove(Parameter item) { throw new NotSupportedException(); }
 
 		/// <summary>
 		/// Enumerator
@@ -299,7 +299,7 @@ namespace dnlib.DotNet {
 
 			internal Enumerator(ParameterList list) {
 				this.list = list;
-				current = default;
+                current = default(Parameter);
 #if THREAD_SAFE
 				list.theLock.EnterReadLock(); try {
 #endif
@@ -312,9 +312,9 @@ namespace dnlib.DotNet {
 			/// <summary>
 			/// Gets the current value
 			/// </summary>
-			public Parameter Current => current;
-			Parameter IEnumerator<Parameter>.Current => current;
-			object System.Collections.IEnumerator.Current => current;
+			public Parameter Current { get { return current; } }
+			Parameter IEnumerator<Parameter>.Current { get { return current; } }
+			object System.Collections.IEnumerator.Current { get { return current; } }
 
 			/// <summary>
 			/// Moves to the next element in the collection
@@ -335,18 +335,18 @@ namespace dnlib.DotNet {
 			/// <summary>
 			/// Disposes the enumerator
 			/// </summary>
-			public void Dispose() => listEnumerator.Dispose();
+			public void Dispose() { listEnumerator.Dispose(); }
 
-			void System.Collections.IEnumerator.Reset() => throw new NotSupportedException();
+			void System.Collections.IEnumerator.Reset() { throw new NotSupportedException(); }
 		}
 
 		/// <summary>
 		/// Gets the list enumerator
 		/// </summary>
 		/// <returns></returns>
-		public Enumerator GetEnumerator() => new Enumerator(this);
-		IEnumerator<Parameter> IEnumerable<Parameter>.GetEnumerator() => GetEnumerator();
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+		public Enumerator GetEnumerator() { return new Enumerator(this); }
+		IEnumerator<Parameter> IEnumerable<Parameter>.GetEnumerator() { return GetEnumerator(); }
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
 	}
 
 	/// <summary>
@@ -373,35 +373,35 @@ namespace dnlib.DotNet {
 		/// has index 0 and the remaining parameters in the method signature start from index 1.
 		/// The method return parameter has index <c>-1</c>.
 		/// </summary>
-		public int Index => paramIndex;
+		public int Index { get { return paramIndex; } }
 
 		/// <summary>
 		/// Gets the index of the parameter in the method signature. See also
 		/// <see cref="HIDDEN_THIS_METHOD_SIG_INDEX"/> and <see cref="RETURN_TYPE_METHOD_SIG_INDEX"/>
 		/// </summary>
-		public int MethodSigIndex => methodSigIndex;
+		public int MethodSigIndex { get { return methodSigIndex; } }
 
 		/// <summary>
 		/// <c>true</c> if it's a normal visible method parameter, i.e., it's not the hidden
 		/// 'this' parameter and it's not the method return type parameter.
 		/// </summary>
-		public bool IsNormalMethodParameter => methodSigIndex >= 0;
+		public bool IsNormalMethodParameter { get { return methodSigIndex >= 0; } }
 
 		/// <summary>
 		/// <c>true</c> if it's the hidden 'this' parameter
 		/// </summary>
-		public bool IsHiddenThisParameter => methodSigIndex == HIDDEN_THIS_METHOD_SIG_INDEX;
+		public bool IsHiddenThisParameter { get { return methodSigIndex == HIDDEN_THIS_METHOD_SIG_INDEX; } }
 
 		/// <summary>
 		/// <c>true</c> if it's the method return type parameter
 		/// </summary>
-		public bool IsReturnTypeParameter => methodSigIndex == RETURN_TYPE_METHOD_SIG_INDEX;
+		public bool IsReturnTypeParameter { get { return methodSigIndex == RETURN_TYPE_METHOD_SIG_INDEX; } }
 
 		/// <summary>
 		/// Gets the parameter type
 		/// </summary>
 		public TypeSig Type {
-			get => typeSig;
+			get { return typeSig; }
 			set {
 				typeSig = value;
 				if (parameterList != null)
@@ -412,17 +412,17 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// Gets the owner method
 		/// </summary>
-		public MethodDef Method => parameterList?.Method;
+		public MethodDef Method { get { return parameterList != null?parameterList.Method:null; } }
 
 		/// <summary>
 		/// Gets the <see cref="dnlib.DotNet.ParamDef"/> or <c>null</c> if not present
 		/// </summary>
-		public ParamDef ParamDef => parameterList?.FindParamDef(this);
+		public ParamDef ParamDef { get { return parameterList != null?parameterList.FindParamDef(this):null; } }
 
 		/// <summary>
 		/// <c>true</c> if it has a <see cref="dnlib.DotNet.ParamDef"/>
 		/// </summary>
-		public bool HasParamDef => ParamDef != null;
+        public bool HasParamDef { get { return ParamDef != null; } }
 
 		/// <summary>
 		/// Gets the name from <see cref="ParamDef"/>. If <see cref="ParamDef"/> is <c>null</c>,
@@ -502,7 +502,7 @@ namespace dnlib.DotNet {
 			if (string.IsNullOrEmpty(name)) {
 				if (IsReturnTypeParameter)
 					return "RET_PARAM";
-				return $"A_{paramIndex}";
+				return  string.Format( "A_{0}", paramIndex );
 			}
 			return name;
 		}

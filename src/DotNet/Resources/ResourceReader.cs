@@ -68,8 +68,9 @@ namespace dnlib.DotNet.Resources {
 		/// </summary>
 		/// <param name="reader">Reader</param>
 		/// <returns></returns>
-		public static bool CouldBeResourcesFile(DataReader reader) =>
-			reader.CanRead(4U) && reader.ReadUInt32() == 0xBEEFCACE;
+		public static bool CouldBeResourcesFile(DataReader reader) {
+			return reader.CanRead(4U) && reader.ReadUInt32() == 0xBEEFCACE;
+        }
 
 		/// <summary>
 		/// Reads a .NET resource
@@ -77,7 +78,7 @@ namespace dnlib.DotNet.Resources {
 		/// <param name="module">Owner module</param>
 		/// <param name="reader">Data of resource</param>
 		/// <returns></returns>
-		public static ResourceElementSet Read(ModuleDef module, DataReader reader) => Read(module, reader, null);
+		public static ResourceElementSet Read(ModuleDef module, DataReader reader) { return Read(module, reader, null); }
 
 		/// <summary>
 		/// Reads a .NET resource
@@ -86,26 +87,27 @@ namespace dnlib.DotNet.Resources {
 		/// <param name="reader">Data of resource</param>
 		/// <param name="createResourceDataDelegate">Call back that gets called to create a <see cref="IResourceData"/> instance. Can be null.</param>
 		/// <returns></returns>
-		public static ResourceElementSet Read(ModuleDef module, DataReader reader, CreateResourceDataDelegate createResourceDataDelegate) =>
-			new ResourceReader(module, ref reader, createResourceDataDelegate).Read();
+        public static ResourceElementSet Read(ModuleDef module, DataReader reader, CreateResourceDataDelegate createResourceDataDelegate) {
+            return new ResourceReader(module, ref reader, createResourceDataDelegate).Read();
+        }
 
 		ResourceElementSet Read() {
 			var resources = new ResourceElementSet();
 
 			uint sig = reader.ReadUInt32();
 			if (sig != 0xBEEFCACE)
-				throw new ResourceReaderException($"Invalid resource sig: {sig:X8}");
+				throw new ResourceReaderException( string.Format( "Invalid resource sig: {0:X8}", sig ) );
 			if (!CheckReaders())
 				throw new ResourceReaderException("Invalid resource reader");
 			int version = reader.ReadInt32();
 			if (version != 2)//TODO: Support version 1
-				throw new ResourceReaderException($"Invalid resource version: {version}");
+				throw new ResourceReaderException( string.Format( "Invalid resource version: {0}", version ) );
 			int numResources = reader.ReadInt32();
 			if (numResources < 0)
-				throw new ResourceReaderException($"Invalid number of resources: {numResources}");
+				throw new ResourceReaderException( string.Format( "Invalid number of resources: {0}", numResources ) );
 			int numUserTypes = reader.ReadInt32();
 			if (numUserTypes < 0)
-				throw new ResourceReaderException($"Invalid number of user types: {numUserTypes}");
+				throw new ResourceReaderException( string.Format( "Invalid number of user types: {0}", numUserTypes ) );
 
 			var userTypes = new List<UserResourceType>();
 			for (int i = 0; i < numUserTypes; i++)
@@ -158,7 +160,7 @@ namespace dnlib.DotNet.Resources {
 				this.name = name;
 				this.offset = offset;
 			}
-			public override string ToString() => $"{offset:X8} - {name}";
+			public override string ToString() { return string.Format( "{0:X8} - {1}", offset, name); }
 		}
 
 		IResourceData ReadResourceData(List<UserResourceType> userTypes, int size) {
@@ -187,7 +189,7 @@ namespace dnlib.DotNet.Resources {
 			default:
 				int userTypeIndex = (int)(code - (uint)ResourceTypeCode.UserTypes);
 				if (userTypeIndex < 0 || userTypeIndex >= userTypes.Count)
-					throw new ResourceReaderException($"Invalid resource data code: {code}");
+					throw new ResourceReaderException( string.Format( "Invalid resource data code: {0}", code ) );
 				var userType = userTypes[userTypeIndex];
 				var serializedData = reader.ReadBytes((int)(endPos - reader.Position));
 				if (createResourceDataDelegate != null) {
@@ -213,10 +215,10 @@ namespace dnlib.DotNet.Resources {
 
 			int numReaders = reader.ReadInt32();
 			if (numReaders < 0)
-				throw new ResourceReaderException($"Invalid number of readers: {numReaders}");
+				throw new ResourceReaderException( string.Format( "Invalid number of readers: {0}", numReaders ) );
 			int readersSize = reader.ReadInt32();
 			if (readersSize < 0)
-				throw new ResourceReaderException($"Invalid readers size: {readersSize:X8}");
+				throw new ResourceReaderException( string.Format( "Invalid readers size: {0:X8}", readersSize ) );
 
 			for (int i = 0; i < numReaders; i++) {
 				var resourceReaderFullName = reader.ReadSerializedString();

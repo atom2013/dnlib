@@ -16,20 +16,20 @@ namespace dnlib.DotNet {
 		protected uint rid;
 
 		/// <inheritdoc/>
-		public MDToken MDToken => new MDToken(Table.Constant, rid);
+		public MDToken MDToken { get { return new MDToken(Table.Constant, rid); } }
 
 		/// <inheritdoc/>
 		public uint Rid {
-			get => rid;
-			set => rid = value;
+			get { return rid; }
+			set { rid = value; }
 		}
 
 		/// <summary>
 		/// From column Constant.Type
 		/// </summary>
 		public ElementType Type {
-			get => type;
-			set => type = value;
+			get { return type; }
+			set { type = value; }
 		}
 		/// <summary/>
 		protected ElementType type;
@@ -38,8 +38,8 @@ namespace dnlib.DotNet {
 		/// From column Constant.Value
 		/// </summary>
 		public object Value {
-			get => value;
-			set => this.value = value;
+			get { return value; }
+            set { this.value = value; }
 		}
 		/// <summary/>
 		protected object value;
@@ -103,7 +103,7 @@ namespace dnlib.DotNet {
 		readonly uint origRid;
 
 		/// <inheritdoc/>
-		public uint OrigRid => origRid;
+		public uint OrigRid { get { return origRid; } }
 
 		/// <summary>
 		/// Constructor
@@ -117,11 +117,12 @@ namespace dnlib.DotNet {
 			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.ConstantTable.IsInvalidRID(rid))
-				throw new BadImageFormatException($"Constant rid {rid} does not exist");
+				throw new BadImageFormatException( string.Format( "Constant rid {0} does not exist", rid ) );
 #endif
 			origRid = rid;
 			this.rid = rid;
-			bool b = readerModule.TablesStream.TryReadConstantRow(origRid, out var row);
+            RawConstantRow row;
+            bool b = readerModule.TablesStream.TryReadConstantRow(origRid, out row);
 			Debug.Assert(b);
 			type = (ElementType)row.Type;
 			var reader = readerModule.BlobStream.CreateReader(row.Value);

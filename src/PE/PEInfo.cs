@@ -15,17 +15,17 @@ namespace dnlib.PE {
 		/// <summary>
 		/// Returns the DOS header
 		/// </summary>
-		public ImageDosHeader ImageDosHeader => imageDosHeader;
+		public ImageDosHeader ImageDosHeader { get { return imageDosHeader; } }
 
 		/// <summary>
 		/// Returns the NT headers
 		/// </summary>
-		public ImageNTHeaders ImageNTHeaders => imageNTHeaders;
+		public ImageNTHeaders ImageNTHeaders { get { return imageNTHeaders; } }
 
 		/// <summary>
 		/// Returns the section headers
 		/// </summary>
-		public ImageSectionHeader[] ImageSectionHeaders => imageSectionHeaders;
+		public ImageSectionHeader[] ImageSectionHeaders { get { return imageSectionHeaders; } }
 
 		/// <summary>
 		/// Constructor
@@ -108,7 +108,7 @@ namespace dnlib.PE {
 			return (FileOffset)rva;
 		}
 
-		static ulong AlignUp(ulong val, uint alignment) => (val + alignment - 1) & ~(ulong)(alignment - 1);
+        static ulong AlignUp(ulong val, uint alignment) { return (val + alignment - 1) & ~(ulong)(alignment - 1); }
 
 		/// <summary>
 		/// Returns size of image rounded up to <see cref="IImageOptionalHeader.SectionAlignment"/>

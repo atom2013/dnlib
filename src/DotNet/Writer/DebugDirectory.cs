@@ -25,7 +25,7 @@ namespace dnlib.DotNet.Writer {
 		/// Constructor
 		/// </summary>
 		/// <param name="chunk">Data</param>
-		public DebugDirectoryEntry(IChunk chunk) => Chunk = chunk;
+		public DebugDirectoryEntry(IChunk chunk) { Chunk = chunk; }
 	}
 
 	/// <summary>
@@ -36,7 +36,7 @@ namespace dnlib.DotNet.Writer {
 		public const uint DEFAULT_DEBUGDIRECTORY_ALIGNMENT = 4;
 		internal const int HEADER_SIZE = 28;
 
-		internal int Count => entries.Count;
+		internal int Count { get { return entries.Count; } }
 
 		FileOffset offset;
 		RVA rva;
@@ -45,22 +45,22 @@ namespace dnlib.DotNet.Writer {
 		bool isReadonly;
 
 		/// <inheritdoc/>
-		public FileOffset FileOffset => offset;
+		public FileOffset FileOffset { get { return offset; } }
 
 		/// <inheritdoc/>
-		public RVA RVA => rva;
+		public RVA RVA { get { return rva; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public DebugDirectory() => entries = new List<DebugDirectoryEntry>();
+		public DebugDirectory() { entries = new List<DebugDirectoryEntry>(); }
 
 		/// <summary>
 		/// Adds data
 		/// </summary>
 		/// <param name="data">Data</param>
 		/// <returns></returns>
-		public DebugDirectoryEntry Add(byte[] data) => Add(new ByteArrayChunk(data));
+		public DebugDirectoryEntry Add(byte[] data) { return Add(new ByteArrayChunk(data)); }
 
 		/// <summary>
 		/// Adds data
@@ -84,8 +84,9 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="minorVersion">Minor version</param>
 		/// <param name="timeDateStamp">Timestamp</param>
 		/// <returns></returns>
-		public DebugDirectoryEntry Add(byte[] data, ImageDebugType type, ushort majorVersion, ushort minorVersion, uint timeDateStamp) =>
-			Add(new ByteArrayChunk(data), type, majorVersion, minorVersion, timeDateStamp);
+		public DebugDirectoryEntry Add(byte[] data, ImageDebugType type, ushort majorVersion, ushort minorVersion, uint timeDateStamp) {
+			return Add(new ByteArrayChunk(data), type, majorVersion, minorVersion, timeDateStamp);
+        }
 
 		/// <summary>
 		/// Adds data
@@ -134,10 +135,10 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public uint GetFileLength() => length;
+		public uint GetFileLength() { return length; }
 
 		/// <inheritdoc/>
-		public uint GetVirtualSize() => GetFileLength();
+        public uint GetVirtualSize() { return GetFileLength(); }
 
 		/// <inheritdoc/>
 		public void WriteTo(DataWriter writer) {

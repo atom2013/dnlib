@@ -1,5 +1,6 @@
 ﻿// dnlib: See LICENSE.txt for more info
 
+using System;
 using System.IO;
 using System.Text;
 using dnlib.DotNet.MD;
@@ -12,7 +13,10 @@ namespace dnlib.DotNet.Pdb {
 			var pdbContext = new PdbReaderContext(metadata.PEImage, options);
 			if (!pdbContext.HasDebugInfo)
 				return null;
-			if (!pdbContext.TryGetCodeViewData(out var guid, out uint age, out var pdbWindowsFilename))
+            Guid guid;
+            uint age;
+            string pdbWindowsFilename;
+			if (!pdbContext.TryGetCodeViewData(out guid, out age, out pdbWindowsFilename))
 				return null;
 
 			string pdbFilename;
@@ -44,7 +48,7 @@ namespace dnlib.DotNet.Pdb {
 			var pdbContext = new PdbReaderContext(metadata.PEImage, options);
 			if (!pdbContext.HasDebugInfo)
 				return null;
-			return CreateCore(pdbContext, metadata, ByteArrayDataReaderFactory.Create(pdbData, filename: null));
+			return CreateCore(pdbContext, metadata, ByteArrayDataReaderFactory.Create(pdbData, /* filename: */ null));
 		}
 
 		public static SymbolReader Create(PdbReaderOptions options, Metadata metadata, DataReaderFactory pdbStream) {
@@ -73,8 +77,8 @@ namespace dnlib.DotNet.Pdb {
 			}
 			finally {
 				if (error) {
-					pdbStream?.Dispose();
-					symReader?.Dispose();
+					if (pdbStream != null) pdbStream.Dispose();
+					if (symReader != null) symReader.Dispose();
 				}
 			}
 			return null;
@@ -99,14 +103,14 @@ namespace dnlib.DotNet.Pdb {
 				// Embedded PDBs have priority
 				var embeddedReader = TryCreateEmbeddedPortablePdbReader(pdbContext, metadata);
 				if (embeddedReader != null) {
-					pdbStream?.Dispose();
+					if (pdbStream != null) pdbStream.Dispose();
 					return embeddedReader;
 				}
 
 				return CreateManagedCore(pdbContext, pdbStream);
 			}
 			catch {
-				pdbStream?.Dispose();
+				if (pdbStream != null) pdbStream.Dispose();
 				throw;
 			}
 		}
@@ -119,17 +123,18 @@ namespace dnlib.DotNet.Pdb {
 				if (reader.Length >= 4) {
 					uint sig = reader.ReadUInt32();
 					if (sig == 0x424A5342)
-						return Portable.SymbolReaderFactory.TryCreate(pdbContext, pdbStream, isEmbeddedPortablePdb: false);
+						return Portable.SymbolReaderFactory.TryCreate(pdbContext, pdbStream, /* isEmbeddedPortablePdb: */ false);
 					return Managed.SymbolReaderFactory.Create(pdbContext, pdbStream);
 				}
 			}
 			catch (IOException) {
 			}
-			pdbStream?.Dispose();
+			if (pdbStream != null) pdbStream.Dispose();
 			return null;
 		}
 
-		static SymbolReader TryCreateEmbeddedPortablePdbReader(PdbReaderContext pdbContext, Metadata metadata) =>
-			Portable.SymbolReaderFactory.TryCreateEmbeddedPortablePdbReader(pdbContext, metadata);
+        static SymbolReader TryCreateEmbeddedPortablePdbReader(PdbReaderContext pdbContext, Metadata metadata) {
+            return Portable.SymbolReaderFactory.TryCreateEmbeddedPortablePdbReader(pdbContext, metadata);
+        }
 	}
 }

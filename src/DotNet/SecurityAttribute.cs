@@ -14,8 +14,8 @@ namespace dnlib.DotNet {
 		/// Gets/sets the attribute type
 		/// </summary>
 		public ITypeDefOrRef AttributeType {
-			get => attrType;
-			set => attrType = value;
+			get { return attrType; }
+			set { attrType = value; }
 		}
 
 		/// <summary>
@@ -31,12 +31,12 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// Gets all named arguments (field and property values)
 		/// </summary>
-		public IList<CANamedArgument> NamedArguments => namedArguments;
+		public IList<CANamedArgument> NamedArguments { get { return namedArguments; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="NamedArguments"/> is not empty
 		/// </summary>
-		public bool HasNamedArguments => namedArguments.Count > 0;
+		public bool HasNamedArguments { get { return namedArguments.Count > 0; } }
 
 		/// <summary>
 		/// Gets all <see cref="CANamedArgument"/>s that are field arguments
@@ -108,6 +108,6 @@ namespace dnlib.DotNet {
 		}
 
 		/// <inheritdoc/>
-		public override string ToString() => TypeFullName;
+        public override string ToString() { return TypeFullName; }
 	}
 }

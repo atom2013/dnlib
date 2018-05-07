@@ -13,18 +13,18 @@ namespace dnlib.DotNet.Writer {
 		int size;
 
 		/// <inheritdoc/>
-		public FileOffset FileOffset => offset;
+		public FileOffset FileOffset { get { return offset; } }
 
 		/// <inheritdoc/>
-		public RVA RVA => rva;
+		public RVA RVA { get { return rva; } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="size">Size of strong name signature</param>
-		public StrongNameSignature(int size) => this.size = size;
+		public StrongNameSignature(int size) { this.size = size; }
 
-		bool IReuseChunk.CanReuse(RVA origRva, uint origSize) => (uint)size <= origSize;
+		bool IReuseChunk.CanReuse(RVA origRva, uint origSize) { return (uint)size <= origSize; }
 
 		/// <inheritdoc/>
 		public void SetOffset(FileOffset offset, RVA rva) {
@@ -33,12 +33,12 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public uint GetFileLength() => (uint)size;
+		public uint GetFileLength() { return (uint)size; }
 
 		/// <inheritdoc/>
-		public uint GetVirtualSize() => GetFileLength();
+		public uint GetVirtualSize() { return GetFileLength(); }
 
 		/// <inheritdoc/>
-		public void WriteTo(DataWriter writer) => writer.WriteZeroes(size);
+        public void WriteTo(DataWriter writer) { writer.WriteZeroes(size); }
 	}
 }

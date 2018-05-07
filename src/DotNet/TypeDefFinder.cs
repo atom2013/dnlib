@@ -49,7 +49,7 @@ namespace dnlib.DotNet {
 		}
 
 		bool IsCacheEnabled_NoLock {
-			get => isCacheEnabled;
+            get { return isCacheEnabled; }
 			set {
 				if (isCacheEnabled == value)
 					return;
@@ -87,7 +87,7 @@ namespace dnlib.DotNet {
 		/// from <paramref name="rootTypes"/> should also be included.</param>
 		/// <exception cref="ArgumentNullException">If <paramref name="rootTypes"/> is <c>null</c></exception>
 		public TypeDefFinder(IEnumerable<TypeDef> rootTypes, bool includeNestedTypes) {
-			this.rootTypes = rootTypes ?? throw new ArgumentNullException(nameof(rootTypes));
+			if (rootTypes != null) this.rootTypes = rootTypes; else throw new ArgumentNullException("rootTypes");
 			this.includeNestedTypes = includeNestedTypes;
 		}
 
@@ -144,7 +144,8 @@ namespace dnlib.DotNet {
 		}
 
 		TypeDef FindCache(TypeRef typeRef) {
-			if (typeRefCache.TryGetValue(typeRef, out var cachedType))
+            TypeDef cachedType;
+            if (typeRefCache.TryGetValue(typeRef, out cachedType))
 				return cachedType;
 
 			// Build the cache lazily
@@ -157,7 +158,8 @@ namespace dnlib.DotNet {
 		}
 
 		TypeDef FindCacheReflection(string fullName) {
-			if (reflectionNameCache.TryGetValue(fullName, out var cachedType))
+            TypeDef cachedType;
+            if (reflectionNameCache.TryGetValue(fullName, out cachedType))
 				return cachedType;
 
 			// Build the cache lazily
@@ -172,7 +174,8 @@ namespace dnlib.DotNet {
 		}
 
 		TypeDef FindCacheNormal(string fullName) {
-			if (normalNameCache.TryGetValue(fullName, out var cachedType))
+            TypeDef cachedType;
+            if (normalNameCache.TryGetValue(fullName, out cachedType))
 				return cachedType;
 
 			// Build the cache lazily

@@ -15,20 +15,20 @@ namespace dnlib.DotNet {
 		protected uint rid;
 
 		/// <inheritdoc/>
-		public MDToken MDToken => new MDToken(Table.ClassLayout, rid);
+		public MDToken MDToken { get { return new MDToken(Table.ClassLayout, rid); } }
 
 		/// <inheritdoc/>
 		public uint Rid {
-			get => rid;
-			set => rid = value;
+			get { return rid; }
+			set { rid = value; }
 		}
 
 		/// <summary>
 		/// From column ClassLayout.PackingSize
 		/// </summary>
 		public ushort PackingSize {
-			get => packingSize;
-			set => packingSize = value;
+			get { return packingSize; }
+			set { packingSize = value; }
 		}
 		/// <summary/>
 		protected ushort packingSize;
@@ -37,8 +37,8 @@ namespace dnlib.DotNet {
 		/// From column ClassLayout.ClassSize
 		/// </summary>
 		public uint ClassSize {
-			get => classSize;
-			set => classSize = value;
+			get { return classSize; }
+            set { classSize = value; }
 		}
 		/// <summary/>
 		protected uint classSize;
@@ -72,7 +72,7 @@ namespace dnlib.DotNet {
 		readonly uint origRid;
 
 		/// <inheritdoc/>
-		public uint OrigRid => origRid;
+		public uint OrigRid { get { return origRid; } }
 
 		/// <summary>
 		/// Constructor
@@ -86,11 +86,12 @@ namespace dnlib.DotNet {
 			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.ClassLayoutTable.IsInvalidRID(rid))
-				throw new BadImageFormatException($"ClassLayout rid {rid} does not exist");
+				throw new BadImageFormatException( string.Format( "ClassLayout rid {0} does not exist", rid ) );
 #endif
 			origRid = rid;
 			this.rid = rid;
-			bool b = readerModule.TablesStream.TryReadClassLayoutRow(origRid, out var row);
+            RawClassLayoutRow row;
+            bool b = readerModule.TablesStream.TryReadClassLayoutRow(origRid, out row);
 			Debug.Assert(b);
 			classSize = row.ClassSize;
 			packingSize = row.PackingSize;

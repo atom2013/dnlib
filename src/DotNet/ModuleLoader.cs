@@ -11,7 +11,7 @@ using dnlib.Threading;
 using dnlib.W32Resources;
 
 namespace dnlib.DotNet {
-	readonly struct ModuleLoader {
+	struct ModuleLoader {
 		readonly ModuleDef module;
 		readonly ICancellationToken cancellationToken;
 		readonly Dictionary<object, bool> seen;
@@ -25,8 +25,9 @@ namespace dnlib.DotNet {
 			stack = new Stack<object>(CAPACITY);
 		}
 
-		public static void LoadAll(ModuleDef module, ICancellationToken cancellationToken) =>
+		public static void LoadAll(ModuleDef module, ICancellationToken cancellationToken) {
 			new ModuleLoader(module, cancellationToken).Load();
+        }
 
 		void Add(UTF8String a) { }
 		void Add(Guid? a) { }
@@ -88,47 +89,56 @@ namespace dnlib.DotNet {
 		}
 
 		void LoadObj(object o) {
-			if (o is TypeSig ts) {
+            TypeSig ts;
+            if ((ts = o as TypeSig) != null) {
 				Load(ts);
 				return;
 			}
 
-			if (o is IMDTokenProvider mdt) {
+            IMDTokenProvider mdt;
+            if ((mdt = o as IMDTokenProvider) != null) {
 				Load(mdt);
 				return;
 			}
 
-			if (o is CustomAttribute ca) {
+            CustomAttribute ca;
+            if ((ca = o as CustomAttribute) != null) {
 				Load(ca);
 				return;
 			}
 
-			if (o is SecurityAttribute sa) {
+            SecurityAttribute sa;
+            if ((sa = o as SecurityAttribute) != null) {
 				Load(sa);
 				return;
 			}
 
-			if (o is CANamedArgument na) {
+            CANamedArgument na;
+            if ((na = o as CANamedArgument) != null) {
 				Load(na);
 				return;
 			}
 
-			if (o is Parameter p) {
+            Parameter p;
+            if ((p = o as Parameter) != null) {
 				Load(p);
 				return;
 			}
 
-			if (o is PdbMethod pdbMethod) {
+            PdbMethod pdbMethod;
+            if ((pdbMethod = o as PdbMethod) != null) {
 				Load(pdbMethod);
 				return;
 			}
 
-			if (o is ResourceDirectory rd) {
+            ResourceDirectory rd;
+            if ((rd = o as ResourceDirectory) != null) {
 				Load(rd);
 				return;
 			}
 
-			if (o is ResourceData rdata) {
+            ResourceData rdata;
+            if ((rdata = o as ResourceData) != null) {
 				Load(rdata);
 				return;
 			}
@@ -643,12 +653,14 @@ namespace dnlib.DotNet {
 				return;
 			}
 
-			if (obj is IList<CAArgument> list) {
+            IList<CAArgument> list;
+            if ((list = obj as IList<CAArgument>) != null) {
 				Add(list);
 				return;
 			}
 
-			if (obj is IMDTokenProvider md) {
+            IMDTokenProvider md;
+            if ((md = obj as IMDTokenProvider) != null) {
 				Add(md);
 				return;
 			}
@@ -679,15 +691,15 @@ namespace dnlib.DotNet {
 			stack.Push(t);
 		}
 
-		void Add(CustomAttribute obj) => AddToStack(obj);
-		void Add(SecurityAttribute obj) => AddToStack(obj);
-		void Add(CANamedArgument obj) => AddToStack(obj);
-		void Add(Parameter obj) => AddToStack(obj);
-		void Add(IMDTokenProvider o) => AddToStack(o);
+		void Add(CustomAttribute obj) { AddToStack(obj); }
+		void Add(SecurityAttribute obj) { AddToStack(obj); }
+		void Add(CANamedArgument obj) { AddToStack(obj); }
+		void Add(Parameter obj) { AddToStack(obj); }
+		void Add(IMDTokenProvider o) { AddToStack(o); }
 		void Add(PdbMethod pdbMethod) { }
-		void Add(TypeSig ts) => AddToStack(ts);
-		void Add(ResourceDirectory rd) => AddToStack(rd);
-		void Add(ResourceData rd) => AddToStack(rd);
+		void Add(TypeSig ts) { AddToStack(ts); }
+		void Add(ResourceDirectory rd) { AddToStack(rd); }
+        void Add(ResourceData rd) { AddToStack(rd); }
 
 		void Add<T>(IList<T> list) where T : IMDTokenProvider {
 			if (list == null)
@@ -796,22 +808,26 @@ namespace dnlib.DotNet {
 		}
 
 		void Add(CallingConventionSig sig) {
-			if (sig is MethodBaseSig msig) {
+            MethodBaseSig msig;
+            if ((msig = sig as MethodBaseSig) != null) {
 				Add(msig);
 				return;
 			}
 
-			if (sig is FieldSig fsig) {
+            FieldSig fsig;
+            if ((fsig = sig as FieldSig) != null) {
 				Add(fsig);
 				return;
 			}
 
-			if (sig is LocalSig lsig) {
+            LocalSig lsig;
+            if ((lsig = sig as LocalSig) != null) {
 				Add(lsig);
 				return;
 			}
 
-			if (sig is GenericInstMethodSig gsig) {
+            GenericInstMethodSig gsig;
+            if ((gsig = sig as GenericInstMethodSig) != null) {
 				Add(gsig);
 				return;
 			}
@@ -856,12 +872,14 @@ namespace dnlib.DotNet {
 		}
 
 		void Add(MethodBody mb) {
-			if (mb is CilBody cilBody) {
+            CilBody cilBody;
+            if ((cilBody = mb as CilBody) != null) {
 				Add(cilBody);
 				return;
 			}
 
-			if (mb is NativeMethodBody nb) {
+            NativeMethodBody nb;
+            if ((nb = mb as NativeMethodBody) != null) {
 				Add(nb);
 				return;
 			}
@@ -888,22 +906,26 @@ namespace dnlib.DotNet {
 			if (instr == null)
 				return;
 
-			if (instr.Operand is IMDTokenProvider mdt) {
+            IMDTokenProvider mdt;
+            if ((mdt = instr.Operand as IMDTokenProvider) != null) {
 				Add(mdt);
 				return;
 			}
 
-			if (instr.Operand is Parameter p) {
+            Parameter p;
+            if ((p = instr.Operand as Parameter) != null) {
 				Add(p);
 				return;
 			}
 
-			if (instr.Operand is Local l) {
+            Local l;
+            if ((l = instr.Operand as Local) != null) {
 				Add(l);
 				return;
 			}
 
-			if (instr.Operand is CallingConventionSig csig) {
+            CallingConventionSig csig;
+            if ((csig = instr.Operand as CallingConventionSig) != null) {
 				Add(csig);
 				return;
 			}

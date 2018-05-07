@@ -50,8 +50,8 @@ namespace dnlib.DotNet.Writer {
 		/// Creates portable PDB v1.0 options
 		/// </summary>
 		/// <returns></returns>
-		public static TablesHeapOptions CreatePortablePdbV1_0() =>
-			new TablesHeapOptions {
+		public static TablesHeapOptions CreatePortablePdbV1_0() {
+			 return new TablesHeapOptions {
 				Reserved1 = 0,
 				MajorVersion = 2,
 				MinorVersion = 0,
@@ -59,6 +59,7 @@ namespace dnlib.DotNet.Writer {
 				ExtraData = null,
 				HasDeletedRows = null,
 			};
+        }
 	}
 
 	/// <summary>
@@ -78,10 +79,10 @@ namespace dnlib.DotNet.Writer {
 		RVA rva;
 
 		/// <inheritdoc/>
-		public FileOffset FileOffset => offset;
+		public FileOffset FileOffset { get { return offset; } }
 
 		/// <inheritdoc/>
-		public RVA RVA => rva;
+		public RVA RVA { get { return rva; } }
 
 #pragma warning disable 1591	// XML doc comment
 		public readonly MDTable<RawModuleRow> ModuleTable = new MDTable<RawModuleRow>(Table.Module, RawRowEqualityComparer.Instance);
@@ -145,10 +146,10 @@ namespace dnlib.DotNet.Writer {
 		public readonly IMDTable[] Tables;
 
 		/// <inheritdoc/>
-		public string Name => IsENC ? "#-" : "#~";
+		public string Name { get { return IsENC ? "#-" : "#~"; } }
 
 		/// <inheritdoc/>
-		public bool IsEmpty => false;
+		public bool IsEmpty { get { return false; } }
 
 		/// <summary>
 		/// <c>true</c> if the Edit 'N Continue name will be used (#-)
@@ -187,32 +188,32 @@ namespace dnlib.DotNet.Writer {
 		/// Its name has been renamed to _Deleted).
 		/// </summary>
 		public bool HasDeletedRows {
-			get => hasDeletedRows;
-			set => hasDeletedRows = value;
+			get { return hasDeletedRows; }
+			set { hasDeletedRows = value; }
 		}
 
 		/// <summary>
 		/// <c>true</c> if #Strings heap size > <c>0xFFFF</c>
 		/// </summary>
 		public bool BigStrings {
-			get => bigStrings;
-			set => bigStrings = value;
+			get { return bigStrings; }
+			set { bigStrings = value; }
 		}
 
 		/// <summary>
 		/// <c>true</c> if #GUID heap size > <c>0xFFFF</c>
 		/// </summary>
 		public bool BigGuid {
-			get => bigGuid;
-			set => bigGuid = value;
+			get { return bigGuid; }
+			set { bigGuid = value; }
 		}
 
 		/// <summary>
 		/// <c>true</c> if #Blob heap size > <c>0xFFFF</c>
 		/// </summary>
 		public bool BigBlob {
-			get => bigBlob;
-			set => bigBlob = value;
+			get { return bigBlob; }
+			set { bigBlob = value; }
 		}
 
 		/// <summary>
@@ -287,12 +288,12 @@ namespace dnlib.DotNet.Writer {
 		struct RawDummyRow {
 			public static readonly IEqualityComparer<RawDummyRow> Comparer = new RawDummyRowEqualityComparer();
 			sealed class RawDummyRowEqualityComparer : IEqualityComparer<RawDummyRow> {
-				public bool Equals(RawDummyRow x, RawDummyRow y) => throw new NotSupportedException();
-				public int GetHashCode(RawDummyRow obj) => throw new NotSupportedException();
+				public bool Equals(RawDummyRow x, RawDummyRow y) { throw new NotSupportedException(); }
+				public int GetHashCode(RawDummyRow obj) { throw new NotSupportedException(); }
 			}
 
-			public uint Read(int index) => throw new NotSupportedException();
-			public void Write(int index, uint value) => throw new NotSupportedException();
+			public uint Read(int index) { throw new NotSupportedException(); }
+			public void Write(int index, uint value) { throw new NotSupportedException(); }
 		}
 
 		/// <inheritdoc/>
@@ -317,7 +318,7 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public uint GetVirtualSize() => GetFileLength();
+		public uint GetVirtualSize() { return GetFileLength(); }
 
 		/// <summary>
 		/// Calculates the length. This will set all MD tables to read-only.
@@ -380,7 +381,7 @@ namespace dnlib.DotNet.Writer {
 			}
 		}
 
-		internal void SetSystemTableRows(uint[] systemTables) => this.systemTables = (uint[])systemTables.Clone();
+		internal void SetSystemTableRows(uint[] systemTables) { this.systemTables = (uint[])systemTables.Clone(); }
 		uint[] systemTables;
 
 		/// <inheritdoc/>
@@ -494,6 +495,6 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public override string ToString() => Name;
+		public override string ToString() { return Name; }
 	}
 }

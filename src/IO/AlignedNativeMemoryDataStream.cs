@@ -8,7 +8,7 @@ namespace dnlib.IO {
 	sealed unsafe class AlignedNativeMemoryDataStream : DataStream {
 		readonly byte* data;
 
-		public AlignedNativeMemoryDataStream(byte* data) => this.data = data;
+		public AlignedNativeMemoryDataStream(byte* data) { this.data = data; }
 
 		public override void ReadBytes(uint offset, void* destination, int length) {
 			var ps = data + offset;
@@ -36,10 +36,11 @@ namespace dnlib.IO {
 				*pd = *ps;
 		}
 
-		public override void ReadBytes(uint offset, byte[] destination, int destinationIndex, int length) =>
+		public override void ReadBytes(uint offset, byte[] destination, int destinationIndex, int length) {
 			Marshal.Copy((IntPtr)(data + offset), destination, destinationIndex, length);
+        }
 
-		public override byte ReadByte(uint offset) => *(data + offset);
+		public override byte ReadByte(uint offset) { return *(data + offset); }
 
 		public override ushort ReadUInt16(uint offset) {
 			var p = data + offset;
@@ -70,8 +71,8 @@ namespace dnlib.IO {
 			return *(double*)&value;
 		}
 
-		public override string ReadUtf16String(uint offset, int chars) => new string((char*)(data + offset), 0, chars);
-		public override string ReadString(uint offset, int length, Encoding encoding) => new string((sbyte*)(data + offset), 0, length, encoding);
+		public override string ReadUtf16String(uint offset, int chars) { return new string((char*)(data + offset), 0, chars); }
+        public override string ReadString(uint offset, int length, Encoding encoding) { return new string((sbyte*)(data + offset), 0, length, encoding); }
 
 		public override bool TryGetOffsetOf(uint offset, uint endOffset, byte value, out uint valueOffset) {
 			var pd = data;

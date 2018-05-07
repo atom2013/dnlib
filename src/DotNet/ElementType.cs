@@ -117,7 +117,7 @@
 		/// <param name="etype">Element type</param>
 		/// <param name="ptrSize">Size of a pointer</param>
 		/// <returns></returns>
-		public static int GetPrimitiveSize(this ElementType etype, int ptrSize = -1) {
+		public static int GetPrimitiveSize(this ElementType etype, int ptrSize) {
 			switch (etype) {
 			case ElementType.Boolean:
 			case ElementType.I1:
@@ -149,6 +149,15 @@
 				return -1;
 			}
 		}
+
+        /// <summary>
+		/// Returns the size of the element type in bytes or <c>-1</c> if it's unknown
+		/// </summary>
+		/// <param name="etype">Element type</param>
+		/// <returns></returns>
+		public static int GetPrimitiveSize(this ElementType etype) {
+            return GetPrimitiveSize(etype, -1);
+        }
 
 		/// <summary>
 		/// Checks whether it's a value type

@@ -81,8 +81,8 @@ namespace dnlib.W32Resources {
 
 		/// <inheritdoc/>
 		public override ResourceDirectory Root {
-			get => root;
-			set => Interlocked.Exchange(ref root, value);
+			get { return root; }
+			set { Interlocked.Exchange(ref root, value); }
 		}
 	}
 
@@ -122,7 +122,7 @@ namespace dnlib.W32Resources {
 
 		/// <inheritdoc/>
 		public override ResourceDirectory Root {
-			get => root.Value;
+			get { return root.Value; }
 			set {
 				if (root.IsValueInitialized) {
 					var origValue = root.Value;
@@ -136,7 +136,7 @@ namespace dnlib.W32Resources {
 		/// <summary>
 		/// Gets the resource reader
 		/// </summary>
-		internal DataReader GetResourceReader() => rsrcReader_factory.CreateReader(rsrcReader_offset, rsrcReader_length);
+        internal DataReader GetResourceReader() { return rsrcReader_factory.CreateReader(rsrcReader_offset, rsrcReader_length); }
 
 		/// <summary>
 		/// Constructor
@@ -154,12 +154,12 @@ namespace dnlib.W32Resources {
 		/// <param name="dataReader_length">Length of resource section</param>
 		/// <param name="owns_dataReader_factory">true if this instance can dispose of <paramref name="dataReader_factory"/></param>
 		public Win32ResourcesPE(IRvaFileOffsetConverter rvaConverter, DataReaderFactory rsrcReader_factory, uint rsrcReader_offset, uint rsrcReader_length, bool owns_rsrcReader_factory, DataReaderFactory dataReader_factory, uint dataReader_offset, uint dataReader_length, bool owns_dataReader_factory) {
-			this.rvaConverter = rvaConverter ?? throw new ArgumentNullException(nameof(rvaConverter));
-			this.rsrcReader_factory = rsrcReader_factory ?? throw new ArgumentNullException(nameof(rsrcReader_factory));
+			if (rvaConverter != null) this.rvaConverter = rvaConverter; else throw new ArgumentNullException("rvaConverter");
+			if (rsrcReader_factory != null) this.rsrcReader_factory = rsrcReader_factory; else throw new ArgumentNullException("rsrcReader_factory");
 			this.rsrcReader_offset = rsrcReader_offset;
 			this.rsrcReader_length = rsrcReader_length;
 			this.owns_rsrcReader_factory = owns_rsrcReader_factory;
-			this.dataReader_factory = dataReader_factory ?? throw new ArgumentNullException(nameof(dataReader_factory));
+			if (dataReader_factory != null) this.dataReader_factory = dataReader_factory; else throw new ArgumentNullException("dataReader_factory");
 			this.dataReader_offset = dataReader_offset;
 			this.dataReader_length = dataReader_length;
 			this.owns_dataReader_factory = owns_dataReader_factory;
@@ -185,7 +185,7 @@ namespace dnlib.W32Resources {
 		/// <param name="rsrcReader_length">Length of resource section</param>
 		/// <param name="owns_rsrcReader_factory">true if this instance can dispose of <paramref name="rsrcReader_factory"/></param>
 		public Win32ResourcesPE(IPEImage peImage, DataReaderFactory rsrcReader_factory, uint rsrcReader_offset, uint rsrcReader_length, bool owns_rsrcReader_factory) {
-			rvaConverter = peImage ?? throw new ArgumentNullException(nameof(peImage));
+			if (peImage != null) rvaConverter = peImage; else throw new ArgumentNullException("peImage");
 			dataReader_factory = peImage.DataReaderFactory;
 			dataReader_offset = 0;
 			dataReader_length = dataReader_factory.Length;
@@ -204,7 +204,7 @@ namespace dnlib.W32Resources {
 					this.rsrcReader_length = reader.Length;
 				}
 				else {
-					this.rsrcReader_factory = ByteArrayDataReaderFactory.Create(Array2.Empty<byte>(), filename: null);
+					this.rsrcReader_factory = ByteArrayDataReaderFactory.Create(Array2.Empty<byte>(), /* filename: */ null);
 					this.rsrcReader_offset = 0;
 					this.rsrcReader_length = 0;
 				}
@@ -232,7 +232,10 @@ namespace dnlib.W32Resources {
 		/// <param name="size">Size of data</param>
 		/// <returns></returns>
 		public DataReader CreateReader(RVA rva, uint size) {
-			GetDataReaderInfo(rva, size, out var dataReaderFactory, out uint dataOffset, out uint dataLength);
+            DataReaderFactory dataReaderFactory;
+            uint dataOffset;
+            uint dataLength;
+			GetDataReaderInfo(rva, size, out dataReaderFactory, out dataOffset, out dataLength);
 			return dataReaderFactory.CreateReader(dataOffset, dataLength);
 		}
 
@@ -244,7 +247,7 @@ namespace dnlib.W32Resources {
 				return;
 			}
 			else {
-				dataReaderFactory = ByteArrayDataReaderFactory.Create(Array2.Empty<byte>(), filename: null);
+				dataReaderFactory = ByteArrayDataReaderFactory.Create(Array2.Empty<byte>(), /* filename: */ null);
 				dataOffset = 0;
 				dataLength = 0;
 			}
@@ -255,9 +258,9 @@ namespace dnlib.W32Resources {
 			if (!disposing)
 				return;
 			if (owns_dataReader_factory)
-				dataReader_factory?.Dispose();
-			if (owns_rsrcReader_factory)
-				rsrcReader_factory?.Dispose();
+            { if (dataReader_factory != null) dataReader_factory.Dispose(); }
+            if (owns_rsrcReader_factory)
+            { if (rsrcReader_factory != null) rsrcReader_factory.Dispose(); }
 			dataReader_factory = null;
 			rsrcReader_factory = null;
 			base.Dispose(disposing);

@@ -28,22 +28,22 @@ namespace dnlib.DotNet.Emit {
 		/// <summary>
 		/// Gets all parameters
 		/// </summary>
-		public IList<Parameter> Parameters => parameters;
+		public IList<Parameter> Parameters { get { return parameters; } }
 
 		/// <summary>
 		/// Gets all locals
 		/// </summary>
-		public IList<Local> Locals => locals;
+		public IList<Local> Locals { get { return locals; } }
 
 		/// <summary>
 		/// Gets all instructions
 		/// </summary>
-		public IList<Instruction> Instructions => instructions;
+		public IList<Instruction> Instructions { get { return instructions; } }
 
 		/// <summary>
 		/// Gets all exception handlers
 		/// </summary>
-		public IList<ExceptionHandler> ExceptionHandlers => exceptionHandlers;
+		public IList<ExceptionHandler> ExceptionHandlers { get { return exceptionHandlers; } }
 
 		/// <summary>
 		/// Constructor
@@ -190,7 +190,7 @@ namespace dnlib.DotNet.Emit {
 			var instr = GetInstruction(offset);
 			if (instr != null)
 				return instr;
-			throw new InvalidOperationException($"There's no instruction @ {offset:X4}");
+			throw new InvalidOperationException( string.Format( "There's no instruction @ {0:X4}", offset ) );
 		}
 
 		/// <summary>
@@ -256,7 +256,7 @@ namespace dnlib.DotNet.Emit {
 		/// </summary>
 		/// <param name="instr">The current instruction</param>
 		/// <returns>The operand</returns>
-		protected virtual uint ReadInlineBrTarget(Instruction instr) => instr.Offset + (uint)instr.GetSize() + reader.ReadUInt32();
+		protected virtual uint ReadInlineBrTarget(Instruction instr) { return instr.Offset + (uint)instr.GetSize() + reader.ReadUInt32(); }
 
 		/// <summary>
 		/// Reads a <see cref="OperandType.InlineField"/> operand
@@ -270,14 +270,14 @@ namespace dnlib.DotNet.Emit {
 		/// </summary>
 		/// <param name="instr">The current instruction</param>
 		/// <returns>The operand</returns>
-		protected virtual int ReadInlineI(Instruction instr) => reader.ReadInt32();
+		protected virtual int ReadInlineI(Instruction instr) { return reader.ReadInt32(); }
 
 		/// <summary>
 		/// Reads a <see cref="OperandType.InlineI8"/> operand
 		/// </summary>
 		/// <param name="instr">The current instruction</param>
 		/// <returns>The operand</returns>
-		protected virtual long ReadInlineI8(Instruction instr) => reader.ReadInt64();
+		protected virtual long ReadInlineI8(Instruction instr) { return reader.ReadInt64(); }
 
 		/// <summary>
 		/// Reads a <see cref="OperandType.InlineMethod"/> operand
@@ -291,21 +291,21 @@ namespace dnlib.DotNet.Emit {
 		/// </summary>
 		/// <param name="instr">The current instruction</param>
 		/// <returns>The operand</returns>
-		protected virtual object ReadInlineNone(Instruction instr) => null;
+		protected virtual object ReadInlineNone(Instruction instr) { return null; }
 
 		/// <summary>
 		/// Reads a <see cref="OperandType.InlinePhi"/> operand
 		/// </summary>
 		/// <param name="instr">The current instruction</param>
 		/// <returns>The operand</returns>
-		protected virtual object ReadInlinePhi(Instruction instr) => null;
+		protected virtual object ReadInlinePhi(Instruction instr) { return null; }
 
 		/// <summary>
 		/// Reads a <see cref="OperandType.InlineR"/> operand
 		/// </summary>
 		/// <param name="instr">The current instruction</param>
 		/// <returns>The operand</returns>
-		protected virtual double ReadInlineR(Instruction instr) => reader.ReadDouble();
+		protected virtual double ReadInlineR(Instruction instr) { return reader.ReadDouble(); }
 
 		/// <summary>
 		/// Reads a <see cref="OperandType.InlineSig"/> operand
@@ -371,21 +371,21 @@ namespace dnlib.DotNet.Emit {
 		/// </summary>
 		/// <param name="instr">The current instruction</param>
 		/// <returns>The operand</returns>
-		protected virtual Parameter ReadInlineVarArg(Instruction instr) => GetParameter(reader.ReadUInt16());
+		protected virtual Parameter ReadInlineVarArg(Instruction instr) { return GetParameter(reader.ReadUInt16()); }
 
 		/// <summary>
 		/// Reads a <see cref="OperandType.InlineVar"/> (a local) operand
 		/// </summary>
 		/// <param name="instr">The current instruction</param>
 		/// <returns>The operand</returns>
-		protected virtual Local ReadInlineVarLocal(Instruction instr) => GetLocal(reader.ReadUInt16());
+		protected virtual Local ReadInlineVarLocal(Instruction instr) { return GetLocal(reader.ReadUInt16()); }
 
 		/// <summary>
 		/// Reads a <see cref="OperandType.ShortInlineBrTarget"/> operand
 		/// </summary>
 		/// <param name="instr">The current instruction</param>
 		/// <returns>The operand</returns>
-		protected virtual uint ReadShortInlineBrTarget(Instruction instr) => instr.Offset + (uint)instr.GetSize() + (uint)reader.ReadSByte();
+		protected virtual uint ReadShortInlineBrTarget(Instruction instr) { return instr.Offset + (uint)instr.GetSize() + (uint)reader.ReadSByte(); }
 
 		/// <summary>
 		/// Reads a <see cref="OperandType.ShortInlineI"/> operand
@@ -403,7 +403,7 @@ namespace dnlib.DotNet.Emit {
 		/// </summary>
 		/// <param name="instr">The current instruction</param>
 		/// <returns>The operand</returns>
-		protected virtual float ReadShortInlineR(Instruction instr) => reader.ReadSingle();
+		protected virtual float ReadShortInlineR(Instruction instr) { return reader.ReadSingle(); }
 
 		/// <summary>
 		/// Reads a <see cref="OperandType.ShortInlineVar"/> operand
@@ -421,14 +421,14 @@ namespace dnlib.DotNet.Emit {
 		/// </summary>
 		/// <param name="instr">The current instruction</param>
 		/// <returns>The operand</returns>
-		protected virtual Parameter ReadShortInlineVarArg(Instruction instr) => GetParameter(reader.ReadByte());
+		protected virtual Parameter ReadShortInlineVarArg(Instruction instr) { return GetParameter(reader.ReadByte()); }
 
 		/// <summary>
 		/// Reads a <see cref="OperandType.ShortInlineVar"/> (a local) operand
 		/// </summary>
 		/// <param name="instr">The current instruction</param>
 		/// <returns>The operand</returns>
-		protected virtual Local ReadShortInlineVarLocal(Instruction instr) => GetLocal(reader.ReadByte());
+        protected virtual Local ReadShortInlineVarLocal(Instruction instr) { return GetLocal(reader.ReadByte()); }
 
 		/// <summary>
 		/// Returns <c>true</c> if it's one of the ldarg/starg instructions that have an operand

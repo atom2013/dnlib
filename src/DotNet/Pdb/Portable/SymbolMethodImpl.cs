@@ -12,10 +12,10 @@ namespace dnlib.DotNet.Pdb.Portable {
 		readonly SymbolSequencePoint[] sequencePoints;
 		readonly int kickoffMethod;
 
-		public override int Token => token;
-		public override SymbolScope RootScope => rootScope;
-		public override IList<SymbolSequencePoint> SequencePoints => sequencePoints;
-		public int KickoffMethod => kickoffMethod;
+		public override int Token { get { return token; } }
+		public override SymbolScope RootScope { get { return rootScope; } }
+		public override IList<SymbolSequencePoint> SequencePoints { get { return sequencePoints; } }
+		public int KickoffMethod { get { return kickoffMethod; } }
 
 		public SymbolMethodImpl(PortablePdbReader reader, int token, SymbolScope rootScope, SymbolSequencePoint[] sequencePoints, int kickoffMethod) {
 			this.reader = reader;
@@ -25,7 +25,8 @@ namespace dnlib.DotNet.Pdb.Portable {
 			this.kickoffMethod = kickoffMethod;
 		}
 
-		public override void GetCustomDebugInfos(MethodDef method, CilBody body, IList<PdbCustomDebugInfo> result) =>
-			reader.GetCustomDebugInfos(this, method, body, result);
+        public override void GetCustomDebugInfos(MethodDef method, CilBody body, IList<PdbCustomDebugInfo> result) {
+            reader.GetCustomDebugInfos(this, method, body, result);
+        }
 	}
 }

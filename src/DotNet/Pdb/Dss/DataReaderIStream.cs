@@ -19,12 +19,12 @@ namespace dnlib.DotNet.Pdb.Dss {
 		}
 
 		DataReaderIStream(DataReaderFactory dataReaderFactory, DataReader reader, string name) {
-			this.dataReaderFactory = dataReaderFactory ?? throw new ArgumentNullException(nameof(dataReaderFactory));
+            if (dataReaderFactory != null) this.dataReaderFactory = dataReaderFactory; else throw new ArgumentNullException("dataReaderFactory");
 			this.reader = reader;
 			this.name = name ?? string.Empty;
 		}
 
-		public void Clone(out IStream ppstm) => ppstm = new DataReaderIStream(dataReaderFactory, reader, name);
+		public void Clone(out IStream ppstm) { ppstm = new DataReaderIStream(dataReaderFactory, reader, name); }
 
 		public void Commit(int grfCommitFlags) {
 		}
@@ -48,7 +48,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 				Marshal.WriteInt64(pcbWritten, Marshal.ReadInt32(pcbWritten));
 		}
 
-		public void LockRegion(long libOffset, long cb, int dwLockType) => Marshal.ThrowExceptionForHR(STG_E_INVALIDFUNCTION);
+		public void LockRegion(long libOffset, long cb, int dwLockType) { Marshal.ThrowExceptionForHR(STG_E_INVALIDFUNCTION); }
 
 		public void Read(byte[] pv, int cb, IntPtr pcbRead) {
 			if (cb < 0)
@@ -89,7 +89,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 				Marshal.WriteInt64(plibNewPosition, reader.Position);
 		}
 
-		public void SetSize(long libNewSize) => Marshal.ThrowExceptionForHR(STG_E_INVALIDFUNCTION);
+		public void SetSize(long libNewSize) { Marshal.ThrowExceptionForHR(STG_E_INVALIDFUNCTION); }
 
 		enum STATFLAG {
 			DEFAULT = 0,
@@ -123,8 +123,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 			pstatstg = s;
 		}
 
-		public void UnlockRegion(long libOffset, long cb, int dwLockType) => Marshal.ThrowExceptionForHR(STG_E_INVALIDFUNCTION);
-		public void Write(byte[] pv, int cb, IntPtr pcbWritten) => Marshal.ThrowExceptionForHR(STG_E_CANTSAVE);
+		public void UnlockRegion(long libOffset, long cb, int dwLockType) { Marshal.ThrowExceptionForHR(STG_E_INVALIDFUNCTION); }
+        public void Write(byte[] pv, int cb, IntPtr pcbWritten) { Marshal.ThrowExceptionForHR(STG_E_CANTSAVE); }
 		public void Dispose() { }
 	}
 }

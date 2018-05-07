@@ -6,29 +6,29 @@ namespace dnlib.W32Resources {
 	/// <summary>
 	/// A Win32 resource name. It can be either an integer or a string.
 	/// </summary>
-	public readonly struct ResourceName : IComparable<ResourceName>, IEquatable<ResourceName> {
+	public struct ResourceName : IComparable<ResourceName>, IEquatable<ResourceName> {
 		readonly int id;
 		readonly string name;
 
 		/// <summary>
 		/// <c>true</c> if <see cref="Id"/> is valid
 		/// </summary>
-		public bool HasId => name == null;
+		public bool HasId { get { return name == null; } }
 
 		/// <summary>
 		/// <c>true</c> if <see cref="Name"/> is valid
 		/// </summary>
-		public bool HasName => name != null;
+		public bool HasName { get { return name != null; } }
 
 		/// <summary>
 		/// The ID. It's only valid if <see cref="HasId"/> is <c>true</c>
 		/// </summary>
-		public int Id => id;
+		public int Id { get { return id; } }
 
 		/// <summary>
 		/// The name. It's only valid if <see cref="HasName"/> is <c>true</c>
 		/// </summary>
-		public string Name => name;
+		public string Name { get { return name; } }
 
 		/// <summary>
 		/// Constructor
@@ -49,28 +49,28 @@ namespace dnlib.W32Resources {
 		}
 
 		/// <summary>Converts input to a <see cref="ResourceName"/></summary>
-		public static implicit operator ResourceName(int id) => new ResourceName(id);
+		public static implicit operator ResourceName(int id) { return new ResourceName(id); }
 
 		/// <summary>Converts input to a <see cref="ResourceName"/></summary>
-		public static implicit operator ResourceName(string name) => new ResourceName(name);
+		public static implicit operator ResourceName(string name) { return new ResourceName(name); }
 
 		/// <summary>Overloaded operator</summary>
-		public static bool operator <(ResourceName left, ResourceName right) => left.CompareTo(right) < 0;
+		public static bool operator <(ResourceName left, ResourceName right) { return left.CompareTo(right) < 0; }
 
 		/// <summary>Overloaded operator</summary>
-		public static bool operator <=(ResourceName left, ResourceName right) => left.CompareTo(right) <= 0;
+		public static bool operator <=(ResourceName left, ResourceName right) { return left.CompareTo(right) <= 0; }
 
 		/// <summary>Overloaded operator</summary>
-		public static bool operator >(ResourceName left, ResourceName right) => left.CompareTo(right) > 0;
+		public static bool operator >(ResourceName left, ResourceName right) { return left.CompareTo(right) > 0; }
 
 		/// <summary>Overloaded operator</summary>
-		public static bool operator >=(ResourceName left, ResourceName right) => left.CompareTo(right) >= 0;
+		public static bool operator >=(ResourceName left, ResourceName right) { return left.CompareTo(right) >= 0; }
 
 		/// <summary>Overloaded operator</summary>
-		public static bool operator ==(ResourceName left, ResourceName right) => left.Equals(right);
+		public static bool operator ==(ResourceName left, ResourceName right) { return left.Equals(right); }
 
 		/// <summary>Overloaded operator</summary>
-		public static bool operator !=(ResourceName left, ResourceName right) => !left.Equals(right);
+		public static bool operator !=(ResourceName left, ResourceName right) { return !left.Equals(right); }
 
 		/// <inheritdoc/>
 		public int CompareTo(ResourceName other) {
@@ -85,7 +85,7 @@ namespace dnlib.W32Resources {
 		}
 
 		/// <inheritdoc/>
-		public bool Equals(ResourceName other) => CompareTo(other) == 0;
+		public bool Equals(ResourceName other) { return CompareTo(other) == 0; }
 
 		/// <inheritdoc/>
 		public override bool Equals(object obj) {
@@ -102,6 +102,6 @@ namespace dnlib.W32Resources {
 		}
 
 		/// <inheritdoc/>
-		public override string ToString() => HasId ? id.ToString() : name;
+        public override string ToString() { return HasId ? id.ToString() : name; }
 	}
 }

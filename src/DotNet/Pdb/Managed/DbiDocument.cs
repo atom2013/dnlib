@@ -16,13 +16,13 @@ namespace dnlib.DotNet.Pdb.Managed {
 		byte[] checkSum;
 		byte[] sourceCode;
 
-		public override string URL => url;
-		public override Guid Language => language;
-		public override Guid LanguageVendor => languageVendor;
-		public override Guid DocumentType => documentType;
-		public override Guid CheckSumAlgorithmId => checkSumAlgorithmId;
-		public override byte[] CheckSum => checkSum;
-		byte[] SourceCode => sourceCode;
+		public override string URL { get { return url; } }
+		public override Guid Language { get { return language; } }
+		public override Guid LanguageVendor { get { return languageVendor; } }
+		public override Guid DocumentType { get { return documentType; } }
+		public override Guid CheckSumAlgorithmId { get { return checkSumAlgorithmId; } }
+		public override byte[] CheckSum { get { return checkSum; } }
+        byte[] SourceCode { get { return sourceCode; } }
 
 		public override PdbCustomDebugInfo[] CustomDebugInfos {
 			get {

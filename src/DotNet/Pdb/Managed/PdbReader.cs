@@ -32,12 +32,12 @@ namespace dnlib.DotNet.Pdb.Managed {
 		byte[] srcsrvData;
 		uint entryPt;
 
-		public override PdbFileKind PdbFileKind => PdbFileKind.WindowsPDB;
+		public override PdbFileKind PdbFileKind { get { return PdbFileKind.WindowsPDB; } }
 
 		uint Age { get; set; }
 		Guid Guid { get; set; }
 
-		internal bool MatchesModule => expectedGuid == Guid && expectedAge == Age;
+		internal bool MatchesModule { get { return expectedGuid == Guid && expectedAge == Age; } }
 		readonly Guid expectedGuid;
 		readonly uint expectedAge;
 
@@ -46,7 +46,7 @@ namespace dnlib.DotNet.Pdb.Managed {
 			this.expectedAge = expectedAge;
 		}
 
-		public override void Initialize(ModuleDef module) => this.module = module;
+		public override void Initialize(ModuleDef module) { this.module = module; }
 
 		/// <summary>
 		/// Read the PDB in the specified stream.
@@ -69,7 +69,7 @@ namespace dnlib.DotNet.Pdb.Managed {
 			}
 		}
 
-		static uint RoundUpDiv(uint value, uint divisor) => (value + divisor - 1) / divisor;
+		static uint RoundUpDiv(uint value, uint divisor) { return (value + divisor - 1) / divisor; }
 
 		void ReadInternal(ref DataReader reader) {
 			string sig = reader.ReadString(30, Encoding.ASCII);
@@ -133,14 +133,15 @@ namespace dnlib.DotNet.Pdb.Managed {
 		}
 
 		byte[] TryGetRawFileData(string name) {
-			if (!names.TryGetValue(name, out uint streamId))
+            uint streamId;
+			if (!names.TryGetValue(name, out streamId))
 				return null;
 			if (streamId > ushort.MaxValue || !IsValidStreamIndex((ushort)streamId))
 				return null;
 			return streams[streamId].Content.ToArray();
 		}
 
-		bool IsValidStreamIndex(ushort index) => index != STREAM_INVALID_INDEX && index < streams.Length;
+		bool IsValidStreamIndex(ushort index) { return index != STREAM_INVALID_INDEX && index < streams.Length; }
 
 		void ReadRootDirectory(MsfStream stream, DataReader[] pages, uint pageSize) {
 			uint streamNum = stream.Content.ReadUInt32();
@@ -163,7 +164,7 @@ namespace dnlib.DotNet.Pdb.Managed {
 		}
 
 		void ReadNames() {
-			ref var stream = ref streams[STREAM_NAMES].Content;
+			var stream = streams[STREAM_NAMES].Content;
 			stream.Position = 8;
 			Age = stream.ReadUInt32();
 			Guid = stream.ReadGuid();
@@ -193,10 +194,11 @@ namespace dnlib.DotNet.Pdb.Managed {
 		}
 
 		void ReadStringTable() {
-			if (!names.TryGetValue("/names", out uint streamId))
+            uint streamId;
+			if (!names.TryGetValue("/names", out streamId))
 				throw new PdbException("String table not found");
 
-			ref var stream = ref streams[streamId].Content;
+			var stream = streams[streamId].Content;
 			stream.Position = 8;
 
 			uint strSize = stream.ReadUInt32();
@@ -220,7 +222,7 @@ namespace dnlib.DotNet.Pdb.Managed {
 		}
 
 		ushort? ReadModules() {
-			ref var stream = ref streams[STREAM_DBI].Content;
+			var stream = streams[STREAM_DBI].Content;
 			stream.Position = 20;
 			ushort symrecStream = stream.ReadUInt16();
 			stream.Position += 2;
@@ -258,10 +260,12 @@ namespace dnlib.DotNet.Pdb.Managed {
 		internal DbiDocument GetDocument(uint nameId) {
 			var name = strings[nameId];
 
-			if (!documents.TryGetValue(name, out var doc)) {
+            DbiDocument doc;
+			if (!documents.TryGetValue(name, out doc)) {
 				doc = new DbiDocument(name);
 
-				if (names.TryGetValue("/src/files/" + name, out uint streamId))
+                uint streamId;
+				if (names.TryGetValue("/src/files/" + name, out streamId))
 					doc.Read(ref streams[streamId].Content);
 				documents.Add(name, doc);
 			}
@@ -312,10 +316,11 @@ namespace dnlib.DotNet.Pdb.Managed {
 			}
 		}
 
-		internal static string ReadCString(ref DataReader reader) => reader.TryReadZeroTerminatedUtf8String() ?? string.Empty;
+		internal static string ReadCString(ref DataReader reader) { return reader.TryReadZeroTerminatedUtf8String() ?? string.Empty; }
 
 		public override SymbolMethod GetMethod(MethodDef method, int version) {
-			if (functions.TryGetValue(method.MDToken.ToInt32(), out var symMethod))
+            DbiFunction symMethod;
+			if (functions.TryGetValue(method.MDToken.ToInt32(), out symMethod))
 				return symMethod;
 			return null;
 		}
@@ -334,7 +339,7 @@ namespace dnlib.DotNet.Pdb.Managed {
 		}
 		volatile SymbolDocument[] documentsResult;
 
-		public override int UserEntryPoint => (int)entryPt;
+        public override int UserEntryPoint { get { return (int)entryPt; } }
 
 		internal void GetCustomDebugInfos(DbiFunction symMethod, MethodDef method, CilBody body, IList<PdbCustomDebugInfo> result) {
 			const string CDI_NAME = "MD2";

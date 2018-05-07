@@ -16,7 +16,7 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// Gets the recursion counter
 		/// </summary>
-		public int Counter => counter;
+		public int Counter { get { return counter; } }
 
 		/// <summary>
 		/// Increments <see cref="counter"/> if it's not too high. <c>ALL</c> instance methods
@@ -45,6 +45,6 @@ namespace dnlib.DotNet {
 		}
 
 		/// <inheritdoc/>
-		public override string ToString() => counter.ToString();
+        public override string ToString() { return counter.ToString(); }
 	}
 }

@@ -26,57 +26,57 @@ namespace dnlib.DotNet.MD {
 		/// <summary>
 		/// Returns the signature (should be 0x424A5342)
 		/// </summary>
-		public uint Signature => signature;
+		public uint Signature { get { return signature; } }
 
 		/// <summary>
 		/// Returns the major version
 		/// </summary>
-		public ushort MajorVersion => majorVersion;
+		public ushort MajorVersion { get { return majorVersion; } }
 
 		/// <summary>
 		/// Returns the minor version
 		/// </summary>
-		public ushort MinorVersion => minorVersion;
+		public ushort MinorVersion { get { return minorVersion; } }
 
 		/// <summary>
 		/// Returns the reserved dword (pointer to extra header data)
 		/// </summary>
-		public uint Reserved1 => reserved1;
+		public uint Reserved1 { get { return reserved1; } }
 
 		/// <summary>
 		/// Returns the version string length value
 		/// </summary>
-		public uint StringLength => stringLength;
+		public uint StringLength { get { return stringLength; } }
 
 		/// <summary>
 		/// Returns the version string
 		/// </summary>
-		public string VersionString => versionString;
+		public string VersionString { get { return versionString; } }
 
 		/// <summary>
 		/// Returns the offset of <c>STORAGEHEADER</c>
 		/// </summary>
-		public FileOffset StorageHeaderOffset => offset2ndPart;
+		public FileOffset StorageHeaderOffset { get { return offset2ndPart; } }
 
 		/// <summary>
 		/// Returns the flags (reserved)
 		/// </summary>
-		public StorageFlags Flags => flags;
+		public StorageFlags Flags { get { return flags; } }
 
 		/// <summary>
 		/// Returns the reserved byte (padding)
 		/// </summary>
-		public byte Reserved2 => reserved2;
+		public byte Reserved2 { get { return reserved2; } }
 
 		/// <summary>
 		/// Returns the number of streams
 		/// </summary>
-		public ushort Streams => streams;
+		public ushort Streams { get { return streams; } }
 
 		/// <summary>
 		/// Returns all stream headers
 		/// </summary>
-		public IList<StreamHeader> StreamHeaders => streamHeaders;
+        public IList<StreamHeader> StreamHeaders { get { return streamHeaders; } }
 
 		/// <summary>
 		/// Constructor
@@ -100,8 +100,9 @@ namespace dnlib.DotNet.MD {
 			streams = reader.ReadUInt16();
 			streamHeaders = new StreamHeader[streams];
 			for (int i = 0; i < streamHeaders.Count; i++) {
-				// Mono doesn't verify all of these so we can't either
-				var sh = new StreamHeader(ref reader, throwOnError: false, verify, out bool failedVerification);
+                // Mono doesn't verify all of these so we can't either
+                bool failedVerification;
+                var sh = new StreamHeader(ref reader, /*throwOnError: */ false, verify, out failedVerification);
 				if (failedVerification || (ulong)sh.Offset + sh.StreamSize > reader.EndOffset)
 					sh = new StreamHeader(0, 0, "<invalid>");
 				streamHeaders[i] = sh;

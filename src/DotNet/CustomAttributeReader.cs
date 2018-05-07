@@ -18,7 +18,7 @@ namespace dnlib.DotNet {
 		/// Constructor
 		/// </summary>
 		/// <param name="module">The module to search first</param>
-		public CAAssemblyRefFinder(ModuleDef module) => this.module = module;
+		public CAAssemblyRefFinder(ModuleDef module) { this.module = module; }
 
 		/// <inheritdoc/>
 		public AssemblyRef FindAssemblyRef(TypeRef nonNestedTypeRef) {
@@ -101,7 +101,7 @@ namespace dnlib.DotNet {
 		/// <param name="ctor">Custom attribute constructor</param>
 		/// <param name="offset">Offset of custom attribute in the #Blob stream</param>
 		/// <returns>A new <see cref="CustomAttribute"/> instance</returns>
-		public static CustomAttribute Read(ModuleDefMD readerModule, ICustomAttributeType ctor, uint offset) => Read(readerModule, ctor, offset, new GenericParamContext());
+		public static CustomAttribute Read(ModuleDefMD readerModule, ICustomAttributeType ctor, uint offset) { return Read(readerModule, ctor, offset, new GenericParamContext()); }
 
 		/// <summary>
 		/// Reads a custom attribute
@@ -126,7 +126,7 @@ namespace dnlib.DotNet {
 			}
 		}
 
-		CustomAttribute CreateRaw(ICustomAttributeType ctor) => new CustomAttribute(ctor, GetRawBlob());
+		CustomAttribute CreateRaw(ICustomAttributeType ctor) { return new CustomAttribute(ctor, GetRawBlob()); }
 
 		/// <summary>
 		/// Reads a custom attribute
@@ -135,8 +135,9 @@ namespace dnlib.DotNet {
 		/// <param name="caBlob">CA blob</param>
 		/// <param name="ctor">Custom attribute constructor</param>
 		/// <returns>A new <see cref="CustomAttribute"/> instance</returns>
-		public static CustomAttribute Read(ModuleDef module, byte[] caBlob, ICustomAttributeType ctor) =>
-			Read(module, ByteArrayDataReaderFactory.CreateReader(caBlob), ctor, new GenericParamContext());
+		public static CustomAttribute Read(ModuleDef module, byte[] caBlob, ICustomAttributeType ctor) {
+			return Read(module, ByteArrayDataReaderFactory.CreateReader(caBlob), ctor, new GenericParamContext());
+        }
 
 		/// <summary>
 		/// Reads a custom attribute
@@ -145,8 +146,9 @@ namespace dnlib.DotNet {
 		/// <param name="reader">A reader positioned at the the first byte of the CA blob</param>
 		/// <param name="ctor">Custom attribute constructor</param>
 		/// <returns>A new <see cref="CustomAttribute"/> instance</returns>
-		public static CustomAttribute Read(ModuleDef module, DataReader reader, ICustomAttributeType ctor) =>
-			Read(module, ref reader, ctor, new GenericParamContext());
+		public static CustomAttribute Read(ModuleDef module, DataReader reader, ICustomAttributeType ctor) {
+			return Read(module, ref reader, ctor, new GenericParamContext());
+        }
 
 		/// <summary>
 		/// Reads a custom attribute
@@ -156,8 +158,9 @@ namespace dnlib.DotNet {
 		/// <param name="ctor">Custom attribute constructor</param>
 		/// <param name="gpContext">Generic parameter context</param>
 		/// <returns>A new <see cref="CustomAttribute"/> instance</returns>
-		public static CustomAttribute Read(ModuleDef module, byte[] caBlob, ICustomAttributeType ctor, GenericParamContext gpContext) =>
-			Read(module, ByteArrayDataReaderFactory.CreateReader(caBlob), ctor, gpContext);
+		public static CustomAttribute Read(ModuleDef module, byte[] caBlob, ICustomAttributeType ctor, GenericParamContext gpContext) {
+			return Read(module, ByteArrayDataReaderFactory.CreateReader(caBlob), ctor, gpContext);
+        }
 
 		/// <summary>
 		/// Reads a custom attribute
@@ -167,8 +170,9 @@ namespace dnlib.DotNet {
 		/// <param name="ctor">Custom attribute constructor</param>
 		/// <param name="gpContext">Generic parameter context</param>
 		/// <returns>A new <see cref="CustomAttribute"/> instance</returns>
-		public static CustomAttribute Read(ModuleDef module, DataReader reader, ICustomAttributeType ctor, GenericParamContext gpContext) =>
-			Read(module, ref reader, ctor, gpContext);
+		public static CustomAttribute Read(ModuleDef module, DataReader reader, ICustomAttributeType ctor, GenericParamContext gpContext) {
+			return Read(module, ref reader, ctor, gpContext);
+        }
 
 		/// <summary>
 		/// Reads a custom attribute
@@ -240,14 +244,17 @@ namespace dnlib.DotNet {
 			this.gpContext = gpContext;
 		}
 
-		byte[] GetRawBlob() => reader.ToArray();
+		byte[] GetRawBlob() { return reader.ToArray(); }
 
 		CustomAttribute Read(ICustomAttributeType ctor) {
-			var methodSig = ctor?.MethodSig;
+			var methodSig = ctor != null?ctor.MethodSig:null;
 			if (methodSig == null)
 				throw new CABlobParserException("ctor is null or not a method");
 
-			if (ctor is MemberRef mrCtor && mrCtor.Class is TypeSpec owner && owner.TypeSig is GenericInstSig gis) {
+            MemberRef mrCtor;
+            TypeSpec owner;
+            GenericInstSig gis;
+            if ((mrCtor = ctor as MemberRef) != null && (owner = mrCtor.Class as TypeSpec) != null && (gis = owner.TypeSig as GenericInstSig) != null) {
 				genericArguments = new GenericArguments();
 				genericArguments.PushTypeArgs(gis.GenericArguments);
 			}
@@ -284,7 +291,7 @@ namespace dnlib.DotNet {
 			return namedArgs;
 		}
 
-		TypeSig FixTypeSig(TypeSig type) => SubstituteGenericParameter(type.RemoveModifiers()).RemoveModifiers();
+		TypeSig FixTypeSig(TypeSig type) { return SubstituteGenericParameter(type.RemoveModifiers()).RemoveModifiers(); }
 
 		TypeSig SubstituteGenericParameter(TypeSig type) {
 			if (genericArguments == null)
@@ -299,7 +306,8 @@ namespace dnlib.DotNet {
 				throw new CABlobParserException("null argType");
 			CAArgument result;
 
-			if (argType is SZArraySig arrayType)
+            SZArraySig arrayType;
+            if ((arrayType = argType as SZArraySig) != null)
 				result = ReadArrayArgument(arrayType);
 			else
 				result = ReadElem(argType);
@@ -311,7 +319,8 @@ namespace dnlib.DotNet {
 		CAArgument ReadElem(TypeSig argType) {
 			if (argType == null)
 				throw new CABlobParserException("null argType");
-			var value = ReadValue((SerializationType)argType.ElementType, argType, out var realArgType);
+            TypeSig realArgType;
+            var value = ReadValue((SerializationType)argType.ElementType, argType, out realArgType);
 			if (realArgType == null)
 				throw new CABlobParserException("Invalid arg type");
 
@@ -407,10 +416,11 @@ namespace dnlib.DotNet {
 			case SerializationType.TaggedObject:
 				realArgType = ReadFieldOrPropType();
 				var arraySig = realArgType as SZArraySig;
-				if (arraySig != null)
+                TypeSig tmpType;
+                if (arraySig != null)
 					result = ReadArrayArgument(arraySig);
 				else
-					result = ReadValue((SerializationType)realArgType.ElementType, realArgType, out var tmpType);
+					result = ReadValue((SerializationType)realArgType.ElementType, realArgType, out tmpType);
 				break;
 
 			// It's ET.Class if it's eg. a ctor System.Type arg type
@@ -458,7 +468,8 @@ namespace dnlib.DotNet {
 			if (underlyingType != null) {
 				if (underlyingType.ElementType < ElementType.Boolean || underlyingType.ElementType > ElementType.U8)
 					throw new CABlobParserException("Invalid enum underlying type");
-				return ReadValue((SerializationType)underlyingType.ElementType, underlyingType, out var realArgType);
+                TypeSig realArgType;
+                return ReadValue((SerializationType)underlyingType.ElementType, underlyingType, out realArgType);
 			}
 
 			// We couldn't resolve the type ref. It should be an enum, but we don't know for sure.
@@ -505,7 +516,8 @@ namespace dnlib.DotNet {
 		/// <returns>A <see cref="TypeDef"/> or <c>null</c> if we couldn't resolve the
 		/// <see cref="TypeRef"/> or if <paramref name="type"/> is a type spec</returns>
 		static TypeDef GetTypeDef(TypeSig type) {
-			if (type is TypeDefOrRefSig tdr) {
+            TypeDefOrRefSig tdr;
+            if ((tdr = type as TypeDefOrRefSig) != null) {
 				var td = tdr.TypeDef;
 				if (td != null)
 					return td;
@@ -586,7 +598,8 @@ namespace dnlib.DotNet {
 			if (reader.ReadByte() == 0xFF)
 				return null;
 			reader.Position--;
-			if (!reader.TryReadCompressedUInt32(out uint len))
+            uint len;
+			if (!reader.TryReadCompressedUInt32(out len))
 				throw new CABlobParserException("Could not read compressed UInt32");
 			if (len == 0)
 				return UTF8String.Empty;

@@ -18,7 +18,7 @@ namespace dnlib.DotNet.Writer {
 		Dictionary<uint, byte[]> userRawData;
 
 		/// <inheritdoc/>
-		public override string Name => "#Blob";
+		public override string Name { get { return "#Blob"; } }
 
 		/// <summary>
 		/// Populates blobs from an existing <see cref="BlobStream"/> (eg. to preserve
@@ -45,7 +45,8 @@ namespace dnlib.DotNet.Writer {
 			reader.Position = 1;
 			while (reader.Position < reader.Length) {
 				uint offset = reader.Position;
-				if (!reader.TryReadCompressedUInt32(out uint len)) {
+                uint len;
+				if (!reader.TryReadCompressedUInt32(out len)) {
 					if (offset == reader.Position)
 						reader.Position++;
 					continue;
@@ -70,7 +71,8 @@ namespace dnlib.DotNet.Writer {
 			if (data == null || data.Length == 0)
 				return 0;
 
-			if (cachedDict.TryGetValue(data, out uint offset))
+            uint offset;
+			if (cachedDict.TryGetValue(data, out offset))
 				return offset;
 			return AddToCache(data);
 		}
@@ -95,7 +97,7 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public override uint GetRawLength() => nextOffset;
+		public override uint GetRawLength() { return nextOffset; }
 
 		/// <inheritdoc/>
 		protected override void WriteToImpl(DataWriter writer) {
@@ -107,7 +109,8 @@ namespace dnlib.DotNet.Writer {
 			uint offset = originalData != null ? (uint)originalData.Length : 1;
 			foreach (var data in cached) {
 				int rawLen = GetRawDataSize(data);
-				if (userRawData != null && userRawData.TryGetValue(offset, out var rawData)) {
+                byte[] rawData;
+				if (userRawData != null && userRawData.TryGetValue(offset, out rawData)) {
 					if (rawData.Length != rawLen)
 						throw new InvalidOperationException("Invalid length of raw data");
 					writer.WriteBytes(rawData);
@@ -121,13 +124,13 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public int GetRawDataSize(byte[] data) => DataWriter.GetCompressedUInt32Length((uint)data.Length) + data.Length;
+		public int GetRawDataSize(byte[] data) { return DataWriter.GetCompressedUInt32Length((uint)data.Length) + data.Length; }
 
 		/// <inheritdoc/>
 		public void SetRawData(uint offset, byte[] rawData) {
 			if (userRawData == null)
 				userRawData = new Dictionary<uint, byte[]>();
-			userRawData[offset] = rawData ?? throw new ArgumentNullException(nameof(rawData));
+            if (rawData != null) userRawData[offset] = rawData; else throw new ArgumentNullException("rawData");
 		}
 
 		/// <inheritdoc/>

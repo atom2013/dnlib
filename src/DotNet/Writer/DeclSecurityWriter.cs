@@ -9,7 +9,7 @@ namespace dnlib.DotNet.Writer {
 	/// <summary>
 	/// Writes <c>DeclSecurity</c> blobs
 	/// </summary>
-	public readonly struct DeclSecurityWriter : ICustomAttributeWriterHelper {
+	public struct DeclSecurityWriter : ICustomAttributeWriterHelper {
 		readonly ModuleDef module;
 		readonly IWriterError helper;
 		readonly DataWriterContext context;
@@ -21,11 +21,13 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="secAttrs">List of <see cref="SecurityAttribute"/>s</param>
 		/// <param name="helper">Helps this class</param>
 		/// <returns>A <c>DeclSecurity</c> blob</returns>
-		public static byte[] Write(ModuleDef module, IList<SecurityAttribute> secAttrs, IWriterError helper) =>
-			new DeclSecurityWriter(module, helper, null).Write(secAttrs);
+		public static byte[] Write(ModuleDef module, IList<SecurityAttribute> secAttrs, IWriterError helper) {
+			return new DeclSecurityWriter(module, helper, null).Write(secAttrs);
+        }
 
-		internal static byte[] Write(ModuleDef module, IList<SecurityAttribute> secAttrs, IWriterError helper, DataWriterContext context) =>
-			new DeclSecurityWriter(module, helper, context).Write(secAttrs);
+		internal static byte[] Write(ModuleDef module, IList<SecurityAttribute> secAttrs, IWriterError helper, DataWriterContext context) {
+			return new DeclSecurityWriter(module, helper, context).Write(secAttrs);
+        }
 
 		DeclSecurityWriter(ModuleDef module, IWriterError helper, DataWriterContext context) {
 			this.module = module;
@@ -43,7 +45,7 @@ namespace dnlib.DotNet.Writer {
 			return WriteFormat2(secAttrs);
 		}
 
-		byte[] WriteFormat1(string xml) => Encoding.Unicode.GetBytes(xml);
+		byte[] WriteFormat1(string xml) { return Encoding.Unicode.GetBytes(xml); }
 
 		byte[] WriteFormat2(IList<SecurityAttribute> secAttrs) {
 			var stream = new MemoryStream();
@@ -85,9 +87,9 @@ namespace dnlib.DotNet.Writer {
 			return stream.ToArray();
 		}
 
-		uint WriteCompressedUInt32(DataWriter writer, uint value) => writer.WriteCompressedUInt32(helper, value);
-		void Write(DataWriter writer, UTF8String s) => writer.Write(helper, s);
-		void IWriterError.Error(string message) => helper.Error(message);
-		bool IFullNameFactoryHelper.MustUseAssemblyName(IType type) => FullNameFactory.MustUseAssemblyName(module, type);
+		uint WriteCompressedUInt32(DataWriter writer, uint value) { return writer.WriteCompressedUInt32(helper, value); }
+		void Write(DataWriter writer, UTF8String s) { writer.Write(helper, s); }
+		void IWriterError.Error(string message) { helper.Error(message); }
+        bool IFullNameFactoryHelper.MustUseAssemblyName(IType type) { return FullNameFactory.MustUseAssemblyName(module, type); }
 	}
 }

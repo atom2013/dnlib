@@ -7,12 +7,15 @@ using dnlib.PE;
 using dnlib.W32Resources;
 using dnlib.DotNet.MD;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace dnlib.DotNet.Writer {
 	/// <summary>
 	/// <see cref="NativeModuleWriter"/> options
 	/// </summary>
 	public sealed class NativeModuleWriterOptions : ModuleWriterOptionsBase {
+        [CompilerGenerated]
+        private readonly bool OptimizeImageSize__BackingField;
 		/// <summary>
 		/// If <c>true</c>, any extra data after the PE data in the original file is also saved
 		/// at the end of the new file. Enable this option if some protector has written data to
@@ -25,7 +28,7 @@ namespace dnlib.DotNet.Writer {
 		/// </summary>
 		public bool KeepWin32Resources { get; set; }
 
-		internal bool OptimizeImageSize { get; }
+        internal bool OptimizeImageSize { get { return OptimizeImageSize__BackingField; } }
 
 		/// <summary>
 		/// Constructor
@@ -42,7 +45,7 @@ namespace dnlib.DotNet.Writer {
 			MetadataOptions.Flags |= MetadataFlags.PreserveAllMethodRids;
 
 			if (optimizeImageSize) {
-				OptimizeImageSize = true;
+                OptimizeImageSize__BackingField = true;
 
 				// Prevent the #Blob heap from getting bigger. Encoded TypeDefOrRef tokens are stored there (in
 				// typesigs and callingconvsigs) so we must preserve TypeDefOrRef tokens (or the #Blob heap could
@@ -73,12 +76,16 @@ namespace dnlib.DotNet.Writer {
 		/// <summary>The original PE sections and their data</summary>
 		List<OrigSection> origSections;
 
-		readonly struct ReusedChunkInfo {
-			public IReuseChunk Chunk { get; }
-			public RVA RVA { get; }
+		struct ReusedChunkInfo {
+            [CompilerGenerated]
+            private readonly IReuseChunk Chunk__BackingField;
+            [CompilerGenerated]
+            private readonly RVA RVA__BackingField;
+			public IReuseChunk Chunk { get { return Chunk__BackingField;  } }
+            public RVA RVA { get { return RVA__BackingField; } }
 			public ReusedChunkInfo(IReuseChunk chunk, RVA rva) {
-				Chunk = chunk;
-				RVA = rva;
+                Chunk__BackingField = chunk;
+                RVA__BackingField = rva;
 			}
 		}
 
@@ -121,8 +128,9 @@ namespace dnlib.DotNet.Writer {
 			/// Constructor
 			/// </summary>
 			/// <param name="peSection">PE section</param>
-			public OrigSection(ImageSectionHeader peSection) =>
+			public OrigSection(ImageSectionHeader peSection) {
 				PESection = peSection;
+            }
 
 			/// <inheritdoc/>
 			public void Dispose() {
@@ -133,48 +141,48 @@ namespace dnlib.DotNet.Writer {
 			/// <inheritdoc/>
 			public override string ToString() {
 				uint offs = Chunk.CreateReader().StartOffset;
-				return $"{PESection.DisplayName} FO:{offs:X8} L:{Chunk.CreateReader().Length:X8}";
+				return  string.Format( "{0} FO:{1:X8} L:{2:X8}", PESection.DisplayName, offs, Chunk.CreateReader().Length );
 			}
 		}
 
 		/// <summary>
 		/// Gets the module
 		/// </summary>
-		public ModuleDefMD ModuleDefMD => module;
+		public ModuleDefMD ModuleDefMD { get { return module; } }
 
 		/// <inheritdoc/>
-		public override ModuleDef Module => module;
+		public override ModuleDef Module { get { return module; } }
 
 		/// <inheritdoc/>
-		public override ModuleWriterOptionsBase TheOptions => Options;
+		public override ModuleWriterOptionsBase TheOptions { get { return Options; } }
 
 		/// <summary>
 		/// Gets/sets the writer options. This is never <c>null</c>
 		/// </summary>
 		public NativeModuleWriterOptions Options {
-			get => options ?? (options = new NativeModuleWriterOptions(module, optimizeImageSize: true));
-			set => options = value;
+			get { return options ?? (options = new NativeModuleWriterOptions(module, /*optimizeImageSize: */ true)); }
+			set { options = value; }
 		}
 
 		/// <summary>
 		/// Gets all <see cref="PESection"/>s
 		/// </summary>
-		public override List<PESection> Sections => sections;
+		public override List<PESection> Sections { get { return sections; } }
 
 		/// <summary>
 		/// Gets the original PE sections and their data
 		/// </summary>
-		public List<OrigSection> OrigSections => origSections;
+		public List<OrigSection> OrigSections { get { return origSections; } }
 
 		/// <summary>
 		/// Gets the <c>.text</c> section
 		/// </summary>
-		public override PESection TextSection => textSection;
+		public override PESection TextSection { get { return textSection; } }
 
 		/// <summary>
 		/// Gets the <c>.rsrc</c> section or <c>null</c> if there's none
 		/// </summary>
-		public override PESection RsrcSection => rsrcSection;
+		public override PESection RsrcSection { get { return rsrcSection; } }
 
 		/// <summary>
 		/// Constructor
@@ -358,7 +366,8 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		long WriteFile() {
-			bool entryPointIsManagedOrNoEntryPoint = GetEntryPoint(out uint entryPointToken);
+            uint entryPointToken;
+			bool entryPointIsManagedOrNoEntryPoint = GetEntryPoint(out entryPointToken);
 
 			OnWriterEvent(ModuleWriterEvent.BeginWritePdb);
 			WritePdbFile();
@@ -397,7 +406,8 @@ namespace dnlib.DotNet.Writer {
 					textSection.Remove(methodBodies);
 
 				var debugDataDir = peImage.ImageNTHeaders.OptionalHeader.DataDirectories[6];
-				if (debugDataDir.VirtualAddress != 0 && debugDataDir.Size != 0 && TryGetRealDebugDirectorySize(peImage, out uint realDebugDirSize))
+                uint realDebugDirSize;
+                if (debugDataDir.VirtualAddress != 0 && debugDataDir.Size != 0 && TryGetRealDebugDirectorySize(peImage, out realDebugDirSize))
 					ReuseIfPossible(textSection, debugDirectory, debugDataDir.VirtualAddress, realDebugDirSize, DebugDirectory.DEFAULT_DEBUGDIRECTORY_ALIGNMENT);
 			}
 
@@ -412,7 +422,8 @@ namespace dnlib.DotNet.Writer {
 				rsrcSection = null;
 			}
 
-			var headerSection = CreateHeaderSection(out var extraHeaderData);
+            IChunk extraHeaderData;
+            var headerSection = CreateHeaderSection(out extraHeaderData);
 			var chunks = new List<IChunk>();
 			uint headerLen;
 			if (extraHeaderData != null) {
@@ -518,7 +529,7 @@ namespace dnlib.DotNet.Writer {
 		/// <summary>
 		/// <c>true</c> if image is 64-bit
 		/// </summary>
-		bool Is64Bit() => peImage.ImageNTHeaders.OptionalHeader is ImageOptionalHeader64;
+        bool Is64Bit() { return peImage.ImageNTHeaders.OptionalHeader is ImageOptionalHeader64; }
 
 		Characteristics GetCharacteristics() {
 			var ch = module.Characteristics;
@@ -797,13 +808,16 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		uint GetMethodToken(IMethod method) {
-			if (method is MethodDef md)
+            MethodDef md;
+            if ((md = method as MethodDef) != null)
 				return new MDToken(Table.Method, metadata.GetRid(md)).Raw;
 
-			if (method is MemberRef mr)
+            MemberRef mr;
+            if ((mr = method as MemberRef) != null)
 				return new MDToken(Table.MemberRef, metadata.GetRid(mr)).Raw;
 
-			if (method is MethodSpec ms)
+            MethodSpec ms;
+            if ((ms = method as MethodSpec) != null)
 				return new MDToken(Table.MethodSpec, metadata.GetRid(ms)).Raw;
 
 			if (method == null)
@@ -826,11 +840,13 @@ namespace dnlib.DotNet.Writer {
 				return ep == 0 || ((Options.Cor20HeaderOptions.Flags ?? 0) & ComImageFlags.NativeEntryPoint) == 0;
 			}
 
-			if (module.ManagedEntryPoint is MethodDef epMethod) {
+            MethodDef epMethod;
+            if ((epMethod = module.ManagedEntryPoint as MethodDef) != null) {
 				ep = new MDToken(Table.Method, metadata.GetRid(epMethod)).Raw;
 				return true;
 			}
-			if (module.ManagedEntryPoint is FileDef file) {
+            FileDef file;
+            if ((file = module.ManagedEntryPoint as FileDef) != null) {
 				ep = new MDToken(Table.File, metadata.GetRid(file)).Raw;
 				return true;
 			}

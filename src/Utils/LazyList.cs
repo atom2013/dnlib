@@ -65,9 +65,9 @@ namespace dnlib.Utils {
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(typeof(CollectionDebugView<>))]
 	public class LazyList<TValue> : ILazyList<TValue> where TValue : class {
-		private protected readonly List<Element> list;
+		protected readonly List<Element> list;
 		int id = 0;
-		private protected readonly IListListener<TValue> listener;
+		protected readonly IListListener<TValue> listener;
 
 #if THREAD_SAFE
 		readonly Lock theLock = Lock.Create();
@@ -76,13 +76,13 @@ namespace dnlib.Utils {
 		/// <summary>
 		/// Stores a simple value
 		/// </summary>
-		private protected class Element {
+		protected class Element {
 			protected TValue value;
 
 			/// <summary>
 			/// <c>true</c> if it has been initialized, <c>false</c> otherwise
 			/// </summary>
-			public virtual bool IsInitialized_NoLock => true;
+            public virtual bool IsInitialized_NoLock { get { return true; } }
 
 			/// <summary>
 			/// Default constructor
@@ -94,23 +94,23 @@ namespace dnlib.Utils {
 			/// Constructor that should be used when new elements are inserted into <see cref="LazyList{T}"/>
 			/// </summary>
 			/// <param name="data">User data</param>
-			public Element(TValue data) => value = data;
+			public Element(TValue data) {  value = data; }
 
 			/// <summary>
 			/// Gets the value
 			/// </summary>
 			/// <param name="index">Index in the list</param>
-			public virtual TValue GetValue_NoLock(int index) => value;
+			public virtual TValue GetValue_NoLock(int index) { return  value; }
 
 			/// <summary>
 			/// Sets the value
 			/// </summary>
 			/// <param name="index">Index in the list</param>
 			/// <param name="value">New value</param>
-			public virtual void SetValue_NoLock(int index, TValue value) => this.value = value;
+			public virtual void SetValue_NoLock(int index, TValue value) { this.value = value; }
 
 			/// <inheritdoc/>
-			public override string ToString() => value?.ToString() ?? string.Empty;
+			public override string ToString() {  return (value != null)?value.ToString() : string.Empty; }
 		}
 
 		/// <inheritdoc/>
@@ -127,10 +127,10 @@ namespace dnlib.Utils {
 		}
 
 		/// <inheritdoc/>
-		internal int Count_NoLock => list.Count;
+		internal int Count_NoLock { get { return list.Count; } }
 
 		/// <inheritdoc/>
-		public bool IsReadOnly => false;
+		public bool IsReadOnly { get { return  false; } }
 
 		/// <inheritdoc/>
 		public TValue this[int index] {
@@ -154,7 +154,7 @@ namespace dnlib.Utils {
 			}
 		}
 
-		internal TValue Get_NoLock(int index) => list[index].GetValue_NoLock(index);
+		internal TValue Get_NoLock(int index) { return  list[index].GetValue_NoLock(index); }
 
 		void Set_NoLock(int index, TValue value) {
 			if (listener != null) {
@@ -181,7 +181,7 @@ namespace dnlib.Utils {
 			list = new List<Element>();
 		}
 
-		private protected LazyList(int length, IListListener<TValue> listener) {
+		protected LazyList(int length, IListListener<TValue> listener) {
 			this.listener = listener;
 			list = new List<Element>(length);
 		}
@@ -287,7 +287,7 @@ namespace dnlib.Utils {
 		}
 
 		/// <inheritdoc/>
-		public bool Contains(TValue item) => IndexOf(item) >= 0;
+		public bool Contains(TValue item)  { return  IndexOf(item) >= 0; }
 
 		/// <inheritdoc/>
 		public void CopyTo(TValue[] array, int arrayIndex) {
@@ -352,7 +352,7 @@ namespace dnlib.Utils {
 			internal Enumerator(LazyList<TValue> list) {
 				this.list = list;
 				index = 0;
-				current = default;
+				current = default(TValue);
 #if THREAD_SAFE
 				list.theLock.EnterReadLock(); try {
 #endif
@@ -365,8 +365,8 @@ namespace dnlib.Utils {
 			/// <summary>
 			/// Gets the current value
 			/// </summary>
-			public TValue Current => current;
-			object IEnumerator.Current => current;
+			public TValue Current { get { return  current; } }
+			object IEnumerator.Current { get { return  current; } }
 
 			/// <summary>
 			/// Moves to the next element in the collection
@@ -391,7 +391,7 @@ namespace dnlib.Utils {
 			bool MoveNextDoneOrThrow_NoLock() {
 				if (list.id != id)
 					throw new InvalidOperationException("List was modified");
-				current = default;
+                current = default(TValue);
 				return false;
 			}
 
@@ -400,16 +400,16 @@ namespace dnlib.Utils {
 			/// </summary>
 			public void Dispose() { }
 
-			void IEnumerator.Reset() => throw new NotSupportedException();
+			void IEnumerator.Reset()  {  throw new NotSupportedException(); }
 		}
 
 		/// <summary>
 		/// Gets the list enumerator
 		/// </summary>
 		/// <returns></returns>
-		public Enumerator GetEnumerator() => new Enumerator(this);
+		public Enumerator GetEnumerator() { return  new Enumerator(this); }
 
-		IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator() => GetEnumerator();
+		IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator() { return  GetEnumerator(); }
 
 		internal IEnumerable<TValue> GetEnumerable_NoLock() {
 			int id2 = id;
@@ -421,7 +421,7 @@ namespace dnlib.Utils {
 		}
 
 		/// <inheritdoc/>
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() { return  GetEnumerator(); }
 	}
 
 	/// <summary>
@@ -444,7 +444,7 @@ namespace dnlib.Utils {
 			LazyList<TValue, TContext> lazyList;
 
 			/// <inheritdoc/>
-			public override bool IsInitialized_NoLock => lazyList == null;
+			public override bool IsInitialized_NoLock { get { return  lazyList == null; } }
 
 			/// <inheritdoc/>
 			public override TValue GetValue_NoLock(int index) {
@@ -518,11 +518,11 @@ namespace dnlib.Utils {
 				list.Add(new LazyElement(i, this));
 		}
 
-		TValue ReadOriginalValue_NoLock(LazyElement elem) => ReadOriginalValue_NoLock(list.IndexOf(elem), elem.origIndex);
+        TValue ReadOriginalValue_NoLock(LazyElement elem) { return ReadOriginalValue_NoLock(list.IndexOf(elem), elem.origIndex); }
 
 		TValue ReadOriginalValue_NoLock(int index, int origIndex) {
 			var newValue = readOriginalValue(context, origIndex);
-			listener?.OnLazyAdd(index, ref newValue);
+			if (listener != null) listener.OnLazyAdd(index, ref newValue);
 			return newValue;
 		}
 	}

@@ -3,8 +3,8 @@
 namespace System.Runtime.InteropServices {
 	[AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Method, AllowMultiple = false)]
 	sealed class DefaultDllImportSearchPathsAttribute : Attribute {
-		public DefaultDllImportSearchPathsAttribute(DllImportSearchPath paths) => _paths = paths;
-		public DllImportSearchPath Paths => _paths;
+        public DefaultDllImportSearchPathsAttribute(DllImportSearchPath paths) { _paths = paths; }
+		public DllImportSearchPath Paths { get { return _paths; } }
 		internal DllImportSearchPath _paths;
 	}
 

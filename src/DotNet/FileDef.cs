@@ -18,26 +18,26 @@ namespace dnlib.DotNet {
 		protected uint rid;
 
 		/// <inheritdoc/>
-		public MDToken MDToken => new MDToken(Table.File, rid);
+		public MDToken MDToken { get { return new MDToken(Table.File, rid); } }
 
 		/// <inheritdoc/>
 		public uint Rid {
-			get => rid;
-			set => rid = value;
+			get { return rid; }
+			set { rid = value; }
 		}
 
 		/// <inheritdoc/>
-		public int HasCustomAttributeTag => 16;
+		public int HasCustomAttributeTag { get { return 16; } }
 
 		/// <inheritdoc/>
-		public int ImplementationTag => 0;
+		public int ImplementationTag { get { return 0; } }
 
 		/// <summary>
 		/// From column File.Flags
 		/// </summary>
 		public FileAttributes Flags {
-			get => (FileAttributes)attributes;
-			set => attributes = (int)value;
+			get { return (FileAttributes)attributes; }
+			set { attributes = (int)value; }
 		}
 		/// <summary>Attributes</summary>
 		protected int attributes;
@@ -46,8 +46,8 @@ namespace dnlib.DotNet {
 		/// From column File.Name
 		/// </summary>
 		public UTF8String Name {
-			get => name;
-			set => name = value;
+			get { return name; }
+			set { name = value; }
 		}
 		/// <summary>Name</summary>
 		protected UTF8String name;
@@ -56,8 +56,8 @@ namespace dnlib.DotNet {
 		/// From column File.HashValue
 		/// </summary>
 		public byte[] HashValue {
-			get => hashValue;
-			set => hashValue = value;
+			get { return hashValue; }
+			set { hashValue = value; }
 		}
 		/// <summary/>
 		protected byte[] hashValue;
@@ -75,17 +75,18 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected CustomAttributeCollection customAttributes;
 		/// <summary>Initializes <see cref="customAttributes"/></summary>
-		protected virtual void InitializeCustomAttributes() =>
+		protected virtual void InitializeCustomAttributes() {
 			Interlocked.CompareExchange(ref customAttributes, new CustomAttributeCollection(), null);
+        }
 
 		/// <inheritdoc/>
-		public bool HasCustomAttributes => CustomAttributes.Count > 0;
+		public bool HasCustomAttributes { get { return CustomAttributes.Count > 0; } }
 
 		/// <inheritdoc/>
-		public int HasCustomDebugInformationTag => 16;
+		public int HasCustomDebugInformationTag { get { return 16; } }
 
 		/// <inheritdoc/>
-		public bool HasCustomDebugInfos => CustomDebugInfos.Count > 0;
+		public bool HasCustomDebugInfos { get { return CustomDebugInfos.Count > 0; } }
 
 		/// <summary>
 		/// Gets all custom debug infos
@@ -100,8 +101,9 @@ namespace dnlib.DotNet {
 		/// <summary/>
 		protected IList<PdbCustomDebugInfo> customDebugInfos;
 		/// <summary>Initializes <see cref="customDebugInfos"/></summary>
-		protected virtual void InitializeCustomDebugInfos() =>
+		protected virtual void InitializeCustomDebugInfos() {
 			Interlocked.CompareExchange(ref customDebugInfos, new List<PdbCustomDebugInfo>(), null);
+        }
 
 		/// <summary>
 		/// Set or clear flags in <see cref="attributes"/>
@@ -120,23 +122,23 @@ namespace dnlib.DotNet {
 		/// Gets/sets the <see cref="FileAttributes.ContainsMetadata"/> bit
 		/// </summary>
 		public bool ContainsMetadata {
-			get => ((FileAttributes)attributes & FileAttributes.ContainsNoMetadata) == 0;
-			set => ModifyAttributes(!value, FileAttributes.ContainsNoMetadata);
+			get { return ((FileAttributes)attributes & FileAttributes.ContainsNoMetadata) == 0; }
+			set { ModifyAttributes(!value, FileAttributes.ContainsNoMetadata); }
 		}
 
 		/// <summary>
 		/// Gets/sets the <see cref="FileAttributes.ContainsNoMetadata"/> bit
 		/// </summary>
 		public bool ContainsNoMetadata {
-			get => ((FileAttributes)attributes & FileAttributes.ContainsNoMetadata) != 0;
-			set => ModifyAttributes(value, FileAttributes.ContainsNoMetadata);
+			get { return ((FileAttributes)attributes & FileAttributes.ContainsNoMetadata) != 0; }
+			set { ModifyAttributes(value, FileAttributes.ContainsNoMetadata); }
 		}
 
 		/// <inheritdoc/>
-		public string FullName => UTF8String.ToSystemStringOrEmpty(name);
+		public string FullName { get { return UTF8String.ToSystemStringOrEmpty(name); } }
 
 		/// <inheritdoc/>
-		public override string ToString() => FullName;
+        public override string ToString() { return FullName; }
 	}
 
 	/// <summary>
@@ -172,7 +174,7 @@ namespace dnlib.DotNet {
 		readonly uint origRid;
 
 		/// <inheritdoc/>
-		public uint OrigRid => origRid;
+		public uint OrigRid { get { return origRid; } }
 
 		/// <inheritdoc/>
 		protected override void InitializeCustomAttributes() {
@@ -200,12 +202,13 @@ namespace dnlib.DotNet {
 			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.FileTable.IsInvalidRID(rid))
-				throw new BadImageFormatException($"File rid {rid} does not exist");
+				throw new BadImageFormatException( string.Format( "File rid {0} does not exist", rid ) );
 #endif
 			origRid = rid;
 			this.rid = rid;
 			this.readerModule = readerModule;
-			bool b = readerModule.TablesStream.TryReadFileRow(origRid, out var row);
+            RawFileRow row;
+            bool b = readerModule.TablesStream.TryReadFileRow(origRid, out row);
 			Debug.Assert(b);
 			attributes = (int)row.Flags;
 			name = readerModule.StringsStream.ReadNoNull(row.Name);

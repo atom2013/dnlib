@@ -8,7 +8,7 @@ namespace dnlib.DotNet {
 	/// <summary>
 	/// Hashes some data according to a <see cref="AssemblyHashAlgorithm"/>
 	/// </summary>
-	readonly struct AssemblyHash : IDisposable {
+	struct AssemblyHash : IDisposable {
 		readonly HashAlgorithm hasher;
 
 		/// <summary>
@@ -78,7 +78,7 @@ namespace dnlib.DotNet {
 		/// Hash data
 		/// </summary>
 		/// <param name="data">Data</param>
-		public void Hash(byte[] data) => Hash(data, 0, data.Length);
+        public void Hash(byte[] data) { Hash(data, 0, data.Length); }
 
 		/// <summary>
 		/// Hash data

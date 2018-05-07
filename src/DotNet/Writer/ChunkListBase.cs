@@ -19,12 +19,12 @@ namespace dnlib.DotNet.Writer {
 		FileOffset offset;
 		RVA rva;
 
-		internal bool IsEmpty => chunks.Count == 0;
+		internal bool IsEmpty { get { return chunks.Count == 0; } }
 
 		/// <summary>
 		/// Helper struct
 		/// </summary>
-		protected readonly struct Elem {
+		protected struct Elem {
 			/// <summary>Data</summary>
 			public readonly T chunk;
 			/// <summary>Alignment</summary>
@@ -51,22 +51,23 @@ namespace dnlib.DotNet.Writer {
 			/// Constructor
 			/// </summary>
 			/// <param name="chunkComparer">Compares the chunk type</param>
-			public ElemEqualityComparer(IEqualityComparer<T> chunkComparer) => this.chunkComparer = chunkComparer;
+            public ElemEqualityComparer(IEqualityComparer<T> chunkComparer) { this.chunkComparer = chunkComparer; }
 
 			/// <inheritdoc/>
-			public bool Equals(Elem x, Elem y) =>
-				x.alignment == y.alignment &&
-				chunkComparer.Equals(x.chunk, y.chunk);
+			public bool Equals(Elem x, Elem y) {
+				return x.alignment == y.alignment &&
+				            chunkComparer.Equals(x.chunk, y.chunk);
+            }
 
 			/// <inheritdoc/>
-			public int GetHashCode(Elem obj) => (int)obj.alignment + chunkComparer.GetHashCode(obj.chunk);
+			public int GetHashCode(Elem obj) { return (int)obj.alignment + chunkComparer.GetHashCode(obj.chunk); }
 		}
 
 		/// <inheritdoc/>
-		public FileOffset FileOffset => offset;
+		public FileOffset FileOffset { get { return offset; } }
 
 		/// <inheritdoc/>
-		public RVA RVA => rva;
+		public RVA RVA { get { return rva; } }
 
 		/// <inheritdoc/>
 		public virtual void SetOffset(FileOffset offset, RVA rva) {
@@ -97,10 +98,10 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public uint GetFileLength() => length;
+		public uint GetFileLength() { return length; }
 
 		/// <inheritdoc/>
-		public uint GetVirtualSize() => virtualSize;
+		public uint GetVirtualSize() { return virtualSize; }
 
 		/// <inheritdoc/>
 		public void WriteTo(DataWriter writer) {

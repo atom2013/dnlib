@@ -17,19 +17,21 @@ namespace dnlib.DotNet.Pdb.Dss {
 			this.parent = parent;
 		}
 
-		public override SymbolMethod Method => method;
-		public override SymbolScope Parent => parent;
+		public override SymbolMethod Method { get { return method; } }
+		public override SymbolScope Parent { get { return parent; } }
 
 		public override int StartOffset {
 			get {
-				scope.GetStartOffset(out uint result);
+                uint result;
+				scope.GetStartOffset(out result);
 				return (int)result;
 			}
 		}
 
 		public override int EndOffset {
 			get {
-				scope.GetEndOffset(out uint result);
+                uint result;
+				scope.GetEndOffset(out result);
 				return (int)result;
 			}
 		}
@@ -37,7 +39,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 		public override IList<SymbolScope> Children {
 			get {
 				if (children == null) {
-					scope.GetChildren(0, out uint numScopes, null);
+                    uint numScopes;
+					scope.GetChildren(0, out numScopes, null);
 					var unScopes = new ISymUnmanagedScope[numScopes];
 					scope.GetChildren((uint)unScopes.Length, out numScopes, unScopes);
 					var scopes = new SymbolScope[numScopes];
@@ -53,7 +56,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 		public override IList<SymbolVariable> Locals {
 			get {
 				if (locals == null) {
-					scope.GetLocals(0, out uint numVars, null);
+                    uint numVars;
+					scope.GetLocals(0, out numVars, null);
 					var unVars = new ISymUnmanagedVariable[numVars];
 					scope.GetLocals((uint)unVars.Length, out numVars, unVars);
 					var vars = new SymbolVariable[numVars];
@@ -69,7 +73,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 		public override IList<SymbolNamespace> Namespaces {
 			get {
 				if (namespaces == null) {
-					scope.GetNamespaces(0, out uint numNss, null);
+                    uint numNss;
+					scope.GetNamespaces(0, out numNss, null);
 					var unNss = new ISymUnmanagedNamespace[numNss];
 					scope.GetNamespaces((uint)unNss.Length, out numNss, unNss);
 					var nss = new SymbolNamespace[numNss];
@@ -82,14 +87,15 @@ namespace dnlib.DotNet.Pdb.Dss {
 		}
 		volatile SymbolNamespace[] namespaces;
 
-		public override IList<PdbCustomDebugInfo> CustomDebugInfos => Array2.Empty<PdbCustomDebugInfo>();
-		public override PdbImportScope ImportScope => null;
+		public override IList<PdbCustomDebugInfo> CustomDebugInfos { get { return Array2.Empty<PdbCustomDebugInfo>(); } }
+		public override PdbImportScope ImportScope { get { return null; } }
 
 		public override IList<PdbConstant> GetConstants(ModuleDef module, GenericParamContext gpContext) {
 			var scope2 = scope as ISymUnmanagedScope2;
 			if (scope2 == null)
 				return Array2.Empty<PdbConstant>();
-			scope2.GetConstants(0, out uint numCs, null);
+            uint numCs;
+			scope2.GetConstants(0, out numCs, null);
 			if (numCs == 0)
 				return Array2.Empty<PdbConstant>();
 			var unCs = new ISymUnmanagedConstant[numCs];
@@ -98,7 +104,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 			for (uint i = 0; i < numCs; i++) {
 				var unc = unCs[i];
 				var name = GetName(unc);
-				unc.GetValue(out object value);
+                object value;
+				unc.GetValue(out value);
 				var sigBytes = GetSignatureBytes(unc);
 				TypeSig signature;
 				if (sigBytes.Length == 0)
@@ -111,7 +118,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 		}
 
 		string GetName(ISymUnmanagedConstant unc) {
-			unc.GetName(0, out uint count, null);
+            uint count;
+			unc.GetName(0, out count, null);
 			var chars = new char[count];
 			unc.GetName((uint)chars.Length, out count, chars);
 			if (chars.Length == 0)
@@ -122,7 +130,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 		byte[] GetSignatureBytes(ISymUnmanagedConstant unc) {
 			const int E_FAIL = unchecked((int)0x80004005);
 			const int E_NOTIMPL = unchecked((int)0x80004001);
-			int hr = unc.GetSignature(0, out uint bufSize, null);
+            uint bufSize;
+			int hr = unc.GetSignature(0, out bufSize, null);
 			if (bufSize == 0 || (hr < 0 && hr != E_FAIL && hr != E_NOTIMPL))
 				return Array2.Empty<byte>();
 			var buffer = new byte[bufSize];

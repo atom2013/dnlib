@@ -53,6 +53,6 @@
 		/// Constructor
 		/// </summary>
 		/// <param name="handlerType">Exception clause type</param>
-		public ExceptionHandler(ExceptionHandlerType handlerType) => HandlerType = handlerType;
+        public ExceptionHandler(ExceptionHandlerType handlerType) { HandlerType = handlerType; }
 	}
 }

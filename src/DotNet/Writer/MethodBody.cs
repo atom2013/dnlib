@@ -20,40 +20,40 @@ namespace dnlib.DotNet.Writer {
 		uint localVarSigTok;
 
 		/// <inheritdoc/>
-		public FileOffset FileOffset => offset;
+		public FileOffset FileOffset { get { return offset; } }
 
 		/// <inheritdoc/>
-		public RVA RVA => rva;
+		public RVA RVA { get { return rva; } }
 
 		/// <summary>
 		/// Gets the code
 		/// </summary>
-		public byte[] Code => code;
+		public byte[] Code { get { return code; } }
 
 		/// <summary>
 		/// Gets the extra sections (exception handlers) or <c>null</c>
 		/// </summary>
-		public byte[] ExtraSections => extraSections;
+		public byte[] ExtraSections { get { return extraSections; } }
 
 		/// <summary>
 		/// Gets the token of the locals
 		/// </summary>
-		public uint LocalVarSigTok => localVarSigTok;
+		public uint LocalVarSigTok { get { return localVarSigTok; } }
 
 		/// <summary>
 		/// <c>true</c> if it's a fat body
 		/// </summary>
-		public bool IsFat => !isTiny;
+		public bool IsFat { get { return !isTiny; } }
 
 		/// <summary>
 		/// <c>true</c> if it's a tiny body
 		/// </summary>
-		public bool IsTiny => isTiny;
+		public bool IsTiny { get { return isTiny; } }
 
 		/// <summary>
 		/// <c>true</c> if there's an extra section
 		/// </summary>
-		public bool HasExtraSections => extraSections != null && extraSections.Length > 0;
+		public bool HasExtraSections { get { return extraSections != null && extraSections.Length > 0; } }
 
 		/// <summary>
 		/// Constructor
@@ -127,10 +127,10 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public uint GetFileLength() => length;
+		public uint GetFileLength() { return length; }
 
 		/// <inheritdoc/>
-		public uint GetVirtualSize() => GetFileLength();
+		public uint GetVirtualSize() { return GetFileLength(); }
 
 		/// <inheritdoc/>
 		public void WriteTo(DataWriter writer) {
@@ -143,7 +143,7 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => Utils.GetHashCode(code) + Utils.GetHashCode(extraSections);
+        public override int GetHashCode() { return Utils.GetHashCode(code) + Utils.GetHashCode(extraSections); }
 
 		/// <inheritdoc/>
 		public override bool Equals(object obj) {

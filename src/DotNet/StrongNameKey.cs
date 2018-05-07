@@ -84,22 +84,22 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// Gets/sets the signature algorithm
 		/// </summary>
-		public SignatureAlgorithm SignatureAlgorithm => signatureAlgorithm;
+		public SignatureAlgorithm SignatureAlgorithm { get { return signatureAlgorithm; } }
 
 		/// <summary>
 		/// Gets/sets the hash algorithm
 		/// </summary>
-		public AssemblyHashAlgorithm HashAlgorithm => hashAlgorithm;
+		public AssemblyHashAlgorithm HashAlgorithm { get { return hashAlgorithm; } }
 
 		/// <summary>
 		/// Gets/sets the modulus
 		/// </summary>
-		public byte[] Modulus => modulus;
+		public byte[] Modulus { get { return modulus; } }
 
 		/// <summary>
 		/// Gets/sets the public exponent
 		/// </summary>
-		public byte[] PublicExponent => publicExponent;
+		public byte[] PublicExponent { get { return publicExponent; } }
 
 		/// <summary>
 		/// Default constructor
@@ -206,7 +206,7 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// Creates a public key blob
 		/// </summary>
-		public byte[] CreatePublicKey() => CreatePublicKey(signatureAlgorithm, hashAlgorithm, modulus, publicExponent);
+		public byte[] CreatePublicKey() { return CreatePublicKey(signatureAlgorithm, hashAlgorithm, modulus, publicExponent); }
 
 		internal static byte[] CreatePublicKey(SignatureAlgorithm sigAlg, AssemblyHashAlgorithm hashAlg, byte[] modulus, byte[] publicExponent) {
 			if (sigAlg != SignatureAlgorithm.CALG_RSA_SIGN)
@@ -228,7 +228,7 @@ namespace dnlib.DotNet {
 		}
 
 		/// <inheritdoc/>
-		public override string ToString() => Utils.ToHex(CreatePublicKey(), false);
+		public override string ToString() { return Utils.ToHex(CreatePublicKey(), false); }
 	}
 
 	/// <summary>
@@ -261,52 +261,52 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// Gets the strong name signature size in bytes
 		/// </summary>
-		public int SignatureSize => modulus.Length;
+		public int SignatureSize { get { return modulus.Length; } }
 
 		/// <summary>
 		/// Gets the public key hash algorithm. It's usually <see cref="AssemblyHashAlgorithm.SHA1"/>
 		/// </summary>
-		public AssemblyHashAlgorithm HashAlgorithm => hashAlg;
+		public AssemblyHashAlgorithm HashAlgorithm { get { return hashAlg; } }
 
 		/// <summary>
 		/// Gets the public exponent
 		/// </summary>
-		public byte[] PublicExponent => publicExponent;
+		public byte[] PublicExponent { get { return publicExponent; } }
 
 		/// <summary>
 		/// Gets the modulus
 		/// </summary>
-		public byte[] Modulus => modulus;
+		public byte[] Modulus { get { return modulus; } }
 
 		/// <summary>
 		/// Gets prime1
 		/// </summary>
-		public byte[] Prime1 => prime1;
+		public byte[] Prime1 { get { return prime1; } }
 
 		/// <summary>
 		/// Gets prime2
 		/// </summary>
-		public byte[] Prime2 => prime2;
+		public byte[] Prime2 { get { return prime2; } }
 
 		/// <summary>
 		/// Gets exponent1
 		/// </summary>
-		public byte[] Exponent1 => exponent1;
+		public byte[] Exponent1 { get { return exponent1; } }
 
 		/// <summary>
 		/// Gets exponent2
 		/// </summary>
-		public byte[] Exponent2 => exponent2;
+		public byte[] Exponent2 { get { return exponent2; } }
 
 		/// <summary>
 		/// Gets the coefficient
 		/// </summary>
-		public byte[] Coefficient => coefficient;
+		public byte[] Coefficient { get { return coefficient; } }
 
 		/// <summary>
 		/// Gets the private exponent
 		/// </summary>
-		public byte[] PrivateExponent => privateExponent;
+        public byte[] PrivateExponent { get { return privateExponent; } }
 
 		/// <summary>
 		/// Constructor

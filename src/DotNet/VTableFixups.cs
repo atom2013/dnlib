@@ -18,25 +18,25 @@ namespace dnlib.DotNet {
 		/// Gets/sets the RVA of the vtable fixups
 		/// </summary>
 		public RVA RVA {
-			get => rva;
-			set => rva = value;
+			get { return rva; }
+			set { rva = value; }
 		}
 
 		/// <summary>
 		/// Gets all <see cref="VTable"/>s
 		/// </summary>
-		public IList<VTable> VTables => vtables;
+		public IList<VTable> VTables { get { return vtables; } }
 
 		/// <summary>
 		/// Default constructor
 		/// </summary>
-		public VTableFixups() => vtables = new List<VTable>();
+		public VTableFixups() { vtables = new List<VTable>(); }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="module">Module</param>
-		public VTableFixups(ModuleDefMD module) => Initialize(module);
+		public VTableFixups(ModuleDefMD module) { Initialize(module); }
 
 		void Initialize(ModuleDefMD module) {
 			var info = module.Metadata.ImageCor20Header.VTableFixups;
@@ -71,10 +71,10 @@ namespace dnlib.DotNet {
 		}
 
 		/// <inheritdoc/>
-		public IEnumerator<VTable> GetEnumerator() => vtables.GetEnumerator();
+		public IEnumerator<VTable> GetEnumerator() { return vtables.GetEnumerator(); }
 
 		/// <inheritdoc/>
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
 	}
 
 	/// <summary>
@@ -85,7 +85,7 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// 32-bit vtable slots
 		/// </summary>
-		[Obsolete("Use " + nameof(Bit32), error: false)]
+		[Obsolete("Use " + "Bit32", false)]
 		_32Bit				= Bit32,
 
 		/// <summary>
@@ -96,7 +96,7 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// 64-bit vtable slots
 		/// </summary>
-		[Obsolete("Use " + nameof(Bit64), error: false)]
+		[Obsolete("Use " + "Bit64", false)]
 		_64Bit				= Bit64,
 
 		/// <summary>
@@ -132,37 +132,37 @@ namespace dnlib.DotNet {
 		/// Gets/sets the <see cref="RVA"/> of this vtable
 		/// </summary>
 		public RVA RVA {
-			get => rva;
-			set => rva = value;
+			get { return rva; }
+			set { rva = value; }
 		}
 
 		/// <summary>
 		/// Gets/sets the flags
 		/// </summary>
 		public VTableFlags Flags {
-			get => flags;
-			set => flags = value;
+			get { return flags; }
+			set { flags = value; }
 		}
 
 		/// <summary>
 		/// <c>true</c> if each vtable slot is 32 bits in size
 		/// </summary>
-		public bool Is32Bit => (flags & VTableFlags.Bit32) != 0;
+		public bool Is32Bit { get { return (flags & VTableFlags.Bit32) != 0; } }
 
 		/// <summary>
 		/// <c>true</c> if each vtable slot is 64 bits in size
 		/// </summary>
-		public bool Is64Bit => (flags & VTableFlags.Bit64) != 0;
+		public bool Is64Bit { get { return (flags & VTableFlags.Bit64) != 0; } }
 
 		/// <summary>
 		/// Gets the vtable methods
 		/// </summary>
-		public IList<IMethod> Methods => methods;
+		public IList<IMethod> Methods { get { return methods; } }
 
 		/// <summary>
 		/// Default constructor
 		/// </summary>
-		public VTable() => methods = new List<IMethod>();
+		public VTable() { methods = new List<IMethod>(); }
 
 		/// <summary>
 		/// Constructor
@@ -198,16 +198,16 @@ namespace dnlib.DotNet {
 		}
 
 		/// <inheritdoc/>
-		public IEnumerator<IMethod> GetEnumerator() => methods.GetEnumerator();
+		public IEnumerator<IMethod> GetEnumerator() { return methods.GetEnumerator(); }
 
 		/// <inheritdoc/>
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
 
 		/// <inheritdoc/>
 		public override string ToString() {
 			if (methods.Count == 0)
-				return $"{methods.Count} {(uint)rva:X8}";
-			return $"{methods.Count} {(uint)rva:X8} {methods[0]}";
+				return  string.Format( "{0} {1:X8}", methods.Count, (uint)rva );
+			return  string.Format( "{0} {1:X8} {2}", methods.Count, (uint)rva, methods[0] );
 		}
 	}
 }

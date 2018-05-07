@@ -17,25 +17,25 @@ namespace dnlib.DotNet.Writer {
 		FileOffset offset;
 		RVA rva;
 
-		internal bool IsEmpty => resources.Count == 0;
+		internal bool IsEmpty { get { return resources.Count == 0; } }
 
 		/// <inheritdoc/>
-		public FileOffset FileOffset => offset;
+		public FileOffset FileOffset { get { return offset; } }
 
 		/// <inheritdoc/>
-		public RVA RVA => rva;
+		public RVA RVA { get { return rva; } }
 
 		/// <summary>
 		/// Gets offset of next resource. This offset is relative to the start of
 		/// the .NET resources and is always aligned.
 		/// </summary>
-		public uint NextOffset => Utils.AlignUp(length, alignment);
+		public uint NextOffset { get { return Utils.AlignUp(length, alignment); } }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="alignment">Alignment of all resources</param>
-		public NetResources(uint alignment) => this.alignment = alignment;
+		public NetResources(uint alignment) { this.alignment = alignment; }
 
 		/// <summary>
 		/// Adds a resource
@@ -51,7 +51,7 @@ namespace dnlib.DotNet.Writer {
 			return data;
 		}
 
-		bool IReuseChunk.CanReuse(RVA origRva, uint origSize) => length <= origSize;
+		bool IReuseChunk.CanReuse(RVA origRva, uint origSize) { return length <= origSize; }
 
 		/// <inheritdoc/>
 		public void SetOffset(FileOffset offset, RVA rva) {
@@ -69,10 +69,10 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		public uint GetFileLength() => length;
+		public uint GetFileLength() { return length; }
 
 		/// <inheritdoc/>
-		public uint GetVirtualSize() => GetFileLength();
+        public uint GetVirtualSize() { return GetFileLength(); }
 
 		/// <inheritdoc/>
 		public void WriteTo(DataWriter writer) {

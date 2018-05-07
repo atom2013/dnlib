@@ -60,7 +60,7 @@ namespace dnlib.DotNet {
 			var asm = self.Resolve(assembly, sourceModule);
 			if (asm != null)
 				return asm;
-			throw new AssemblyResolveException($"Could not resolve assembly: {assembly}");
+			throw new AssemblyResolveException( string.Format( "Could not resolve assembly: {0}", assembly ) );
 		}
 
 		/// <summary>
@@ -77,7 +77,7 @@ namespace dnlib.DotNet {
 			var asm = self.Resolve(new AssemblyNameInfo(assembly), sourceModule);
 			if (asm != null)
 				return asm;
-			throw new AssemblyResolveException($"Could not resolve assembly: {assembly}");
+			throw new AssemblyResolveException( string.Format( "Could not resolve assembly: {0}", assembly ) );
 		}
 
 		/// <summary>
@@ -94,7 +94,7 @@ namespace dnlib.DotNet {
 			var asm = self.Resolve(new AssemblyNameInfo(asmFullName), sourceModule);
 			if (asm != null)
 				return asm;
-			throw new AssemblyResolveException($"Could not resolve assembly: {asmFullName}");
+            throw new AssemblyResolveException( string.Format( "Could not resolve assembly: {0}", asmFullName ) );
 		}
 	}
 }

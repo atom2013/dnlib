@@ -16,7 +16,7 @@ namespace dnlib.DotNet.MD {
 		/// <summary>
 		/// See COMIMAGE_FLAGS_32BITREQUIRED in the Windows SDK
 		/// </summary>
-		[Obsolete("Use " + nameof(Bit32Required), error: false)]
+		[Obsolete("Use " + "Bit32Required", false)]
 		_32BitRequired = Bit32Required,
 
 		/// <summary>
@@ -47,7 +47,7 @@ namespace dnlib.DotNet.MD {
 		/// <summary>
 		/// See COMIMAGE_FLAGS_32BITPREFERRED in the Windows SDK
 		/// </summary>
-		[Obsolete("Use " + nameof(Bit32Preferred), error: false)]
+		[Obsolete("Use " + "Bit32Preferred", false)]
 		_32BitPreferred = Bit32Preferred,
 
 		/// <summary>

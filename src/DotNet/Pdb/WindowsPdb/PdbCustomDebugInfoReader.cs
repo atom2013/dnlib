@@ -151,7 +151,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 				return smScope;
 
 			case PdbCustomDebugInfoKind.StateMachineTypeName:
-				var name = ReadUnicodeZ(recPosEnd, needZeroChar: true);
+				var name = ReadUnicodeZ(recPosEnd, /* needZeroChar: */ true);
 				if (name == null)
 					return null;
 				var type = GetNestedType(name);
@@ -186,7 +186,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 						return null;
 
 					var nameEndPos = reader.Position + 2 * 64;
-					name = ReadUnicodeZ(nameEndPos, needZeroChar: false);
+					name = ReadUnicodeZ(nameEndPos, /* needZeroChar: */ false);
 					reader.Position = nameEndPos;
 
 					local = localIndex < bodyOpt.Variables.Count ? bodyOpt.Variables[localIndex] : null;

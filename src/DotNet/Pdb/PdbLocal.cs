@@ -44,13 +44,13 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Gets the index of the local
 		/// </summary>
-		public int Index => Local.Index;
+		public int Index { get { return Local.Index; } }
 
 		/// <summary>
 		/// true if it should be hidden in debugger variables windows. Not all compiler generated locals have this flag set.
 		/// </summary>
 		public bool IsDebuggerHidden {
-			get => (Attributes & PdbLocalAttributes.DebuggerHidden) != 0;
+			get { return (Attributes & PdbLocalAttributes.DebuggerHidden) != 0; }
 			set {
 				if (value)
 					Attributes |= PdbLocalAttributes.DebuggerHidden;
@@ -60,15 +60,15 @@ namespace dnlib.DotNet.Pdb {
 		}
 
 		/// <inheritdoc/>
-		public int HasCustomDebugInformationTag => 24;
+		public int HasCustomDebugInformationTag { get { return 24; } }
 
 		/// <inheritdoc/>
-		public bool HasCustomDebugInfos => CustomDebugInfos.Count > 0;
+		public bool HasCustomDebugInfos { get { return CustomDebugInfos.Count > 0; } }
 
 		/// <summary>
 		/// Gets all custom debug infos
 		/// </summary>
-		public IList<PdbCustomDebugInfo> CustomDebugInfos => customDebugInfos;
+        public IList<PdbCustomDebugInfo> CustomDebugInfos { get { return customDebugInfos; } }
 		readonly IList<PdbCustomDebugInfo> customDebugInfos = new List<PdbCustomDebugInfo>();
 	}
 }

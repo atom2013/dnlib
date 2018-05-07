@@ -45,6 +45,6 @@ namespace dnlib.PE {
 			return checkSum;
 		}
 
-		static void ThrowInvalidOperationException(string message) => throw new InvalidOperationException(message);
+        static void ThrowInvalidOperationException(string message) { throw new InvalidOperationException(message); }
 	}
 }

@@ -17,17 +17,18 @@ namespace dnlib.DotNet.Pdb.Dss {
 		const int E_FAIL = unchecked((int)0x80004005);
 
 		public SymbolReaderImpl(ISymUnmanagedReader reader, object[] objsToKeepAlive) {
-			this.reader = reader ?? throw new ArgumentNullException(nameof(reader));
-			this.objsToKeepAlive = objsToKeepAlive ?? throw new ArgumentNullException(nameof(objsToKeepAlive));
+			if (reader != null) this.reader = reader; else throw new ArgumentNullException("reader");
+			if (objsToKeepAlive != null) this.objsToKeepAlive = objsToKeepAlive; else throw new ArgumentNullException("objsToKeepAlive");
 		}
 
-		~SymbolReaderImpl() => Dispose(false);
+		~SymbolReaderImpl() { Dispose(false); }
 
-		public override PdbFileKind PdbFileKind => PdbFileKind.WindowsPDB;
+		public override PdbFileKind PdbFileKind { get { return PdbFileKind.WindowsPDB; } }
 
 		public override int UserEntryPoint {
 			get {
-				int hr = reader.GetUserEntryPoint(out uint token);
+                uint token;
+				int hr = reader.GetUserEntryPoint(out token);
 				if (hr == E_FAIL)
 					token = 0;
 				else
@@ -39,7 +40,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 		public override IList<SymbolDocument> Documents {
 			get {
 				if (documents == null) {
-					reader.GetDocuments(0, out uint numDocs, null);
+                    uint numDocs;
+					reader.GetDocuments(0, out numDocs, null);
 					var unDocs = new ISymUnmanagedDocument[numDocs];
 					reader.GetDocuments((uint)unDocs.Length, out numDocs, unDocs);
 					var docs = new SymbolDocument[numDocs];
@@ -52,10 +54,11 @@ namespace dnlib.DotNet.Pdb.Dss {
 		}
 		volatile SymbolDocument[] documents;
 
-		public override void Initialize(ModuleDef module) => this.module = module;
+		public override void Initialize(ModuleDef module) { this.module = module; }
 
 		public override SymbolMethod GetMethod(MethodDef method, int version) {
-			int hr = reader.GetMethodByVersion(method.MDToken.Raw, version, out var unMethod);
+            ISymUnmanagedMethod unMethod;
+			int hr = reader.GetMethodByVersion(method.MDToken.Raw, version, out unMethod);
 			if (hr == E_FAIL)
 				return null;
 			Marshal.ThrowExceptionForHR(hr);
@@ -68,7 +71,8 @@ namespace dnlib.DotNet.Pdb.Dss {
 				result.Add(asyncMethod);
 
 			const string CDI_NAME = "MD2";
-			reader.GetSymAttribute(method.MDToken.Raw, CDI_NAME, 0, out uint bufSize, null);
+            uint bufSize;
+			reader.GetSymAttribute(method.MDToken.Raw, CDI_NAME, 0, out bufSize, null);
 			if (bufSize == 0)
 				return;
 			var cdiData = new byte[bufSize];
@@ -91,11 +95,14 @@ namespace dnlib.DotNet.Pdb.Dss {
 		}
 
 		byte[] GetSourceLinkData() {
-			if (reader is ISymUnmanagedReader4 reader4) {
+            ISymUnmanagedReader4 reader4;
+			if ((reader4 = reader as ISymUnmanagedReader4) != null) {
 				// It returns data that it owns. The data is freed once its Destroy() method is called
 				Debug.Assert(reader is ISymUnmanagedDispose);
 				// Despite its name, it seems to only return source link data, and not source server data
-				if (reader4.GetSourceServerData(out var srcLinkData, out int sizeData) == 0) {
+                int sizeData;
+                IntPtr srcLinkData;
+				if (reader4.GetSourceServerData(out srcLinkData, out sizeData) == 0) {
 					if (sizeData == 0)
 						return Array2.Empty<byte>();
 					var data = new byte[sizeData];
@@ -107,11 +114,13 @@ namespace dnlib.DotNet.Pdb.Dss {
 		}
 
 		byte[] GetSourceServerData() {
-			if (reader is ISymUnmanagedSourceServerModule srcSrvModule) {
+            ISymUnmanagedSourceServerModule srcSrvModule;
+			if ((srcSrvModule = reader as ISymUnmanagedSourceServerModule) != null) {
 				var srcSrvData = IntPtr.Zero;
 				try {
 					// This method only returns source server data, not source link data
-					if (srcSrvModule.GetSourceServerData(out int sizeData, out srcSrvData) == 0) {
+                    int sizeData;
+					if (srcSrvModule.GetSourceServerData(out sizeData, out srcSrvData) == 0) {
 						if (sizeData == 0)
 							return Array2.Empty<byte>();
 						var data = new byte[sizeData];
@@ -133,11 +142,12 @@ namespace dnlib.DotNet.Pdb.Dss {
 		}
 
 		void Dispose(bool disposing) {
-			(reader as ISymUnmanagedDispose)?.Destroy();
+            ISymUnmanagedDispose symUnmanagedDispose;
+			if ((symUnmanagedDispose = reader as ISymUnmanagedDispose) != null) symUnmanagedDispose.Destroy();
 			var o = objsToKeepAlive;
 			if (o != null) {
 				foreach (var obj in o)
-					(obj as IDisposable)?.Dispose();
+                { IDisposable disposable; if ((disposable = obj as IDisposable) != null) disposable.Dispose(); }
 			}
 			module = null;
 			reader = null;
@@ -145,8 +155,10 @@ namespace dnlib.DotNet.Pdb.Dss {
 		}
 
 		public bool MatchesModule(Guid pdbId, uint stamp, uint age) {
-			if (reader is ISymUnmanagedReader4 reader4) {
-				int hr = reader4.MatchesModule(pdbId, stamp, age, out bool result);
+            ISymUnmanagedReader4 reader4;
+            if ((reader4 = reader as ISymUnmanagedReader4) != null) {
+                bool result;
+                int hr = reader4.MatchesModule(pdbId, stamp, age, out result);
 				if (hr < 0)
 					return false;
 				return result;

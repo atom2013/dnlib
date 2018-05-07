@@ -10,7 +10,7 @@ namespace dnlib.DotNet.MD {
 	/// Stores a list of rids
 	/// </summary>
 	[DebuggerDisplay("Count = {Count}")]
-	public readonly struct RidList : IEnumerable<uint> {
+	public struct RidList : IEnumerable<uint> {
 		readonly uint startRid;
 		readonly uint length;
 		readonly IList<uint> rids;
@@ -26,14 +26,14 @@ namespace dnlib.DotNet.MD {
 		/// <param name="startRid"></param>
 		/// <param name="length"></param>
 		/// <returns></returns>
-		public static RidList Create(uint startRid, uint length) => new RidList(startRid, length);
+		public static RidList Create(uint startRid, uint length) { return new RidList(startRid, length); }
 
 		/// <summary>
 		/// Creates a new instance
 		/// </summary>
 		/// <param name="rids">List of valid rids</param>
 		/// <returns></returns>
-		public static RidList Create(IList<uint> rids) => new RidList(rids);
+		public static RidList Create(IList<uint> rids) { return new RidList(rids); }
 
 		RidList(uint startRid, uint length) {
 			this.startRid = startRid;
@@ -42,7 +42,7 @@ namespace dnlib.DotNet.MD {
 		}
 
 		RidList(IList<uint> rids) {
-			this.rids = rids ?? throw new ArgumentNullException(nameof(rids));
+            if (rids != null) this.rids = rids; else throw new ArgumentNullException("rids");
 			startRid = 0;
 			length = (uint)rids.Count;
 		}
@@ -70,7 +70,7 @@ namespace dnlib.DotNet.MD {
 		/// <summary>
 		/// Gets the number of rids it will iterate over
 		/// </summary>
-		public int Count => (int)length;
+		public int Count { get { return (int)length; } }
 
 		/// <summary>
 		/// Enumerator
@@ -82,7 +82,7 @@ namespace dnlib.DotNet.MD {
 			uint index;
 			uint current;
 
-			internal Enumerator(in RidList list) {
+			internal Enumerator(RidList list) {
 				startRid = list.startRid;
 				length = list.length;
 				rids = list.rids;
@@ -93,8 +93,8 @@ namespace dnlib.DotNet.MD {
 			/// <summary>
 			/// Gets the current rid
 			/// </summary>
-			public uint Current => current;
-			object IEnumerator.Current => current;
+			public uint Current { get { return current; } }
+			object IEnumerator.Current { get { return current; } }
 
 			/// <summary>
 			/// Disposes this instance
@@ -127,15 +127,15 @@ namespace dnlib.DotNet.MD {
 				return true;
 			}
 
-			void IEnumerator.Reset() => throw new NotSupportedException();
+			void IEnumerator.Reset() { throw new NotSupportedException(); }
 		}
 
 		/// <summary>
 		/// Gets the enumerator
 		/// </summary>
 		/// <returns></returns>
-		public Enumerator GetEnumerator() => new Enumerator(this);
-		IEnumerator<uint> IEnumerable<uint>.GetEnumerator() => GetEnumerator();
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		public Enumerator GetEnumerator() { return new Enumerator(this); }
+		IEnumerator<uint> IEnumerable<uint>.GetEnumerator() { return GetEnumerator(); }
+		IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 	}
 }

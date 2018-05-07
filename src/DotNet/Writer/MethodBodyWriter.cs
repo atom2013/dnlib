@@ -44,18 +44,18 @@ namespace dnlib.DotNet.Writer {
 		/// The size of this array is not necessarily a multiple of 4, even if there are exception
 		/// handlers present. See also <see cref="GetFullMethodBody()"/>
 		/// </summary>
-		public byte[] Code => code;
+		public byte[] Code { get { return code; } }
 
 		/// <summary>
 		/// Gets the extra sections (exception handlers) as a byte array or <c>null</c> if there
 		/// are no exception handlers. This is valid only after calling <see cref="Write()"/>
 		/// </summary>
-		public byte[] ExtraSections => extraSections;
+		public byte[] ExtraSections { get { return extraSections; } }
 
 		/// <summary>
 		/// Gets the token of the locals
 		/// </summary>
-		public uint LocalVarSigTok => localVarSigTok;
+		public uint LocalVarSigTok { get { return localVarSigTok; } }
 
 		/// <summary>
 		/// Constructor
@@ -80,7 +80,7 @@ namespace dnlib.DotNet.Writer {
 			this.keepMaxStack = keepMaxStack;
 		}
 
-		internal MethodBodyWriter(ITokenProvider helper) => this.helper = helper;
+		internal MethodBodyWriter(ITokenProvider helper) { this.helper = helper; }
 
 		internal void Reset(CilBody cilBody, bool keepMaxStack) {
 			Reset(cilBody.Instructions, cilBody.ExceptionHandlers);
@@ -297,24 +297,24 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		/// <inheritdoc/>
-		protected override void ErrorImpl(string message) => helper.Error(message);
+		protected override void ErrorImpl(string message) { helper.Error(message); }
 
 		/// <inheritdoc/>
-		protected override void WriteInlineField(ref ArrayWriter writer, Instruction instr) => writer.WriteUInt32(helper.GetToken(instr.Operand).Raw);
+		protected override void WriteInlineField(ref ArrayWriter writer, Instruction instr) { writer.WriteUInt32(helper.GetToken(instr.Operand).Raw); }
 
 		/// <inheritdoc/>
-		protected override void WriteInlineMethod(ref ArrayWriter writer, Instruction instr) => writer.WriteUInt32(helper.GetToken(instr.Operand).Raw);
+		protected override void WriteInlineMethod(ref ArrayWriter writer, Instruction instr) { writer.WriteUInt32(helper.GetToken(instr.Operand).Raw); }
 
 		/// <inheritdoc/>
-		protected override void WriteInlineSig(ref ArrayWriter writer, Instruction instr) => writer.WriteUInt32(helper.GetToken(instr.Operand).Raw);
+		protected override void WriteInlineSig(ref ArrayWriter writer, Instruction instr) { writer.WriteUInt32(helper.GetToken(instr.Operand).Raw); }
 
 		/// <inheritdoc/>
-		protected override void WriteInlineString(ref ArrayWriter writer, Instruction instr) => writer.WriteUInt32(helper.GetToken(instr.Operand).Raw);
+		protected override void WriteInlineString(ref ArrayWriter writer, Instruction instr) { writer.WriteUInt32(helper.GetToken(instr.Operand).Raw); }
 
 		/// <inheritdoc/>
-		protected override void WriteInlineTok(ref ArrayWriter writer, Instruction instr) => writer.WriteUInt32(helper.GetToken(instr.Operand).Raw);
+		protected override void WriteInlineTok(ref ArrayWriter writer, Instruction instr) { writer.WriteUInt32(helper.GetToken(instr.Operand).Raw); }
 
 		/// <inheritdoc/>
-		protected override void WriteInlineType(ref ArrayWriter writer, Instruction instr) => writer.WriteUInt32(helper.GetToken(instr.Operand).Raw);
+        protected override void WriteInlineType(ref ArrayWriter writer, Instruction instr) { writer.WriteUInt32(helper.GetToken(instr.Operand).Raw); }
 	}
 }

@@ -43,7 +43,8 @@ namespace dnlib.DotNet.Emit {
 		/// <returns>The <see cref="Type"/> or <c>null</c></returns>
 		public static Type Convert(IntPtr address) {
 			lock (lockObj) {
-				if (addrToType.TryGetValue(address, out var type))
+                Type type;
+				if (addrToType.TryGetValue(address, out type))
 					return type;
 
 				type = GetTypeNET20(address) ?? GetTypeUsingTypeBuilder(address);
@@ -118,7 +119,7 @@ namespace dnlib.DotNet.Emit {
 			return Type.GetTypeFromHandle((RuntimeTypeHandle)th);
 		}
 
-		static string GetNextTypeName() => "Type" + numNewTypes++.ToString();
+        static string GetNextTypeName() { return "Type" + numNewTypes++.ToString(); }
 
 		static byte[] GetLocalSignature(IntPtr mtAddr) {
 			ulong mtValue = (ulong)mtAddr.ToInt64();

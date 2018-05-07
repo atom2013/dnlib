@@ -8,15 +8,17 @@ namespace dnlib.IO {
 	sealed unsafe class AlignedByteArrayDataStream : DataStream {
 		readonly byte[] data;
 
-		public AlignedByteArrayDataStream(byte[] data) => this.data = data;
+		public AlignedByteArrayDataStream(byte[] data) { this.data = data; }
 
-		public override void ReadBytes(uint offset, void* destination, int length) =>
+		public override void ReadBytes(uint offset, void* destination, int length) {
 			Marshal.Copy(data, (int)offset, (IntPtr)destination, length);
+        }
 
-		public override void ReadBytes(uint offset, byte[] destination, int destinationIndex, int length) =>
+		public override void ReadBytes(uint offset, byte[] destination, int destinationIndex, int length) {
 			Array.Copy(data, (int)offset, destination, destinationIndex, length);
+        }
 
-		public override byte ReadByte(uint offset) => data[(int)offset];
+        public override byte ReadByte(uint offset) { return data[(int)offset]; }
 
 		public override ushort ReadUInt16(uint offset) {
 			int i = (int)offset;

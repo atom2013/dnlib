@@ -15,17 +15,17 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// Returns <c>true</c> if <see cref="Data"/> is <c>null</c> or empty
 		/// </summary>
-		public bool IsNullOrEmpty => data == null || data.Length == 0;
+		public bool IsNullOrEmpty { get { return data == null || data.Length == 0; } }
 
 		/// <summary>
 		/// Returns <c>true</c> if <see cref="Data"/> is <c>null</c>
 		/// </summary>
-		public bool IsNull => Data == null;
+		public bool IsNull { get { return Data == null; } }
 
 		/// <summary>
 		/// Gets/sets key data
 		/// </summary>
-		public virtual byte[] Data => data;
+		public virtual byte[] Data { get { return data; } }
 
 		/// <summary>
 		/// Gets the <see cref="PublicKeyToken"/>
@@ -36,14 +36,14 @@ namespace dnlib.DotNet {
 		/// Constructor
 		/// </summary>
 		/// <param name="data">Key data</param>
-		protected PublicKeyBase(byte[] data) => this.data = data;
+		protected PublicKeyBase(byte[] data) { this.data = data; }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="hexString">Key data as a hex string or the string <c>"null"</c>
 		/// to set key data to <c>null</c></param>
-		protected PublicKeyBase(string hexString) => data = Parse(hexString);
+		protected PublicKeyBase(string hexString) { data = Parse(hexString); }
 
 		static byte[] Parse(string hexString) {
 			if (hexString == null || hexString == "null")
@@ -55,16 +55,18 @@ namespace dnlib.DotNet {
 		/// Checks whether a public key or token is null or empty
 		/// </summary>
 		/// <param name="a">Public key or token instance</param>
-		public static bool IsNullOrEmpty2(PublicKeyBase a) => a == null || a.IsNullOrEmpty;
+		public static bool IsNullOrEmpty2(PublicKeyBase a) { return a == null || a.IsNullOrEmpty; }
 
 		/// <summary>
 		/// Returns a <see cref="PublicKeyToken"/>
 		/// </summary>
 		/// <param name="pkb">A <see cref="PublicKey"/> or a <see cref="PublicKeyToken"/> instance</param>
 		public static PublicKeyToken ToPublicKeyToken(PublicKeyBase pkb) {
-			if (pkb is PublicKeyToken pkt)
+            PublicKeyToken pkt;
+			if ((pkt = pkb as PublicKeyToken) != null)
 				return pkt;
-			if (pkb is PublicKey pk)
+            PublicKey pk;
+			if ((pk = pkb as PublicKey) != null)
 				return pk.Token;
 			return null;
 		}
@@ -87,7 +89,7 @@ namespace dnlib.DotNet {
 		/// <param name="a">First</param>
 		/// <param name="b">Second</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public static bool TokenEquals(PublicKeyBase a, PublicKeyBase b) => TokenCompareTo(a, b) == 0;
+		public static bool TokenEquals(PublicKeyBase a, PublicKeyBase b) { return TokenCompareTo(a, b) == 0; }
 
 		static readonly byte[] EmptyByteArray = Array2.Empty<byte>();
 		/// <summary>
@@ -99,10 +101,10 @@ namespace dnlib.DotNet {
 		public static int TokenCompareTo(PublicKeyToken a, PublicKeyToken b) {
 			if (a == b)
 				return 0;
-			return TokenCompareTo(a?.Data, b?.Data);
+			return TokenCompareTo(a != null?a.Data:null, b != null?b.Data:null);
 		}
 
-		static int TokenCompareTo(byte[] a, byte[] b) => Utils.CompareTo(a ?? EmptyByteArray, b ?? EmptyByteArray);
+		static int TokenCompareTo(byte[] a, byte[] b) { return Utils.CompareTo(a ?? EmptyByteArray, b ?? EmptyByteArray); }
 
 		/// <summary>
 		/// Checks whether two public key tokens are equal
@@ -110,14 +112,14 @@ namespace dnlib.DotNet {
 		/// <param name="a">First</param>
 		/// <param name="b">Second</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public static bool TokenEquals(PublicKeyToken a, PublicKeyToken b) => TokenCompareTo(a, b) == 0;
+		public static bool TokenEquals(PublicKeyToken a, PublicKeyToken b) { return TokenCompareTo(a, b) == 0; }
 
 		/// <summary>
 		/// Gets the public key token hash code
 		/// </summary>
 		/// <param name="a">Public key or token</param>
 		/// <returns>The hash code</returns>
-		public static int GetHashCodeToken(PublicKeyBase a) => GetHashCode(ToPublicKeyToken(a));
+        public static int GetHashCodeToken(PublicKeyBase a) { return GetHashCode(ToPublicKeyToken(a)); }
 
 		/// <summary>
 		/// Gets the public key token hash code

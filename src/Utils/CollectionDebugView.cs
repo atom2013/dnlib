@@ -7,7 +7,7 @@ using System.Diagnostics;
 namespace dnlib.Utils {
 	sealed class CollectionDebugView<TValue> {
 		readonly ICollection<TValue> list;
-		public CollectionDebugView(ICollection<TValue> list) => this.list = list ?? throw new ArgumentNullException(nameof(list));
+		public CollectionDebugView(ICollection<TValue> list) { if (list != null) this.list = list; else throw new ArgumentNullException("list"); }
 
 		[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
 		public TValue[] Items {

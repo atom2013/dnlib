@@ -25,49 +25,49 @@ namespace dnlib.DotNet {
 		/// Constructor
 		/// </summary>
 		/// <param name="options">Comparison options</param>
-		public TypeEqualityComparer(SigComparerOptions options) => this.options = options;
+		public TypeEqualityComparer(SigComparerOptions options) { this.options = options; }
 
 		/// <inheritdoc/>
-		public bool Equals(IType x, IType y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(IType x, IType y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(IType obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(IType obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(ITypeDefOrRef x, ITypeDefOrRef y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(ITypeDefOrRef x, ITypeDefOrRef y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(ITypeDefOrRef obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(ITypeDefOrRef obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(TypeRef x, TypeRef y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(TypeRef x, TypeRef y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(TypeRef obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(TypeRef obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(TypeDef x, TypeDef y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(TypeDef x, TypeDef y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(TypeDef obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(TypeDef obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(TypeSpec x, TypeSpec y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(TypeSpec x, TypeSpec y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(TypeSpec obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(TypeSpec obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(TypeSig x, TypeSig y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(TypeSig x, TypeSig y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(TypeSig obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(TypeSig obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(ExportedType x, ExportedType y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(ExportedType x, ExportedType y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(ExportedType obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(ExportedType obj) { return new SigComparer(options).GetHashCode(obj); }
 	}
 
 	/// <summary>
@@ -100,25 +100,25 @@ namespace dnlib.DotNet {
 		/// Constructor
 		/// </summary>
 		/// <param name="options">Comparison options</param>
-		public FieldEqualityComparer(SigComparerOptions options) => this.options = options;
+		public FieldEqualityComparer(SigComparerOptions options) { this.options = options; }
 
 		/// <inheritdoc/>
-		public bool Equals(IField x, IField y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(IField x, IField y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(IField obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(IField obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(FieldDef x, FieldDef y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(FieldDef x, FieldDef y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(FieldDef obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(FieldDef obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(MemberRef x, MemberRef y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(MemberRef x, MemberRef y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(MemberRef obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(MemberRef obj) { return new SigComparer(options).GetHashCode(obj); }
 	}
 
 	/// <summary>
@@ -151,37 +151,37 @@ namespace dnlib.DotNet {
 		/// Constructor
 		/// </summary>
 		/// <param name="options">Comparison options</param>
-		public MethodEqualityComparer(SigComparerOptions options) => this.options = options;
+		public MethodEqualityComparer(SigComparerOptions options) {  this.options = options; }
 
 		/// <inheritdoc/>
-		public bool Equals(IMethod x, IMethod y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(IMethod x, IMethod y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(IMethod obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(IMethod obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(IMethodDefOrRef x, IMethodDefOrRef y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(IMethodDefOrRef x, IMethodDefOrRef y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(IMethodDefOrRef obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(IMethodDefOrRef obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(MethodDef x, MethodDef y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(MethodDef x, MethodDef y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(MethodDef obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(MethodDef obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(MemberRef x, MemberRef y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(MemberRef x, MemberRef y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(MemberRef obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(MemberRef obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(MethodSpec x, MethodSpec y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(MethodSpec x, MethodSpec y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(MethodSpec obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(MethodSpec obj) { return new SigComparer(options).GetHashCode(obj); }
 	}
 
 	/// <summary>
@@ -214,13 +214,13 @@ namespace dnlib.DotNet {
 		/// Constructor
 		/// </summary>
 		/// <param name="options">Comparison options</param>
-		public PropertyEqualityComparer(SigComparerOptions options) => this.options = options;
+		public PropertyEqualityComparer(SigComparerOptions options) { this.options = options; }
 
 		/// <inheritdoc/>
-		public bool Equals(PropertyDef x, PropertyDef y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(PropertyDef x, PropertyDef y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(PropertyDef obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(PropertyDef obj) { return new SigComparer(options).GetHashCode(obj); }
 	}
 
 	/// <summary>
@@ -253,13 +253,13 @@ namespace dnlib.DotNet {
 		/// Constructor
 		/// </summary>
 		/// <param name="options">Comparison options</param>
-		public EventEqualityComparer(SigComparerOptions options) => this.options = options;
+		public EventEqualityComparer(SigComparerOptions options) {  this.options = options; }
 
 		/// <inheritdoc/>
-		public bool Equals(EventDef x, EventDef y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(EventDef x, EventDef y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(EventDef obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(EventDef obj) { return new SigComparer(options).GetHashCode(obj); }
 	}
 
 	/// <summary>
@@ -282,49 +282,49 @@ namespace dnlib.DotNet {
 		/// Constructor
 		/// </summary>
 		/// <param name="options">Comparison options</param>
-		public SignatureEqualityComparer(SigComparerOptions options) => this.options = options;
+		public SignatureEqualityComparer(SigComparerOptions options) { this.options = options; }
 
 		/// <inheritdoc/>
-		public bool Equals(CallingConventionSig x, CallingConventionSig y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(CallingConventionSig x, CallingConventionSig y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(CallingConventionSig obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(CallingConventionSig obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(MethodBaseSig x, MethodBaseSig y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(MethodBaseSig x, MethodBaseSig y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(MethodBaseSig obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(MethodBaseSig obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(MethodSig x, MethodSig y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(MethodSig x, MethodSig y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(MethodSig obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(MethodSig obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(PropertySig x, PropertySig y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(PropertySig x, PropertySig y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(PropertySig obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(PropertySig obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(FieldSig x, FieldSig y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(FieldSig x, FieldSig y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(FieldSig obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(FieldSig obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(LocalSig x, LocalSig y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(LocalSig x, LocalSig y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(LocalSig obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(LocalSig obj) { return new SigComparer(options).GetHashCode(obj); }
 
 		/// <inheritdoc/>
-		public bool Equals(GenericInstMethodSig x, GenericInstMethodSig y) => new SigComparer(options).Equals(x, y);
+		public bool Equals(GenericInstMethodSig x, GenericInstMethodSig y) { return new SigComparer(options).Equals(x, y); }
 
 		/// <inheritdoc/>
-		public int GetHashCode(GenericInstMethodSig obj) => new SigComparer(options).GetHashCode(obj);
+		public int GetHashCode(GenericInstMethodSig obj) { return new SigComparer(options).GetHashCode(obj); }
 	}
 
 	/// <summary>
@@ -511,30 +511,30 @@ namespace dnlib.DotNet {
 		GenericArguments genericArguments;
 		readonly ModuleDef sourceModule;
 
-		bool DontCompareTypeScope => (options & SigComparerOptions.DontCompareTypeScope) != 0;
-		bool CompareMethodFieldDeclaringType => (options & SigComparerOptions.CompareMethodFieldDeclaringType) != 0;
-		bool ComparePropertyDeclaringType => (options & SigComparerOptions.ComparePropertyDeclaringType) != 0;
-		bool CompareEventDeclaringType => (options & SigComparerOptions.CompareEventDeclaringType) != 0;
-		bool CompareSentinelParams => (options & SigComparerOptions.CompareSentinelParams) != 0;
-		bool CompareAssemblyPublicKeyToken => (options & SigComparerOptions.CompareAssemblyPublicKeyToken) != 0;
-		bool CompareAssemblyVersion => (options & SigComparerOptions.CompareAssemblyVersion) != 0;
-		bool CompareAssemblyLocale => (options & SigComparerOptions.CompareAssemblyLocale) != 0;
-		bool TypeRefCanReferenceGlobalType => (options & SigComparerOptions.TypeRefCanReferenceGlobalType) != 0;
-		bool DontCompareReturnType => (options & SigComparerOptions.DontCompareReturnType) != 0;
-		bool SubstituteGenericParameters => (options & SigComparerOptions_SubstituteGenericParameters) != 0;
-		bool CaseInsensitiveTypeNamespaces => (options & SigComparerOptions.CaseInsensitiveTypeNamespaces) != 0;
-		bool CaseInsensitiveTypeNames => (options & SigComparerOptions.CaseInsensitiveTypeNames) != 0;
-		bool CaseInsensitiveMethodFieldNames => (options & SigComparerOptions.CaseInsensitiveMethodFieldNames) != 0;
-		bool CaseInsensitivePropertyNames => (options & SigComparerOptions.CaseInsensitivePropertyNames) != 0;
-		bool CaseInsensitiveEventNames => (options & SigComparerOptions.CaseInsensitiveEventNames) != 0;
-		bool PrivateScopeFieldIsComparable => (options & SigComparerOptions.PrivateScopeFieldIsComparable) != 0;
-		bool PrivateScopeMethodIsComparable => (options & SigComparerOptions.PrivateScopeMethodIsComparable) != 0;
-		bool RawSignatureCompare => (options & SigComparerOptions.RawSignatureCompare) != 0;
-		bool IgnoreModifiers => (options & SigComparerOptions.IgnoreModifiers) != 0;
-		bool MscorlibIsNotSpecial => (options & SigComparerOptions.MscorlibIsNotSpecial) != 0;
-		bool DontProjectWinMDRefs => (options & SigComparerOptions.DontProjectWinMDRefs) != 0;
-		bool DontCheckTypeEquivalence => (options & SigComparerOptions.DontCheckTypeEquivalence) != 0;
-		bool IgnoreMultiDimensionalArrayLowerBoundsAndSizes => (options & SigComparerOptions.IgnoreMultiDimensionalArrayLowerBoundsAndSizes) != 0;
+		bool DontCompareTypeScope { get { return (options & SigComparerOptions.DontCompareTypeScope) != 0; } }
+		bool CompareMethodFieldDeclaringType { get { return (options & SigComparerOptions.CompareMethodFieldDeclaringType) != 0; } }
+		bool ComparePropertyDeclaringType { get { return (options & SigComparerOptions.ComparePropertyDeclaringType) != 0; } }
+		bool CompareEventDeclaringType { get { return (options & SigComparerOptions.CompareEventDeclaringType) != 0; } }
+		bool CompareSentinelParams { get { return (options & SigComparerOptions.CompareSentinelParams) != 0; } }
+		bool CompareAssemblyPublicKeyToken { get { return (options & SigComparerOptions.CompareAssemblyPublicKeyToken) != 0; } }
+		bool CompareAssemblyVersion { get { return (options & SigComparerOptions.CompareAssemblyVersion) != 0; } }
+		bool CompareAssemblyLocale { get { return (options & SigComparerOptions.CompareAssemblyLocale) != 0; } }
+		bool TypeRefCanReferenceGlobalType { get { return (options & SigComparerOptions.TypeRefCanReferenceGlobalType) != 0; } }
+		bool DontCompareReturnType { get { return (options & SigComparerOptions.DontCompareReturnType) != 0; } }
+		bool SubstituteGenericParameters { get { return (options & SigComparerOptions_SubstituteGenericParameters) != 0; } }
+		bool CaseInsensitiveTypeNamespaces { get { return (options & SigComparerOptions.CaseInsensitiveTypeNamespaces) != 0; } }
+		bool CaseInsensitiveTypeNames { get { return (options & SigComparerOptions.CaseInsensitiveTypeNames) != 0; } }
+		bool CaseInsensitiveMethodFieldNames { get { return (options & SigComparerOptions.CaseInsensitiveMethodFieldNames) != 0; } }
+		bool CaseInsensitivePropertyNames { get { return (options & SigComparerOptions.CaseInsensitivePropertyNames) != 0; } }
+		bool CaseInsensitiveEventNames { get { return (options & SigComparerOptions.CaseInsensitiveEventNames) != 0; } }
+		bool PrivateScopeFieldIsComparable { get { return (options & SigComparerOptions.PrivateScopeFieldIsComparable) != 0; } }
+		bool PrivateScopeMethodIsComparable { get { return (options & SigComparerOptions.PrivateScopeMethodIsComparable) != 0; } }
+		bool RawSignatureCompare { get { return (options & SigComparerOptions.RawSignatureCompare) != 0; } }
+		bool IgnoreModifiers { get { return (options & SigComparerOptions.IgnoreModifiers) != 0; } }
+		bool MscorlibIsNotSpecial { get { return (options & SigComparerOptions.MscorlibIsNotSpecial) != 0; } }
+		bool DontProjectWinMDRefs { get { return (options & SigComparerOptions.DontProjectWinMDRefs) != 0; } }
+		bool DontCheckTypeEquivalence { get { return (options & SigComparerOptions.DontCheckTypeEquivalence) != 0; } }
+		bool IgnoreMultiDimensionalArrayLowerBoundsAndSizes { get { return (options & SigComparerOptions.IgnoreMultiDimensionalArrayLowerBoundsAndSizes) != 0; } }
 
 		/// <summary>
 		/// Constructor
@@ -587,26 +587,26 @@ namespace dnlib.DotNet {
 			return (a ?? string.Empty).GetHashCode();
 		}
 
-		bool Equals_TypeNamespaces(UTF8String a, UTF8String b) => Equals_Names(CaseInsensitiveTypeNamespaces, a, b);
-		bool Equals_TypeNamespaces(UTF8String a, string b) => Equals_Names(CaseInsensitiveTypeNamespaces, UTF8String.ToSystemStringOrEmpty(a), b);
-		int GetHashCode_TypeNamespace(UTF8String a) => GetHashCode_Name(CaseInsensitiveTypeNamespaces, UTF8String.ToSystemStringOrEmpty(a));
-		int GetHashCode_TypeNamespace(string a) => GetHashCode_Name(CaseInsensitiveTypeNamespaces, a);
-		bool Equals_TypeNames(UTF8String a, UTF8String b) => Equals_Names(CaseInsensitiveTypeNames, a, b);
-		bool Equals_TypeNames(UTF8String a, string b) => Equals_Names(CaseInsensitiveTypeNames, UTF8String.ToSystemStringOrEmpty(a), b);
-		int GetHashCode_TypeName(UTF8String a) => GetHashCode_Name(CaseInsensitiveTypeNames, UTF8String.ToSystemStringOrEmpty(a));
-		int GetHashCode_TypeName(string a) => GetHashCode_Name(CaseInsensitiveTypeNames, a);
-		bool Equals_MethodFieldNames(UTF8String a, UTF8String b) => Equals_Names(CaseInsensitiveMethodFieldNames, a, b);
-		bool Equals_MethodFieldNames(UTF8String a, string b) => Equals_Names(CaseInsensitiveMethodFieldNames, UTF8String.ToSystemStringOrEmpty(a), b);
-		int GetHashCode_MethodFieldName(UTF8String a) => GetHashCode_Name(CaseInsensitiveMethodFieldNames, UTF8String.ToSystemStringOrEmpty(a));
-		int GetHashCode_MethodFieldName(string a) => GetHashCode_Name(CaseInsensitiveMethodFieldNames, a);
-		bool Equals_PropertyNames(UTF8String a, UTF8String b) => Equals_Names(CaseInsensitivePropertyNames, a, b);
-		bool Equals_PropertyNames(UTF8String a, string b) => Equals_Names(CaseInsensitivePropertyNames, UTF8String.ToSystemStringOrEmpty(a), b);
-		int GetHashCode_PropertyName(UTF8String a) => GetHashCode_Name(CaseInsensitivePropertyNames, UTF8String.ToSystemStringOrEmpty(a));
-		int GetHashCode_PropertyName(string a) => GetHashCode_Name(CaseInsensitivePropertyNames, a);
-		bool Equals_EventNames(UTF8String a, UTF8String b) => Equals_Names(CaseInsensitiveEventNames, a, b);
-		bool Equals_EventNames(UTF8String a, string b) => Equals_Names(CaseInsensitiveEventNames, UTF8String.ToSystemStringOrEmpty(a), b);
-		int GetHashCode_EventName(UTF8String a) => GetHashCode_Name(CaseInsensitiveEventNames, UTF8String.ToSystemStringOrEmpty(a));
-		int GetHashCode_EventName(string a) => GetHashCode_Name(CaseInsensitiveEventNames, a);
+		bool Equals_TypeNamespaces(UTF8String a, UTF8String b) { return Equals_Names(CaseInsensitiveTypeNamespaces, a, b); }
+		bool Equals_TypeNamespaces(UTF8String a, string b) { return Equals_Names(CaseInsensitiveTypeNamespaces, UTF8String.ToSystemStringOrEmpty(a), b); }
+		int GetHashCode_TypeNamespace(UTF8String a) { return GetHashCode_Name(CaseInsensitiveTypeNamespaces, UTF8String.ToSystemStringOrEmpty(a)); }
+		int GetHashCode_TypeNamespace(string a) { return GetHashCode_Name(CaseInsensitiveTypeNamespaces, a); }
+		bool Equals_TypeNames(UTF8String a, UTF8String b) { return Equals_Names(CaseInsensitiveTypeNames, a, b); }
+		bool Equals_TypeNames(UTF8String a, string b) { return Equals_Names(CaseInsensitiveTypeNames, UTF8String.ToSystemStringOrEmpty(a), b); }
+		int GetHashCode_TypeName(UTF8String a) { return GetHashCode_Name(CaseInsensitiveTypeNames, UTF8String.ToSystemStringOrEmpty(a)); }
+		int GetHashCode_TypeName(string a) { return GetHashCode_Name(CaseInsensitiveTypeNames, a); }
+		bool Equals_MethodFieldNames(UTF8String a, UTF8String b) { return Equals_Names(CaseInsensitiveMethodFieldNames, a, b); }
+		bool Equals_MethodFieldNames(UTF8String a, string b) { return Equals_Names(CaseInsensitiveMethodFieldNames, UTF8String.ToSystemStringOrEmpty(a), b); }
+		int GetHashCode_MethodFieldName(UTF8String a) { return GetHashCode_Name(CaseInsensitiveMethodFieldNames, UTF8String.ToSystemStringOrEmpty(a)); }
+		int GetHashCode_MethodFieldName(string a) { return GetHashCode_Name(CaseInsensitiveMethodFieldNames, a); }
+		bool Equals_PropertyNames(UTF8String a, UTF8String b) { return Equals_Names(CaseInsensitivePropertyNames, a, b); }
+		bool Equals_PropertyNames(UTF8String a, string b) { return Equals_Names(CaseInsensitivePropertyNames, UTF8String.ToSystemStringOrEmpty(a), b); }
+		int GetHashCode_PropertyName(UTF8String a) { return GetHashCode_Name(CaseInsensitivePropertyNames, UTF8String.ToSystemStringOrEmpty(a)); }
+		int GetHashCode_PropertyName(string a) { return GetHashCode_Name(CaseInsensitivePropertyNames, a); }
+		bool Equals_EventNames(UTF8String a, UTF8String b) { return Equals_Names(CaseInsensitiveEventNames, a, b); }
+		bool Equals_EventNames(UTF8String a, string b) { return Equals_Names(CaseInsensitiveEventNames, UTF8String.ToSystemStringOrEmpty(a), b); }
+		int GetHashCode_EventName(UTF8String a) { return GetHashCode_Name(CaseInsensitiveEventNames, UTF8String.ToSystemStringOrEmpty(a)); }
+		int GetHashCode_EventName(string a) { return GetHashCode_Name(CaseInsensitiveEventNames, a); }
 
 		SigComparerOptions ClearOptions(SigComparerOptions flags) {
 			var old = options;
@@ -620,7 +620,7 @@ namespace dnlib.DotNet {
 			return old;
 		}
 
-		void RestoreOptions(SigComparerOptions oldFlags) => options = oldFlags;
+		void RestoreOptions(SigComparerOptions oldFlags) { options = oldFlags; }
 
 		void InitializeGenericArguments() {
 			if (genericArguments == null)
@@ -856,14 +856,14 @@ namespace dnlib.DotNet {
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(ITypeDefOrRef a, ITypeDefOrRef b) => Equals((IType)a, (IType)b);
+		public bool Equals(ITypeDefOrRef a, ITypeDefOrRef b) { return Equals((IType)a, (IType)b); }
 
 		/// <summary>
 		/// Gets the hash code of a type
 		/// </summary>
 		/// <param name="a">The type</param>
 		/// <returns>The hash code</returns>
-		public int GetHashCode(ITypeDefOrRef a) => GetHashCode((IType)a);
+		public int GetHashCode(ITypeDefOrRef a) { return GetHashCode((IType)a); }
 
 		/// <summary>
 		/// Compares types
@@ -984,7 +984,7 @@ namespace dnlib.DotNet {
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(TypeRef a, TypeDef b) => Equals(b, a);
+		public bool Equals(TypeRef a, TypeDef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -1056,7 +1056,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(ExportedType a, TypeDef b) => Equals(b, a);
+		public bool Equals(ExportedType a, TypeDef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -1125,7 +1125,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(TypeSpec a, TypeDef b) => Equals(b, a);
+		public bool Equals(TypeSpec a, TypeDef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -1147,7 +1147,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(TypeSig a, TypeDef b) => Equals(b, a);
+		public bool Equals(TypeSig a, TypeDef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -1168,7 +1168,8 @@ exit: ;
 			// If this code gets updated, update GetHashCode(TypeSig),
 			// Equals(TypeRef,TypeSig) and Equals(TypeSig,ExportedType) too
 			//*************************************************************
-			if (b is TypeDefOrRefSig b2)
+            TypeDefOrRefSig b2;
+			if ((b2 = b as TypeDefOrRefSig) != null)
 				result = Equals(a, (IType)b2.TypeDefOrRef);
 			else if (b is ModifierSig || b is PinnedSig)
 				result = Equals(a, b.Next);
@@ -1185,7 +1186,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(TypeSpec a, TypeRef b) => Equals(b, a);
+		public bool Equals(TypeSpec a, TypeRef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -1207,7 +1208,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(ExportedType a, TypeRef b) => Equals(b, a);
+		public bool Equals(ExportedType a, TypeRef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -1241,7 +1242,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(TypeSig a, TypeRef b) => Equals(b, a);
+		public bool Equals(TypeSig a, TypeRef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -1262,7 +1263,8 @@ exit: ;
 			// If this code gets updated, update GetHashCode(TypeSig),
 			// Equals(TypeRef,TypeSig) and Equals(TypeSig,ExportedType) too
 			//*************************************************************
-			if (b is TypeDefOrRefSig b2)
+            TypeDefOrRefSig b2;
+			if ((b2 = b as TypeDefOrRefSig) != null)
 				result = Equals(a, (IType)b2.TypeDefOrRef);
 			else if (b is ModifierSig || b is PinnedSig)
 				result = Equals(a, b.Next);
@@ -1279,7 +1281,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(TypeSig a, TypeSpec b) => Equals(b, a);
+		public bool Equals(TypeSig a, TypeSpec b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -1301,7 +1303,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(ExportedType a, TypeSpec b) => Equals(b, a);
+		public bool Equals(ExportedType a, TypeSpec b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -1323,7 +1325,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(ExportedType a, TypeSig b) => Equals(b, a);
+		public bool Equals(ExportedType a, TypeSig b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -1344,7 +1346,8 @@ exit: ;
 			// If this code gets updated, update GetHashCode(TypeSig),
 			// Equals(TypeRef,TypeSig) and Equals(TypeSig,ExportedType) too
 			//*************************************************************
-			if (a is TypeDefOrRefSig a2)
+            TypeDefOrRefSig a2;
+			if ((a2 = a as TypeDefOrRefSig) != null)
 				result = Equals(a2.TypeDefOrRef, b);
 			else if (a is ModifierSig || a is PinnedSig)
 				result = Equals(a.Next, b);
@@ -1791,16 +1794,16 @@ exit: ;
 			return UTF8String.CaseInsensitiveEquals(a.Name, b.Name);
 		}
 
-		static bool IsCorLib(ModuleDef a) => a != null && a.IsManifestModule && a.Assembly.IsCorLib();
+		static bool IsCorLib(ModuleDef a) { return a != null && a.IsManifestModule && a.Assembly.IsCorLib(); }
 
 		static bool IsCorLib(IModule a) {
 			var mod = a as ModuleDef;
 			return mod != null && mod.IsManifestModule && mod.Assembly.IsCorLib();
 		}
 
-		static bool IsCorLib(Module a) => a != null && a.Assembly.ManifestModule == a && a.Assembly == typeof(void).Assembly;
-		static bool IsCorLib(IAssembly a) => a.IsCorLib();
-		static bool IsCorLib(Assembly a) => a == typeof(void).Assembly;
+		static bool IsCorLib(Module a) { return a != null && a.Assembly.ManifestModule == a && a.Assembly == typeof(void).Assembly; }
+		static bool IsCorLib(IAssembly a) { return a.IsCorLib(); }
+		static bool IsCorLib(Assembly a) { return a == typeof(void).Assembly; }
 
 		/// <summary>
 		/// Compares modules
@@ -1938,7 +1941,7 @@ exit: ;
 					if (RawSignatureCompare) {
 						var gt1 = gia.GenericType;
 						var gt2 = gib.GenericType;
-						result = TokenEquals(gt1?.TypeDefOrRef, gt2?.TypeDefOrRef) &&
+						result = TokenEquals(gt1 != null?gt1.TypeDefOrRef:null, gt2 != null?gt2.TypeDefOrRef:null) &&
 								Equals(gia.GenericArguments, gib.GenericArguments);
 					}
 					else {
@@ -2347,7 +2350,7 @@ exit: ;
 			return hash;
 		}
 
-		int GetHashCode_CallingConvention(CallingConventionSig a) => GetHashCode(a.GetCallingConvention());
+		int GetHashCode_CallingConvention(CallingConventionSig a) { return GetHashCode(a.GetCallingConvention()); }
 
 		int GetHashCode(CallingConvention a) {
 			//*******************************************************************
@@ -2559,7 +2562,7 @@ exit: ;
 		/// <param name="a">Method #1</param>
 		/// <param name="b">Method #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(MemberRef a, MethodDef b) => Equals(b, a);
+		public bool Equals(MemberRef a, MethodDef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares methods
@@ -2790,7 +2793,7 @@ exit: ;
 			else if ((moda = a as ModuleRef) != null & (modb = b as ModuleRef) != null) {
 				ModuleDef omoda = moda.Module, omodb = modb.Module;
 				result = Equals((IModule)moda, (IModule)modb) &&
-						Equals(omoda?.Assembly, omodb?.Assembly);
+                    Equals(omoda != null?omoda.Assembly:null, omodb != null?omodb.Assembly:null);
 			}
 			else if ((ma = a as MethodDef) != null && (mb = b as MethodDef) != null)
 				result = Equals(ma, mb);
@@ -2900,7 +2903,7 @@ exit: ;
 		/// <param name="a">Field #1</param>
 		/// <param name="b">Field #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(MemberRef a, FieldDef b) => Equals(b, a);
+		public bool Equals(MemberRef a, FieldDef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares fields
@@ -3008,7 +3011,7 @@ exit: ;
 
 			var sig = a.PropertySig;
 			int hash = GetHashCode_PropertyName(a.Name) +
-					GetHashCode(sig?.RetType);
+                GetHashCode(sig != null?sig.RetType:null);
 			if (ComparePropertyDeclaringType)
 				hash += GetHashCode(a.DeclaringType);
 
@@ -3078,7 +3081,7 @@ exit: ;
 			return result;
 		}
 
-		static AssemblyDef GetAssembly(ModuleDef module) => module?.Assembly;
+		static AssemblyDef GetAssembly(ModuleDef module) { return module != null?module.Assembly:null; }
 
 		/// <summary>
 		/// Compares types
@@ -3086,7 +3089,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(Type a, IType b) => Equals(b, a);
+		public bool Equals(Type a, IType b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -3132,7 +3135,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(Type a, TypeDef b) => Equals(b, a);
+		public bool Equals(Type a, TypeDef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -3185,7 +3188,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(Type a, TypeRef b) => Equals(b, a);
+		public bool Equals(Type a, TypeRef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -3247,7 +3250,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(Type a, TypeSpec b) => Equals(b, a);
+		public bool Equals(Type a, TypeSpec b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -3271,7 +3274,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(Type a, TypeSig b) => Equals(b, a);
+		public bool Equals(Type a, TypeSig b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -3279,10 +3282,11 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(TypeSig a, Type b) => Equals(a, b, false);
+		public bool Equals(TypeSig a, Type b) { return Equals(a, b, false); }
 
 		bool Equals(ITypeDefOrRef a, Type b, bool treatAsGenericInst) {
-			if (a is TypeSpec ts)
+            TypeSpec ts;
+			if ((ts = a as TypeSpec) != null)
 				return Equals(ts.TypeSig, b, treatAsGenericInst);
 			return Equals(a, b);
 		}
@@ -3463,7 +3467,7 @@ exit: ;
 		/// <param name="a">Type #1</param>
 		/// <param name="b">Type #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(Type a, ExportedType b) => Equals(b, a);
+		public bool Equals(Type a, ExportedType b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares types
@@ -3516,7 +3520,7 @@ exit: ;
 		/// </summary>
 		/// <param name="a">The type</param>
 		/// <returns>The hash code</returns>
-		public int GetHashCode(Type a) => GetHashCode(a, false);
+		public int GetHashCode(Type a) { return GetHashCode(a, false); }
 
 		/// <summary>
 		/// Gets the hash code of a type
@@ -3648,7 +3652,7 @@ exit: ;
 		/// </summary>
 		/// <param name="numGenericParams">Number of generic method parameters</param>
 		/// <returns>Hash code</returns>
-		static int GetHashCode_ElementType_MVar(int numGenericParams) => GetHashCode(numGenericParams, HASHCODE_MAGIC_ET_MVAR);
+        static int GetHashCode_ElementType_MVar(int numGenericParams) { return GetHashCode(numGenericParams, HASHCODE_MAGIC_ET_MVAR); }
 
 		static int GetHashCode(int numGenericParams, int etypeHashCode) {
 			//************************************************************************
@@ -3873,7 +3877,7 @@ exit: ;
 		/// <param name="a">Method #1</param>
 		/// <param name="b">Method #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(MethodBase a, IMethod b) => Equals(b, a);
+		public bool Equals(MethodBase a, IMethod b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares methods
@@ -3913,7 +3917,7 @@ exit: ;
 		/// <param name="a">Method #1</param>
 		/// <param name="b">Method #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(MethodBase a, MethodDef b) => Equals(b, a);
+		public bool Equals(MethodBase a, MethodDef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares methods
@@ -3957,7 +3961,7 @@ exit: ;
 		/// <param name="a">Method #1</param>
 		/// <param name="b">Method #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(MethodBase a, MethodSig b) => Equals(b, a);
+		public bool Equals(MethodBase a, MethodSig b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares method sigs
@@ -3988,7 +3992,7 @@ exit: ;
 		/// <param name="a">Method #1</param>
 		/// <param name="b">Method #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(MethodBase a, MemberRef b) => Equals(b, a);
+		public bool Equals(MethodBase a, MemberRef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares methods
@@ -4080,7 +4084,7 @@ exit: ;
 				var omoda = moda.Module;
 				result = (object)b == null &&	// b == null => it's the global type
 						Equals(moda, bModule) &&
-						Equals(omoda?.Assembly, bModule.Assembly);
+						Equals(omoda != null?omoda.Assembly:null, bModule.Assembly);
 			}
 			else if ((ma = a as MethodDef) != null)
 				result = Equals(ma.DeclaringType, b);
@@ -4099,7 +4103,7 @@ exit: ;
 		/// <param name="a">Method #1</param>
 		/// <param name="b">Method #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(MethodBase a, MethodSpec b) => Equals(b, a);
+		public bool Equals(MethodBase a, MethodSpec b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares methods
@@ -4204,8 +4208,8 @@ exit: ;
 			return GetHashCode(typeof(void));
 		}
 
-		int GetHashCode(ParameterInfo a, Type declaringType) => GetHashCode(a.ParameterType, declaringType.MustTreatTypeAsGenericInstType(a.ParameterType));
-		int GetHashCode(Type a, Type declaringType) => GetHashCode(a, declaringType.MustTreatTypeAsGenericInstType(a));
+		int GetHashCode(ParameterInfo a, Type declaringType) { return GetHashCode(a.ParameterType, declaringType.MustTreatTypeAsGenericInstType(a.ParameterType)); }
+		int GetHashCode(Type a, Type declaringType) { return GetHashCode(a, declaringType.MustTreatTypeAsGenericInstType(a)); }
 
 		/// <summary>
 		/// Compares calling conventions
@@ -4287,7 +4291,7 @@ exit: ;
 			return result;
 		}
 
-		static bool IsSystemVoid(TypeSig a) => a.RemovePinnedAndModifiers().GetElementType() == ElementType.Void;
+		static bool IsSystemVoid(TypeSig a) { return a.RemovePinnedAndModifiers().GetElementType() == ElementType.Void; }
 
 		/// <summary>
 		/// Compares parameter lists
@@ -4335,7 +4339,8 @@ exit: ;
 			if (!recursionCounter.Increment())
 				return false;
 
-			bool result = ModifiersEquals(a, b.GetRequiredCustomModifiers(), b.GetOptionalCustomModifiers(), out var a2) &&
+            TypeSig a2;
+			bool result = ModifiersEquals(a, b.GetRequiredCustomModifiers(), b.GetOptionalCustomModifiers(), out a2) &&
 						Equals(a2, b.ParameterType, declaringType.MustTreatTypeAsGenericInstType(b.ParameterType));
 
 			recursionCounter.Decrement();
@@ -4407,7 +4412,7 @@ exit: ;
 		/// <param name="a">Field #1</param>
 		/// <param name="b">Field #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(FieldInfo a, IField b) => Equals(b, a);
+		public bool Equals(FieldInfo a, IField b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares fields
@@ -4444,7 +4449,7 @@ exit: ;
 		/// <param name="a">Field #1</param>
 		/// <param name="b">Field #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(FieldInfo a, FieldDef b) => Equals(b, a);
+		public bool Equals(FieldInfo a, FieldDef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares fields
@@ -4476,7 +4481,8 @@ exit: ;
 			if (!recursionCounter.Increment())
 				return false;
 
-			bool result = ModifiersEquals(a.Type, b.GetRequiredCustomModifiers(), b.GetOptionalCustomModifiers(), out var a2) &&
+            TypeSig a2;
+			bool result = ModifiersEquals(a.Type, b.GetRequiredCustomModifiers(), b.GetOptionalCustomModifiers(), out a2) &&
 					Equals(a2, b.FieldType, b.DeclaringType.MustTreatTypeAsGenericInstType(b.FieldType));
 
 			recursionCounter.Decrement();
@@ -4489,7 +4495,7 @@ exit: ;
 		/// <param name="a">Field #1</param>
 		/// <param name="b">Field #2</param>
 		/// <returns><c>true</c> if same, <c>false</c> otherwise</returns>
-		public bool Equals(FieldInfo a, MemberRef b) => Equals(b, a);
+		public bool Equals(FieldInfo a, MemberRef b) { return Equals(b, a); }
 
 		/// <summary>
 		/// Compares fields
@@ -4589,7 +4595,8 @@ exit: ;
 			if (!recursionCounter.Increment())
 				return false;
 
-			bool result = ModifiersEquals(a.RetType, b.GetRequiredCustomModifiers(), b.GetOptionalCustomModifiers(), out var a2) &&
+            TypeSig a2;
+			bool result = ModifiersEquals(a.RetType, b.GetRequiredCustomModifiers(), b.GetOptionalCustomModifiers(), out a2) &&
 					Equals(a2, b.PropertyType, b.DeclaringType.MustTreatTypeAsGenericInstType(b.PropertyType));
 
 			recursionCounter.Decrement();
@@ -4665,6 +4672,6 @@ exit: ;
 		}
 
 		/// <inheritdoc/>
-		public override string ToString() => $"{recursionCounter} - {options}";
+		public override string ToString()  { return string.Format("{0} - {1}", recursionCounter, options); }
 	}
 }

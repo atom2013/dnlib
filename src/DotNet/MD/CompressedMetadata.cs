@@ -11,7 +11,7 @@ namespace dnlib.DotNet.MD {
 	/// </summary>
 	sealed class CompressedMetadata : MetadataBase {
 		/// <inheritdoc/>
-		public override bool IsCompressed => true;
+		public override bool IsCompressed { get { return true; } }
 
 		/// <inheritdoc/>
 		public CompressedMetadata(IPEImage peImage, ImageCor20Header cor20Header, MetadataHeader mdHeader)
@@ -85,7 +85,7 @@ namespace dnlib.DotNet.MD {
 				}
 			}
 			finally {
-				dns?.Dispose();
+				if (dns != null) dns.Dispose();
 				newAllStreams.Reverse();
 				allStreams = newAllStreams;
 			}
@@ -100,19 +100,19 @@ namespace dnlib.DotNet.MD {
 		}
 
 		/// <inheritdoc/>
-		public override RidList GetFieldRidList(uint typeDefRid) => GetRidList(tablesStream.TypeDefTable, typeDefRid, 4, tablesStream.FieldTable);
+		public override RidList GetFieldRidList(uint typeDefRid) { return GetRidList(tablesStream.TypeDefTable, typeDefRid, 4, tablesStream.FieldTable); }
 
 		/// <inheritdoc/>
-		public override RidList GetMethodRidList(uint typeDefRid) => GetRidList(tablesStream.TypeDefTable, typeDefRid, 5, tablesStream.MethodTable);
+		public override RidList GetMethodRidList(uint typeDefRid) { return GetRidList(tablesStream.TypeDefTable, typeDefRid, 5, tablesStream.MethodTable); }
 
 		/// <inheritdoc/>
-		public override RidList GetParamRidList(uint methodRid) => GetRidList(tablesStream.MethodTable, methodRid, 5, tablesStream.ParamTable);
+		public override RidList GetParamRidList(uint methodRid) { return GetRidList(tablesStream.MethodTable, methodRid, 5, tablesStream.ParamTable); }
 
 		/// <inheritdoc/>
-		public override RidList GetEventRidList(uint eventMapRid) => GetRidList(tablesStream.EventMapTable, eventMapRid, 1, tablesStream.EventTable);
+		public override RidList GetEventRidList(uint eventMapRid) { return GetRidList(tablesStream.EventMapTable, eventMapRid, 1, tablesStream.EventTable); }
 
 		/// <inheritdoc/>
-		public override RidList GetPropertyRidList(uint propertyMapRid) => GetRidList(tablesStream.PropertyMapTable, propertyMapRid, 1, tablesStream.PropertyTable);
+        public override RidList GetPropertyRidList(uint propertyMapRid) { return GetRidList(tablesStream.PropertyMapTable, propertyMapRid, 1, tablesStream.PropertyTable); }
 
 		/// <summary>
 		/// Gets a rid list (eg. field list)
@@ -124,9 +124,11 @@ namespace dnlib.DotNet.MD {
 		/// <returns>A new <see cref="RidList"/> instance</returns>
 		RidList GetRidList(MDTable tableSource, uint tableSourceRid, int colIndex, MDTable tableDest) {
 			var column = tableSource.TableInfo.Columns[colIndex];
-			if (!tablesStream.TryReadColumn24(tableSource, tableSourceRid, column, out uint startRid))
+            uint startRid;
+            if (!tablesStream.TryReadColumn24(tableSource, tableSourceRid, column, out startRid))
 				return RidList.Empty;
-			bool hasNext = tablesStream.TryReadColumn24(tableSource, tableSourceRid + 1, column, out uint nextListRid);
+            uint nextListRid;
+            bool hasNext = tablesStream.TryReadColumn24(tableSource, tableSourceRid + 1, column, out nextListRid);
 			uint lastRid = tableDest.Rows + 1;
 			if (startRid == 0 || startRid >= lastRid)
 				return RidList.Empty;
@@ -144,7 +146,8 @@ namespace dnlib.DotNet.MD {
 			uint ridLo = 1, ridHi = tableSource.Rows;
 			while (ridLo <= ridHi) {
 				uint rid = (ridLo + ridHi) / 2;
-				if (!tablesStream.TryReadColumn24(tableSource, rid, keyColumn, out uint key2))
+                uint key2;
+                if (!tablesStream.TryReadColumn24(tableSource, rid, keyColumn, out key2))
 					break;	// Never happens since rid is valid
 				if (key == key2)
 					return rid;

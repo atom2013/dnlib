@@ -5,14 +5,14 @@ using System.IO;
 
 namespace dnlib.IO {
 	sealed class DataReaderStream : Stream {
-		public override bool CanRead => true;
-		public override bool CanSeek => true;
-		public override bool CanWrite => false;
-		public override long Length => reader.Length;
+		public override bool CanRead { get { return  true; } }
+		public override bool CanSeek { get { return true; } }
+		public override bool CanWrite { get { return  false; } }
+		public override long Length { get { return reader.Length; } }
 
 		public override long Position {
-			get => position;
-			set => position = value;
+			get { return position; }
+			set { position = value; }
 		}
 
 		DataReader reader;
@@ -43,11 +43,11 @@ namespace dnlib.IO {
 
 		public override int Read(byte[] buffer, int offset, int count) {
 			if (buffer == null)
-				throw new ArgumentNullException(nameof(buffer));
+				throw new ArgumentNullException("buffer");
 			if (offset < 0)
-				throw new ArgumentOutOfRangeException(nameof(offset));
+				throw new ArgumentOutOfRangeException("offset");
 			if (count < 0)
-				throw new ArgumentOutOfRangeException(nameof(count));
+				throw new ArgumentOutOfRangeException("count");
 			if (!CheckAndSetPosition())
 				return 0;
 			int bytesToRead = (int)Math.Min((uint)count, reader.BytesLeft);
@@ -63,7 +63,7 @@ namespace dnlib.IO {
 			return reader.ReadByte();
 		}
 
-		public override void SetLength(long value) => throw new NotSupportedException();
-		public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+		public override void SetLength(long value) { throw new NotSupportedException(); }
+        public override void Write(byte[] buffer, int offset, int count) { throw new NotSupportedException(); }
 	}
 }

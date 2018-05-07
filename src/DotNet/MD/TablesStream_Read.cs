@@ -13,7 +13,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadModuleRow(uint rid, out RawModuleRow row) {
 			var table = ModuleTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawModuleRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -36,7 +36,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadTypeRefRow(uint rid, out RawTypeRefRow row) {
 			var table = TypeRefTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawTypeRefRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -57,7 +57,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadTypeDefRow(uint rid, out RawTypeDefRow row) {
 			var table = TypeDefTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawTypeDefRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -81,7 +81,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadFieldPtrRow(uint rid, out RawFieldPtrRow row) {
 			var table = FieldPtrTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawFieldPtrRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -99,7 +99,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadFieldRow(uint rid, out RawFieldRow row) {
 			var table = FieldTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawFieldRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -120,7 +120,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadMethodPtrRow(uint rid, out RawMethodPtrRow row) {
 			var table = MethodPtrTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawMethodPtrRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -138,7 +138,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadMethodRow(uint rid, out RawMethodRow row) {
 			var table = MethodTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawMethodRow);
 				return false;
 			}
 			var mrr = methodRowReader;
@@ -165,7 +165,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadParamPtrRow(uint rid, out RawParamPtrRow row) {
 			var table = ParamPtrTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawParamPtrRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -183,7 +183,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadParamRow(uint rid, out RawParamRow row) {
 			var table = ParamTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawParamRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -204,7 +204,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadInterfaceImplRow(uint rid, out RawInterfaceImplRow row) {
 			var table = InterfaceImplTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawInterfaceImplRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -224,7 +224,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadMemberRefRow(uint rid, out RawMemberRefRow row) {
 			var table = MemberRefTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawMemberRefRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -245,7 +245,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadConstantRow(uint rid, out RawConstantRow row) {
 			var table = ConstantTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawConstantRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -267,7 +267,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadCustomAttributeRow(uint rid, out RawCustomAttributeRow row) {
 			var table = CustomAttributeTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawCustomAttributeRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -288,7 +288,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadFieldMarshalRow(uint rid, out RawFieldMarshalRow row) {
 			var table = FieldMarshalTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawFieldMarshalRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -308,7 +308,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadDeclSecurityRow(uint rid, out RawDeclSecurityRow row) {
 			var table = DeclSecurityTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawDeclSecurityRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -329,7 +329,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadClassLayoutRow(uint rid, out RawClassLayoutRow row) {
 			var table = ClassLayoutTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawClassLayoutRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -350,7 +350,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadFieldLayoutRow(uint rid, out RawFieldLayoutRow row) {
 			var table = FieldLayoutTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawFieldLayoutRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -370,7 +370,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadStandAloneSigRow(uint rid, out RawStandAloneSigRow row) {
 			var table = StandAloneSigTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawStandAloneSigRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -388,7 +388,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadEventMapRow(uint rid, out RawEventMapRow row) {
 			var table = EventMapTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawEventMapRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -408,7 +408,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadEventPtrRow(uint rid, out RawEventPtrRow row) {
 			var table = EventPtrTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawEventPtrRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -426,7 +426,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadEventRow(uint rid, out RawEventRow row) {
 			var table = EventTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawEventRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -447,7 +447,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadPropertyMapRow(uint rid, out RawPropertyMapRow row) {
 			var table = PropertyMapTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawPropertyMapRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -467,7 +467,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadPropertyPtrRow(uint rid, out RawPropertyPtrRow row) {
 			var table = PropertyPtrTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawPropertyPtrRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -485,7 +485,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadPropertyRow(uint rid, out RawPropertyRow row) {
 			var table = PropertyTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawPropertyRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -506,7 +506,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadMethodSemanticsRow(uint rid, out RawMethodSemanticsRow row) {
 			var table = MethodSemanticsTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawMethodSemanticsRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -527,7 +527,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadMethodImplRow(uint rid, out RawMethodImplRow row) {
 			var table = MethodImplTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawMethodImplRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -548,7 +548,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadModuleRefRow(uint rid, out RawModuleRefRow row) {
 			var table = ModuleRefTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawModuleRefRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -566,7 +566,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadTypeSpecRow(uint rid, out RawTypeSpecRow row) {
 			var table = TypeSpecTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawTypeSpecRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -584,7 +584,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadImplMapRow(uint rid, out RawImplMapRow row) {
 			var table = ImplMapTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawImplMapRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -606,7 +606,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadFieldRVARow(uint rid, out RawFieldRVARow row) {
 			var table = FieldRVATable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawFieldRVARow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -626,7 +626,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadENCLogRow(uint rid, out RawENCLogRow row) {
 			var table = ENCLogTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawENCLogRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -646,7 +646,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadENCMapRow(uint rid, out RawENCMapRow row) {
 			var table = ENCMapTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawENCMapRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -664,7 +664,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadAssemblyRow(uint rid, out RawAssemblyRow row) {
 			var table = AssemblyTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawAssemblyRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -691,7 +691,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadAssemblyProcessorRow(uint rid, out RawAssemblyProcessorRow row) {
 			var table = AssemblyProcessorTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawAssemblyProcessorRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -709,7 +709,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadAssemblyOSRow(uint rid, out RawAssemblyOSRow row) {
 			var table = AssemblyOSTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawAssemblyOSRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -730,7 +730,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadAssemblyRefRow(uint rid, out RawAssemblyRefRow row) {
 			var table = AssemblyRefTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawAssemblyRefRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -757,7 +757,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadAssemblyRefProcessorRow(uint rid, out RawAssemblyRefProcessorRow row) {
 			var table = AssemblyRefProcessorTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawAssemblyRefProcessorRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -777,7 +777,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadAssemblyRefOSRow(uint rid, out RawAssemblyRefOSRow row) {
 			var table = AssemblyRefOSTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawAssemblyRefOSRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -799,7 +799,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadFileRow(uint rid, out RawFileRow row) {
 			var table = FileTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawFileRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -820,7 +820,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadExportedTypeRow(uint rid, out RawExportedTypeRow row) {
 			var table = ExportedTypeTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawExportedTypeRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -843,7 +843,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadManifestResourceRow(uint rid, out RawManifestResourceRow row) {
 			var table = ManifestResourceTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawManifestResourceRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -865,7 +865,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadNestedClassRow(uint rid, out RawNestedClassRow row) {
 			var table = NestedClassTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawNestedClassRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -885,7 +885,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadGenericParamRow(uint rid, out RawGenericParamRow row) {
 			var table = GenericParamTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawGenericParamRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -918,7 +918,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadMethodSpecRow(uint rid, out RawMethodSpecRow row) {
 			var table = MethodSpecTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawMethodSpecRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -938,7 +938,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadGenericParamConstraintRow(uint rid, out RawGenericParamConstraintRow row) {
 			var table = GenericParamConstraintTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawGenericParamConstraintRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -958,7 +958,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadDocumentRow(uint rid, out RawDocumentRow row) {
 			var table = DocumentTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawDocumentRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -980,7 +980,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadMethodDebugInformationRow(uint rid, out RawMethodDebugInformationRow row) {
 			var table = MethodDebugInformationTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawMethodDebugInformationRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -1000,7 +1000,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadLocalScopeRow(uint rid, out RawLocalScopeRow row) {
 			var table = LocalScopeTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawLocalScopeRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -1024,7 +1024,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadLocalVariableRow(uint rid, out RawLocalVariableRow row) {
 			var table = LocalVariableTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawLocalVariableRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -1045,7 +1045,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadLocalConstantRow(uint rid, out RawLocalConstantRow row) {
 			var table = LocalConstantTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawLocalConstantRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -1065,7 +1065,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadImportScopeRow(uint rid, out RawImportScopeRow row) {
 			var table = ImportScopeTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawImportScopeRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -1085,7 +1085,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadStateMachineMethodRow(uint rid, out RawStateMachineMethodRow row) {
 			var table = StateMachineMethodTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawStateMachineMethodRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -1105,7 +1105,7 @@ namespace dnlib.DotNet.MD {
 		public bool TryReadCustomDebugInformationRow(uint rid, out RawCustomDebugInformationRow row) {
 			var table = CustomDebugInformationTable;
 			if (table.IsInvalidRID(rid)) {
-				row = default;
+                row = default(RawCustomDebugInformationRow);
 				return false;
 			}
 			var reader = table.DataReader;
@@ -1125,8 +1125,9 @@ namespace dnlib.DotNet.MD {
 		/// <param name="colIndex">Column index in <paramref name="table"/></param>
 		/// <param name="value">Result is put here or 0 if we return <c>false</c></param>
 		/// <returns><c>true</c> if we could read the column, <c>false</c> otherwise</returns>
-		public bool TryReadColumn(MDTable table, uint rid, int colIndex, out uint value) =>
-			TryReadColumn(table, rid, table.TableInfo.Columns[colIndex], out value);
+		public bool TryReadColumn(MDTable table, uint rid, int colIndex, out uint value) {
+			return TryReadColumn(table, rid, table.TableInfo.Columns[colIndex], out value);
+        }
 
 		/// <summary>
 		/// Reads a column
@@ -1150,8 +1151,9 @@ namespace dnlib.DotNet.MD {
 			return true;
 		}
 
-		internal bool TryReadColumn24(MDTable table, uint rid, int colIndex, out uint value) =>
-			TryReadColumn24(table, rid, table.TableInfo.Columns[colIndex], out value);
+        internal bool TryReadColumn24(MDTable table, uint rid, int colIndex, out uint value) {
+            return TryReadColumn24(table, rid, table.TableInfo.Columns[colIndex], out value);
+        }
 
 		internal bool TryReadColumn24(MDTable table, uint rid, ColumnInfo column, out uint value) {
 			Debug.Assert(column.Size == 2 || column.Size == 4);

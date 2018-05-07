@@ -16,8 +16,8 @@ namespace dnlib.DotNet {
 		/// by default.
 		/// </summary>
 		public bool ProjectWinMDRefs {
-			get => projectWinMDRefs;
-			set => projectWinMDRefs = value;
+			get { return projectWinMDRefs; }
+			set { projectWinMDRefs = value; }
 		}
 		bool projectWinMDRefs = true;
 
@@ -25,8 +25,9 @@ namespace dnlib.DotNet {
 		/// Constructor
 		/// </summary>
 		/// <param name="assemblyResolver">The assembly resolver</param>
-		public Resolver(IAssemblyResolver assemblyResolver) =>
-			this.assemblyResolver = assemblyResolver ?? throw new ArgumentNullException(nameof(assemblyResolver));
+		public Resolver(IAssemblyResolver assemblyResolver) {
+            if (assemblyResolver != null) this.assemblyResolver = assemblyResolver; else throw new ArgumentNullException("assemblyResolver");
+        }
 
 		/// <inheritdoc/>
 		public TypeDef Resolve(TypeRef typeRef, ModuleDef sourceModule) {
@@ -42,15 +43,18 @@ namespace dnlib.DotNet {
 
 			var nonNestedResolutionScope = nonNestedTypeRef.ResolutionScope;
 			var nonNestedModule = nonNestedTypeRef.Module;
-			if (nonNestedResolutionScope is AssemblyRef asmRef) {
+            AssemblyRef asmRef;
+            if ((asmRef = nonNestedResolutionScope as AssemblyRef) != null) {
 				var asm = assemblyResolver.Resolve(asmRef, sourceModule ?? nonNestedModule);
 				return asm == null ? null : asm.Find(typeRef) ?? ResolveExportedType(asm.Modules, typeRef, sourceModule);
 			}
 
-			if (nonNestedResolutionScope is ModuleDef moduleDef)
+            ModuleDef moduleDef;
+            if ((moduleDef = nonNestedResolutionScope as ModuleDef) != null)
 				return moduleDef.Find(typeRef) ?? ResolveExportedType(new ModuleDef[] { moduleDef }, typeRef, sourceModule);
 
-			if (nonNestedResolutionScope is ModuleRef moduleRef) {
+            ModuleRef moduleRef;
+            if ((moduleRef = nonNestedResolutionScope as ModuleRef) != null) {
 				if (nonNestedModule == null)
 					return null;
 				if (new SigComparer().Equals(moduleRef, nonNestedModule))
@@ -112,27 +116,33 @@ namespace dnlib.DotNet {
 			if (ProjectWinMDRefs)
 				memberRef = WinMDHelpers.ToCLR(memberRef.Module, memberRef) ?? memberRef;
 			var parent = memberRef.Class;
-			if (parent is MethodDef method)
+            MethodDef method;
+            if ((method = parent as MethodDef) != null)
 				return method;
-			return GetDeclaringType(memberRef, parent)?.Resolve(memberRef);
+            TypeDef declaringType = GetDeclaringType(memberRef, parent);
+			return declaringType != null?declaringType.Resolve(memberRef):null;
 		}
 
 		TypeDef GetDeclaringType(MemberRef memberRef, IMemberRefParent parent) {
 			if (memberRef == null || parent == null)
 				return null;
 
-			if (parent is TypeSpec ts)
+            TypeSpec ts;
+            if ((ts = parent as TypeSpec) != null)
 				parent = ts.ScopeType;
 
-			if (parent is TypeDef declaringTypeDef)
+            TypeDef declaringTypeDef;
+            if ((declaringTypeDef = parent as TypeDef) != null)
 				return declaringTypeDef;
 
-			if (parent is TypeRef declaringTypeRef)
+            TypeRef declaringTypeRef;
+            if ((declaringTypeRef = parent as TypeRef) != null)
 				return Resolve(declaringTypeRef, memberRef.Module);
 
-			// A module ref is used to reference the global type of a module in the same
-			// assembly as the current module.
-			if (parent is ModuleRef moduleRef) {
+            // A module ref is used to reference the global type of a module in the same
+            // assembly as the current module.
+            ModuleRef moduleRef;
+            if ((moduleRef = parent as ModuleRef) != null) {
 				var module = memberRef.Module;
 				if (module == null)
 					return null;
@@ -148,7 +158,8 @@ namespace dnlib.DotNet {
 				return globalType;
 			}
 
-			if (parent is MethodDef method)
+            MethodDef method;
+            if ((method = parent as MethodDef) != null)
 				return method.DeclaringType;
 
 			return null;

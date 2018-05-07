@@ -22,7 +22,8 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="exceptionHandlers">All exception handlers</param>
 		/// <returns>Max stack value</returns>
 		public static uint GetMaxStack(IList<Instruction> instructions, IList<ExceptionHandler> exceptionHandlers) {
-			new MaxStackCalculator(instructions, exceptionHandlers).Calculate(out uint maxStack);
+            uint maxStack;
+			new MaxStackCalculator(instructions, exceptionHandlers).Calculate(out maxStack);
 			return maxStack;
 		}
 
@@ -33,10 +34,11 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="exceptionHandlers">All exception handlers</param>
 		/// <param name="maxStack">Updated with max stack value</param>
 		/// <returns><c>true</c> if no errors were detected, <c>false</c> otherwise</returns>
-		public static bool GetMaxStack(IList<Instruction> instructions, IList<ExceptionHandler> exceptionHandlers, out uint maxStack) =>
-			new MaxStackCalculator(instructions, exceptionHandlers).Calculate(out maxStack);
+		public static bool GetMaxStack(IList<Instruction> instructions, IList<ExceptionHandler> exceptionHandlers, out uint maxStack) {
+			return new MaxStackCalculator(instructions, exceptionHandlers).Calculate(out maxStack);
+        }
 
-		internal static MaxStackCalculator Create() => new MaxStackCalculator(true);
+		internal static MaxStackCalculator Create() { return new MaxStackCalculator(true); }
 
 		MaxStackCalculator(bool dummy) {
 			instructions = null;
@@ -107,7 +109,9 @@ namespace dnlib.DotNet.Writer {
 						hasError = true;
 				}
 				else {
-					instr.CalculateStackUsage(out int pushes, out int pops);
+                    int pushes;
+                    int pops;
+					instr.CalculateStackUsage(out pushes, out pops);
 					if (pops == -1)
 						stack = 0;
 					else {
@@ -137,7 +141,8 @@ namespace dnlib.DotNet.Writer {
 
 				case FlowControl.Cond_Branch:
 					if (code == Code.Switch) {
-						if (instr.Operand is IList<Instruction> targets) {
+                        IList<Instruction> targets;
+                        if ((targets = instr.Operand as IList<Instruction>) != null) {
 							for (int j = 0; j < targets.Count; j++)
 								WriteStack(targets[j], stack);
 						}
@@ -163,7 +168,8 @@ namespace dnlib.DotNet.Writer {
 				return stack;
 			}
 			var stackHeights = this.stackHeights;
-			if (stackHeights.TryGetValue(instr, out int stack2)) {
+            int stack2;
+            if (stackHeights.TryGetValue(instr, out stack2)) {
 				if (stack != stack2)
 					hasError = true;
 				return stack2;

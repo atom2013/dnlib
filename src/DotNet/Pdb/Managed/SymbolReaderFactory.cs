@@ -22,7 +22,9 @@ namespace dnlib.DotNet.Pdb.Managed {
 				var debugDir = pdbContext.CodeViewDebugDirectory;
 				if (debugDir == null)
 					return null;
-				if (!pdbContext.TryGetCodeViewData(out var pdbGuid, out uint age))
+                System.Guid pdbGuid;
+                uint age;
+				if (!pdbContext.TryGetCodeViewData(out pdbGuid, out age))
 					return null;
 
 				var pdbReader = new PdbReader(pdbGuid, age);
@@ -36,7 +38,7 @@ namespace dnlib.DotNet.Pdb.Managed {
 			catch (IOException) {
 			}
 			finally {
-				pdbStream?.Dispose();
+				if (pdbStream != null) pdbStream.Dispose();
 			}
 			return null;
 		}

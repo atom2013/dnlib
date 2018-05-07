@@ -22,7 +22,7 @@ namespace dnlib.Utils {
 		/// <summary>
 		/// Gets the length of this list
 		/// </summary>
-		public uint Length => length;
+		public uint Length { get { return length; } }
 
 		/// <summary>
 		/// Access the list
@@ -69,7 +69,7 @@ namespace dnlib.Utils {
 		/// <summary>
 		/// Gets the length of this list
 		/// </summary>
-		public uint Length => length;
+        public uint Length { get { return length; } }
 
 		/// <summary>
 		/// Access the list

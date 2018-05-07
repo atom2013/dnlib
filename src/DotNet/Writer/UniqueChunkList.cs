@@ -47,7 +47,8 @@ namespace dnlib.DotNet.Writer {
 			if (chunk == null)
 				return null;
 			var elem = new Elem(chunk, alignment);
-			if (dict.TryGetValue(elem, out var other))
+            Elem other;
+            if (dict.TryGetValue(elem, out other))
 				return other.chunk;
 			dict[elem] = elem;
 			chunks.Add(elem);

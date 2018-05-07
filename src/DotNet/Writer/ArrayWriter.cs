@@ -11,7 +11,7 @@ namespace dnlib.DotNet.Writer {
 		/// <summary>
 		/// Gets the current position
 		/// </summary>
-		public int Position => position;
+		public int Position { get { return position; } }
 
 		readonly byte[] data;
 		int position;
@@ -29,13 +29,13 @@ namespace dnlib.DotNet.Writer {
 		/// Writes a <see cref="sbyte"/>
 		/// </summary>
 		/// <param name="value">Value</param>
-		public void WriteSByte(sbyte value) => data[position++] = (byte)value;
+		public void WriteSByte(sbyte value) { data[position++] = (byte)value; }
 
 		/// <summary>
 		/// Writes a <see cref="byte"/>
 		/// </summary>
 		/// <param name="value">Value</param>
-		public void WriteByte(byte value) => data[position++] = value;
+		public void WriteByte(byte value) { data[position++] = value; }
 
 		/// <summary>
 		/// Writes a <see cref="short"/>
@@ -131,7 +131,7 @@ namespace dnlib.DotNet.Writer {
 		/// Writes bytes
 		/// </summary>
 		/// <param name="source">Bytes</param>
-		public void WriteBytes(byte[] source) => WriteBytes(source, 0, source.Length);
+        public void WriteBytes(byte[] source) { WriteBytes(source, 0, source.Length); }
 
 		/// <summary>
 		/// Writes bytes

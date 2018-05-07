@@ -17,26 +17,26 @@ namespace dnlib.DotNet.Emit {
 		/// <summary>
 		/// Gets the number of locals
 		/// </summary>
-		public int Count => locals.Count;
+		public int Count { get { return locals.Count; } }
 
 		/// <summary>
 		/// Gets the list of locals
 		/// </summary>
-		public IList<Local> Locals => locals;
+		public IList<Local> Locals { get { return locals; } }
 
 		/// <summary>
 		/// Gets the N'th local
 		/// </summary>
 		/// <param name="index">The local index</param>
 		public Local this[int index] {
-			get => locals[index];
-			set => locals[index] = value;
+			get { return locals[index]; }
+			set { locals[index] = value; }
 		}
 
 		/// <summary>
 		/// Default constructor
 		/// </summary>
-		public LocalList() => locals = new LazyList<Local>(this);
+		public LocalList() { locals = new LazyList<Local>(this); }
 
 		/// <summary>
 		/// Constructor
@@ -63,10 +63,10 @@ namespace dnlib.DotNet.Emit {
 		}
 
 		/// <inheritdoc/>
-		void IListListener<Local>.OnAdd(int index, Local value) => value.Index = index;
+		void IListListener<Local>.OnAdd(int index, Local value) { value.Index = index; }
 
 		/// <inheritdoc/>
-		void IListListener<Local>.OnRemove(int index, Local value) => value.Index = -1;
+		void IListListener<Local>.OnRemove(int index, Local value) { value.Index = -1; }
 
 		/// <inheritdoc/>
 		void IListListener<Local>.OnResize(int index) {
@@ -81,35 +81,35 @@ namespace dnlib.DotNet.Emit {
 		}
 
 		/// <inheritdoc/>
-		public int IndexOf(Local item) => locals.IndexOf(item);
+		public int IndexOf(Local item) { return locals.IndexOf(item); }
 
 		/// <inheritdoc/>
-		public void Insert(int index, Local item) => locals.Insert(index, item);
+		public void Insert(int index, Local item) { locals.Insert(index, item); }
 
 		/// <inheritdoc/>
-		public void RemoveAt(int index) => locals.RemoveAt(index);
+		public void RemoveAt(int index) { locals.RemoveAt(index); }
 
-		void ICollection<Local>.Add(Local item) => locals.Add(item);
-
-		/// <inheritdoc/>
-		public void Clear() => locals.Clear();
+		void ICollection<Local>.Add(Local item) { locals.Add(item); }
 
 		/// <inheritdoc/>
-		public bool Contains(Local item) => locals.Contains(item);
+		public void Clear() { locals.Clear(); }
 
 		/// <inheritdoc/>
-		public void CopyTo(Local[] array, int arrayIndex) => locals.CopyTo(array, arrayIndex);
+		public bool Contains(Local item) { return locals.Contains(item); }
 
 		/// <inheritdoc/>
-		public bool IsReadOnly => false;
+		public void CopyTo(Local[] array, int arrayIndex) { locals.CopyTo(array, arrayIndex); }
 
 		/// <inheritdoc/>
-		public bool Remove(Local item) => locals.Remove(item);
+		public bool IsReadOnly { get { return false; } }
 
 		/// <inheritdoc/>
-		public LazyList<Local>.Enumerator GetEnumerator() => locals.GetEnumerator();
-		IEnumerator<Local> IEnumerable<Local>.GetEnumerator() => locals.GetEnumerator();
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => ((IEnumerable<Local>)this).GetEnumerator();
+		public bool Remove(Local item) { return locals.Remove(item); }
+
+		/// <inheritdoc/>
+		public LazyList<Local>.Enumerator GetEnumerator() { return locals.GetEnumerator(); }
+		IEnumerator<Local> IEnumerable<Local>.GetEnumerator() { return locals.GetEnumerator(); }
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return ((IEnumerable<Local>)this).GetEnumerator(); }
 	}
 
 	/// <summary>
@@ -125,42 +125,42 @@ namespace dnlib.DotNet.Emit {
 		/// Gets/sets the type of the local
 		/// </summary>
 		public TypeSig Type {
-			get => typeSig;
-			set => typeSig = value;
+			get { return typeSig; }
+			set { typeSig = value; }
 		}
 
 		/// <summary>
 		/// Local index
 		/// </summary>
 		public int Index {
-			get => index;
-			internal set => index = value;
+			get { return index; }
+			internal set { index = value; }
 		}
 
 		/// <summary>
 		/// Gets the name. This property is obsolete, use <see cref="PdbLocal"/> to get/set the name stored in the PDB file.
 		/// </summary>
 		public string Name {
-			get => name;
-			set => name = value;
+			get { return name; }
+			set { name = value; }
 		}
 
 		/// <summary>
 		/// Gets the attributes. This property is obsolete, use <see cref="PdbLocal"/> to get/set the attributes stored in the PDB file.
 		/// </summary>
 		public PdbLocalAttributes Attributes {
-			get => attributes;
-			set => attributes = value;
+			get { return attributes; }
+			set { attributes = value; }
 		}
 
-		internal void SetName(string name) => this.name = name;
-		internal void SetAttributes(PdbLocalAttributes attributes) => this.attributes = attributes;
+		internal void SetName(string name) { this.name = name; }
+		internal void SetAttributes(PdbLocalAttributes attributes) { this.attributes = attributes; }
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="typeSig">The type</param>
-		public Local(TypeSig typeSig) => this.typeSig = typeSig;
+        public Local(TypeSig typeSig) { this.typeSig = typeSig; }
 
 		/// <summary>
 		/// Constructor
@@ -188,7 +188,7 @@ namespace dnlib.DotNet.Emit {
 		public override string ToString() {
 			var n = name;
 			if (string.IsNullOrEmpty(n))
-				return $"V_{Index}";
+				return string.Format( "V_{0}", Index );
 			return n;
 		}
 	}

@@ -8,7 +8,7 @@ using dnlib.IO;
 
 namespace dnlib.DotNet.Pdb.Managed {
 	sealed class DbiFunction : SymbolMethod {
-		public override int Token => token;
+		public override int Token { get { return token; } }
 		internal int token;
 
 		internal PdbReader reader;
@@ -17,8 +17,8 @@ namespace dnlib.DotNet.Pdb.Managed {
 		public PdbAddress Address { get; private set; }
 		public DbiScope Root { get; private set; }
 		public List<SymbolSequencePoint> Lines {
-			get => lines;
-			set => lines = value;
+			get { return lines; }
+			set { lines = value; }
 		}
 		List<SymbolSequencePoint> lines;
 
@@ -53,7 +53,7 @@ namespace dnlib.DotNet.Pdb.Managed {
 			counter.Decrement();
 		}
 
-		public override SymbolScope RootScope => Root;
+		public override SymbolScope RootScope { get { return Root; } }
 
 		public override IList<SymbolSequencePoint> SequencePoints {
 			get {
@@ -112,7 +112,8 @@ namespace dnlib.DotNet.Pdb.Managed {
 			return res;
 		}
 
-		public override void GetCustomDebugInfos(MethodDef method, CilBody body, IList<PdbCustomDebugInfo> result) =>
-			reader.GetCustomDebugInfos(this, method, body, result);
+        public override void GetCustomDebugInfos(MethodDef method, CilBody body, IList<PdbCustomDebugInfo> result) {
+            reader.GetCustomDebugInfos(this, method, body, result);
+        }
 	}
 }

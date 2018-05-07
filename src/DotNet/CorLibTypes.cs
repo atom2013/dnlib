@@ -27,61 +27,61 @@ namespace dnlib.DotNet {
 		readonly AssemblyRef corLibAssemblyRef;
 
 		/// <inheritdoc/>
-		public CorLibTypeSig Void => typeVoid;
+		public CorLibTypeSig Void { get { return typeVoid; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig Boolean => typeBoolean;
+		public CorLibTypeSig Boolean { get { return typeBoolean; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig Char => typeChar;
+		public CorLibTypeSig Char { get { return typeChar; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig SByte => typeSByte;
+		public CorLibTypeSig SByte { get { return typeSByte; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig Byte => typeByte;
+		public CorLibTypeSig Byte { get { return typeByte; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig Int16 => typeInt16;
+		public CorLibTypeSig Int16 { get { return typeInt16; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig UInt16 => typeUInt16;
+		public CorLibTypeSig UInt16 { get { return typeUInt16; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig Int32 => typeInt32;
+		public CorLibTypeSig Int32 { get { return typeInt32; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig UInt32 => typeUInt32;
+		public CorLibTypeSig UInt32 { get { return typeUInt32; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig Int64 => typeInt64;
+		public CorLibTypeSig Int64 { get { return typeInt64; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig UInt64 => typeUInt64;
+		public CorLibTypeSig UInt64 { get { return typeUInt64; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig Single => typeSingle;
+		public CorLibTypeSig Single { get { return typeSingle; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig Double => typeDouble;
+		public CorLibTypeSig Double { get { return typeDouble; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig String => typeString;
+		public CorLibTypeSig String { get { return typeString; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig TypedReference => typeTypedReference;
+		public CorLibTypeSig TypedReference { get { return typeTypedReference; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig IntPtr => typeIntPtr;
+		public CorLibTypeSig IntPtr { get { return typeIntPtr; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig UIntPtr => typeUIntPtr;
+		public CorLibTypeSig UIntPtr { get { return typeUIntPtr; } }
 
 		/// <inheritdoc/>
-		public CorLibTypeSig Object => typeObject;
+		public CorLibTypeSig Object { get { return typeObject; } }
 
 		/// <inheritdoc/>
-		public AssemblyRef AssemblyRef => corLibAssemblyRef;
+		public AssemblyRef AssemblyRef { get { return corLibAssemblyRef; } }
 
 		/// <summary>
 		/// Constructor
@@ -103,7 +103,7 @@ namespace dnlib.DotNet {
 			Initialize();
 		}
 
-		AssemblyRef CreateCorLibAssemblyRef() => module.UpdateRowId(AssemblyRefUser.CreateMscorlibReferenceCLR20());
+		AssemblyRef CreateCorLibAssemblyRef() { return module.UpdateRowId(AssemblyRefUser.CreateMscorlibReferenceCLR20()); }
 
 		void Initialize() {
 			bool isCorLib = module.Assembly.IsCorLib();
@@ -138,6 +138,6 @@ namespace dnlib.DotNet {
 		}
 
 		/// <inheritdoc/>
-		public TypeRef GetTypeRef(string @namespace, string name) => module.UpdateRowId(new TypeRefUser(module, @namespace, name, corLibAssemblyRef));
+        public TypeRef GetTypeRef(string @namespace, string name) { return module.UpdateRowId(new TypeRefUser(module, @namespace, name, corLibAssemblyRef)); }
 	}
 }

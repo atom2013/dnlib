@@ -20,33 +20,33 @@ namespace dnlib.DotNet.MD {
 		/// <summary>
 		/// Gets the column index
 		/// </summary>
-		public int Index => index;
+		public int Index { get { return index; } }
 
 		/// <summary>
 		/// Returns the column offset within the table row
 		/// </summary>
 		public int Offset {
-			get => offset;
-			internal set => offset = (byte)value;
+			get { return offset; }
+			internal set { offset = (byte)value; }
 		}
 
 		/// <summary>
 		/// Returns the column size
 		/// </summary>
 		public int Size {
-			get => size;
-			internal set => size = (byte)value;
+			get { return size; }
+			internal set { size = (byte)value; }
 		}
 
 		/// <summary>
 		/// Returns the column name
 		/// </summary>
-		public string Name => name;
+		public string Name { get { return name; } }
 
 		/// <summary>
 		/// Returns the ColumnSize enum value
 		/// </summary>
-		public ColumnSize ColumnSize => columnSize;
+        public ColumnSize ColumnSize { get { return columnSize; } }
 
 		/// <summary>
 		/// Constructor

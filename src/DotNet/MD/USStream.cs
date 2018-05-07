@@ -29,7 +29,8 @@ namespace dnlib.DotNet.MD {
 				return null;
 			var reader = dataReader;
 			reader.Position = offset;
-			if (!reader.TryReadCompressedUInt32(out uint length))
+            uint length;
+			if (!reader.TryReadCompressedUInt32(out length))
 				return null;
 			if (!reader.CanRead(length))
 				return null;
@@ -52,6 +53,6 @@ namespace dnlib.DotNet.MD {
 		/// </summary>
 		/// <param name="offset">Offset of unicode string</param>
 		/// <returns>The string</returns>
-		public string ReadNoNull(uint offset) => Read(offset) ?? string.Empty;
+        public string ReadNoNull(uint offset) { return Read(offset) ?? string.Empty; }
 	}
 }

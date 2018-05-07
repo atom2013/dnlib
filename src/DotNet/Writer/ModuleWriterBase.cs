@@ -12,21 +12,26 @@ using System.Diagnostics;
 using dnlib.DotNet.Pdb.WindowsPdb;
 using System.Text;
 using System.IO.Compression;
+using System.Runtime.CompilerServices;
 
 namespace dnlib.DotNet.Writer {
 	/// <summary>
 	/// Module writer event args
 	/// </summary>
-	public readonly struct ModuleWriterEventArgs {
+	public struct ModuleWriterEventArgs {
+        [CompilerGenerated]
+        private readonly ModuleWriterBase Writer__BackingField;
+        [CompilerGenerated]
+        private readonly ModuleWriterEvent Event__BackingField;
 		/// <summary>
 		/// Gets the writer (<see cref="ModuleWriter"/> or <see cref="NativeModuleWriter"/>)
 		/// </summary>
-		public ModuleWriterBase Writer { get; }
+        public ModuleWriterBase Writer { get { return Writer__BackingField; } }
 
 		/// <summary>
 		/// Gets the event
 		/// </summary>
-		public ModuleWriterEvent Event { get; }
+        public ModuleWriterEvent Event { get { return Event__BackingField; } }
 
 		/// <summary>
 		/// Constructor
@@ -34,24 +39,28 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="writer">Writer</param>
 		/// <param name="event">Event</param>
 		public ModuleWriterEventArgs(ModuleWriterBase writer, ModuleWriterEvent @event) {
-			Writer = writer ?? throw new ArgumentNullException(nameof(writer));
-			Event = @event;
+            if (writer != null) Writer__BackingField = writer; else throw new ArgumentNullException("writer");
+            Event__BackingField = @event;
 		}
 	}
 
 	/// <summary>
 	/// Module writer progress event args
 	/// </summary>
-	public readonly struct ModuleWriterProgressEventArgs {
+	public struct ModuleWriterProgressEventArgs {
+        [CompilerGenerated]
+        private readonly ModuleWriterBase Writer__BackingField;
+        [CompilerGenerated]
+        private readonly double Progress__BackingField;
 		/// <summary>
 		/// Gets the writer (<see cref="ModuleWriter"/> or <see cref="NativeModuleWriter"/>)
 		/// </summary>
-		public ModuleWriterBase Writer { get; }
+        public ModuleWriterBase Writer { get { return Writer__BackingField; }  }
 
 		/// <summary>
 		/// Gets the progress, 0.0 - 1.0
 		/// </summary>
-		public double Progress { get; }
+        public double Progress { get { return Progress__BackingField; } }
 
 		/// <summary>
 		/// Constructor
@@ -60,16 +69,16 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="progress">Progress, 0.0 - 1.0</param>
 		public ModuleWriterProgressEventArgs(ModuleWriterBase writer, double progress) {
 			if (progress < 0 || progress > 1)
-				throw new ArgumentOutOfRangeException(nameof(progress));
-			Writer = writer ?? throw new ArgumentNullException(nameof(writer));
-			Progress = progress;
+				throw new ArgumentOutOfRangeException("progress");
+            if (writer != null) Writer__BackingField = writer; else throw new ArgumentNullException("writer");
+            Progress__BackingField = progress;
 		}
 	}
 
 	/// <summary>
 	/// Content ID
 	/// </summary>
-	public readonly struct ContentId {
+	public struct ContentId {
 		/// <summary>
 		/// Gets the GUID
 		/// </summary>
@@ -158,10 +167,10 @@ namespace dnlib.DotNet.Writer {
 		/// <summary>
 		/// Gets/sets the listener
 		/// </summary>
-		[Obsolete("Use event " + nameof(WriterEvent) + " instead of " + nameof(IModuleWriterListener), error: false)]
+		[Obsolete("Use event " + "WriterEvent" + " instead of " + "IModuleWriterListener", false)]
 		public IModuleWriterListener Listener {
-			get => listener;
-			set => listener = value;
+			get { return listener; }
+			set { listener = value; }
 		}
 
 		/// <summary>
@@ -169,13 +178,13 @@ namespace dnlib.DotNet.Writer {
 		/// the file, eg. add extra metadata, encrypt methods, etc.
 		/// </summary>
 		public event EventHandler2<ModuleWriterEventArgs> WriterEvent;
-		internal void RaiseEvent(object sender, ModuleWriterEventArgs e) => WriterEvent?.Invoke(sender, e);
+		internal void RaiseEvent(object sender, ModuleWriterEventArgs e) { if (WriterEvent != null) WriterEvent.Invoke(sender, e); }
 
 		/// <summary>
 		/// Raised when the progress is updated
 		/// </summary>
 		public event EventHandler2<ModuleWriterProgressEventArgs> ProgressUpdated;
-		internal void RaiseEvent(object sender, ModuleWriterProgressEventArgs e) => ProgressUpdated?.Invoke(sender, e);
+		internal void RaiseEvent(object sender, ModuleWriterProgressEventArgs e) { if (ProgressUpdated != null) ProgressUpdated.Invoke(sender, e); }
 
 		/// <summary>
 		/// Gets/sets the logger. If this is <c>null</c>, any errors result in a
@@ -183,8 +192,8 @@ namespace dnlib.DotNet.Writer {
 		/// create your own logger or use <see cref="DummyLogger.NoThrowInstance"/>.
 		/// </summary>
 		public ILogger Logger {
-			get => logger;
-			set => logger = value;
+			get { return logger; }
+			set { logger = value; }
 		}
 
 		/// <summary>
@@ -192,32 +201,32 @@ namespace dnlib.DotNet.Writer {
 		/// <see cref="Logger"/>.
 		/// </summary>
 		public ILogger MetadataLogger {
-			get => metadataLogger;
-			set => metadataLogger = value;
+			get { return metadataLogger; }
+			set { metadataLogger = value; }
 		}
 
 		/// <summary>
 		/// Gets/sets the <see cref="PEHeaders"/> options. This is never <c>null</c>.
 		/// </summary>
 		public PEHeadersOptions PEHeadersOptions {
-			get => peHeadersOptions ?? (peHeadersOptions = new PEHeadersOptions());
-			set => peHeadersOptions = value;
+			get { return peHeadersOptions ?? (peHeadersOptions = new PEHeadersOptions()); }
+			set { peHeadersOptions = value; }
 		}
 
 		/// <summary>
 		/// Gets/sets the <see cref="ImageCor20Header"/> options. This is never <c>null</c>.
 		/// </summary>
 		public Cor20HeaderOptions Cor20HeaderOptions {
-			get => cor20HeaderOptions ?? (cor20HeaderOptions = new Cor20HeaderOptions());
-			set => cor20HeaderOptions = value;
+			get { return cor20HeaderOptions ?? (cor20HeaderOptions = new Cor20HeaderOptions()); }
+			set { cor20HeaderOptions = value; }
 		}
 
 		/// <summary>
 		/// Gets/sets the <see cref="Metadata"/> options. This is never <c>null</c>.
 		/// </summary>
 		public MetadataOptions MetadataOptions {
-			get => metadataOptions ?? (metadataOptions = new MetadataOptions());
-			set => metadataOptions = value;
+			get { return metadataOptions ?? (metadataOptions = new MetadataOptions()); }
+			set { metadataOptions = value; }
 		}
 
 		/// <summary>
@@ -225,8 +234,8 @@ namespace dnlib.DotNet.Writer {
 		/// Win32 resources if any.
 		/// </summary>
 		public Win32Resources Win32Resources {
-			get => win32Resources;
-			set => win32Resources = value;
+			get { return win32Resources; }
+			set { win32Resources = value; }
 		}
 
 		/// <summary>
@@ -235,8 +244,8 @@ namespace dnlib.DotNet.Writer {
 		/// public key from your strong name key file, execute <c>sn -p mykey.snk mypublickey.snk</c>
 		/// </summary>
 		public bool DelaySign {
-			get => delaySign;
-			set => delaySign = value;
+			get { return delaySign; }
+			set { delaySign = value; }
 		}
 
 		/// <summary>
@@ -249,8 +258,8 @@ namespace dnlib.DotNet.Writer {
 		/// to initialize this property if you use enhanced strong name signing.
 		/// </summary>
 		public StrongNameKey StrongNameKey {
-			get => strongNameKey;
-			set => strongNameKey = value;
+			get { return strongNameKey; }
+			set { strongNameKey = value; }
 		}
 
 		/// <summary>
@@ -262,8 +271,8 @@ namespace dnlib.DotNet.Writer {
 		/// to initialize this property if you use enhanced strong name signing.
 		/// </summary>
 		public StrongNamePublicKey StrongNamePublicKey {
-			get => strongNamePublicKey;
-			set => strongNamePublicKey = value;
+			get { return strongNamePublicKey; }
+			set { strongNamePublicKey = value; }
 		}
 
 		/// <summary>
@@ -300,7 +309,7 @@ namespace dnlib.DotNet.Writer {
 		/// <c>true</c> if it should be written as an EXE file, <c>false</c> if it should be
 		/// written as a DLL file.
 		/// </summary>
-		public bool IsExeFile => ModuleKind != ModuleKind.Dll && ModuleKind != ModuleKind.NetModule;
+		public bool IsExeFile { get { return ModuleKind != ModuleKind.Dll && ModuleKind != ModuleKind.NetModule; } }
 
 		/// <summary>
 		/// Set it to <c>true</c> to enable writing a PDB file. Default is <c>false</c> (a PDB file
@@ -339,7 +348,7 @@ namespace dnlib.DotNet.Writer {
 		/// <summary>
 		/// PDB checksum algorithm
 		/// </summary>
-		public ChecksumAlgorithm PdbChecksumAlgorithm { get; set; } = DefaultPdbChecksumAlgorithm;
+		public ChecksumAlgorithm PdbChecksumAlgorithm { get; set; }
 
 		/// <summary>
 		/// true if an <c>.mvid</c> section should be added to the assembly. Not used by native module writer.
@@ -352,6 +361,7 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="module">The module</param>
 		protected ModuleWriterOptionsBase(ModuleDef module) {
 			ShareMethodBodies = true;
+            PdbChecksumAlgorithm = DefaultPdbChecksumAlgorithm;
 			MetadataOptions.MetadataHeaderOptions.VersionString = module.RuntimeVersion;
 			ModuleKind = module.Kind;
 			PEHeadersOptions.Machine = module.Machine;
@@ -418,7 +428,8 @@ namespace dnlib.DotNet.Writer {
 					PdbOptions |= PdbWriterOptions.Deterministic;
 				if (HasDebugDirectoryEntry(modDefMD.Metadata.PEImage.ImageDebugDirectories, ImageDebugType.PdbChecksum))
 					PdbOptions |= PdbWriterOptions.PdbChecksum;
-				if (TryGetPdbChecksumAlgorithm(modDefMD.Metadata.PEImage, modDefMD.Metadata.PEImage.ImageDebugDirectories, out var pdbChecksumAlgorithm))
+                ChecksumAlgorithm pdbChecksumAlgorithm;
+                if (TryGetPdbChecksumAlgorithm(modDefMD.Metadata.PEImage, modDefMD.Metadata.PEImage.ImageDebugDirectories, out pdbChecksumAlgorithm))
 					PdbChecksumAlgorithm = pdbChecksumAlgorithm;
 			}
 
@@ -471,7 +482,8 @@ namespace dnlib.DotNet.Writer {
 		static bool TryGetPdbChecksumAlgorithm(ref DataReader reader, out ChecksumAlgorithm pdbChecksumAlgorithm) {
 			try {
 				var checksumName = reader.TryReadZeroTerminatedUtf8String();
-				if (Hasher.TryGetChecksumAlgorithm(checksumName, out pdbChecksumAlgorithm, out int checksumSize) && (uint)checksumSize == reader.BytesLeft)
+                int checksumSize;
+                if (Hasher.TryGetChecksumAlgorithm(checksumName, out pdbChecksumAlgorithm, out checksumSize) && (uint)checksumSize == reader.BytesLeft)
 					return true;
 			}
 			catch (IOException) {
@@ -578,37 +590,37 @@ namespace dnlib.DotNet.Writer {
 		/// <summary>
 		/// Gets the destination stream
 		/// </summary>
-		public Stream DestinationStream => destStream;
+		public Stream DestinationStream { get { return destStream; } }
 
 		/// <summary>
 		/// Gets the constants
 		/// </summary>
-		public UniqueChunkList<ByteArrayChunk> Constants => constants;
+		public UniqueChunkList<ByteArrayChunk> Constants { get { return constants; } }
 
 		/// <summary>
 		/// Gets the method bodies
 		/// </summary>
-		public MethodBodyChunks MethodBodies => methodBodies;
+		public MethodBodyChunks MethodBodies { get { return methodBodies; } }
 
 		/// <summary>
 		/// Gets the .NET resources
 		/// </summary>
-		public NetResources NetResources => netResources;
+		public NetResources NetResources { get { return netResources; } }
 
 		/// <summary>
 		/// Gets the .NET metadata
 		/// </summary>
-		public Metadata Metadata => metadata;
+		public Metadata Metadata { get { return metadata; } }
 
 		/// <summary>
 		/// Gets the Win32 resources or <c>null</c> if there's none
 		/// </summary>
-		public Win32ResourcesChunk Win32Resources => win32Resources;
+		public Win32ResourcesChunk Win32Resources { get { return win32Resources; } }
 
 		/// <summary>
 		/// Gets the strong name signature or <c>null</c> if there's none
 		/// </summary>
-		public StrongNameSignature StrongNameSignature => strongNameSignature;
+		public StrongNameSignature StrongNameSignature { get { return strongNameSignature; } }
 
 		/// <summary>
 		/// Gets all <see cref="PESection"/>s
@@ -628,13 +640,13 @@ namespace dnlib.DotNet.Writer {
 		/// <summary>
 		/// Gets the debug directory or <c>null</c> if there's none
 		/// </summary>
-		public DebugDirectory DebugDirectory => debugDirectory;
+		public DebugDirectory DebugDirectory { get { return debugDirectory; } }
 
 		/// <summary>
 		/// <c>true</c> if <c>this</c> is a <see cref="NativeModuleWriter"/>, <c>false</c> if
 		/// <c>this</c> is a <see cref="ModuleWriter"/>.
 		/// </summary>
-		public bool IsNativeWriter => this is NativeModuleWriter;
+		public bool IsNativeWriter { get { return this is NativeModuleWriter; } }
 
 		/// <summary>
 		/// null if we're not writing a PDB
@@ -824,7 +836,7 @@ namespace dnlib.DotNet.Writer {
 			snSigner.WriteSignature(TheOptions.StrongNameKey, snSigOffset);
 		}
 
-		bool CanWritePdb() => pdbState != null;
+		bool CanWritePdb() { return pdbState != null; }
 
 		/// <summary>
 		/// Creates the debug directory if a PDB file should be written
@@ -874,8 +886,9 @@ namespace dnlib.DotNet.Writer {
 			}
 		}
 
-		void AddReproduciblePdbDebugDirectoryEntry() =>
-			debugDirectory.Add(Array2.Empty<byte>(), type: ImageDebugType.Reproducible, majorVersion: 0, minorVersion: 0, timeDateStamp: 0);
+		void AddReproduciblePdbDebugDirectoryEntry() {
+			debugDirectory.Add(Array2.Empty<byte>(), /* type: */ ImageDebugType.Reproducible, /* majorVersion: */ 0, /* minorVersion: */ 0, /* timeDateStamp: */ 0);
+        }
 
 		void AddPdbChecksumDebugDirectoryEntry(byte[] checksumBytes, ChecksumAlgorithm checksumAlgorithm) {
 			var stream = new MemoryStream();
@@ -885,14 +898,15 @@ namespace dnlib.DotNet.Writer {
 			writer.WriteByte(0);
 			writer.WriteBytes(checksumBytes);
 			var blob = stream.ToArray();
-			debugDirectory.Add(blob, ImageDebugType.PdbChecksum, majorVersion: 1, minorVersion: 0, timeDateStamp: 0);
+			debugDirectory.Add(blob, ImageDebugType.PdbChecksum, /* majorVersion: */ 1, /* minorVersion: */ 0, /* timeDateStamp: */ 0);
 		}
 
 		const uint PdbAge = 1;
 		void WriteWindowsPdb(PdbState pdbState) {
 			bool addPdbChecksumDebugDirectoryEntry = (TheOptions.PdbOptions & PdbWriterOptions.PdbChecksum) != 0;
 			addPdbChecksumDebugDirectoryEntry = false;//TODO: If this is true, get the checksum from the PDB writer
-			var symWriter = GetWindowsPdbSymbolWriter(TheOptions.PdbOptions, out var pdbFilename);
+            string pdbFilename;
+            var symWriter = GetWindowsPdbSymbolWriter(TheOptions.PdbOptions, out pdbFilename);
 			if (symWriter == null) {
 				Error("Could not create a PDB symbol writer. A Windows OS might be required.");
 				return;
@@ -903,13 +917,17 @@ namespace dnlib.DotNet.Writer {
 				pdbWriter.Write();
 
 				var pdbAge = PdbAge;
-				bool hasContentId = pdbWriter.GetDebugInfo(TheOptions.PdbChecksumAlgorithm, ref pdbAge, out var pdbGuid, out uint stamp, out var idd, out var codeViewData);
+                Guid pdbGuid;
+                uint stamp;
+                IMAGE_DEBUG_DIRECTORY idd;
+                byte[] codeViewData;
+                bool hasContentId = pdbWriter.GetDebugInfo(TheOptions.PdbChecksumAlgorithm, ref pdbAge, out pdbGuid, out stamp, out idd, out codeViewData);
 				if (hasContentId) {
 					debugDirectory.Add(GetCodeViewData(pdbGuid, pdbAge, pdbFilename),
-						type: ImageDebugType.CodeView,
-						majorVersion: 0,
-						minorVersion: 0,
-						timeDateStamp: stamp);
+						/* type: */ ImageDebugType.CodeView,
+						/* majorVersion: */ 0,
+						/* minorVersion: */ 0,
+						/* timeDateStamp: */ stamp);
 				}
 				else {
 					Debug.Fail("Failed to get the PDB content ID");
@@ -959,7 +977,7 @@ namespace dnlib.DotNet.Writer {
 			return Pdb.Dss.SymbolReaderWriterFactory.Create(options, createdPdbFileName);
 		}
 
-		static string GetStreamName(Stream stream) => (stream as FileStream)?.Name;
+		static string GetStreamName(Stream stream) { return (stream as FileStream) != null?(stream as FileStream).Name:null; }
 
 		static string GetModuleName(ModuleDef module) {
 			var name = module.Name ?? string.Empty;
@@ -1004,7 +1022,8 @@ namespace dnlib.DotNet.Writer {
 				else
 					entryPointToken = new MDToken(Table.Method, metadata.GetRid(pdbState.UserEntryPoint)).Raw;
 
-				metadata.WritePortablePdb(pdbStream, entryPointToken, out var pdbIdOffset);
+                long pdbIdOffset;
+                metadata.WritePortablePdb(pdbStream, entryPointToken, out pdbIdOffset);
 
 				Guid pdbGuid;
 				var pdbId = new byte[20];
@@ -1039,10 +1058,10 @@ namespace dnlib.DotNet.Writer {
 				//	- EmbeddedPortablePdb
 
 				debugDirectory.Add(GetCodeViewData(pdbGuid, PdbAge, pdbFilename),
-					type: ImageDebugType.CodeView,
-					majorVersion: PortablePdbConstants.FormatVersion,
-					minorVersion: PortablePdbConstants.PortableCodeViewVersionMagic,
-					timeDateStamp: codeViewTimestamp);
+					/* type: */ ImageDebugType.CodeView,
+					/* majorVersion: */ PortablePdbConstants.FormatVersion,
+					/* minorVersion: */ PortablePdbConstants.PortableCodeViewVersionMagic,
+					/* timeDateStamp: */ codeViewTimestamp);
 
 				if (checksumBytes != null)
 					AddPdbChecksumDebugDirectoryEntry(checksumBytes, TheOptions.PdbChecksumAlgorithm);
@@ -1053,10 +1072,10 @@ namespace dnlib.DotNet.Writer {
 				if (isEmbeddedPortablePdb) {
 					Debug.Assert(embeddedMemoryStream != null);
 					debugDirectory.Add(CreateEmbeddedPortablePdbBlob(embeddedMemoryStream),
-						type: ImageDebugType.EmbeddedPortablePdb,
-						majorVersion: PortablePdbConstants.FormatVersion,
-						minorVersion: PortablePdbConstants.EmbeddedVersion,
-						timeDateStamp: 0);
+						/* type: */ ImageDebugType.EmbeddedPortablePdb,
+						/* majorVersion: */ PortablePdbConstants.FormatVersion,
+						/* minorVersion: */ PortablePdbConstants.EmbeddedVersion,
+						/* timeDateStamp: */ 0);
 				}
 			}
 			finally {
@@ -1175,13 +1194,14 @@ namespace dnlib.DotNet.Writer {
 				break;
 
 			default:
-				Debug.Fail($"Unknown MD event: {e.Event}");
+				Debug.Fail( string.Format( "Unknown MD event: {0}", e.Event ) );
 				break;
 			}
 		}
 
-		void Metadata_ProgressUpdated(object sender, MetadataProgressEventArgs e) =>
+		void Metadata_ProgressUpdated(object sender, MetadataProgressEventArgs e) {
 			RaiseProgress(ModuleWriterEvent.MDBeginCreateTables, ModuleWriterEvent.MDEndCreateTables + 1, e.Progress);
+        }
 
 		/// <summary>
 		/// Raises a writer event
@@ -1225,7 +1245,7 @@ namespace dnlib.DotNet.Writer {
 			1,// An extra one so we can get the next base progress without checking the index
 		};
 
-		void RaiseProgress(ModuleWriterEvent evt, double subProgress) => RaiseProgress(evt, evt + 1, subProgress);
+		void RaiseProgress(ModuleWriterEvent evt, double subProgress) { RaiseProgress(evt, evt + 1, subProgress); }
 
 		void RaiseProgress(ModuleWriterEvent evt, ModuleWriterEvent nextEvt, double subProgress) {
 			subProgress = Math.Min(1, Math.Max(0, subProgress));
@@ -1236,29 +1256,32 @@ namespace dnlib.DotNet.Writer {
 			TheOptions.RaiseEvent(this, new ModuleWriterProgressEventArgs(this, progress));
 		}
 
-		ILogger GetLogger() => TheOptions.Logger ?? DummyLogger.ThrowModuleWriterExceptionOnErrorInstance;
+		ILogger GetLogger() { return TheOptions.Logger ?? DummyLogger.ThrowModuleWriterExceptionOnErrorInstance; }
 
 		/// <inheritdoc/>
-		void ILogger.Log(object sender, LoggerEvent loggerEvent, string format, params object[] args) =>
+		void ILogger.Log(object sender, LoggerEvent loggerEvent, string format, params object[] args) {
 			GetLogger().Log(this, loggerEvent, format, args);
+        }
 
 		/// <inheritdoc/>
-		bool ILogger.IgnoresEvent(LoggerEvent loggerEvent) => GetLogger().IgnoresEvent(loggerEvent);
+		bool ILogger.IgnoresEvent(LoggerEvent loggerEvent) { return GetLogger().IgnoresEvent(loggerEvent); }
 
 		/// <summary>
 		/// Logs an error message
 		/// </summary>
 		/// <param name="format">Format</param>
 		/// <param name="args">Format args</param>
-		protected void Error(string format, params object[] args) =>
+		protected void Error(string format, params object[] args) {
 			GetLogger().Log(this, LoggerEvent.Error, format, args);
+        }
 
 		/// <summary>
 		/// Logs a warning message
 		/// </summary>
 		/// <param name="format">Format</param>
 		/// <param name="args">Format args</param>
-		protected void Warning(string format, params object[] args) =>
+		protected void Warning(string format, params object[] args) {
 			GetLogger().Log(this, LoggerEvent.Warning, format, args);
+        }
 	}
 }

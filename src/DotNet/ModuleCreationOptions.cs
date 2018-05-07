@@ -20,7 +20,7 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// PDB reader options
 		/// </summary>
-		public PdbReaderOptions PdbOptions { get; set; } = DefaultPdbReaderOptions;
+		public PdbReaderOptions PdbOptions { get; set; }
 
 		/// <summary>
 		/// Set it to A) the path (string) of the PDB file, B) the data (byte[]) of the PDB file or
@@ -34,7 +34,7 @@ namespace dnlib.DotNet {
 		/// stored in the PE file. The default value is <c>true</c>.
 		/// You don't need to initialize <see cref="PdbFileOrData"/>.
 		/// </summary>
-		public bool TryToLoadPdbFromDisk { get; set; } = true;
+		public bool TryToLoadPdbFromDisk { get; set; } 
 
 		/// <summary>
 		/// corlib assembly reference to use or <c>null</c> if the default one from the opened
@@ -51,6 +51,10 @@ namespace dnlib.DotNet {
 		/// Constructor
 		/// </summary>
 		/// <param name="context">Module context</param>
-		public ModuleCreationOptions(ModuleContext context) => Context = context;
+		public ModuleCreationOptions(ModuleContext context) { 
+            Context = context;
+            PdbOptions = DefaultPdbReaderOptions;
+            TryToLoadPdbFromDisk = true;
+        }
 	}
 }
