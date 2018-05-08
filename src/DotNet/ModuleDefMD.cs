@@ -149,14 +149,7 @@ namespace dnlib.DotNet {
 		/// <param name="fileName">File name of an existing .NET module/assembly</param>
 		/// <param name="options">Module creation options or <c>null</c></param>
 		/// <returns>A new <see cref="ModuleDefMD"/> instance</returns>
-		public static ModuleDefMD Load(string fileName, ModuleCreationOptions options) { return Load(MetadataFactory.Load(fileName), options); }
-
-        /// <summary>
-		/// Creates a <see cref="ModuleDefMD"/> instance from a file
-		/// </summary>
-		/// <param name="fileName">File name of an existing .NET module/assembly</param>
-		/// <returns>A new <see cref="ModuleDefMD"/> instance</returns>
-		public static ModuleDefMD Load(string fileName) { return Load(MetadataFactory.Load(fileName), (ModuleCreationOptions)null) ; }
+		public static ModuleDefMD Load(string fileName, [Optional, DefaultParameterValue(null)] ModuleCreationOptions options) { return Load(MetadataFactory.Load(fileName), options); }
 
 		/// <summary>
 		/// Creates a <see cref="ModuleDefMD"/> instance from a byte[]
@@ -172,14 +165,7 @@ namespace dnlib.DotNet {
 		/// <param name="data">Contents of a .NET module/assembly</param>
 		/// <param name="options">Module creation options or <c>null</c></param>
 		/// <returns>A new <see cref="ModuleDefMD"/> instance</returns>
-		public static ModuleDefMD Load(byte[] data, ModuleCreationOptions options) { return Load(MetadataFactory.Load(data), options); }
-
-        /// <summary>
-		/// Creates a <see cref="ModuleDefMD"/> instance from a byte[]
-		/// </summary>
-		/// <param name="data">Contents of a .NET module/assembly</param>
-		/// <returns>A new <see cref="ModuleDefMD"/> instance</returns>
-		public static ModuleDefMD Load(byte[] data) { return Load(MetadataFactory.Load(data), (ModuleCreationOptions)null); }
+        public static ModuleDefMD Load(byte[] data, [Optional, DefaultParameterValue(null)] ModuleCreationOptions options) { return Load(MetadataFactory.Load(data), options); }
 
 		/// <summary>
 		/// Creates a <see cref="ModuleDefMD"/> instance from a reflection module
@@ -1413,7 +1399,7 @@ namespace dnlib.DotNet {
 				return null;
 			ModuleDefMD module;
 			try {
-				module = Load(fileName);
+                module = Load(fileName, (ModuleCreationOptions)null);
 			}
 			catch {
 				module = null;
