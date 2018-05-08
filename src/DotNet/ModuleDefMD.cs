@@ -151,6 +151,13 @@ namespace dnlib.DotNet {
 		/// <returns>A new <see cref="ModuleDefMD"/> instance</returns>
 		public static ModuleDefMD Load(string fileName, [Optional, DefaultParameterValue(null)] ModuleCreationOptions options) { return Load(MetadataFactory.Load(fileName), options); }
 
+        /// <summary>
+        /// Creates a <see cref="ModuleDefMD"/> instance from a file
+        /// </summary>
+        /// <param name="fileName">File name of an existing .NET module/assembly</param>
+        /// <returns>A new <see cref="ModuleDefMD"/> instance</returns>
+        public static ModuleDefMD Load(string fileName) { return Load(fileName, (ModuleCreationOptions)null); }
+
 		/// <summary>
 		/// Creates a <see cref="ModuleDefMD"/> instance from a byte[]
 		/// </summary>
@@ -166,6 +173,13 @@ namespace dnlib.DotNet {
 		/// <param name="options">Module creation options or <c>null</c></param>
 		/// <returns>A new <see cref="ModuleDefMD"/> instance</returns>
         public static ModuleDefMD Load(byte[] data, [Optional, DefaultParameterValue(null)] ModuleCreationOptions options) { return Load(MetadataFactory.Load(data), options); }
+
+        /// <summary>
+        /// Creates a <see cref="ModuleDefMD"/> instance from a byte[]
+        /// </summary>
+        /// <param name="data">Contents of a .NET module/assembly</param>
+        /// <returns>A new <see cref="ModuleDefMD"/> instance</returns>
+        public static ModuleDefMD Load(byte[] data) { return Load(data, (ModuleCreationOptions)null); }
 
 		/// <summary>
 		/// Creates a <see cref="ModuleDefMD"/> instance from a reflection module
@@ -1399,7 +1413,7 @@ namespace dnlib.DotNet {
 				return null;
 			ModuleDefMD module;
 			try {
-                module = Load(fileName, (ModuleCreationOptions)null);
+                module = Load(fileName);
 			}
 			catch {
 				module = null;
