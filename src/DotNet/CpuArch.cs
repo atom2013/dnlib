@@ -93,8 +93,10 @@ namespace dnlib.DotNet {
 		/// <param name="peImage">PE image</param>
 		/// <param name="funcRva">Updated with RVA of func field</param>
 		/// <returns></returns>
-		public bool TryGetExportedRvaFromStub(ref DataReader reader, IPEImage peImage, out uint funcRva) =>
-			TryGetExportedRvaFromStubCore(ref reader, peImage, out funcRva);
+        public bool TryGetExportedRvaFromStub(ref DataReader reader, IPEImage peImage, out uint funcRva)
+        {
+            return TryGetExportedRvaFromStubCore(ref reader, peImage, out funcRva);
+        }
 
 		protected abstract bool TryGetExportedRvaFromStubCore(ref DataReader reader, IPEImage peImage, out uint funcRva);
 

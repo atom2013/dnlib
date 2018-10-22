@@ -855,8 +855,8 @@ namespace dnlib.DotNet {
 		/// Gets/sets the <see cref="MethodImplAttributes.AggressiveOptimization"/> bit
 		/// </summary>
 		public bool IsAggressiveOptimization {
-			get => ((MethodImplAttributes)implAttributes & MethodImplAttributes.AggressiveOptimization) != 0;
-			set => ModifyImplAttributes(value, MethodImplAttributes.AggressiveOptimization);
+			get { return ((MethodImplAttributes)implAttributes & MethodImplAttributes.AggressiveOptimization) != 0; }
+            set { ModifyImplAttributes(value, MethodImplAttributes.AggressiveOptimization); }
 		}
 
 		/// <summary>

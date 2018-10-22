@@ -631,7 +631,7 @@ namespace dnlib.DotNet.Writer {
 		/// Adds <paramref name="section"/> to the sections list, but before the reloc section which must be last
 		/// </summary>
 		/// <param name="section">New section to add to the list</param>
-		public virtual void AddSection(PESection section) => Sections.Add(section);
+        public virtual void AddSection(PESection section) { Sections.Add(section); }
 
 		/// <summary>
 		/// Gets the <c>.text</c> section
