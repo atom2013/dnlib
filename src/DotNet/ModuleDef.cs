@@ -1262,15 +1262,6 @@ namespace dnlib.DotNet {
 			return ctx;
 		}
 
-        		/// <summary>
-		/// Creates a new <see cref="ModuleContext"/> instance. There should normally only be one
-		/// instance shared by all <see cref="ModuleDef"/>s.
-		/// </summary>
-		/// <returns>A new <see cref="ModuleContext"/> instance</returns>
-		public static ModuleContext CreateModuleContext() {
-			return CreateModuleContext(true);
-		}
-
 		/// <summary>
 		/// Load everything in this module. All types, fields, asm refs, etc are loaded, all their
 		/// properties are read to make sure everything is cached.

@@ -52,28 +52,28 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="source"><see cref="ITypeDefOrRef"/> referenced by the entity that is being imported.</param>
 		/// <returns>matching <see cref="ITypeDefOrRef"/> or <c>null</c> if there's no match.</returns>
-		public virtual ITypeDefOrRef Map(ITypeDefOrRef source) => null;
+		public virtual ITypeDefOrRef Map(ITypeDefOrRef source) { return null; }
 
 		/// <summary>
 		/// Matches source <see cref="FieldDef"/> to the one that is already present in the target module under a different name.
 		/// </summary>
 		/// <param name="source"><see cref="FieldDef"/> referenced by the entity that is being imported.</param>
 		/// <returns>matching <see cref="IField"/> or <c>null</c> if there's no match.</returns>
-		public virtual IField Map(FieldDef source) => null;
+		public virtual IField Map(FieldDef source) { return null; }
 
 		/// <summary>
 		/// Matches source <see cref="MethodDef"/> to the one that is already present in the target module under a different name.
 		/// </summary>
 		/// <param name="source"><see cref="MethodDef"/> referenced by the entity that is being imported.</param>
 		/// <returns>matching <see cref="IMethod"/> or <c>null</c> if there's no match.</returns>
-		public virtual IMethod Map(MethodDef source) => null;
+		public virtual IMethod Map(MethodDef source) { return null; }
 
 		/// <summary>
 		/// Matches source <see cref="MemberRef"/> to the one that is already present in the target module under a different name.
 		/// </summary>
 		/// <param name="source"><see cref="MemberRef"/> referenced by the entity that is being imported.</param>
 		/// <returns>matching <see cref="MemberRef"/> or <c>null</c> if there's no match.</returns>
-		public virtual MemberRef Map(MemberRef source) => null;
+		public virtual MemberRef Map(MemberRef source) { return null; }
 
 		/// <summary>
 		/// Overrides default behavior of <see cref="Importer.Import(Type)"/>
@@ -81,7 +81,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="source"><see cref="Type"/> to create <see cref="TypeRef"/> for.</param>
 		/// <returns><see cref="TypeRef"/> or null to use default <see cref="Importer"/>'s type resolution</returns>
-		public virtual TypeRef Map(Type source) => null;
+        public virtual TypeRef Map(Type source) { return null; }
 	}
 
 	/// <summary>
@@ -342,7 +342,7 @@ namespace dnlib.DotNet {
 				UTF8String.CaseInsensitiveEquals(a.Culture, b.Culture);
 		}
 
-		ITypeDefOrRef CreateTypeRef(Type type) { TryResolve(mapper?.Map(type) ?? CreateTypeRef2(type)); }
+		ITypeDefOrRef CreateTypeRef(Type type) { return TryResolve(mapper != null ? mapper.Map(type) : CreateTypeRef2(type)); }
 
 		TypeRef CreateTypeRef2(Type type) {
 			if (!type.IsNested)
@@ -676,7 +676,7 @@ namespace dnlib.DotNet {
 				return null;
 			if (TryToUseTypeDefs && type.Module == module)
 				return type;
-			var mapped = mapper?.Map(type);
+			var mapped = mapper != null ? mapper.Map(type) : null;
 			if (mapped != null)
 				return mapped;
 			return Import2(type);
@@ -722,7 +722,7 @@ namespace dnlib.DotNet {
 		/// <param name="type">The type</param>
 		/// <returns>The imported type or <c>null</c></returns>
 		public ITypeDefOrRef Import(TypeRef type) {
-			var mapped = mapper?.Map(type);
+			var mapped = mapper != null ? mapper.Map(type) : null;
 			if (mapped != null)
 				return mapped;
 
@@ -1046,7 +1046,7 @@ namespace dnlib.DotNet {
 				return field;
 			if (!recursionCounter.Increment())
 				return null;
-			var mapped = mapper?.Map(field);
+			var mapped = mapper != null ? mapper.Map(field) : null;
 			if (mapped != null) {
 				recursionCounter.Decrement();
 				return mapped;
@@ -1080,7 +1080,7 @@ namespace dnlib.DotNet {
 				return method;
 			if (!recursionCounter.Increment())
 				return null;
-			var mapped = mapper?.Map(method);
+			var mapped = mapper != null ? mapper.Map(method) : null;
 			if (mapped != null) {
 				recursionCounter.Decrement();
 				return mapped;
@@ -1122,7 +1122,7 @@ namespace dnlib.DotNet {
 				return null;
 			if (!recursionCounter.Increment())
 				return null;
-			var mapped = mapper?.Map(memberRef);
+            var mapped = mapper != null ? mapper.Map(memberRef) : null;
 			if (mapped != null) {
 				recursionCounter.Decrement();
 				return mapped;

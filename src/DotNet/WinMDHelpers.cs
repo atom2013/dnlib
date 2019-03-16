@@ -217,7 +217,7 @@ namespace dnlib.DotNet {
 		static readonly UTF8String mscorlibName = new UTF8String("mscorlib");
 
 		// Silverlight uses 5.0.5.0
-		static bool IsValidMscorlibVersion(Version version) => version != null && (uint)version.Major <= 5;
+        static bool IsValidMscorlibVersion(Version version) { return version != null && (uint)version.Major <= 5; }
 
 		static UTF8String GetName(ClrAssembly clrAsm) {
 			switch (clrAsm) {

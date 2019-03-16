@@ -695,7 +695,7 @@ namespace dnlib.DotNet {
 			var keyModule = module;
 			if (keyModule == null)
 				keyModule = nullModule;
-            IList<string> searchPaths;
+            List<string> searchPaths;
 			if (moduleSearchPaths.TryGetValue(keyModule, out searchPaths))
 				return searchPaths;
 			moduleSearchPaths[keyModule] = searchPaths = new List<string>(GetModuleSearchPaths(module));
