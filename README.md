@@ -1,24 +1,11 @@
-.NET module/assembly reader/writer library written for [de4dot](https://github.com/0xd4d/de4dot/).
+# dnlib  [![Build status](https://ci.appveyor.com/api/projects/status/h7dqmfac6qjh4hap/branch/master?svg=true)](https://ci.appveyor.com/project/0xd4d/dnlib/branch/master)  [![NuGet](https://img.shields.io/nuget/v/dnlib.svg)](https://www.nuget.org/packages/dnlib/)
 
-
-dnlib was created because de4dot needed a robust .NET assembly library that
-could handle all types of obfuscated assemblies. de4dot used to use Mono.Cecil
-but since Mono.Cecil can't handle obfuscated assemblies, doesn't fully support
-mixed mode assemblies, doesn't read .NET assemblies the same way the [CLR](http://en.wikipedia.org/wiki/Common_Language_Runtime) does
-and many other missing features de4dot needed, dnlib was a necessity. The API
-is similar because it made porting de4dot to dnlib a lot easier.
-
-For other applications using dnlib, see [dnSpy](https://github.com/0xd4d/dnSpy) and
-[ConfuserEx](https://github.com/yck1509/ConfuserEx/) (a .NET obfuscator). They use
-many of the more advanced features of dnlib. Have a look at ConfuserEx' writer code
-which gets executed during the assembly writing process.
-
-Want to say thanks? Click the star at the top of the page.
+.NET module/assembly reader/writer library
 
 Compiling
 ---------
 
-v3.0 requires VS2017 (C#7.2) or later to build it. See below for breaking changes going from 2.1 to 3.0
+v3.0 requires VS2017 (C#7.3) or later to build it. .NET Core SDK 2.1 or later is also required. See below for breaking changes going from 2.1 to 3.0
 
 An [older v2.1 branch](https://github.com/0xd4d/dnlib/tree/v2.1_VS2010) can be used to build with older VS versions. This branch won't get any new updates.
 
@@ -183,8 +170,8 @@ dnlib will use `Microsoft.DiaSymReader.Native` if it exists and fall back to `di
 
 `Microsoft.DiaSymReader.Native` is a NuGet package with 32-bit and 64-bit native DLLs. You have to add a reference to this NuGet package if you want dnlib to use it. dnlib doesn't add a reference to it.
 
-Strong name sign an assembly
-----------------------------
+Strong name signing an assembly
+-------------------------------
 
 Use the following code to strong name sign the assembly when saving it:
 
@@ -603,3 +590,10 @@ To get a list of all valid TypeDef rids (row IDs), use this code:
 ```
 
 You don't need to create a `ModuleDefMD`, though. See `MetadataFactory`.
+
+Credits
+-------
+
+Big thanks to [Ki](https://github.com/yck1509) for writing the managed Windows PDB reader!
+
+[List of all contributors](https://github.com/0xd4d/dnlib/graphs/contributors)

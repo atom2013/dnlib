@@ -85,19 +85,7 @@ namespace dnlib.DotNet {
 		/// <summary>
 		/// 32-bit vtable slots
 		/// </summary>
-		[Obsolete("Use " + "Bit32", false)]
-		_32Bit				= Bit32,
-
-		/// <summary>
-		/// 32-bit vtable slots
-		/// </summary>
 		Bit32				= 0x01,
-
-		/// <summary>
-		/// 64-bit vtable slots
-		/// </summary>
-		[Obsolete("Use " + "Bit64", false)]
-		_64Bit				= Bit64,
 
 		/// <summary>
 		/// 64-bit vtable slots

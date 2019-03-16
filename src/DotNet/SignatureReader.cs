@@ -33,6 +33,10 @@ namespace dnlib.DotNet {
 	/// Reads signatures from the #Blob stream
 	/// </summary>
 	public struct SignatureReader {
+		// .NET Core and .NET Framework limit arrays to 32 dimensions. Use a bigger limit
+		// so it's possible to read some bad MD, but not big enough to allocate a ton of mem.
+		const uint MaxArrayRank = 64;
+
 		readonly ISignatureReaderHelper helper;
 		readonly ICorLibTypes corLibTypes;
 		DataReader reader;
@@ -564,7 +568,7 @@ namespace dnlib.DotNet {
 			if (!recursionCounter.Increment())
 				return null;
 
-			uint num;
+			uint num, i;
 			TypeSig nextType, result = null;
 			switch ((ElementType)reader.ReadByte()) {
 			case ElementType.Void:		result = corLibTypes.Void; break;
@@ -628,7 +632,7 @@ namespace dnlib.DotNet {
 					break;
 				var genericInstSig = new GenericInstSig(nextType as ClassOrValueTypeSig, num);
 				var args = genericInstSig.GenericArguments;
-				for (uint i = 0; i < num; i++)
+				for (i = 0; i < num; i++)
 					args.Add(ReadType());
 				result = genericInstSig;
 				break;
@@ -638,14 +642,18 @@ namespace dnlib.DotNet {
 				uint rank;
 				if (!reader.TryReadCompressedUInt32(out rank))
 					break;
+				if (rank > MaxArrayRank)
+					break;
 				if (rank == 0) {
 					result = new ArraySig(nextType, rank);
 					break;
 				}
 				if (!reader.TryReadCompressedUInt32(out num))
 					break;
+				if (num > MaxArrayRank)
+					break;
 				var sizes = new List<uint>((int)num);
-				for (uint i = 0; i < num; i++) {
+				for (i = 0; i < num; i++) {
                     uint size;
                     if (!reader.TryReadCompressedUInt32(out size))
 						goto exit;
@@ -653,8 +661,10 @@ namespace dnlib.DotNet {
 				}
 				if (!reader.TryReadCompressedUInt32(out num))
 					break;
+				if (num > MaxArrayRank)
+					break;
 				var lowerBounds = new List<int>((int)num);
-				for (uint i = 0; i < num; i++) {
+				for (i = 0; i < num; i++) {
                     int size;
                     if (!reader.TryReadCompressedInt32(out size))
 						goto exit;
