@@ -321,7 +321,9 @@ namespace dnlib.DotNet.Pdb.Managed {
 		internal static string ReadCString(ref DataReader reader) { return reader.TryReadZeroTerminatedUtf8String() ?? string.Empty; }
 
 		public override SymbolMethod GetMethod(MethodDef method, int version) {
-            DbiFunction symMethod;
+			if (version != 1)
+				return null;
+			DbiFunction symMethod;
 			if (functions.TryGetValue(method.MDToken.ToInt32(), out symMethod))
 				return symMethod;
 			return null;

@@ -6,7 +6,7 @@
     <DefineConstants>$(DefineConstants);$(MoreDefineConstants)</DefineConstants>
     <DefineConstants Condition=" '$(DnlibThreadSafe)' != 'false' ">$(DefineConstants);THREAD_SAFE</DefineConstants>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net452</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net45</TargetFrameworks>
     <!-- It's not possible to target .NET Framework 3.5 when using dotnet build
          https://github.com/Microsoft/msbuild/issues/1333 -->
     <NoTargetFrameworkNet35 Condition=" '$(NoTargetFrameworkNet35)' == '' AND '$(MSBuildRuntimeType)' == 'Core' ">true</NoTargetFrameworkNet35>
@@ -20,7 +20,7 @@
     <AssemblyName>dnlib</AssemblyName>
     <PackageId>dnlib</PackageId>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <Version>3.1.0</Version>
+    <Version>3.2.0</Version>
     <InformationalVersion>$(Version)</InformationalVersion>
     <Authors>0xd4d</Authors>
     <PackageProjectUrl>https://github.com/0xd4d/dnlib</PackageProjectUrl>

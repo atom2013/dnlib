@@ -90,7 +90,7 @@ namespace dnlib.DotNet {
 	/// </summary>
 	public struct Importer {
 		readonly ModuleDef module;
-		readonly GenericParamContext gpContext;
+		internal readonly GenericParamContext gpContext;
 		readonly ImportMapper mapper;
 		RecursionCounter recursionCounter;
 		ImporterOptions options;
@@ -142,7 +142,7 @@ namespace dnlib.DotNet {
 		/// <param name="options">Importer options</param>
 		/// <param name="gpContext">Generic parameter context</param>
 		public Importer(ModuleDef module, ImporterOptions options, GenericParamContext gpContext)
-			: this(module, options, new GenericParamContext(), null) {
+			: this(module, options, gpContext, null) {
 		}
 
 		/// <summary>
