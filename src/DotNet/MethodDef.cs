@@ -863,8 +863,8 @@ namespace dnlib.DotNet {
 		/// Gets/sets the <see cref="MethodImplAttributes.SecurityMitigations"/> bit
 		/// </summary>
 		public bool HasSecurityMitigations {
-			get => ((MethodImplAttributes)implAttributes & MethodImplAttributes.SecurityMitigations) != 0;
-			set => ModifyImplAttributes(value, MethodImplAttributes.SecurityMitigations);
+			get { return ((MethodImplAttributes)implAttributes & MethodImplAttributes.SecurityMitigations) != 0; }
+            set { ModifyImplAttributes(value, MethodImplAttributes.SecurityMitigations); }
 		}
 
 		/// <summary>
