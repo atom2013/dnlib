@@ -2,9 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dnlib", "src\dnlib_v14.csproj", "{FDFC1237-143F-4919-8318-4926901F4639}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dnlib_v14", "src\dnlib_v14.csproj", "{FDFC1237-143F-4919-8318-4926901F4639}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples_v14.csproj", "{F27E72B5-C4BD-40BF-AD19-4C8A99B55872}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples_v14", "Examples\Examples_v14.csproj", "{F27E72B5-C4BD-40BF-AD19-4C8A99B55872}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
