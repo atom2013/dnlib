@@ -26,12 +26,18 @@ namespace dnlib.DotNet.Pdb {
 			else
 				pdbFilename = pdbWindowsFilename;
 
-			var fileToCheck = assemblyFileName == string.Empty ? pdbFilename : Path.Combine(Path.GetDirectoryName(assemblyFileName), pdbFilename);
-			if (!File.Exists(fileToCheck)) {
-				var ext = Path.GetExtension(pdbFilename);
-				if (string.IsNullOrEmpty(ext))
-					ext = "pdb";
-				fileToCheck = Path.ChangeExtension(assemblyFileName, ext);
+			string fileToCheck;
+			try {
+				fileToCheck = assemblyFileName == string.Empty ? pdbFilename : Path.Combine(Path.GetDirectoryName(assemblyFileName), pdbFilename);
+				if (!File.Exists(fileToCheck)) {
+					var ext = Path.GetExtension(pdbFilename);
+					if (string.IsNullOrEmpty(ext))
+						ext = "pdb";
+					fileToCheck = Path.ChangeExtension(assemblyFileName, ext);
+				}
+			}
+			catch (ArgumentException) {
+				return null;// Invalid filename
 			}
 			return Create(options, metadata, fileToCheck);
 		}
