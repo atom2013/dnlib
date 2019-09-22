@@ -65,9 +65,15 @@ namespace dnlib.Utils {
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(typeof(CollectionDebugView<>))]
 	public class LazyList<TValue> : ILazyList<TValue> where TValue : class {
-		protected readonly List<Element> list;
+        /// <summary>
+        /// member: list
+        /// </summary>
+        protected readonly List<Element> list;
 		int id = 0;
-		protected readonly IListListener<TValue> listener;
+        /// <summary>
+        /// member: listener
+        /// </summary>
+        protected readonly IListListener<TValue> listener;
 
 #if THREAD_SAFE
 		readonly Lock theLock = Lock.Create();
@@ -77,7 +83,10 @@ namespace dnlib.Utils {
 		/// Stores a simple value
 		/// </summary>
 		protected class Element {
-			protected TValue value;
+            /// <summary>
+            /// member: value
+            /// </summary>
+            protected TValue value;
 
 			/// <summary>
 			/// <c>true</c> if it has been initialized, <c>false</c> otherwise
@@ -181,7 +190,12 @@ namespace dnlib.Utils {
 			list = new List<Element>();
 		}
 
-		protected LazyList(int length, IListListener<TValue> listener) {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="length">length</param>
+        /// <param name="listener">listener</param>
+        protected LazyList(int length, IListListener<TValue> listener) {
 			this.listener = listener;
 			list = new List<Element>(length);
 		}

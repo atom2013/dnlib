@@ -31,12 +31,13 @@ namespace dnlib.DotNet.MD {
 		/// </summary>
         public string Name { get { return name; } }
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="reader">PE file reader pointing to the start of this section</param>
-		/// <param name="verify">Verify section</param>
-		/// <exception cref="BadImageFormatException">Thrown if verification fails</exception>
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="reader">PE file reader pointing to the start of this section</param>
+        /// <param name="verify">Verify section</param>
+        /// <param name="failedVerification">[Optional] Check if verification fails</param>
+        /// <exception cref="BadImageFormatException">Thrown if verification fails</exception>
         public StreamHeader(ref DataReader reader, bool verify, [Optional] out bool failedVerification)
             : this(ref reader, verify, verify, CLRRuntimeReaderKind.CLR, out failedVerification) {
 		}
