@@ -187,7 +187,7 @@ namespace dnlib.DotNet.Emit {
 		/// <param name="gpContext">Generic parameter context</param>
 		public static CilBody CreateCilBody(IInstructionOperandResolver opResolver, byte[] code, byte[] exceptions, IList<Parameter> parameters, ushort flags, ushort maxStack, uint codeSize, uint localVarSigTok, GenericParamContext gpContext) {
 			var codeReader = ByteArrayDataReaderFactory.CreateReader(code);
-			var ehReader = exceptions == null ? (DataReader?)null : ByteArrayDataReaderFactory.CreateReader(exceptions);
+			var ehReader = exceptions is null ? (DataReader?)null : ByteArrayDataReaderFactory.CreateReader(exceptions);
 			var mbReader = new MethodBodyReader(opResolver, codeReader, ehReader, parameters, gpContext);
 			mbReader.SetHeader(flags, maxStack, codeSize, localVarSigTok);
 			if (!mbReader.Read())
@@ -355,10 +355,10 @@ namespace dnlib.DotNet.Emit {
 		/// <returns>All locals or <c>null</c> if there are none</returns>
 		IList<TypeSig> ReadLocals() {
 			var standAloneSig = opResolver.ResolveToken(localVarSigTok, gpContext) as StandAloneSig;
-			if (standAloneSig == null)
+			if (standAloneSig is null)
 				return null;
 			var localSig = standAloneSig.LocalSig;
-			if (localSig == null)
+			if (localSig is null)
 				return null;
 			return localSig.Locals;
 		}
@@ -377,10 +377,10 @@ namespace dnlib.DotNet.Emit {
 		/// <inheritdoc/>
 		protected override MethodSig ReadInlineSig(Instruction instr) {
 			var standAloneSig = opResolver.ResolveToken(reader.ReadUInt32(), gpContext) as StandAloneSig;
-			if (standAloneSig == null)
+			if (standAloneSig is null)
 				return null;
 			var sig = standAloneSig.MethodSig;
-			if (sig != null)
+			if (!(sig is null))
 				sig.OriginalToken = standAloneSig.MDToken.Raw;
 			return sig;
 		}
@@ -404,7 +404,7 @@ namespace dnlib.DotNet.Emit {
 			}
 			bool canSaveTotalBodySize;
 			DataReader ehReader;
-			if (exceptionsReader != null) {
+			if (!(exceptionsReader is null)) {
 				canSaveTotalBodySize = false;
 				ehReader = exceptionsReader.Value;
 			}

@@ -117,7 +117,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public CustomAttributeCollection CustomAttributes {
 			get {
-				if (customAttributes == null)
+				if (customAttributes is null)
 					InitializeCustomAttributes();
 				return customAttributes;
 			}
@@ -140,7 +140,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PdbCustomDebugInfo> CustomDebugInfos {
 			get {
-				if (customDebugInfos == null)
+				if (customDebugInfos is null)
 					InitializeCustomDebugInfos();
 				return customDebugInfos;
 			}
@@ -157,14 +157,14 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public MethodDef GetMethod {
 			get {
-				if (otherMethods == null)
+				if (otherMethods is null)
 					InitializePropertyMethods();
 				return getMethods.Count == 0 ? null : getMethods[0];
 			}
 			set {
-				if (otherMethods == null)
+				if (otherMethods is null)
 					InitializePropertyMethods();
-				if (value == null)
+				if (value is null)
 					getMethods.Clear();
 				else if (getMethods.Count == 0)
 					getMethods.Add(value);
@@ -178,14 +178,14 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public MethodDef SetMethod {
 			get {
-				if (otherMethods == null)
+				if (otherMethods is null)
 					InitializePropertyMethods();
 				return setMethods.Count == 0 ? null : setMethods[0];
 			}
 			set {
-				if (otherMethods == null)
+				if (otherMethods is null)
 					InitializePropertyMethods();
-				if (value == null)
+				if (value is null)
 					setMethods.Clear();
 				else if (setMethods.Count == 0)
 					setMethods.Add(value);
@@ -199,7 +199,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<MethodDef> GetMethods {
 			get {
-				if (otherMethods == null)
+				if (otherMethods is null)
 					InitializePropertyMethods();
 				return getMethods;
 			}
@@ -210,7 +210,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<MethodDef> SetMethods {
 			get {
-				if (otherMethods == null)
+				if (otherMethods is null)
 					InitializePropertyMethods();
 				return setMethods;
 			}
@@ -221,7 +221,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<MethodDef> OtherMethods {
 			get {
-				if (otherMethods == null)
+				if (otherMethods is null)
 					InitializePropertyMethods();
 				return otherMethods;
 			}
@@ -231,7 +231,7 @@ namespace dnlib.DotNet {
 #if THREAD_SAFE
 			theLock.EnterWriteLock(); try {
 #endif
-			if (otherMethods == null)
+			if (otherMethods is null)
 				InitializePropertyMethods_NoLock();
 #if THREAD_SAFE
 			} finally { theLock.ExitWriteLock(); }
@@ -290,7 +290,7 @@ namespace dnlib.DotNet {
 		public ElementType ElementType {
 			get {
 				var c = Constant;
-				return c == null ? ElementType.End : c.Type;
+				return c is null ? ElementType.End : c.Type;
 			}
 		}
 
@@ -311,9 +311,9 @@ namespace dnlib.DotNet {
 				var currentDeclaringType = DeclaringType2;
 				if (currentDeclaringType == value)
 					return;
-				if (currentDeclaringType != null)
+				if (!(currentDeclaringType is null))
 					currentDeclaringType.Properties.Remove(this);	// Will set DeclaringType2 = null
-				if (value != null)
+				if (!(value is null))
 					value.Properties.Add(this);	// Will set DeclaringType2 = value
 			}
 		}
@@ -474,7 +474,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		public PropertyDefMD(ModuleDefMD readerModule, uint rid) {
 #if DEBUG
-			if (readerModule == null)
+			if (readerModule is null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.PropertyTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "Property rid {0} does not exist", rid ) );
@@ -506,12 +506,12 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		protected override void InitializePropertyMethods_NoLock() {
-			if (otherMethods != null)
+			if (!(otherMethods is null))
 				return;
 			IList<MethodDef> newOtherMethods;
 			IList<MethodDef> newGetMethods, newSetMethods;
 			var dt = declaringType2 as TypeDefMD;
-			if (dt == null) {
+			if (dt is null) {
 				newGetMethods = new List<MethodDef>();
 				newSetMethods = new List<MethodDef>();
 				newOtherMethods = new List<MethodDef>();

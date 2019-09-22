@@ -35,7 +35,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="TypeResolveException">If type couldn't be found</exception>
 		public static TypeDef FindThrow(this ITypeDefFinder self, TypeRef typeRef) {
 			var type = self.Find(typeRef);
-			if (type != null)
+			if (!(type is null))
 				return type;
 			throw new TypeResolveException( string.Format( "Could not find type: {0}", typeRef) );
 		}
@@ -52,7 +52,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="TypeResolveException">If type couldn't be found</exception>
 		public static TypeDef FindThrow(this ITypeDefFinder self, string fullName, bool isReflectionName) {
 			var type = self.Find(fullName, isReflectionName);
-			if (type != null)
+			if (!(type is null))
 				return type;
 			throw new TypeResolveException( string.Format( "Could not find type: {0}", fullName ) );
 		}
@@ -74,7 +74,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="TypeResolveException">If type couldn't be found</exception>
 		public static TypeDef FindNormalThrow(this ITypeDefFinder self, string fullName) {
 			var type = self.Find(fullName, false);
-			if (type != null)
+			if (!(type is null))
 				return type;
 			throw new TypeResolveException( string.Format( "Could not find type: {0}", fullName ) );
 		}
@@ -96,7 +96,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="TypeResolveException">If type couldn't be found</exception>
 		public static TypeDef FindReflectionThrow(this ITypeDefFinder self, string fullName) {
 			var type = self.Find(fullName, true);
-			if (type != null)
+			if (!(type is null))
 				return type;
 			throw new TypeResolveException( string.Format( "Could not find type: {0}", fullName ) );
 		}

@@ -46,7 +46,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public CustomAttributeCollection CustomAttributes {
 			get {
-				if (customAttributes == null)
+				if (customAttributes is null)
 					InitializeCustomAttributes();
 				return customAttributes;
 			}
@@ -72,7 +72,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PdbCustomDebugInfo> CustomDebugInfos {
 			get {
-				if (customDebugInfos == null)
+				if (customDebugInfos is null)
 					InitializeCustomDebugInfos();
 				return customDebugInfos;
 			}
@@ -88,7 +88,7 @@ namespace dnlib.DotNet {
 		public bool IsValueType {
 			get {
 				var td = Resolve();
-				return td != null && td.IsValueType;
+				return !(td is null) && td.IsValueType;
 			}
 		}
 
@@ -478,7 +478,7 @@ namespace dnlib.DotNet {
 						return et.IsForwarder;
 
 					et = impl as ExportedType;
-					if (et == null)
+					if (et is null)
 						break;
 				}
 				return false;
@@ -497,7 +497,7 @@ namespace dnlib.DotNet {
 		/// <param name="sourceModule">Source module or <c>null</c></param>
 		/// <returns>A <see cref="TypeDef"/> instance or <c>null</c> if it couldn't be resolved</returns>
 		public TypeDef Resolve(ModuleDef sourceModule) {
-			if (module == null)
+			if (module is null)
 				return null;
 
 			return Resolve(sourceModule, this);
@@ -505,15 +505,15 @@ namespace dnlib.DotNet {
 
 		static TypeDef Resolve(ModuleDef sourceModule, ExportedType et) {
 			for (int i = 0; i < MAX_LOOP_ITERS; i++) {
-				if (et == null || et.module == null)
+				if (et is null || et.module is null)
 					break;
 				var resolver = et.module.Context.AssemblyResolver;
 				var etAsm = resolver.Resolve(et.DefinitionAssembly, sourceModule ?? et.module);
-				if (etAsm == null)
+				if (etAsm is null)
 					break;
 
 				var td = etAsm.Find(et.FullName, false);
-				if (td != null)
+				if (!(td is null))
 					return td;
 
 				et = FindExportedType(etAsm, et);
@@ -545,7 +545,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="TypeResolveException">If the type couldn't be resolved</exception>
 		public TypeDef ResolveThrow() {
 			var type = Resolve();
-			if (type != null)
+			if (!(type is null))
 				return type;
 			throw new TypeResolveException( string.Format( "Could not resolve type: {0} ({1})", this, DefinitionAssembly ) );
 		}
@@ -558,13 +558,13 @@ namespace dnlib.DotNet {
 			TypeRef result = null, prev = null;
 			var mod = module;
 			IImplementation impl = this;
-			for (int i = 0; i < MAX_LOOP_ITERS && impl != null; i++) {
+			for (int i = 0; i < MAX_LOOP_ITERS && !(impl is null); i++) {
                 ExportedType et;
                 if ((et = impl as ExportedType) != null) {
 					var newTr = mod.UpdateRowId(new TypeRefUser(mod, et.TypeNamespace, et.TypeName));
-					if (result == null)
+					if (result is null)
 						result = newTr;
-					if (prev != null)
+					if (!(prev is null))
 						prev.ResolutionScope = newTr;
 
 					prev = newTr;
@@ -592,12 +592,12 @@ namespace dnlib.DotNet {
 		}
 
 		static ModuleDef FindModule(ModuleDef module, FileDef file) {
-			if (module == null || file == null)
+			if (module is null || file is null)
 				return null;
 			if (UTF8String.CaseInsensitiveEquals(module.Name, file.Name))
 				return module;
 			var asm = module.Assembly;
-			if (asm == null)
+			if (asm is null)
 				return null;
 			return asm.FindModule(file.Name);
 		}
@@ -677,7 +677,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		public ExportedTypeMD(ModuleDefMD readerModule, uint rid) {
 #if DEBUG
-			if (readerModule == null)
+			if (readerModule is null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.ExportedTypeTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "ExportedType rid {0} does not exist", rid ) );

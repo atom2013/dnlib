@@ -1,6 +1,7 @@
 // dnlib: See LICENSE.txt for more info
 
 using System;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace dnlib.DotNet {
@@ -8,15 +9,30 @@ namespace dnlib.DotNet {
 	/// Extension methods for reflection types, methods, fields
 	/// </summary>
 	static class ReflectionExtensions {
+		public static void GetTypeNamespaceAndName_TypeDefOrRef(this Type type, out string @namespace, out string name) {
+			Debug.Assert(type.IsTypeDef());
+			name = type.Name ?? string.Empty;
+			if (!type.IsNested)
+				@namespace = type.Namespace ?? string.Empty;
+			else {
+				var declTypeFullName = type.DeclaringType.FullName;
+				var typeFullName = type.FullName;
+				if (declTypeFullName.Length + 1 + name.Length == typeFullName.Length)
+					@namespace = string.Empty;
+				else
+					@namespace = typeFullName.Substring(declTypeFullName.Length + 1, typeFullName.Length - declTypeFullName.Length - 1 - name.Length - 1);
+			}
+		}
+
 		/// <summary>
 		/// Checks whether it's a <see cref="ElementType.SZArray"/>
 		/// </summary>
 		/// <param name="self">The type</param>
 		public static bool IsSZArray(this Type self) {
-			if (self == null || !self.IsArray)
+			if (self is null || !self.IsArray)
 				return false;
 			var prop = self.GetType().GetProperty("IsSzArray", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-			if (prop != null)
+			if (!(prop is null))
 				return (bool)prop.GetValue(self, Array2.Empty<object>());
 			return (self.Name ?? string.Empty).EndsWith("[]");
 		}
@@ -27,7 +43,7 @@ namespace dnlib.DotNet {
 		/// <param name="a">The type</param>
 		/// <returns>The type's element type</returns>
 		public static ElementType GetElementType2(this Type a) {
-			if (a == null)
+			if (a is null)
 				return ElementType.End;	// Any invalid one is good enough
 			if (a.IsArray)
 				return IsSZArray(a) ? ElementType.SZArray : ElementType.Array;
@@ -36,7 +52,7 @@ namespace dnlib.DotNet {
 			if (a.IsPointer)
 				return ElementType.Ptr;
 			if (a.IsGenericParameter)
-				return a.DeclaringMethod == null ? ElementType.Var : ElementType.MVar;
+				return a.DeclaringMethod is null ? ElementType.Var : ElementType.MVar;
 			if (a.IsGenericType && !a.IsGenericTypeDefinition)
 				return ElementType.GenericInst;
 

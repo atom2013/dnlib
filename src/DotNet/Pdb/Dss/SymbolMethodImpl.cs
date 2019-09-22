@@ -28,10 +28,10 @@ namespace dnlib.DotNet.Pdb.Dss {
 
 		public override SymbolScope RootScope {
 			get {
-				if (rootScope == null) {
+				if (rootScope is null) {
                     ISymUnmanagedScope scope;
                     method.GetRootScope(out scope);
-					Interlocked.CompareExchange(ref rootScope, scope == null ? null : new SymbolScopeImpl(scope, this, null), null);
+					Interlocked.CompareExchange(ref rootScope, scope is null ? null : new SymbolScopeImpl(scope, this, null), null);
 				}
 				return rootScope;
 			}
@@ -40,7 +40,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 
 		public override IList<SymbolSequencePoint> SequencePoints {
 			get {
-				if (sequencePoints == null) {
+				if (sequencePoints is null) {
                     uint seqPointCount;
 					method.GetSequencePointCount(out seqPointCount);
 					var seqPoints = new SymbolSequencePoint[seqPointCount];
@@ -76,7 +76,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 
 		public int AsyncKickoffMethod {
 			get {
-				if (asyncMethod == null || !asyncMethod.IsAsyncMethod())
+				if (asyncMethod is null || !asyncMethod.IsAsyncMethod())
 					return 0;
 				return (int)asyncMethod.GetKickoffMethod();
 			}
@@ -84,7 +84,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 
 		public uint? AsyncCatchHandlerILOffset {
 			get {
-				if (asyncMethod == null || !asyncMethod.IsAsyncMethod())
+				if (asyncMethod is null || !asyncMethod.IsAsyncMethod())
 					return null;
 				if (!asyncMethod.HasCatchHandlerILOffset())
 					return null;
@@ -94,9 +94,9 @@ namespace dnlib.DotNet.Pdb.Dss {
 
 		public IList<SymbolAsyncStepInfo> AsyncStepInfos {
 			get {
-				if (asyncMethod == null || !asyncMethod.IsAsyncMethod())
+				if (asyncMethod is null || !asyncMethod.IsAsyncMethod())
 					return null;
-				if (asyncStepInfos == null) {
+				if (asyncStepInfos is null) {
 					var stepInfoCount = asyncMethod.GetAsyncStepInfoCount();
 					var yieldOffsets = new uint[stepInfoCount];
 					var breakpointOffsets = new uint[stepInfoCount];

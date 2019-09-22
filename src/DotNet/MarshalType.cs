@@ -160,7 +160,7 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		public override string ToString() {
 			var udt = userDefinedSubType;
-			if (udt != null)
+			if (!(udt is null))
 				return string.Format( "{0} ({1}, {2})", nativeType, vt, udt );
 			return string.Format( "{0} ({1})", nativeType, vt );
 		}

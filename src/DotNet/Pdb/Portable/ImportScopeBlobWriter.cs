@@ -23,7 +23,7 @@ namespace dnlib.DotNet.Pdb.Portable {
 		}
 
 		uint WriteUTF8(string s) {
-			if (s == null) {
+			if (s is null) {
 				helper.Error("String is null");
 				s = string.Empty;
 			}
@@ -102,7 +102,7 @@ namespace dnlib.DotNet.Pdb.Portable {
 		}
 
 		uint GetTypeDefOrRefEncodedToken(ITypeDefOrRef tdr) {
-			if (tdr == null) {
+			if (tdr is null) {
 				helper.Error("ITypeDefOrRef is null");
 				return 0;
 			}

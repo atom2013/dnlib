@@ -54,7 +54,7 @@ namespace dnlib.DotNet {
 				if (isCacheEnabled == value)
 					return;
 
-				if (typeEnumerator != null) {
+				if (!(typeEnumerator is null)) {
 					typeEnumerator.Dispose();
 					typeEnumerator = null;
 				}
@@ -92,7 +92,7 @@ namespace dnlib.DotNet {
 		}
 
 		void InitializeTypeEnumerator() {
-			if (typeEnumerator != null) {
+			if (!(typeEnumerator is null)) {
 				typeEnumerator.Dispose();
 				typeEnumerator = null;
 			}
@@ -117,7 +117,7 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		public TypeDef Find(string fullName, bool isReflectionName) {
-			if (fullName == null)
+			if (fullName is null)
 				return null;
 #if THREAD_SAFE
 			theLock.EnterWriteLock(); try {
@@ -132,7 +132,7 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		public TypeDef Find(TypeRef typeRef) {
-			if (typeRef == null)
+			if (typeRef is null)
 				return null;
 #if THREAD_SAFE
 			theLock.EnterWriteLock(); try {
@@ -152,7 +152,7 @@ namespace dnlib.DotNet {
 			var comparer = new SigComparer(TypeComparerOptions);
 			while (true) {
 				cachedType = GetNextTypeDefCache();
-				if (cachedType == null || comparer.Equals(cachedType, typeRef))
+				if (cachedType is null || comparer.Equals(cachedType, typeRef))
 					return cachedType;
 			}
 		}
@@ -165,7 +165,7 @@ namespace dnlib.DotNet {
 			// Build the cache lazily
 			while (true) {
 				cachedType = GetNextTypeDefCache();
-				if (cachedType == null)
+				if (cachedType is null)
 					return cachedType;
 				sb.Length = 0;
 				if (FullNameFactory.FullName(cachedType, true, null, sb) == fullName)
@@ -181,7 +181,7 @@ namespace dnlib.DotNet {
 			// Build the cache lazily
 			while (true) {
 				cachedType = GetNextTypeDefCache();
-				if (cachedType == null)
+				if (cachedType is null)
 					return cachedType;
 				sb.Length = 0;
 				if (FullNameFactory.FullName(cachedType, false, null, sb) == fullName)
@@ -194,7 +194,7 @@ namespace dnlib.DotNet {
 			var comparer = new SigComparer(TypeComparerOptions);
 			while (true) {
 				var type = GetNextTypeDef();
-				if (type == null || comparer.Equals(type, typeRef))
+				if (type is null || comparer.Equals(type, typeRef))
 					return type;
 			}
 		}
@@ -203,7 +203,7 @@ namespace dnlib.DotNet {
 			InitializeTypeEnumerator();
 			while (true) {
 				var type = GetNextTypeDef();
-				if (type == null)
+				if (type is null)
 					return type;
 				sb.Length = 0;
 				if (FullNameFactory.FullName(type, true, null, sb) == fullName)
@@ -215,7 +215,7 @@ namespace dnlib.DotNet {
 			InitializeTypeEnumerator();
 			while (true) {
 				var type = GetNextTypeDef();
-				if (type == null)
+				if (type is null)
 					return type;
 				sb.Length = 0;
 				if (FullNameFactory.FullName(type, false, null, sb) == fullName)
@@ -230,7 +230,7 @@ namespace dnlib.DotNet {
 		TypeDef GetNextTypeDef() {
 			while (typeEnumerator.MoveNext()) {
 				var type = typeEnumerator.Current;
-				if (type != null)
+				if (!(type is null))
 					return type;
 			}
 			return null;
@@ -244,7 +244,7 @@ namespace dnlib.DotNet {
 		/// <returns>The next <see cref="TypeDef"/> or <c>null</c> if none</returns>
 		TypeDef GetNextTypeDefCache() {
 			var type = GetNextTypeDef();
-			if (type == null)
+			if (type is null)
 				return null;
 
 			// Only insert it if another type with the exact same sig/name isn't already
@@ -268,7 +268,7 @@ namespace dnlib.DotNet {
 #if THREAD_SAFE
 			theLock.EnterWriteLock(); try {
 #endif
-			if (typeEnumerator != null)
+			if (!(typeEnumerator is null))
 				typeEnumerator.Dispose();
 			typeEnumerator = null;
 			typeRefCache = null;

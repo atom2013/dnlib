@@ -46,7 +46,7 @@ namespace dnlib.DotNet {
 		protected PublicKeyBase(string hexString) { data = Parse(hexString); }
 
 		static byte[] Parse(string hexString) {
-			if (hexString == null || hexString == "null")
+			if (hexString is null || hexString == "null")
 				return null;
 			return Utils.ParseBytes(hexString);
 		}
@@ -127,7 +127,7 @@ namespace dnlib.DotNet {
 		/// <param name="a">Public key token</param>
 		/// <returns>The hash code</returns>
 		public static int GetHashCode(PublicKeyToken a) {
-			if (a == null)
+			if (a is null)
 				return 0;
 			return Utils.GetHashCode(a.Data);
 		}
@@ -139,7 +139,7 @@ namespace dnlib.DotNet {
 		/// <returns>A new <see cref="PublicKey"/> instance or <c>null</c> if <paramref name="data"/>
 		/// was <c>null</c></returns>
 		public static PublicKey CreatePublicKey(byte[] data) {
-			if (data == null)
+			if (data is null)
 				return null;
 			return new PublicKey(data);
 		}
@@ -151,7 +151,7 @@ namespace dnlib.DotNet {
 		/// <returns>A new <see cref="PublicKeyToken"/> instance or <c>null</c> if <paramref name="data"/>
 		/// was <c>null</c></returns>
 		public static PublicKeyToken CreatePublicKeyToken(byte[] data) {
-			if (data == null)
+			if (data is null)
 				return null;
 			return new PublicKeyToken(data);
 		}
@@ -162,7 +162,7 @@ namespace dnlib.DotNet {
 		/// <param name="pkb">The instance or <c>null</c></param>
 		/// <returns>Raw public key / public key token data or <c>null</c></returns>
 		public static byte[] GetRawData(PublicKeyBase pkb) {
-			if (pkb == null)
+			if (pkb is null)
 				return null;
 			return pkb.Data;
 		}
@@ -170,7 +170,7 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		public override string ToString() {
 			var d = Data;
-			if (d == null || d.Length == 0)
+			if (d is null || d.Length == 0)
 				return "null";
 			return Utils.ToHex(d, false);
 		}

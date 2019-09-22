@@ -22,7 +22,7 @@ namespace dnlib.DotNet.Writer {
 		public uint Add(Guid? guid) {
 			if (isReadOnly)
 				throw new ModuleWriterException("Trying to modify #GUID when it's read-only");
-			if (guid == null)
+			if (guid is null)
 				return 0;
 
             uint index;
@@ -54,9 +54,9 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		public void SetRawData(uint offset, byte[] rawData) {
-			if (rawData == null || rawData.Length != 16)
+			if (rawData is null || rawData.Length != 16)
 				throw new ArgumentException("Invalid size of GUID raw data");
-			if (userRawData == null)
+			if (userRawData is null)
 				userRawData = new Dictionary<uint, byte[]>();
 			userRawData[offset] = rawData;
 		}

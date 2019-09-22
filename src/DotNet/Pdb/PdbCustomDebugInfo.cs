@@ -421,7 +421,7 @@ namespace dnlib.DotNet.Pdb {
 		public string Name {
 			get {
 				var n = name;
-				if (n != null)
+				if (!(n is null))
 					return n;
 				return local != null?local.Name:null;
 			}
@@ -562,7 +562,7 @@ namespace dnlib.DotNet.Pdb {
 		public string Name {
 			get {
 				var n = name;
-				if (n != null)
+				if (!(n is null))
 					return n;
 				return local != null?local.Name:null;
 			}

@@ -146,7 +146,7 @@ namespace dnlib.DotNet.Resources {
 			case ResourceTypeCode.ByteArray:
 			case ResourceTypeCode.Stream:
 				var ary = data as byte[];
-				if (ary != null)
+				if (!(ary is null))
 					return string.Format( "{0}: Length: {1}", code, ary.Length );
 				return string.Format( "{0}: '{1}'", code, data );
 

@@ -117,7 +117,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public CustomAttributeCollection CustomAttributes {
 			get {
-				if (customAttributes == null)
+				if (customAttributes is null)
 					InitializeCustomAttributes();
 				return customAttributes;
 			}
@@ -143,7 +143,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PdbCustomDebugInfo> CustomDebugInfos {
 			get {
-				if (customDebugInfos == null)
+				if (customDebugInfos is null)
 					InitializeCustomDebugInfos();
 				return customDebugInfos;
 			}
@@ -374,9 +374,9 @@ namespace dnlib.DotNet {
 		/// <param name="locale">Locale</param>
 		/// <exception cref="ArgumentNullException">If any of the args is invalid</exception>
 		public AssemblyRefUser(UTF8String name, Version version, PublicKeyBase publicKey, UTF8String locale) {
-			if ((object)name == null)
+			if (name is null)
 				throw new ArgumentNullException("name");
-			if ((object)locale == null)
+			if (locale is null)
 				throw new ArgumentNullException("locale");
 			this.name = name;
             if (version != null) this.version = version; else throw new ArgumentNullException("version");
@@ -398,7 +398,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="assembly">Assembly</param>
 		public AssemblyRefUser(IAssembly assembly) {
-			if (assembly == null)
+			if (assembly is null)
 				throw new ArgumentNullException("asmName");
 
 			version = assembly.Version ?? new Version(0, 0, 0, 0);
@@ -444,7 +444,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		public AssemblyRefMD(ModuleDefMD readerModule, uint rid) {
 #if DEBUG
-			if (readerModule == null)
+			if (readerModule is null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.AssemblyRefTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "AssemblyRef rid {0} does not exist", rid ) );

@@ -5,13 +5,13 @@
 Compiling
 ---------
 
-v3.0 requires VS2017 (C#7.3) or later to build it. .NET Core SDK 2.1 or later is also required. See below for breaking changes going from 2.1 to 3.0
+v3.0 requires VS2019 or later to build it. .NET Core SDK 2.1 or later is also required. See below for breaking changes going from 2.1 to 3.0
 
 An [older v2.1 branch](https://github.com/0xd4d/dnlib/tree/v2.1_VS2010) can be used to build with older VS versions. This branch won't get any new updates.
 
 v3.0 breaking changes
 ---------------------
-- VS2017, C# 7.2 is required to compile it
+- VS2019 is required to compile it
 - It targets .NET Framework 3.5 or later and netstandard 2.0 or later (.NET Framework 2.0 and 3.0 aren't supported)
 - `*MetaData*` -> `*Metadata*`
 - `IMetaData` interface is an abstract class `Metadata`
@@ -104,6 +104,10 @@ To get the assembly, use its Assembly property:
     AssemblyDef asm = module.Assembly;
     Console.WriteLine("Assembly: {0}", asm);
 ```
+
+If it's an obfuscated Unity/Mono assembly, you need to create a `ModuleCreationOptions`
+and write `CLRRuntimeReaderKind.Mono` to `ModuleCreationOptions.Runtime` and pass in
+this `ModuleCreationOptions` instance to one of the `ModuleDefMD.Load(...)` methods.
 
 Saving a .NET assembly/module
 -----------------------------
@@ -274,7 +278,7 @@ NOTE: VS' debugger crashes if there's a `DebuggableAttribute` attribute and if t
 
 ```C#
 var ca = module.Assembly.CustomAttributes.Find("System.Diagnostics.DebuggableAttribute");
-if (ca != null && ca.ConstructorArguments.Count == 1) {
+if (!(ca is null) && ca.ConstructorArguments.Count == 1) {
     var arg = ca.ConstructorArguments[0];
     // VS' debugger crashes if value == 0x107, so clear EnC bit
     if (arg.Type.FullName == "System.Diagnostics.DebuggableAttribute/DebuggingModes" && arg.Value is int value && value == 0x107) {

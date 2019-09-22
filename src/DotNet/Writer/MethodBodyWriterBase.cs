@@ -83,7 +83,7 @@ namespace dnlib.DotNet.Writer {
 		/// <returns>The offset or <c>0</c> if <paramref name="instr"/> is <c>null</c> or not
 		/// present in the list of all instructions.</returns>
 		protected uint GetOffset(Instruction instr) {
-			if (instr == null) {
+			if (instr is null) {
 				Error("Instruction is null");
 				return 0;
 			}
@@ -103,7 +103,7 @@ namespace dnlib.DotNet.Writer {
 			var instructions = this.instructions;
 			for (int i = 0; i < instructions.Count; i++) {
 				var instr = instructions[i];
-				if (instr == null)
+				if (instr is null)
 					continue;
 				offsets[instr] = offset;
 				offset += GetSizeOfInstruction(instr);
@@ -128,7 +128,7 @@ namespace dnlib.DotNet.Writer {
 			var instructions = this.instructions;
 			for (int i = 0; i < instructions.Count; i++) {
 				var instr = instructions[i];
-				if (instr == null)
+				if (instr is null)
 					continue;
 				WriteInstruction(ref writer, instr);
 			}
@@ -311,7 +311,7 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="instr">Instruction</param>
 		protected virtual void WriteInlineSwitch(ref ArrayWriter writer, Instruction instr) {
 			var targets = instr.Operand as IList<Instruction>;
-			if (targets == null) {
+			if (targets is null) {
 				Error("switch operand is not a list of instructions");
 				writer.WriteInt32(0);
 			}
@@ -346,7 +346,7 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="instr">Instruction</param>
 		protected virtual void WriteInlineVar(ref ArrayWriter writer, Instruction instr) {
 			var variable = instr.Operand as IVariable;
-			if (variable == null) {
+			if (variable is null) {
 				Error("Operand is not a local/arg");
 				writer.WriteUInt16(0);
 			}
@@ -413,7 +413,7 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="instr">Instruction</param>
 		protected virtual void WriteShortInlineVar(ref ArrayWriter writer, Instruction instr) {
 			var variable = instr.Operand as IVariable;
-			if (variable == null) {
+			if (variable is null) {
 				Error("Operand is not a local/arg");
 				writer.WriteByte(0);
 			}

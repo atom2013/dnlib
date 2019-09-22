@@ -36,7 +36,7 @@ namespace dnlib.DotNet.Writer {
 		/// <inheritdoc/>
 		protected override void AllocateTypeDefRids() {
 			foreach (var type in allTypeDefs) {
-				if (type == null)
+				if (type is null)
 					continue;
 				uint rid = tablesHeap.TypeDefTable.Create(new RawTypeDefRow());
 				typeDefInfos.Add(type, rid);
@@ -62,7 +62,7 @@ namespace dnlib.DotNet.Writer {
 					notifyAfter = (int)((double)numTypes / numNotifyEvents * (notifyNum + 1));
 				}
 
-				if (type == null)
+				if (type is null)
 					continue;
 				uint typeRid = GetRid(type);
 				var typeRow = tablesHeap.TypeDefTable[typeRid];
@@ -73,7 +73,7 @@ namespace dnlib.DotNet.Writer {
 				count = fields.Count;
 				for (int i = 0; i < count; i++) {
 					var field = fields[i];
-					if (field == null)
+					if (field is null)
 						continue;
 					uint rid = fieldListRid++;
 					if (rid != tablesHeap.FieldTable.Create(new RawFieldRow()))
@@ -85,7 +85,7 @@ namespace dnlib.DotNet.Writer {
 				count = methods.Count;
 				for (int i = 0; i < count; i++) {
 					var method = methods[i];
-					if (method == null)
+					if (method is null)
 						continue;
 					uint rid = methodListRid++;
 					var row = new RawMethodRow(0, 0, 0, 0, 0, paramListRid);
@@ -93,7 +93,7 @@ namespace dnlib.DotNet.Writer {
 						throw new ModuleWriterException("Invalid method rid");
 					methodDefInfos.Add(method, rid);
 					foreach (var pd in Sort(method.ParamDefs)) {
-						if (pd == null)
+						if (pd is null)
 							continue;
 						uint pdRid = paramListRid++;
 						if (pdRid != tablesHeap.ParamTable.Create(new RawParamRow()))
@@ -109,7 +109,7 @@ namespace dnlib.DotNet.Writer {
 					count = events.Count;
 					for (int i = 0; i < count; i++) {
 						var evt = events[i];
-						if (evt == null)
+						if (evt is null)
 							continue;
 						uint rid = eventListRid++;
 						if (rid != tablesHeap.EventTable.Create(new RawEventRow()))
@@ -125,7 +125,7 @@ namespace dnlib.DotNet.Writer {
 					count = properties.Count;
 					for (int i = 0; i < count; i++) {
 						var prop = properties[i];
-						if (prop == null)
+						if (prop is null)
 							continue;
 						uint rid = propertyListRid++;
 						if (rid != tablesHeap.PropertyTable.Create(new RawPropertyRow()))
@@ -148,7 +148,7 @@ namespace dnlib.DotNet.Writer {
             uint rid;
             if (typeDefInfos.TryGetRid(td, out rid))
 				return rid;
-			if (td == null)
+			if (td is null)
 				Error("TypeDef is null");
 			else
 				Error("TypeDef {0} ({1:X8}) is not defined in this module ({2}). A type was removed that is still referenced by this module.", td, td.MDToken.Raw, module);
@@ -160,7 +160,7 @@ namespace dnlib.DotNet.Writer {
             uint rid;
             if (fieldDefInfos.TryGetRid(fd, out rid))
 				return rid;
-			if (fd == null)
+			if (fd is null)
 				Error("Field is null");
 			else
 				Error("Field {0} ({1:X8}) is not defined in this module ({2}). A field was removed that is still referenced by this module.", fd, fd.MDToken.Raw, module);
@@ -172,7 +172,7 @@ namespace dnlib.DotNet.Writer {
             uint rid;
             if (methodDefInfos.TryGetRid(md, out rid))
 				return rid;
-			if (md == null)
+			if (md is null)
 				Error("Method is null");
 			else
 				Error("Method {0} ({1:X8}) is not defined in this module ({2}). A method was removed that is still referenced by this module.", md, md.MDToken.Raw, module);
@@ -184,7 +184,7 @@ namespace dnlib.DotNet.Writer {
             uint rid;
             if (paramDefInfos.TryGetRid(pd, out rid))
 				return rid;
-			if (pd == null)
+			if (pd is null)
 				Error("Param is null");
 			else
 				Error("Param {0} ({1:X8}) is not defined in this module ({2}). A parameter was removed that is still referenced by this module.", pd, pd.MDToken.Raw, module);
@@ -210,7 +210,7 @@ namespace dnlib.DotNet.Writer {
             uint rid;
             if (eventDefInfos.TryGetRid(ed, out rid))
 				return rid;
-			if (ed == null)
+			if (ed is null)
 				Error("Event is null");
 			else
 				Error("Event {0} ({1:X8}) is not defined in this module ({2}). An event was removed that is still referenced by this module.", ed, ed.MDToken.Raw, module);
@@ -222,7 +222,7 @@ namespace dnlib.DotNet.Writer {
             uint rid;
             if (propertyDefInfos.TryGetRid(pd, out rid))
 				return rid;
-			if (pd == null)
+			if (pd is null)
 				Error("Property is null");
 			else
 				Error("Property {0} ({1:X8}) is not defined in this module ({2}). A property was removed that is still referenced by this module.", pd, pd.MDToken.Raw, module);
@@ -245,7 +245,7 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		protected override uint AddTypeRef(TypeRef tr) {
-			if (tr == null) {
+			if (tr is null) {
 				Error("TypeRef is null");
 				return 0;
 			}
@@ -268,7 +268,7 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		protected override uint AddTypeSpec(TypeSpec ts) {
-			if (ts == null) {
+			if (ts is null) {
 				Error("TypeSpec is null");
 				return 0;
 			}
@@ -289,7 +289,7 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		protected override uint AddMemberRef(MemberRef mr) {
-			if (mr == null) {
+			if (mr is null) {
 				Error("MemberRef is null");
 				return 0;
 			}
@@ -309,7 +309,7 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		protected override uint AddStandAloneSig(StandAloneSig sas) {
-			if (sas == null) {
+			if (sas is null) {
 				Error("StandAloneSig is null");
 				return 0;
 			}
@@ -326,7 +326,7 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		protected override uint AddMethodSpec(MethodSpec ms) {
-			if (ms == null) {
+			if (ms is null) {
 				Error("MethodSpec is null");
 				return 0;
 			}

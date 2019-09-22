@@ -194,7 +194,7 @@ namespace dnlib.DotNet.Writer {
 		public PreserveTokensMetadata(ModuleDef module, UniqueChunkList<ByteArrayChunk> constants, MethodBodyChunks methodBodies, NetResources netResources, MetadataOptions options, DebugMetadataKind debugKind, bool isStandaloneDebugMetadata)
 			: base(module, constants, methodBodies, netResources, options, debugKind, isStandaloneDebugMetadata) {
 			mod = module as ModuleDefMD;
-			if (mod == null)
+			if (mod is null)
 				throw new ModuleWriterException("Not a ModuleDefMD");
 		}
 
@@ -207,7 +207,7 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		public override uint GetRid(TypeDef td) {
-			if (td == null) {
+			if (td is null) {
 				Error("TypeDef is null");
 				return 0;
 			}
@@ -223,7 +223,7 @@ namespace dnlib.DotNet.Writer {
             uint rid;
             if (fieldDefInfos.TryGetRid(fd, out rid))
 				return rid;
-			if (fd == null)
+			if (fd is null)
 				Error("Field is null");
 			else
 				Error("Field {0} ({1:X8}) is not defined in this module ({2}). A field was removed that is still referenced by this module.", fd, fd.MDToken.Raw, module);
@@ -235,7 +235,7 @@ namespace dnlib.DotNet.Writer {
             uint rid;
             if (methodDefInfos.TryGetRid(md, out rid))
 				return rid;
-			if (md == null)
+			if (md is null)
 				Error("Method is null");
 			else
 				Error("Method {0} ({1:X8}) is not defined in this module ({2}). A method was removed that is still referenced by this module.", md, md.MDToken.Raw, module);
@@ -247,7 +247,7 @@ namespace dnlib.DotNet.Writer {
             uint rid;
             if (paramDefInfos.TryGetRid(pd, out rid))
 				return rid;
-			if (pd == null)
+			if (pd is null)
 				Error("Param is null");
 			else
 				Error("Param {0} ({1:X8}) is not defined in this module ({2}). A parameter was removed that is still referenced by this module.", pd, pd.MDToken.Raw, module);
@@ -273,7 +273,7 @@ namespace dnlib.DotNet.Writer {
             uint rid;
             if (eventDefInfos.TryGetRid(ed, out rid))
 				return rid;
-			if (ed == null)
+			if (ed is null)
 				Error("Event is null");
 			else
 				Error("Event {0} ({1:X8}) is not defined in this module ({2}). An event was removed that is still referenced by this module.", ed, ed.MDToken.Raw, module);
@@ -285,7 +285,7 @@ namespace dnlib.DotNet.Writer {
             uint rid;
             if (propertyDefInfos.TryGetRid(pd, out rid))
 				return rid;
-			if (pd == null)
+			if (pd is null)
 				Error("Property is null");
 			else
 				Error("Property {0} ({1:X8}) is not defined in this module ({2}). A property was removed that is still referenced by this module.", pd, pd.MDToken.Raw, module);
@@ -331,7 +331,7 @@ namespace dnlib.DotNet.Writer {
 			const uint IS_TYPEDEFMD = 0x80000000;
 			const uint INDEX_BITS = 0x00FFFFFF;
 			foreach (var type in module.GetTypes()) {
-				if (type == null)
+				if (type is null)
 					continue;
 				types.Add(type);
 				uint val = (uint)index++;
@@ -403,7 +403,7 @@ namespace dnlib.DotNet.Writer {
 		void InitializeTypeToRid(TypeDef[] types) {
 			uint rid = 1;
 			foreach (var type in types) {
-				if (type == null)
+				if (type is null)
 					continue;
 				if (typeToRid.ContainsKey(type))
 					continue;
@@ -493,8 +493,11 @@ namespace dnlib.DotNet.Writer {
 			initdMemberRef = true;
 
 			uint rows = mod.TablesStream.MemberRefTable.Rows;
-			for (uint rid = 1; rid <= rows; rid++)
+			for (uint rid = 1; rid <= rows; rid++) {
+				if (tablesHeap.MemberRefTable[rid].Class != 0)
+					continue;
 				AddMemberRef(mod.ResolveMemberRef(rid), true);
+			}
 			tablesHeap.MemberRefTable.ReAddRows();
 		}
 
@@ -505,8 +508,11 @@ namespace dnlib.DotNet.Writer {
 			initdStandAloneSig = true;
 
 			uint rows = mod.TablesStream.StandAloneSigTable.Rows;
-			for (uint rid = 1; rid <= rows; rid++)
+			for (uint rid = 1; rid <= rows; rid++) {
+				if (tablesHeap.StandAloneSigTable[rid].Signature != 0)
+					continue;
 				AddStandAloneSig(mod.ResolveStandAloneSig(rid), true);
+			}
 			tablesHeap.StandAloneSigTable.ReAddRows();
 		}
 
@@ -517,8 +523,11 @@ namespace dnlib.DotNet.Writer {
 			initdTypeSpec = true;
 
 			uint rows = mod.TablesStream.TypeSpecTable.Rows;
-			for (uint rid = 1; rid <= rows; rid++)
+			for (uint rid = 1; rid <= rows; rid++) {
+				if (tablesHeap.TypeSpecTable[rid].Signature != 0)
+					continue;
 				AddTypeSpec(mod.ResolveTypeSpec(rid), true);
+			}
 			tablesHeap.TypeSpecTable.ReAddRows();
 		}
 
@@ -529,8 +538,11 @@ namespace dnlib.DotNet.Writer {
 			initdMethodSpec = true;
 
 			uint rows = mod.TablesStream.MethodSpecTable.Rows;
-			for (uint rid = 1; rid <= rows; rid++)
+			for (uint rid = 1; rid <= rows; rid++) {
+				if (tablesHeap.MethodSpecTable[rid].Method != 0)
+					continue;
 				AddMethodSpec(mod.ResolveMethodSpec(rid), true);
+			}
 			tablesHeap.MethodSpecTable.ReAddRows();
 		}
 
@@ -854,7 +866,7 @@ namespace dnlib.DotNet.Writer {
 			var added = new Dictionary<object, bool>();
 			int pos;
 			foreach (var type in allTypeDefs) {
-				if (type == null)
+				if (type is null)
 					continue;
 
 				pos = 0;
@@ -862,7 +874,7 @@ namespace dnlib.DotNet.Writer {
 				count = fields.Count;
 				for (int i = 0; i < count; i++) {
 					var field = fields[i];
-					if (field == null)
+					if (field is null)
 						continue;
 					fieldDefInfos.Add(field, pos++);
 				}
@@ -872,7 +884,7 @@ namespace dnlib.DotNet.Writer {
 				count = methods.Count;
 				for (int i = 0; i < count; i++) {
 					var method = methods[i];
-					if (method == null)
+					if (method is null)
 						continue;
 					methodDefInfos.Add(method, pos++);
 				}
@@ -882,7 +894,7 @@ namespace dnlib.DotNet.Writer {
 				count = events.Count;
 				for (int i = 0; i < count; i++) {
 					var evt = events[i];
-					if (evt == null || added.ContainsKey(evt))
+					if (evt is null || added.ContainsKey(evt))
 						continue;
 					added[evt] = true;
 					eventDefInfos.Add(evt, pos++);
@@ -893,7 +905,7 @@ namespace dnlib.DotNet.Writer {
 				count = properties.Count;
 				for (int i = 0; i < count; i++) {
 					var prop = properties[i];
-					if (prop == null || added.ContainsKey(prop))
+					if (prop is null || added.ContainsKey(prop))
 						continue;
 					added[prop] = true;
 					propertyDefInfos.Add(prop, pos++);
@@ -909,7 +921,7 @@ namespace dnlib.DotNet.Writer {
 				var method = methodDefInfos.Get(i).Def;
 				pos = 0;
 				foreach (var param in Sort(method.ParamDefs)) {
-					if (param == null)
+					if (param is null)
 						continue;
 					paramDefInfos.Add(param, pos++);
 				}
@@ -919,8 +931,8 @@ namespace dnlib.DotNet.Writer {
 
 		void SortFields() {
 			fieldDefInfos.Sort((a, b) => {
-				var dta = a.Def.DeclaringType == null ? 0 : typeToRid[a.Def.DeclaringType];
-				var dtb = b.Def.DeclaringType == null ? 0 : typeToRid[b.Def.DeclaringType];
+				var dta = a.Def.DeclaringType is null ? 0 : typeToRid[a.Def.DeclaringType];
+				var dtb = b.Def.DeclaringType is null ? 0 : typeToRid[b.Def.DeclaringType];
 				if (dta == 0 || dtb == 0)
 					return a.Rid.CompareTo(b.Rid);
 				if (dta != dtb)
@@ -931,8 +943,8 @@ namespace dnlib.DotNet.Writer {
 
 		void SortMethods() {
 			methodDefInfos.Sort((a, b) => {
-				var dta = a.Def.DeclaringType == null ? 0 : typeToRid[a.Def.DeclaringType];
-				var dtb = b.Def.DeclaringType == null ? 0 : typeToRid[b.Def.DeclaringType];
+				var dta = a.Def.DeclaringType is null ? 0 : typeToRid[a.Def.DeclaringType];
+				var dtb = b.Def.DeclaringType is null ? 0 : typeToRid[b.Def.DeclaringType];
 				if (dta == 0 || dtb == 0)
 					return a.Rid.CompareTo(b.Rid);
 				if (dta != dtb)
@@ -943,8 +955,8 @@ namespace dnlib.DotNet.Writer {
 
 		void SortParameters() {
 			paramDefInfos.Sort((a, b) => {
-				var dma = a.Def.DeclaringMethod == null ? 0 : methodDefInfos.Rid(a.Def.DeclaringMethod);
-				var dmb = b.Def.DeclaringMethod == null ? 0 : methodDefInfos.Rid(b.Def.DeclaringMethod);
+				var dma = a.Def.DeclaringMethod is null ? 0 : methodDefInfos.Rid(a.Def.DeclaringMethod);
+				var dmb = b.Def.DeclaringMethod is null ? 0 : methodDefInfos.Rid(b.Def.DeclaringMethod);
 				if (dma == 0 || dmb == 0)
 					return a.Rid.CompareTo(b.Rid);
 				if (dma != dmb)
@@ -955,8 +967,8 @@ namespace dnlib.DotNet.Writer {
 
 		void SortEvents() {
 			eventDefInfos.Sort((a, b) => {
-				var dta = a.Def.DeclaringType == null ? 0 : typeToRid[a.Def.DeclaringType];
-				var dtb = b.Def.DeclaringType == null ? 0 : typeToRid[b.Def.DeclaringType];
+				var dta = a.Def.DeclaringType is null ? 0 : typeToRid[a.Def.DeclaringType];
+				var dtb = b.Def.DeclaringType is null ? 0 : typeToRid[b.Def.DeclaringType];
 				if (dta == 0 || dtb == 0)
 					return a.Rid.CompareTo(b.Rid);
 				if (dta != dtb)
@@ -967,8 +979,8 @@ namespace dnlib.DotNet.Writer {
 
 		void SortProperties() {
 			propertyDefInfos.Sort((a, b) => {
-				var dta = a.Def.DeclaringType == null ? 0 : typeToRid[a.Def.DeclaringType];
-				var dtb = b.Def.DeclaringType == null ? 0 : typeToRid[b.Def.DeclaringType];
+				var dta = a.Def.DeclaringType is null ? 0 : typeToRid[a.Def.DeclaringType];
+				var dtb = b.Def.DeclaringType is null ? 0 : typeToRid[b.Def.DeclaringType];
 				if (dta == 0 || dtb == 0)
 					return a.Rid.CompareTo(b.Rid);
 				if (dta != dtb)
@@ -996,7 +1008,7 @@ namespace dnlib.DotNet.Writer {
 				var row = tablesHeap.MethodTable[methodRid];
 				row = new RawMethodRow(row.RVA, row.ImplFlags, row.Flags, row.Name, row.Signature, ridList);
 				tablesHeap.MethodTable[methodRid] = row;
-				if (methodInfo != null)
+				if (!(methodInfo is null))
 					ridList += (uint)methodInfo.Def.ParamDefs.Count;
 			}
 		}
@@ -1033,7 +1045,7 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		protected override uint AddTypeRef(TypeRef tr) {
-			if (tr == null) {
+			if (tr is null) {
 				Error("TypeRef is null");
 				return 0;
 			}
@@ -1063,7 +1075,7 @@ namespace dnlib.DotNet.Writer {
 		protected override uint AddTypeSpec(TypeSpec ts) { return AddTypeSpec(ts, false); }
 
 		uint AddTypeSpec(TypeSpec ts, bool forceIsOld) {
-			if (ts == null) {
+			if (ts is null) {
 				Error("TypeSpec is null");
 				return 0;
 			}
@@ -1093,7 +1105,7 @@ namespace dnlib.DotNet.Writer {
 		protected override uint AddMemberRef(MemberRef mr) { return AddMemberRef(mr, false); }
 
 		uint AddMemberRef(MemberRef mr, bool forceIsOld) {
-			if (mr == null) {
+			if (mr is null) {
 				Error("MemberRef is null");
 				return 0;
 			}
@@ -1119,7 +1131,7 @@ namespace dnlib.DotNet.Writer {
 		protected override uint AddStandAloneSig(StandAloneSig sas) { return AddStandAloneSig(sas, false); }
 
 		uint AddStandAloneSig(StandAloneSig sas, bool forceIsOld) {
-			if (sas == null) {
+			if (sas is null) {
 				Error("StandAloneSig is null");
 				return 0;
 			}
@@ -1216,7 +1228,7 @@ namespace dnlib.DotNet.Writer {
 		protected override uint AddMethodSpec(MethodSpec ms) { return AddMethodSpec(ms, false); }
 
 		uint AddMethodSpec(MethodSpec ms, bool forceIsOld) {
-			if (ms == null) {
+			if (ms is null) {
 				Error("MethodSpec is null");
 				return 0;
 			}

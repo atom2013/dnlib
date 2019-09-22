@@ -38,7 +38,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 
 		public override IList<SymbolScope> Children {
 			get {
-				if (children == null) {
+				if (children is null) {
                     uint numScopes;
 					scope.GetChildren(0, out numScopes, null);
 					var unScopes = new ISymUnmanagedScope[numScopes];
@@ -55,7 +55,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 
 		public override IList<SymbolVariable> Locals {
 			get {
-				if (locals == null) {
+				if (locals is null) {
                     uint numVars;
 					scope.GetLocals(0, out numVars, null);
 					var unVars = new ISymUnmanagedVariable[numVars];
@@ -72,7 +72,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 
 		public override IList<SymbolNamespace> Namespaces {
 			get {
-				if (namespaces == null) {
+				if (namespaces is null) {
                     uint numNss;
 					scope.GetNamespaces(0, out numNss, null);
 					var unNss = new ISymUnmanagedNamespace[numNss];
@@ -92,7 +92,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 
 		public override IList<PdbConstant> GetConstants(ModuleDef module, GenericParamContext gpContext) {
 			var scope2 = scope as ISymUnmanagedScope2;
-			if (scope2 == null)
+			if (scope2 is null)
 				return Array2.Empty<PdbConstant>();
             uint numCs;
 			scope2.GetConstants(0, out numCs, null);

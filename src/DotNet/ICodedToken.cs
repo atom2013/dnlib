@@ -165,15 +165,15 @@ namespace dnlib.DotNet {
             AssemblyDef asmDef;
 			if ((asmDef = asm as AssemblyDef) != null) {
 				var manifestModule = asmDef.ManifestModule;
-				if (manifestModule != null) {
+				if (!(manifestModule is null)) {
 					var isCorModule = manifestModule.IsCoreLibraryModule;
-					if (isCorModule != null)
+					if (!(isCorModule is null))
 						return isCorModule.Value;
 				}
 			}
 
 			string asmName;
-			return asm != null &&
+			return !(asm is null) &&
 				UTF8String.IsNullOrEmpty(asm.Culture) &&
 				((asmName = UTF8String.ToSystemStringOrEmpty(asm.Name)).Equals("mscorlib", StringComparison.OrdinalIgnoreCase) ||
 				asmName.Equals("System.Runtime", StringComparison.OrdinalIgnoreCase) ||
@@ -189,7 +189,7 @@ namespace dnlib.DotNet {
 		/// <param name="asm">The assembly</param>
 		/// <returns>A new <see cref="AssemblyRef"/> instance</returns>
 		public static AssemblyRef ToAssemblyRef(this IAssembly asm) {
-			if (asm == null)
+			if (asm is null)
 				return null;
 			// Always create a new one, even if it happens to be an AssemblyRef
 			return new AssemblyRefUser(asm.Name, asm.Version, asm.PublicKeyOrToken, asm.Culture) { Attributes = asm.Attributes };
@@ -204,25 +204,25 @@ namespace dnlib.DotNet {
 		/// <returns>A <see cref="TypeSig"/> instance or <c>null</c> if <paramref name="type"/>
 		/// is invalid</returns>
 		public static TypeSig ToTypeSig(this ITypeDefOrRef type, [Optional, DefaultParameterValue(true)] bool checkValueType) {
-			if (type == null)
+			if (type is null)
 				return null;
 
 			var module = type.Module;
-			if (module != null) {
+			if (!(module is null)) {
 				var corLibType = module.CorLibTypes.GetCorLibTypeSig(type);
-				if (corLibType != null)
+				if (!(corLibType is null))
 					return corLibType;
 			}
 
 			var td = type as TypeDef;
-			if (td != null)
+			if (!(td is null))
 				return CreateClassOrValueType(type, checkValueType ? td.IsValueType : false);
 
             TypeRef tr;
 			if ((tr = type as TypeRef) != null) {
 				if (checkValueType)
 					td = tr.Resolve();
-				return CreateClassOrValueType(type, td == null ? false : td.IsValueType);
+				return CreateClassOrValueType(type, td is null ? false : td.IsValueType);
 			}
 
             TypeSpec ts;
@@ -246,7 +246,7 @@ namespace dnlib.DotNet {
 		/// <see cref="TypeDefOrRefSig"/></returns>
 		public static TypeDefOrRefSig TryGetTypeDefOrRefSig(this ITypeDefOrRef type) {
 			var ts = type as TypeSpec;
-			return ts == null ? null : ts.TypeSig.RemovePinnedAndModifiers() as TypeDefOrRefSig;
+			return ts is null ? null : ts.TypeSig.RemovePinnedAndModifiers() as TypeDefOrRefSig;
 		}
 
 		/// <summary>
@@ -257,7 +257,7 @@ namespace dnlib.DotNet {
 		/// <see cref="ClassOrValueTypeSig"/></returns>
 		public static ClassOrValueTypeSig TryGetClassOrValueTypeSig(this ITypeDefOrRef type) {
 			var ts = type as TypeSpec;
-			return ts == null ? null : ts.TypeSig.RemovePinnedAndModifiers() as ClassOrValueTypeSig;
+			return ts is null ? null : ts.TypeSig.RemovePinnedAndModifiers() as ClassOrValueTypeSig;
 		}
 
 		/// <summary>
@@ -268,7 +268,7 @@ namespace dnlib.DotNet {
 		/// <see cref="ValueTypeSig"/></returns>
 		public static ValueTypeSig TryGetValueTypeSig(this ITypeDefOrRef type) {
 			var ts = type as TypeSpec;
-			return ts == null ? null : ts.TypeSig.RemovePinnedAndModifiers() as ValueTypeSig;
+			return ts is null ? null : ts.TypeSig.RemovePinnedAndModifiers() as ValueTypeSig;
 		}
 
 		/// <summary>
@@ -279,7 +279,7 @@ namespace dnlib.DotNet {
 		/// <see cref="ClassSig"/></returns>
 		public static ClassSig TryGetClassSig(this ITypeDefOrRef type) {
 			var ts = type as TypeSpec;
-			return ts == null ? null : ts.TypeSig.RemovePinnedAndModifiers() as ClassSig;
+			return ts is null ? null : ts.TypeSig.RemovePinnedAndModifiers() as ClassSig;
 		}
 
 		/// <summary>
@@ -290,7 +290,7 @@ namespace dnlib.DotNet {
 		/// <see cref="GenericSig"/></returns>
 		public static GenericSig TryGetGenericSig(this ITypeDefOrRef type) {
 			var ts = type as TypeSpec;
-			return ts == null ? null : ts.TypeSig.RemovePinnedAndModifiers() as GenericSig;
+			return ts is null ? null : ts.TypeSig.RemovePinnedAndModifiers() as GenericSig;
 		}
 
 		/// <summary>
@@ -301,7 +301,7 @@ namespace dnlib.DotNet {
 		/// <see cref="GenericVar"/></returns>
 		public static GenericVar TryGetGenericVar(this ITypeDefOrRef type) {
 			var ts = type as TypeSpec;
-			return ts == null ? null : ts.TypeSig.RemovePinnedAndModifiers() as GenericVar;
+			return ts is null ? null : ts.TypeSig.RemovePinnedAndModifiers() as GenericVar;
 		}
 
 		/// <summary>
@@ -312,7 +312,7 @@ namespace dnlib.DotNet {
 		/// <see cref="GenericMVar"/></returns>
 		public static GenericMVar TryGetGenericMVar(this ITypeDefOrRef type) {
 			var ts = type as TypeSpec;
-			return ts == null ? null : ts.TypeSig.RemovePinnedAndModifiers() as GenericMVar;
+			return ts is null ? null : ts.TypeSig.RemovePinnedAndModifiers() as GenericMVar;
 		}
 
 		/// <summary>
@@ -323,7 +323,7 @@ namespace dnlib.DotNet {
 		/// <see cref="GenericInstSig"/></returns>
 		public static GenericInstSig TryGetGenericInstSig(this ITypeDefOrRef type) {
 			var ts = type as TypeSpec;
-			return ts == null ? null : ts.TypeSig.RemovePinnedAndModifiers() as GenericInstSig;
+			return ts is null ? null : ts.TypeSig.RemovePinnedAndModifiers() as GenericInstSig;
 		}
 
 		/// <summary>
@@ -334,7 +334,7 @@ namespace dnlib.DotNet {
 		/// <see cref="PtrSig"/></returns>
 		public static PtrSig TryGetPtrSig(this ITypeDefOrRef type) {
 			var ts = type as TypeSpec;
-			return ts == null ? null : ts.TypeSig.RemovePinnedAndModifiers() as PtrSig;
+			return ts is null ? null : ts.TypeSig.RemovePinnedAndModifiers() as PtrSig;
 		}
 
 		/// <summary>
@@ -345,7 +345,7 @@ namespace dnlib.DotNet {
 		/// <see cref="ByRefSig"/></returns>
 		public static ByRefSig TryGetByRefSig(this ITypeDefOrRef type) {
 			var ts = type as TypeSpec;
-			return ts == null ? null : ts.TypeSig.RemovePinnedAndModifiers() as ByRefSig;
+			return ts is null ? null : ts.TypeSig.RemovePinnedAndModifiers() as ByRefSig;
 		}
 
 		/// <summary>
@@ -356,7 +356,7 @@ namespace dnlib.DotNet {
 		/// <see cref="ArraySig"/></returns>
 		public static ArraySig TryGetArraySig(this ITypeDefOrRef type) {
 			var ts = type as TypeSpec;
-			return ts == null ? null : ts.TypeSig.RemovePinnedAndModifiers() as ArraySig;
+			return ts is null ? null : ts.TypeSig.RemovePinnedAndModifiers() as ArraySig;
 		}
 
 		/// <summary>
@@ -367,7 +367,7 @@ namespace dnlib.DotNet {
 		/// <see cref="SZArraySig"/></returns>
 		public static SZArraySig TryGetSZArraySig(this ITypeDefOrRef type) {
 			var ts = type as TypeSpec;
-			return ts == null ? null : ts.TypeSig.RemovePinnedAndModifiers() as SZArraySig;
+			return ts is null ? null : ts.TypeSig.RemovePinnedAndModifiers() as SZArraySig;
 		}
 
 		/// <summary>
@@ -400,21 +400,21 @@ namespace dnlib.DotNet {
 			}
 
 			var ts = tdr as TypeSpec;
-			if (ts == null)
+			if (ts is null)
 				return null;
 
 			var git = ts.TypeSig.ToGenericInstSig();
-			if (git != null)
+			if (!(git is null))
 				tdr = git.GenericType != null?git.GenericType.TypeDefOrRef:null;
 			else
 				tdr = ts.TypeSig.ToTypeDefOrRefSig() != null?ts.TypeSig.ToTypeDefOrRefSig().TypeDefOrRef:null;
 
 			td = tdr as TypeDef;
-			if (td != null)
+			if (!(td is null))
 				return td.BaseType;
 
 			tr = tdr as TypeRef;
-			if (tr != null) {
+			if (!(tr is null)) {
 				td = throwOnResolveFailure ? tr.ResolveThrow() : tr.Resolve();
 				return td != null?td.BaseType:null;
 			}
@@ -437,16 +437,16 @@ namespace dnlib.DotNet {
 			if ((tr = tdr as TypeRef) != null)
 				return tr.Resolve();
 
-			if (tdr == null)
+			if (tdr is null)
 				return null;
 			tdr = tdr.ScopeType;
 
 			td = tdr as TypeDef;
-			if (td != null)
+			if (!(td is null))
 				return td;
 
 			tr = tdr as TypeRef;
-			if (tr != null)
+			if (!(tr is null))
 				return tr.Resolve();
 
 			return null;
@@ -467,16 +467,16 @@ namespace dnlib.DotNet {
 			if ((tr = tdr as TypeRef) != null)
 				return tr.ResolveThrow();
 
-			if (tdr == null)
+			if (tdr is null)
 				throw new TypeResolveException("Can't resolve a null pointer");
 			tdr = tdr.ScopeType;
 
 			td = tdr as TypeDef;
-			if (td != null)
+			if (!(td is null))
 				return td;
 
 			tr = tdr as TypeRef;
-			if (tr != null)
+			if (!(tr is null))
 				return tr.ResolveThrow();
 
 			throw new TypeResolveException( string.Format( "Could not resolve type: {0} ({1})", tdr, (tdr != null?tdr.DefinitionAssembly:null) ) );
@@ -542,11 +542,11 @@ namespace dnlib.DotNet {
             MethodSpec ms;
 			if ((ms = method as MethodSpec) != null) {
 				md = ms.Method as MethodDef;
-				if (md != null)
+				if (!(md is null))
 					return md;
 
 				mr = ms.Method as MemberRef;
-				if (mr != null)
+				if (!(mr is null))
 					return mr.ResolveMethod();
 			}
 
@@ -573,11 +573,11 @@ namespace dnlib.DotNet {
             MethodSpec ms;
 			if ((ms = method as MethodSpec) != null) {
 				md = ms.Method as MethodDef;
-				if (md != null)
+				if (!(md is null))
 					return md;
 
 				mr = ms.Method as MemberRef;
-				if (mr != null)
+				if (!(mr is null))
 					return mr.ResolveMethodThrow();
 			}
 
@@ -590,7 +590,7 @@ namespace dnlib.DotNet {
 		/// <param name="mr">Member reference</param>
 		/// <returns></returns>
 		static internal IAssembly GetDefinitionAssembly(this MemberRef mr) {
-			if (mr == null)
+			if (mr is null)
 				return null;
 			var parent = mr.Class;
 
@@ -1037,13 +1037,13 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="sig">The sig</param>
 		public static ITypeDefOrRef ToTypeDefOrRef(this TypeSig sig) {
-			if (sig == null)
+			if (sig is null)
 				return null;
             TypeDefOrRefSig tdrSig;
 			if ((tdrSig = sig as TypeDefOrRefSig) != null)
 				return tdrSig.TypeDefOrRef;
 			var module = sig.Module;
-			if (module == null)
+			if (module is null)
 				return new TypeSpecUser(sig);
 			return module.UpdateRowId(new TypeSpecUser(sig));
 		}
@@ -1054,7 +1054,7 @@ namespace dnlib.DotNet {
 		/// <param name="tdr">Type</param>
 		/// <returns></returns>
 		internal static bool IsPrimitive(this IType tdr) {
-			if (tdr == null)
+			if (tdr is null)
 				return false;
 			if (!tdr.DefinitionAssembly.IsCorLib())
 				return false;

@@ -109,7 +109,7 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		public IList<DeclSecurity> DeclSecurities {
 			get {
-				if (declSecurities == null)
+				if (declSecurities is null)
 					InitializeDeclSecurities();
 				return declSecurities;
 			}
@@ -135,7 +135,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<ModuleDef> Modules {
 			get {
-				if (modules == null)
+				if (modules is null)
 					InitializeModules();
 				return modules;
 			}
@@ -152,7 +152,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public CustomAttributeCollection CustomAttributes {
 			get {
-				if (customAttributes == null)
+				if (customAttributes is null)
 					InitializeCustomAttributes();
 				return customAttributes;
 			}
@@ -179,7 +179,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PdbCustomDebugInfo> CustomDebugInfos {
 			get {
-				if (customDebugInfos == null)
+				if (customDebugInfos is null)
 					InitializeCustomDebugInfos();
 				return customDebugInfos;
 			}
@@ -346,7 +346,7 @@ namespace dnlib.DotNet {
 			int count = modules.Count;
 			for (int i = 0; i < count; i++) {
 				var module = modules[i];
-				if (module == null)
+				if (module is null)
 					continue;
 				if (UTF8String.CaseInsensitiveEquals(module.Name, name))
 					return module;
@@ -375,18 +375,18 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentNullException">If <paramref name="fileName"/> is <c>null</c></exception>
 		/// <exception cref="BadImageFormatException">If it's not a .NET assembly (eg. not a .NET file or only a .NET module)</exception>
 		public static AssemblyDef Load(string fileName, ModuleCreationOptions options) {
-			if (fileName == null)
+			if (fileName is null)
 				throw new ArgumentNullException("fileName");
 			ModuleDef module = null;
 			try {
 				module = ModuleDefMD.Load(fileName, options);
 				var asm = module.Assembly;
-				if (asm == null)
+				if (asm is null)
 					throw new BadImageFormatException( string.Format( "{0} is only a .NET module, not a .NET assembly. Use ModuleDef.Load().", fileName ) );
 				return asm;
 			}
 			catch {
-				if (module != null)
+				if (!(module is null))
 					module.Dispose();
 				throw;
 			}
@@ -413,18 +413,18 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentNullException">If <paramref name="data"/> is <c>null</c></exception>
 		/// <exception cref="BadImageFormatException">If it's not a .NET assembly (eg. not a .NET file or only a .NET module)</exception>
 		public static AssemblyDef Load(byte[] data, ModuleCreationOptions options) {
-			if (data == null)
+			if (data is null)
 				throw new ArgumentNullException("data");
 			ModuleDef module = null;
 			try {
 				module = ModuleDefMD.Load(data, options);
 				var asm = module.Assembly;
-				if (asm == null)
+				if (asm is null)
 					throw new BadImageFormatException( string.Format( "{0} is only a .NET module, not a .NET assembly. Use ModuleDef.Load().", module.ToString() ) );
 				return asm;
 			}
 			catch {
-				if (module != null)
+				if (!(module is null))
 					module.Dispose();
 				throw;
 			}
@@ -457,12 +457,12 @@ namespace dnlib.DotNet {
 			try {
 				module = ModuleDefMD.Load(addr, options);
 				var asm = module.Assembly;
-				if (asm == null)
+				if (asm is null)
 					throw new BadImageFormatException( string.Format( "{0} (addr: {1:X8}) is only a .NET module, not a .NET assembly. Use ModuleDef.Load().", module.ToString(), addr.ToInt64() ) );
 				return asm;
 			}
 			catch {
-				if (module != null)
+				if (!(module is null))
 					module.Dispose();
 				throw;
 			}
@@ -493,18 +493,18 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentNullException">If <paramref name="stream"/> is <c>null</c></exception>
 		/// <exception cref="BadImageFormatException">If it's not a .NET assembly (eg. not a .NET file or only a .NET module)</exception>
 		public static AssemblyDef Load(Stream stream, [Optional, DefaultParameterValue(null)] ModuleCreationOptions options) {
-			if (stream == null)
+			if (stream is null)
 				throw new ArgumentNullException("stream");
 			ModuleDef module = null;
 			try {
 				module = ModuleDefMD.Load(stream, options);
 				var asm = module.Assembly;
-				if (asm == null)
+				if (asm is null)
 					throw new BadImageFormatException( string.Format( "{0} is only a .NET module, not a .NET assembly. Use ModuleDef.Load().", module.ToString() ) );
 				return asm;
 			}
 			catch {
-				if (module != null)
+				if (!(module is null))
 					module.Dispose();
 				throw;
 			}
@@ -536,10 +536,10 @@ namespace dnlib.DotNet {
 			int count = modules.Count;
 			for (int i = 0; i < count; i++) {
 				var module = modules[i];
-				if (module == null)
+				if (module is null)
 					continue;
 				var type = module.Find(fullName, isReflectionName);
-				if (type != null)
+				if (!(type is null))
 					return type;
 			}
 			return null;
@@ -557,10 +557,10 @@ namespace dnlib.DotNet {
 			int count = modules.Count;
 			for (int i = 0; i < count; i++) {
 				var module = modules[i];
-				if (module == null)
+				if (module is null)
 					continue;
 				var type = module.Find(typeRef);
-				if (type != null)
+				if (!(type is null))
 					return type;
 			}
 			return null;
@@ -589,7 +589,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="targetAsm">Target assembly</param>
 		public bool IsFriendAssemblyOf(AssemblyDef targetAsm) {
-			if (targetAsm == null)
+			if (targetAsm is null)
 				return false;
 			if (this == targetAsm)
 				return true;
@@ -635,7 +635,7 @@ namespace dnlib.DotNet {
 		/// <param name="signaturePubKey">Signature public key</param>
 		public void UpdateOrCreateAssemblySignatureKeyAttribute(StrongNamePublicKey identityPubKey, StrongNameKey identityKey, StrongNamePublicKey signaturePubKey) {
 			var manifestModule = ManifestModule;
-			if (manifestModule == null)
+			if (manifestModule is null)
 				return;
 
 			// Remove all existing attributes
@@ -646,7 +646,7 @@ namespace dnlib.DotNet {
 					continue;
 				CustomAttributes.RemoveAt(i);
 				i--;
-				if (ca == null)
+				if (ca is null)
 					ca = caTmp;
 			}
 
@@ -664,13 +664,13 @@ namespace dnlib.DotNet {
 		bool IsValidAssemblySignatureKeyAttribute(CustomAttribute ca) {
 			if (dnlib.Settings.IsThreadSafe)
 				return false;
-			if (ca == null)
+			if (ca is null)
 				return false;
 			var ctor = ca.Constructor;
-			if (ctor == null)
+			if (ctor is null)
 				return false;
 			var sig = ctor.MethodSig;
-			if (sig == null || sig.Params.Count != 2)
+			if (sig is null || sig.Params.Count != 2)
 				return false;
 			if (sig.Params[0].GetElementType() != ElementType.String)
 				return false;
@@ -710,26 +710,26 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		void IListListener<ModuleDef>.OnLazyAdd(int index, ref ModuleDef module) {
-			if (module == null)
+			if (module is null)
 				return;
 #if DEBUG
-			if (module.Assembly == null)
-				throw new InvalidOperationException("Module.Assembly == null");
+			if (module.Assembly is null)
+				throw new InvalidOperationException("Module.Assembly is null");
 #endif
 		}
 
 		/// <inheritdoc/>
 		void IListListener<ModuleDef>.OnAdd(int index, ModuleDef module) {
-			if (module == null)
+			if (module is null)
 				return;
-			if (module.Assembly != null)
+			if (!(module.Assembly is null))
 				throw new InvalidOperationException("Module already has an assembly. Remove it from that assembly before adding it to this assembly.");
 			module.Assembly = this;
 		}
 
 		/// <inheritdoc/>
 		void IListListener<ModuleDef>.OnRemove(int index, ModuleDef module) {
-			if (module != null)
+			if (!(module is null))
 				module.Assembly = null;
 		}
 
@@ -740,7 +740,7 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		void IListListener<ModuleDef>.OnClear() {
 			foreach (var module in modules.GetEnumerable_NoLock()) {
-				if (module != null)
+				if (!(module is null))
 					module.Assembly = null;
 			}
 		}
@@ -799,9 +799,9 @@ namespace dnlib.DotNet {
 		/// <param name="locale">Locale</param>
 		/// <exception cref="ArgumentNullException">If any of the args is invalid</exception>
 		public AssemblyDefUser(UTF8String name, Version version, PublicKey publicKey, UTF8String locale) {
-			if ((object)name == null)
+			if (name is null)
 				throw new ArgumentNullException("name");
-			if ((object)locale == null)
+			if (locale is null)
 				throw new ArgumentNullException("locale");
 			modules = new LazyList<ModuleDef>(this);
 			this.name = name;
@@ -828,7 +828,7 @@ namespace dnlib.DotNet {
 		/// <param name="asmName">Assembly name info</param>
 		/// <exception cref="ArgumentNullException">If <paramref name="asmName"/> is <c>null</c></exception>
 		public AssemblyDefUser(IAssembly asmName) {
-			if (asmName == null)
+			if (asmName is null)
 				throw new ArgumentNullException("asmName");
 			modules = new LazyList<ModuleDef>(this);
 			name = asmName.Name;
@@ -868,7 +868,7 @@ namespace dnlib.DotNet {
 					module = readerModule;
 				else
 					module = readerModule.ReadModule(list2[index - 1], this);
-				if (module == null)
+				if (module is null)
 					module = new ModuleDefUser("INVALID", Guid.NewGuid());
 				module.Assembly = this;
 				return module;
@@ -924,10 +924,10 @@ namespace dnlib.DotNet {
 				if (ns != nameSystemRuntimeVersioning || name != nameTargetFrameworkAttribute)
 					continue;
 				var ca = CustomAttributeReader.Read(readerModule, caType, caRow.Value, gpContext);
-				if (ca == null || ca.ConstructorArguments.Count != 1)
+				if (ca is null || ca.ConstructorArguments.Count != 1)
 					continue;
 				var s = ca.ConstructorArguments[0].Value as UTF8String;
-				if ((object)s == null)
+				if (s is null)
 					continue;
                 string tmpFramework;
                 Version tmpVersion;
@@ -1005,7 +1005,7 @@ namespace dnlib.DotNet {
 						profileRes = value;
 				}
 			}
-			if (versionRes == null)
+			if (versionRes is null)
 				return false;
 
 			framework = frameworkRes;
@@ -1050,7 +1050,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		public AssemblyDefMD(ModuleDefMD readerModule, uint rid) {
 #if DEBUG
-			if (readerModule == null)
+			if (readerModule is null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.AssemblyTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "Assembly rid {0} does not exist", rid ) );
