@@ -62,7 +62,7 @@ namespace dnlib.DotNet.Writer {
 			if (!Enable)
 				return;
 
-			if (cpuArch is null) {
+			if (cpuArch == null) {
 				logError("The module needs an unmanaged entry point but the CPU architecture isn't supported: {0} (0x{1:X4})", new object[] { machine, (ushort)machine });
 				return;
 			}
@@ -74,7 +74,7 @@ namespace dnlib.DotNet.Writer {
 		public uint GetFileLength() {
 			if (!Enable)
 				return 0;
-			if (cpuArch is null)
+			if (cpuArch == null)
 				return 0;
 			return cpuArch.GetStubSize(stubType);
 		}
@@ -86,7 +86,7 @@ namespace dnlib.DotNet.Writer {
 		public void WriteTo(DataWriter writer) {
 			if (!Enable)
 				return;
-			if (cpuArch is null)
+			if (cpuArch == null)
 				return;
 			cpuArch.WriteStub(stubType, writer, PEHeaders.ImageBase, (uint)rva, (uint)ImportDirectory.IatCorXxxMainRVA);
 		}

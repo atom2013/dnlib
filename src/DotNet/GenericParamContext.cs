@@ -28,7 +28,7 @@ namespace dnlib.DotNet {
 		/// <param name="method">Method</param>
 		/// <returns>A new <see cref="GenericParamContext"/> instance</returns>
 		public static GenericParamContext Create(MethodDef method) {
-			if (method is null)
+			if (method == null)
 				return new GenericParamContext();
 			return new GenericParamContext(method.DeclaringType, method);
 		}

@@ -34,7 +34,7 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		byte[] Write(MarshalType marshalType) {
-			if (marshalType is null)
+			if (marshalType == null)
 				return null;
 
 			var type = marshalType.NativeType;
@@ -99,7 +99,7 @@ namespace dnlib.DotNet.Writer {
 
 			case NativeType.RawBlob:
 				var data = ((RawMarshalType)marshalType).Data;
-				if (!(data is null))
+				if (!(data == null))
 					writer.WriteBytes(data);
 				break;
 

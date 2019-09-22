@@ -71,7 +71,7 @@ namespace dnlib.DotNet {
 		int IGenericParameterProvider.NumberOfGenericParameters {
 			get {
 				var type = this.RemovePinnedAndModifiers() as GenericInstSig;
-				return type is null ? 0 : type.GenericArguments.Count;
+				return type == null ? 0 : type.GenericArguments.Count;
 			}
 		}
 
@@ -79,12 +79,12 @@ namespace dnlib.DotNet {
 		public bool IsValueType {
 			get {
 				var t = this.RemovePinnedAndModifiers();
-				if (t is null)
+				if (t == null)
 					return false;
 				if (t.ElementType == ElementType.GenericInst) {
 					var gis = (GenericInstSig)t;
 					t = gis.GenericType;
-					if (t is null)
+					if (t == null)
 						return false;
 				}
 				return t.ElementType.IsValueType();
@@ -255,11 +255,11 @@ namespace dnlib.DotNet {
 		/// <param name="a">A <see cref="TypeSig"/> instance</param>
 		/// <returns>Input after all modifiers</returns>
 		public static TypeSig RemoveModifiers(this TypeSig a) {
-			if (a is null)
+			if (a == null)
 				return null;
 			while (true) {
 				var modifier = a as ModifierSig;
-				if (modifier is null)
+				if (modifier == null)
 					return a;
 				a = a.Next;
 			}
@@ -272,7 +272,7 @@ namespace dnlib.DotNet {
 		/// <returns>Input after pinned signature</returns>
 		public static TypeSig RemovePinned(this TypeSig a) {
 			var pinned = a as PinnedSig;
-			if (pinned is null)
+			if (pinned == null)
 				return a;
 			return pinned.Next;
 		}
@@ -636,7 +636,7 @@ namespace dnlib.DotNet {
 		public GenericParam GenericParam {
 			get {
 				var gpp = genericParamProvider;
-				if (gpp is null)
+				if (gpp == null)
 					return null;
 				var gps = gpp.GenericParameters;
 				int count = gps.Count;

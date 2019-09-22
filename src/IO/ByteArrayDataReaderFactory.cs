@@ -39,7 +39,7 @@ namespace dnlib.IO {
 		/// <param name="filename">The filename or null if the data is not from a file</param>
 		/// <returns></returns>
 		public static ByteArrayDataReaderFactory Create(byte[] data, string filename) {
-			if (data is null)
+			if (data == null)
 				throw new ArgumentNullException("data");
 			return new ByteArrayDataReaderFactory(data, filename);
 		}

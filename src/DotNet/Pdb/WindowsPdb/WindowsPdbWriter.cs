@@ -22,9 +22,9 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 		public WindowsPdbWriter(SymbolWriter writer, PdbState pdbState, Metadata metadata)
 			: this(pdbState, metadata) {
-			if (pdbState is null)
+			if (pdbState == null)
 				throw new ArgumentNullException("pdbState");
-			if (metadata is null)
+			if (metadata == null)
 				throw new ArgumentNullException("metadat");
 			if (writer != null) this.writer = writer; else throw new ArgumentNullException("writer");
 			writer.Initialize(metadata);
@@ -71,13 +71,13 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 			var cdiBuilder = new List<PdbCustomDebugInfo>();
 			foreach (var type in module.GetTypes()) {
-				if (type is null)
+				if (type == null)
 					continue;
 				var typeMethods = type.Methods;
 				int count = typeMethods.Count;
 				for (int i = 0; i < count; i++) {
 					var method = typeMethods[i];
-					if (method is null)
+					if (method == null)
 						continue;
 					if (!ShouldAddMethod(method))
 						continue;
@@ -95,7 +95,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 		bool ShouldAddMethod(MethodDef method) {
 			var body = method.Body;
-			if (body is null)
+			if (body == null)
 				return false;
 
 			if (body.HasPdbMethod)
@@ -106,7 +106,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 			for (int i = 0; i < count; i++) {
 				var local = bodyVariables[i];
 				// Don't check whether it's the empty string. Only check for null.
-				if (!(local.Name is null))
+				if (!(local.Name == null))
 					return true;
 				if (local.Attributes != 0)
 					return true;
@@ -115,7 +115,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 			var bodyInstructions = body.Instructions;
 			count = bodyInstructions.Count;
 			for (int i = 0; i < count; i++) {
-				if (!(bodyInstructions[i].SequencePoint is null))
+				if (!(bodyInstructions[i].SequencePoint == null))
 					return true;
 			}
 
@@ -140,11 +140,11 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 					for (int i = 0; i < instrs.Count; i++, instrOffset += instr.GetSize()) {
 						instr = instrs[i];
 						var seqp = instr.SequencePoint;
-						if (seqp is null || seqp.Document is null)
+						if (seqp == null || seqp.Document == null)
 							continue;
 						if (checkedPdbDocs.ContainsKey(seqp.Document))
 							continue;
-						if (currPdbDoc is null)
+						if (currPdbDoc == null)
 							currPdbDoc = seqp.Document;
 						else if (currPdbDoc != seqp.Document) {
 							otherDocsAvailable = true;
@@ -174,7 +174,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 					if (!otherDocsAvailable)
 						break;
-					if (!(currPdbDoc is null))
+					if (!(currPdbDoc == null))
 						checkedPdbDocs.Add(currPdbDoc, true);
 				}
 			}
@@ -203,7 +203,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 			}
 
 			public int GetOffset(Instruction instr) {
-				if (instr is null)
+				if (instr == null)
 					return (int)BodySize;
                 uint offset;
 				if (toOffset.TryGetValue(instr, out offset))
@@ -227,10 +227,10 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 			seqPointsHelper.Write(this, info.Method.Body.Instructions);
 
 			var pdbMethod = body.PdbMethod;
-			if (pdbMethod is null)
+			if (pdbMethod == null)
 				body.PdbMethod = pdbMethod = new PdbMethod();
 			var scope = pdbMethod.Scope;
-			if (scope is null)
+			if (scope == null)
 				pdbMethod.Scope = scope = new PdbScope();
 			if (scope.Namespaces.Count == 0 && scope.Variables.Count == 0 && scope.Constants.Count == 0) {
 				if (scope.Scopes.Count == 0) {
@@ -257,11 +257,11 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 			if (cdiBuilder.Count != 0) {
 				customDebugInfoWriterContext.Logger = GetLogger();
 				var cdiData = PdbCustomDebugInfoWriter.Write(metadata, method, customDebugInfoWriterContext, cdiBuilder);
-				if (!(cdiData is null))
+				if (!(cdiData == null))
 					writer.SetSymAttribute(symbolToken, "MD2", cdiData);
 			}
 
-			if (!(asyncMethod is null)) {
+			if (!(asyncMethod == null)) {
 				if (!writer.SupportsAsyncMethods)
 					Error("PDB symbol writer doesn't support writing async methods");
 				else
@@ -279,7 +279,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 				var cdi = customDebugInfos[i];
 				switch (cdi.Kind) {
 				case PdbCustomDebugInfoKind.AsyncMethod:
-					if (!(asyncMethod is null))
+					if (!(asyncMethod == null))
 						Error("Duplicate async method custom debug info");
 					else
 						asyncMethod = (PdbAsyncMethodCustomDebugInfo)cdi;
@@ -303,7 +303,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 		}
 
 		void WriteAsyncMethod(ref CurrentMethod info, PdbAsyncMethodCustomDebugInfo asyncMethod) {
-			if (asyncMethod.KickoffMethod is null) {
+			if (asyncMethod.KickoffMethod == null) {
 				Error("KickoffMethod is null");
 				return;
 			}
@@ -311,7 +311,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 			uint kickoffMethod = GetMethodToken(asyncMethod.KickoffMethod);
 			writer.DefineKickoffMethod(kickoffMethod);
 
-			if (!(asyncMethod.CatchHandlerInstruction is null)) {
+			if (!(asyncMethod.CatchHandlerInstruction == null)) {
 				int catchHandlerILOffset = info.GetOffset(asyncMethod.CatchHandlerInstruction);
 				writer.DefineCatchHandlerILOffset((uint)catchHandlerILOffset);
 			}
@@ -322,15 +322,15 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 			var breakpointMethods = new uint[stepInfos.Count];
 			for (int i = 0; i < yieldOffsets.Length; i++) {
 				var stepInfo = stepInfos[i];
-				if (stepInfo.YieldInstruction is null) {
+				if (stepInfo.YieldInstruction == null) {
 					Error("YieldInstruction is null");
 					return;
 				}
-				if (stepInfo.BreakpointMethod is null) {
+				if (stepInfo.BreakpointMethod == null) {
 					Error("BreakpointMethod is null");
 					return;
 				}
-				if (stepInfo.BreakpointInstruction is null) {
+				if (stepInfo.BreakpointInstruction == null) {
 					Error("BreakpointInstruction is null");
 					return;
 				}
@@ -345,7 +345,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 			if (info.Method == method)
 				return info.GetOffset(instr);
 			var body = method.Body;
-			if (body is null) {
+			if (body == null) {
 				Error("Method body is null");
 				return 0;
 			}
@@ -358,7 +358,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 					return offset;
 				offset += currInstr.GetSize();
 			}
-			if (instr is null)
+			if (instr == null)
 				return offset;
 			Error("Async method instruction has been removed but it's still being referenced by PDB info: BP Instruction: {0}, BP Method: {1} (0x{2:X8}), Current Method: {3} (0x{4:X8})", instr, method, method.MDToken.Raw, info.Method, info.Method.MDToken.Raw);
 			return 0;
@@ -408,7 +408,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 			for (int i = 0; i < count; i++) {
 				var local = locals[i];
 				uint attrs = GetPdbLocalFlags(local.Attributes);
-				if (attrs == 0 && local.Name is null)
+				if (attrs == 0 && local.Name == null)
 					continue;
 				writer.DefineLocalVariable(local.Name ?? string.Empty, attrs,
 								token, 1, (uint)local.Index, 0, 0, startOffset, endOffset);
@@ -423,7 +423,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 		MDToken GetUserEntryPointToken() {
 			var ep = pdbState.UserEntryPoint;
-			if (ep is null)
+			if (ep == null)
 				return default(MDToken);
 			uint rid = metadata.GetRid(ep);
 			if (rid == 0) {
@@ -443,7 +443,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 		/// <inheritdoc/>
 		public void Dispose() {
-			if (!(writer is null))
+			if (!(writer == null))
 				Close();
 			if (writer != null) writer.Dispose();
 			writer = null;

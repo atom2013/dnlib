@@ -318,7 +318,7 @@ namespace dnlib.DotNet {
 			return TryApplyFrameworkRedirectCore(assembly, sourceModule, out redirectedAssembly); }
 
 		static bool TryApplyFrameworkRedirectCore(IAssembly assembly, ModuleDef sourceModule, out IAssembly redirectedAssembly) {
-			if (!(sourceModule is null)) {
+			if (!(sourceModule == null)) {
 				if (sourceModule.IsClr40)
 					return TryApplyFrameworkRedirect(assembly, frmRedir4, out redirectedAssembly);
 				if (sourceModule.IsClr20)

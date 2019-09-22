@@ -15,7 +15,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IAssemblyResolver AssemblyResolver {
 			get {
-				if (assemblyResolver is null)
+				if (assemblyResolver == null)
 					Interlocked.CompareExchange(ref assemblyResolver, NullResolver.Instance, null);
 				return assemblyResolver;
 			}
@@ -27,7 +27,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IResolver Resolver {
 			get {
-				if (resolver is null)
+				if (resolver == null)
 					Interlocked.CompareExchange(ref resolver, NullResolver.Instance, null);
 				return resolver;
 			}
@@ -64,7 +64,7 @@ namespace dnlib.DotNet {
 		public ModuleContext(IAssemblyResolver assemblyResolver, IResolver resolver) {
 			this.assemblyResolver = assemblyResolver;
 			this.resolver = resolver;
-			if (resolver is null && !(assemblyResolver is null))
+			if (resolver == null && !(assemblyResolver == null))
 				this.resolver = new Resolver(assemblyResolver);
 		}
 	}

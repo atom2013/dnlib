@@ -26,7 +26,7 @@ namespace dnlib.DotNet {
 				var db = (object)b == null ? null : b.Data;
 				if (da == db)
 					return true;
-				if (da is null || db is null)
+				if (da == null || db == null)
 					return false;
 				if (da.Length != db.Length)
 					return false;
@@ -44,14 +44,14 @@ namespace dnlib.DotNet {
 		}
 
 		static Info? GetInfo(TypeDef td) {
-			if (td is null)
+			if (td == null)
 				return null;
 			if (td.IsWindowsRuntime)
 				return null;
 
 			UTF8String scope = null, identifier = null;
 			var tia = td.CustomAttributes.Find("System.Runtime.InteropServices.TypeIdentifierAttribute");
-			if (!(tia is null)) {
+			if (!(tia == null)) {
 				if (tia.ConstructorArguments.Count >= 2) {
 					if (tia.ConstructorArguments[0].Type.GetElementType() != ElementType.String)
 						return null;
@@ -63,7 +63,7 @@ namespace dnlib.DotNet {
 			}
 			else {
 				var asm = td.Module != null?td.Module.Assembly:null;
-				if (asm is null)
+				if (asm == null)
 					return null;
 				bool isTypeLib = asm.CustomAttributes.IsDefined("System.Runtime.InteropServices.ImportedFromTypeLibAttribute") ||
 								asm.CustomAttributes.IsDefined("System.Runtime.InteropServices.PrimaryInteropAssemblyAttribute");
@@ -77,11 +77,11 @@ namespace dnlib.DotNet {
 					gca = td.CustomAttributes.Find("System.Runtime.InteropServices.GuidAttribute");
 				else {
 					var asm = td.Module != null?td.Module.Assembly:null;
-					if (asm is null)
+					if (asm == null)
 						return null;
 					gca = asm.CustomAttributes.Find("System.Runtime.InteropServices.GuidAttribute");
 				}
-				if (gca is null)
+				if (gca == null)
 					return null;
 				if (gca.ConstructorArguments.Count < 1)
 					return null;
@@ -113,12 +113,12 @@ namespace dnlib.DotNet {
         internal static bool IsTypeDefEquivalent(TypeDef td) { return GetInfo(td) != null && CheckEquivalent(td); }
 
 		static bool CheckEquivalent(TypeDef td) {
-			Debug.Assert(!(td is null));
+			Debug.Assert(!(td == null));
 
-			for (int i = 0; !(td is null) && i < 1000; i++) {
+			for (int i = 0; !(td == null) && i < 1000; i++) {
 				if (i != 0) {
 					var info = GetInfo(td);
-					if (info is null)
+					if (info == null)
 						return false;
 				}
 
@@ -133,7 +133,7 @@ namespace dnlib.DotNet {
 					return false;
 
 				var declType = td.DeclaringType;
-				if (declType is null)
+				if (declType == null)
 					return td.IsPublic;
 
 				if (!td.IsNestedPublic)
@@ -146,10 +146,10 @@ namespace dnlib.DotNet {
 
 		public static bool Equivalent(TypeDef td1, TypeDef td2) {
 			var info1 = GetInfo(td1);
-			if (info1 is null)
+			if (info1 == null)
 				return false;
 			var info2 = GetInfo(td2);
-			if (info2 is null)
+			if (info2 == null)
 				return false;
 			if (!CheckEquivalent(td1) || !CheckEquivalent(td2))
 				return false;
@@ -166,7 +166,7 @@ namespace dnlib.DotNet {
 				else {
 					var bt1 = td1.BaseType;
 					var bt2 = td2.BaseType;
-					if (bt1 is null || bt2 is null)
+					if (bt1 == null || bt2 == null)
 						return false;
 					if (td1.IsDelegate) {
 						if (!td2.IsDelegate)
@@ -188,9 +188,9 @@ namespace dnlib.DotNet {
 
 				td1 = td1.DeclaringType;
 				td2 = td2.DeclaringType;
-				if (td1 is null && td2 is null)
+				if (td1 == null && td2 == null)
 					break;
-				if (td1 is null || td2 is null)
+				if (td1 == null || td2 == null)
 					return false;
 			}
 
@@ -200,7 +200,7 @@ namespace dnlib.DotNet {
 		static bool DelegateEquals(TypeDef td1, TypeDef td2) {
 			var invoke1 = td1.FindMethod(InvokeString);
 			var invoke2 = td2.FindMethod(InvokeString);
-			if (invoke1 is null || invoke2 is null)
+			if (invoke1 == null || invoke2 == null)
 				return false;
 
 			//TODO: Compare method signatures. Prevent infinite recursion...

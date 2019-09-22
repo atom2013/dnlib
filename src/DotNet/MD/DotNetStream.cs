@@ -78,7 +78,7 @@ namespace dnlib.DotNet.MD {
 		void DataReaderFactory_DataReaderInvalidated(object sender, EventArgs e) { RecreateReader(mdReaderFactory, metadataBaseOffset, streamHeader, /* notifyThisClass: */ true); }
 
 		void RecreateReader(DataReaderFactory mdReaderFactory, uint metadataBaseOffset, StreamHeader streamHeader, bool notifyThisClass) {
-			if (mdReaderFactory is null || streamHeader is null)
+			if (mdReaderFactory == null || streamHeader == null)
                 dataReader = default(DataReader);
 			else
 				dataReader = mdReaderFactory.CreateReader(metadataBaseOffset + streamHeader.Offset, streamHeader.StreamSize);
@@ -104,7 +104,7 @@ namespace dnlib.DotNet.MD {
 		protected virtual void Dispose(bool disposing) {
 			if (disposing) {
 				var mdReaderFactory = this.mdReaderFactory;
-				if (!(mdReaderFactory is null))
+				if (!(mdReaderFactory == null))
 					mdReaderFactory.DataReaderInvalidated -= DataReaderFactory_DataReaderInvalidated;
 				streamHeader = null;
 				this.mdReaderFactory = null;

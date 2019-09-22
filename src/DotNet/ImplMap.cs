@@ -210,7 +210,7 @@ namespace dnlib.DotNet {
 			if (name != funcName)
 				return false;
 			var mod = module;
-			if (mod is null)
+			if (mod == null)
 				return false;
 			return GetDllName(dllName).Equals(GetDllName(mod.Name), StringComparison.OrdinalIgnoreCase);
 		}
@@ -263,7 +263,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		public ImplMapMD(ModuleDefMD readerModule, uint rid) {
 #if DEBUG
-			if (readerModule is null)
+			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.ImplMapTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "ImplMap rid {0} does not exist", rid ) );

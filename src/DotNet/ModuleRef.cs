@@ -61,7 +61,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public CustomAttributeCollection CustomAttributes {
 			get {
-				if (customAttributes is null)
+				if (customAttributes == null)
 					InitializeCustomAttributes();
 				return customAttributes;
 			}
@@ -87,7 +87,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PdbCustomDebugInfo> CustomDebugInfos {
 			get {
-				if (customDebugInfos is null)
+				if (customDebugInfos == null)
 					InitializeCustomDebugInfos();
 				return customDebugInfos;
 			}
@@ -108,7 +108,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public ModuleDef DefinitionModule {
 			get {
-				if (module is null)
+				if (module == null)
 					return null;
 				var n = name;
 				if (UTF8String.CaseInsensitiveEquals(n, module.Name))
@@ -188,7 +188,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		public ModuleRefMD(ModuleDefMD readerModule, uint rid) {
 #if DEBUG
-			if (readerModule is null)
+			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.ModuleRefTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "ModuleRef rid {0} does not exist", rid ) );

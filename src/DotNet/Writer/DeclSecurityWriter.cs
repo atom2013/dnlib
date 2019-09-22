@@ -36,11 +36,11 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		byte[] Write(IList<SecurityAttribute> secAttrs) {
-			if (secAttrs is null)
+			if (secAttrs == null)
 				secAttrs = Array2.Empty<SecurityAttribute>();
 
 			var xml = DeclSecurity.GetNet1xXmlStringInternal(secAttrs);
-			if (!(xml is null))
+			if (!(xml == null))
 				return WriteFormat1(xml);
 			return WriteFormat2(secAttrs);
 		}
@@ -56,7 +56,7 @@ namespace dnlib.DotNet.Writer {
 			int count = secAttrs.Count;
 			for (int i = 0; i < count; i++) {
 				var sa = secAttrs[i];
-				if (sa is null) {
+				if (sa == null) {
 					helper.Error("SecurityAttribute is null");
 					Write(writer, UTF8String.Empty);
 					WriteCompressedUInt32(writer, 1);
@@ -65,7 +65,7 @@ namespace dnlib.DotNet.Writer {
 				}
 				var attrType = sa.AttributeType;
 				string fqn;
-				if (attrType is null) {
+				if (attrType == null) {
 					helper.Error("SecurityAttribute attribute type is null");
 					fqn = string.Empty;
 				}
@@ -73,7 +73,7 @@ namespace dnlib.DotNet.Writer {
 					fqn = attrType.AssemblyQualifiedName;
 				Write(writer, fqn);
 
-				var namedArgsBlob = context is null ?
+				var namedArgsBlob = context == null ?
 					CustomAttributeWriter.Write(this, sa.NamedArguments) :
 					CustomAttributeWriter.Write(this, sa.NamedArguments, context);
 				if (namedArgsBlob.Length > 0x1FFFFFFF) {

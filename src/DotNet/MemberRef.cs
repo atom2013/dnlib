@@ -75,7 +75,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public CustomAttributeCollection CustomAttributes {
 			get {
-				if (customAttributes is null)
+				if (customAttributes == null)
 					InitializeCustomAttributes();
 				return customAttributes;
 			}
@@ -101,7 +101,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PdbCustomDebugInfo> CustomDebugInfos {
 			get {
-				if (customDebugInfos is null)
+				if (customDebugInfos == null)
 					InitializeCustomDebugInfos();
 				return customDebugInfos;
 			}
@@ -129,7 +129,7 @@ namespace dnlib.DotNet {
                 ModuleRef mr;
                 if ((mr = owner as ModuleRef) != null) {
 					var tr = GetGlobalTypeRef(mr);
-					if (!(module is null))
+					if (!(module == null))
 						return module.UpdateRowId(tr);
 					return tr;
 				}
@@ -139,26 +139,26 @@ namespace dnlib.DotNet {
 		}
 
 		TypeRefUser GetGlobalTypeRef(ModuleRef mr) {
-			if (module is null)
+			if (module == null)
 				return CreateDefaultGlobalTypeRef(mr);
 			var globalType = module.GlobalType;
-			if (!(globalType is null) && new SigComparer().Equals(module, mr))
+			if (!(globalType == null) && new SigComparer().Equals(module, mr))
 				return new TypeRefUser(module, globalType.Namespace, globalType.Name, mr);
 			var asm = module.Assembly;
-			if (asm is null)
+			if (asm == null)
 				return CreateDefaultGlobalTypeRef(mr);
 			var mod = asm.FindModule(mr.Name);
-			if (mod is null)
+			if (mod == null)
 				return CreateDefaultGlobalTypeRef(mr);
 			globalType = mod.GlobalType;
-			if (globalType is null)
+			if (globalType == null)
 				return CreateDefaultGlobalTypeRef(mr);
 			return new TypeRefUser(module, globalType.Namespace, globalType.Name, mr);
 		}
 
 		TypeRefUser CreateDefaultGlobalTypeRef(ModuleRef mr) {
 			var tr = new TypeRefUser(module, string.Empty, "<Module>", mr);
-			if (!(module is null))
+			if (!(module == null))
 				module.UpdateRowId(tr);
 			return tr;
 		}
@@ -212,7 +212,7 @@ namespace dnlib.DotNet {
 		public bool HasThis {
 			get {
 				var ms = MethodSig;
-				return ms is null ? false : ms.HasThis;
+				return ms == null ? false : ms.HasThis;
 			}
 		}
 
@@ -222,7 +222,7 @@ namespace dnlib.DotNet {
 		public bool ExplicitThis {
 			get {
 				var ms = MethodSig;
-				return ms is null ? false : ms.ExplicitThis;
+				return ms == null ? false : ms.ExplicitThis;
 			}
 		}
 
@@ -232,7 +232,7 @@ namespace dnlib.DotNet {
 		public CallingConvention CallingConvention {
 			get {
 				var ms = MethodSig;
-				return ms is null ? 0 : ms.CallingConvention & CallingConvention.Mask;
+				return ms == null ? 0 : ms.CallingConvention & CallingConvention.Mask;
 			}
 		}
 
@@ -243,7 +243,7 @@ namespace dnlib.DotNet {
 			get { return MethodSig != null?MethodSig.RetType:null; }
 			set {
 				var ms = MethodSig;
-				if (!(ms is null))
+				if (!(ms == null))
 					ms.RetType = value;
 			}
 		}
@@ -264,10 +264,10 @@ namespace dnlib.DotNet {
 						typeGenArgs = sig.GenericArguments;
 				}
 				var methodSig = MethodSig;
-				if (!(methodSig is null))
+				if (!(methodSig == null))
 					return FullNameFactory.MethodFullName(GetDeclaringTypeFullName(parent), name, methodSig, typeGenArgs, null, null, null);
 				var fieldSig = FieldSig;
-				if (!(fieldSig is null))
+				if (!(fieldSig == null))
 					return FullNameFactory.FieldFullName(GetDeclaringTypeFullName(parent), name, fieldSig, typeGenArgs, null);
 				return string.Empty;
 			}
@@ -280,7 +280,7 @@ namespace dnlib.DotNet {
 		public string GetDeclaringTypeFullName() { return GetDeclaringTypeFullName(@class); }
 
 		string GetDeclaringTypeFullName(IMemberRefParent parent) {
-			if (parent is null)
+			if (parent == null)
 				return null;
 			if (parent is ITypeDefOrRef)
 				return ((ITypeDefOrRef)parent).FullName;
@@ -299,7 +299,7 @@ namespace dnlib.DotNet {
 		/// <returns>A <see cref="MethodDef"/> or a <see cref="FieldDef"/> instance or <c>null</c>
 		/// if it couldn't be resolved.</returns>
 		public IMemberForwarded Resolve() {
-			if (module is null)
+			if (module == null)
 				return null;
 			return module.Context.Resolver.Resolve(this);
 		}
@@ -311,7 +311,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="MemberRefResolveException">If the method/field couldn't be resolved</exception>
 		public IMemberForwarded ResolveThrow() {
 			var memberDef = Resolve();
-			if (!(memberDef is null))
+			if (!(memberDef == null))
 				return memberDef;
 			throw new MemberRefResolveException( string.Format( "Could not resolve method/field: {0} ({1})", this, this.GetDefinitionAssembly() ) );
 		}
@@ -329,7 +329,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="MemberRefResolveException">If the field couldn't be resolved</exception>
 		public FieldDef ResolveFieldThrow() {
 			var field = ResolveField();
-			if (!(field is null))
+			if (!(field == null))
 				return field;
 			throw new MemberRefResolveException( string.Format( "Could not resolve field: {0} ({1})", this, this.GetDefinitionAssembly() ) );
 		}
@@ -347,7 +347,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="MemberRefResolveException">If the method couldn't be resolved</exception>
 		public MethodDef ResolveMethodThrow() {
 			var method = ResolveMethod();
-			if (!(method is null))
+			if (!(method == null))
 				return method;
 			throw new MemberRefResolveException( string.Format( "Could not resolve method: {0} ({1})", this, this.GetDefinitionAssembly() ) );
 		}
@@ -482,7 +482,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		public MemberRefMD(ModuleDefMD readerModule, uint rid, GenericParamContext gpContext) {
 #if DEBUG
-			if (readerModule is null)
+			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.MemberRefTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "MemberRef rid {0} does not exist", rid ) );

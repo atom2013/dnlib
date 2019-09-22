@@ -251,7 +251,7 @@ namespace dnlib.DotNet.Writer {
 		internal bool CheckValidOffset(FileOffset offset) {
             string error;
             GetMaxAlignment(offset, out error);
-			return error is null;
+			return error == null;
 		}
 
 		static uint GetMaxAlignment(FileOffset offset, out string error) {
@@ -274,7 +274,7 @@ namespace dnlib.DotNet.Writer {
 			bool initAll = this.offset == 0;
 			this.offset = offset;
 			this.rva = rva;
-			if (win32Resources is null)
+			if (win32Resources == null)
 				return;
 
 			if (!initAll) {
@@ -300,7 +300,7 @@ namespace dnlib.DotNet.Writer {
 			uint rsrcOffset = 0;
             string error;
             var maxAlignment = GetMaxAlignment(offset, out error);
-			if (!(error is null))
+			if (!(error == null))
 				throw new ModuleWriterException(error);
 
 			foreach (var dir in dirList) {

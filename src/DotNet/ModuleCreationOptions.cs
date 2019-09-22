@@ -2,6 +2,7 @@
 
 using dnlib.IO;
 using dnlib.DotNet.Pdb;
+using System.Runtime.CompilerServices;
 
 namespace dnlib.DotNet {
 	/// <summary>
@@ -9,7 +10,8 @@ namespace dnlib.DotNet {
 	/// </summary>
 	public sealed class ModuleCreationOptions {
 		internal static readonly ModuleCreationOptions Default = new ModuleCreationOptions();
-
+        [CompilerGenerated]
+        private CLRRuntimeReaderKind Runtime__BackingField;
 		/// <summary>
 		/// Module context
 		/// </summary>
@@ -46,7 +48,7 @@ namespace dnlib.DotNet {
 		/// Runtime reader kind, default is <see cref="CLRRuntimeReaderKind.CLR"/>. It should be
 		/// set to <see cref="CLRRuntimeReaderKind.Mono"/> if it's an obfuscated Mono/Unity assembly.
 		/// </summary>
-		public CLRRuntimeReaderKind Runtime { get; set; } = CLRRuntimeReaderKind.CLR;
+        public CLRRuntimeReaderKind Runtime { get { return Runtime__BackingField; } set { Runtime__BackingField = value; } }
 
 		/// <summary>
 		/// Default constructor
@@ -68,7 +70,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="runtime">Runtime reader kind, default is <see cref="CLRRuntimeReaderKind.CLR"/>. It should be
 		/// set to <see cref="CLRRuntimeReaderKind.Mono"/> if it's an obfuscated Mono/Unity assembly.</param>
-		public ModuleCreationOptions(CLRRuntimeReaderKind runtime) => Runtime = runtime;
+        public ModuleCreationOptions(CLRRuntimeReaderKind runtime) { Runtime = runtime; }
 
 		/// <summary>
 		/// Constructor

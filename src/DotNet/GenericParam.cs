@@ -101,7 +101,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<GenericParamConstraint> GenericParamConstraints {
 			get {
-				if (genericParamConstraints is null)
+				if (genericParamConstraints == null)
 					InitializeGenericParamConstraints();
 				return genericParamConstraints;
 			}
@@ -118,7 +118,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public CustomAttributeCollection CustomAttributes {
 			get {
-				if (customAttributes is null)
+				if (customAttributes == null)
 					InitializeCustomAttributes();
 				return customAttributes;
 			}
@@ -144,7 +144,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PdbCustomDebugInfo> CustomDebugInfos {
 			get {
-				if (customDebugInfos is null)
+				if (customDebugInfos == null)
 					InitializeCustomDebugInfos();
 				return customDebugInfos;
 			}
@@ -276,7 +276,7 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		void IListListener<GenericParamConstraint>.OnAdd(int index, GenericParamConstraint value) {
-			if (!(value.Owner is null))
+			if (!(value.Owner == null))
 				throw new InvalidOperationException("Generic param constraint is already owned by another generic param. Set Owner to null first.");
 			value.Owner = this;
 		}
@@ -395,7 +395,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		public GenericParamMD(ModuleDefMD readerModule, uint rid) {
 #if DEBUG
-			if (readerModule is null)
+			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.GenericParamTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "GenericParam rid {0} does not exist", rid ) );

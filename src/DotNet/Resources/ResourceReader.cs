@@ -192,9 +192,9 @@ namespace dnlib.DotNet.Resources {
 					throw new ResourceReaderException( string.Format( "Invalid resource data code: {0}", code ) );
 				var userType = userTypes[userTypeIndex];
 				var serializedData = reader.ReadBytes((int)(endPos - reader.Position));
-				if (!(createResourceDataDelegate is null)) {
+				if (!(createResourceDataDelegate == null)) {
 					var res = createResourceDataDelegate(resourceDataFactory, userType, serializedData);
-					if (!(res is null))
+					if (!(res == null))
 						return res;
 				}
 				return resourceDataFactory.CreateSerialized(serializedData, userType);

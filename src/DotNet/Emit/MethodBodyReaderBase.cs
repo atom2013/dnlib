@@ -76,7 +76,7 @@ namespace dnlib.DotNet.Emit {
 		protected void SetLocals(IList<TypeSig> newLocals) {
 			var locals = this.locals;
 			locals.Clear();
-			if (newLocals is null)
+			if (newLocals == null)
 				return;
 			int count = newLocals.Count;
 			for (int i = 0; i < count; i++)
@@ -90,7 +90,7 @@ namespace dnlib.DotNet.Emit {
 		protected void SetLocals(IList<Local> newLocals) {
 			var locals = this.locals;
 			locals.Clear();
-			if (newLocals is null)
+			if (newLocals == null)
 				return;
 			int count = newLocals.Count;
 			for (int i = 0; i < count; i++)
@@ -188,7 +188,7 @@ namespace dnlib.DotNet.Emit {
 		/// <paramref name="offset"/></exception>
 		protected Instruction GetInstructionThrow(uint offset) {
 			var instr = GetInstruction(offset);
-			if (!(instr is null))
+			if (!(instr == null))
 				return instr;
 			throw new InvalidOperationException( string.Format( "There's no instruction @ {0:X4}", offset ) );
 		}
@@ -489,7 +489,7 @@ namespace dnlib.DotNet.Emit {
 				return false;
 
 			if (eh.HandlerType == ExceptionHandlerType.Filter) {
-				if (eh.FilterStart is null)
+				if (eh.FilterStart == null)
 					return false;
 				if (eh.FilterStart.Offset >= handlerStart)
 					return false;
@@ -517,7 +517,7 @@ namespace dnlib.DotNet.Emit {
 		/// at the end of the method.</param>
 		/// <returns>The instruction offset</returns>
 		uint GetOffset(Instruction instr) {
-			if (!(instr is null))
+			if (!(instr == null))
 				return instr.Offset;
 			var instructions = this.instructions;
 			if (instructions.Count == 0)
@@ -536,7 +536,7 @@ namespace dnlib.DotNet.Emit {
 
 			body.Variables.Clear();
 			var locals = this.locals;
-			if (!(locals is null)) {
+			if (!(locals == null)) {
 				int count = locals.Count;
 				for (int i = 0; i < count; i++)
 					body.Variables.Add(locals[i]);
@@ -544,7 +544,7 @@ namespace dnlib.DotNet.Emit {
 
 			body.Instructions.Clear();
 			var instructions = this.instructions;
-			if (!(instructions is null)) {
+			if (!(instructions == null)) {
 				int count = instructions.Count;
 				for (int i = 0; i < count; i++)
 					body.Instructions.Add(instructions[i]);
@@ -552,7 +552,7 @@ namespace dnlib.DotNet.Emit {
 
 			body.ExceptionHandlers.Clear();
 			var exceptionHandlers = this.exceptionHandlers;
-			if (!(exceptionHandlers is null)) {
+			if (!(exceptionHandlers == null)) {
 				int count = exceptionHandlers.Count;
 				for (int i = 0; i < count; i++)
 					body.ExceptionHandlers.Add(exceptionHandlers[i]);

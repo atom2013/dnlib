@@ -46,7 +46,7 @@ namespace dnlib.DotNet.MD {
 						var sh = mdHeader.StreamHeaders[i];
 						switch (sh.Name) {
 						case "#Strings":
-							if (stringsStream is null) {
+							if (stringsStream == null) {
 								stringsStream = new StringsStream(mdReaderFactory, metadataBaseOffset, sh);
 								newAllStreams.Add(stringsStream);
 								continue;
@@ -54,7 +54,7 @@ namespace dnlib.DotNet.MD {
 							break;
 
 						case "#US":
-							if (usStream is null) {
+							if (usStream == null) {
 								usStream = new USStream(mdReaderFactory, metadataBaseOffset, sh);
 								newAllStreams.Add(usStream);
 								continue;
@@ -62,7 +62,7 @@ namespace dnlib.DotNet.MD {
 							break;
 
 						case "#Blob":
-							if (blobStream is null) {
+							if (blobStream == null) {
 								blobStream = new BlobStream(mdReaderFactory, metadataBaseOffset, sh);
 								newAllStreams.Add(blobStream);
 								continue;
@@ -70,7 +70,7 @@ namespace dnlib.DotNet.MD {
 							break;
 
 						case "#GUID":
-							if (guidStream is null) {
+							if (guidStream == null) {
 								guidStream = new GuidStream(mdReaderFactory, metadataBaseOffset, sh);
 								newAllStreams.Add(guidStream);
 								continue;
@@ -79,7 +79,7 @@ namespace dnlib.DotNet.MD {
 
 						case "#~":
 						case "#-":
-							if (tablesStream is null) {
+							if (tablesStream == null) {
 								tablesStream = new TablesStream(mdReaderFactory, metadataBaseOffset, sh, runtime);
 								newAllStreams.Add(tablesStream);
 								continue;
@@ -87,7 +87,7 @@ namespace dnlib.DotNet.MD {
 							break;
 
 						case "#Pdb":
-							if (isStandalonePortablePdb && pdbStream is null) {
+							if (isStandalonePortablePdb && pdbStream == null) {
 								pdbStream = new PdbStream(mdReaderFactory, metadataBaseOffset, sh);
 								newAllStreams.Add(pdbStream);
 								continue;
@@ -106,7 +106,7 @@ namespace dnlib.DotNet.MD {
 					foreach (var sh in mdHeader.StreamHeaders) {
 						switch (sh.Name.ToUpperInvariant()) {
 						case "#STRINGS":
-							if (stringsStream is null) {
+							if (stringsStream == null) {
 								stringsStream = new StringsStream(mdReaderFactory, metadataBaseOffset, sh);
 								allStreams.Add(stringsStream);
 								continue;
@@ -114,7 +114,7 @@ namespace dnlib.DotNet.MD {
 							break;
 
 						case "#US":
-							if (usStream is null) {
+							if (usStream == null) {
 								usStream = new USStream(mdReaderFactory, metadataBaseOffset, sh);
 								allStreams.Add(usStream);
 								continue;
@@ -122,7 +122,7 @@ namespace dnlib.DotNet.MD {
 							break;
 
 						case "#BLOB":
-							if (blobStream is null) {
+							if (blobStream == null) {
 								blobStream = new BlobStream(mdReaderFactory, metadataBaseOffset, sh);
 								allStreams.Add(blobStream);
 								continue;
@@ -130,7 +130,7 @@ namespace dnlib.DotNet.MD {
 							break;
 
 						case "#GUID":
-							if (guidStream is null) {
+							if (guidStream == null) {
 								guidStream = new GuidStream(mdReaderFactory, metadataBaseOffset, sh);
 								allStreams.Add(guidStream);
 								continue;
@@ -139,7 +139,7 @@ namespace dnlib.DotNet.MD {
 
 						case "#~":  // Only if #Schema is used
 						case "#-":
-							if (tablesStream is null) {
+							if (tablesStream == null) {
 								tablesStream = new TablesStream(mdReaderFactory, metadataBaseOffset, sh, runtime);
 								allStreams.Add(tablesStream);
 								continue;
@@ -149,7 +149,7 @@ namespace dnlib.DotNet.MD {
 						case "#PDB":
 							// Case sensitive comparison since it's a stream that's not read by the CLR,
 							// only by other libraries eg. System.Reflection.Metadata.
-							if (isStandalonePortablePdb && pdbStream is null && sh.Name == "#Pdb") {
+							if (isStandalonePortablePdb && pdbStream == null && sh.Name == "#Pdb") {
 								pdbStream = new PdbStream(mdReaderFactory, metadataBaseOffset, sh);
 								allStreams.Add(pdbStream);
 								continue;
@@ -166,10 +166,10 @@ namespace dnlib.DotNet.MD {
 				if (dns != null) dns.Dispose();
 			}
 
-			if (tablesStream is null)
+			if (tablesStream == null)
 				throw new BadImageFormatException("Missing MD stream");
 
-			if (!(pdbStream is null))
+			if (!(pdbStream == null))
 				tablesStream.Initialize(pdbStream.TypeSystemTableRows);
 			else
 				tablesStream.Initialize(null);
@@ -470,7 +470,7 @@ namespace dnlib.DotNet.MD {
 		/// <param name="key">Key</param>
 		/// <returns>The <c>rid</c> of the found row, or 0 if none found</returns>
 		uint LinearSearch(MDTable tableSource, int keyColIndex, uint key) {
-			if (tableSource is null)
+			if (tableSource == null)
 				return 0;
 			var keyColumn = tableSource.TableInfo.Columns[keyColIndex];
 			for (uint rid = 1; rid <= tableSource.Rows; rid++) {

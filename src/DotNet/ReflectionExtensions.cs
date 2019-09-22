@@ -29,10 +29,10 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="self">The type</param>
 		public static bool IsSZArray(this Type self) {
-			if (self is null || !self.IsArray)
+			if (self == null || !self.IsArray)
 				return false;
 			var prop = self.GetType().GetProperty("IsSzArray", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-			if (!(prop is null))
+			if (!(prop == null))
 				return (bool)prop.GetValue(self, Array2.Empty<object>());
 			return (self.Name ?? string.Empty).EndsWith("[]");
 		}
@@ -43,7 +43,7 @@ namespace dnlib.DotNet {
 		/// <param name="a">The type</param>
 		/// <returns>The type's element type</returns>
 		public static ElementType GetElementType2(this Type a) {
-			if (a is null)
+			if (a == null)
 				return ElementType.End;	// Any invalid one is good enough
 			if (a.IsArray)
 				return IsSZArray(a) ? ElementType.SZArray : ElementType.Array;
@@ -52,7 +52,7 @@ namespace dnlib.DotNet {
 			if (a.IsPointer)
 				return ElementType.Ptr;
 			if (a.IsGenericParameter)
-				return a.DeclaringMethod is null ? ElementType.Var : ElementType.MVar;
+				return a.DeclaringMethod == null ? ElementType.Var : ElementType.MVar;
 			if (a.IsGenericType && !a.IsGenericTypeDefinition)
 				return ElementType.GenericInst;
 

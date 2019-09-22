@@ -55,7 +55,7 @@ namespace dnlib.DotNet.Pdb.Portable {
 		}
 
 		SymbolDocument[] ReadDocuments() {
-			Debug.Assert(!(module is null));
+			Debug.Assert(!(module == null));
 			var docTbl = pdbMetadata.TablesStream.DocumentTable;
 			var docs = new SymbolDocument[docTbl.Rows];
 			var nameReader = new DocumentNameReader(pdbMetadata.BlobStream);
@@ -157,8 +157,8 @@ namespace dnlib.DotNet.Pdb.Portable {
 				else {
 					// SequencePointRecord
 
-					Debug.Assert(!(document is null));
-					if (document is null)
+					Debug.Assert(!(document == null));
+					if (document == null)
 						return null;
 
 					var symSeqPoint = new SymbolSequencePoint {
@@ -240,15 +240,15 @@ namespace dnlib.DotNet.Pdb.Portable {
 						stack.RemoveAt(stack.Count - 1);
 					}
 
-					Debug.Assert(!(parent is null) || rootScopeOrNull is null);
+					Debug.Assert(!(parent == null) || rootScopeOrNull == null);
 					custInfos.Clear();
 					GetCustomDebugInfos(token, gpContext, custInfos);
 					var customDebugInfos = custInfos.Count == 0 ? Array2.Empty<PdbCustomDebugInfo>() : custInfos.ToArray();
 					var scope = new SymbolScopeImpl(this, parent, (int)startOffset, (int)endOffset, customDebugInfos);
-					if (rootScopeOrNull is null)
+					if (rootScopeOrNull == null)
 						rootScopeOrNull = scope;
 					stack.Add(scope);
-					if (!(parent is null))
+					if (!(parent == null))
 						parent.childrenList.Add(scope);
 
 					scope.importScope = ReadPdbImportScope(ref importScopeBlobReader, row.ImportScope, gpContext);
@@ -294,9 +294,9 @@ namespace dnlib.DotNet.Pdb.Portable {
 					return null;
 				var scope = new PdbImportScope();
 				GetCustomDebugInfos(token, gpContext, scope.CustomDebugInfos);
-				if (result is null)
+				if (result == null)
 					result = scope;
-				if (!(prevScope is null))
+				if (!(prevScope == null))
 					prevScope.Parent = scope;
 				importScopeBlobReader.Read(row.Imports, scope.Imports);
 				prevScope = scope;
@@ -362,16 +362,16 @@ namespace dnlib.DotNet.Pdb.Portable {
 			Debug.Assert(method.Module == module);
             PdbAsyncMethodSteppingInformationCustomDebugInfo asyncStepInfo;
             GetCustomDebugInfos(method.MDToken.ToInt32(), GenericParamContext.Create(method), result, method, body, out asyncStepInfo);
-			if (!(asyncStepInfo is null)) {
+			if (!(asyncStepInfo == null)) {
 				var asyncMethod = TryCreateAsyncMethod(module, symMethod.KickoffMethod, asyncStepInfo.AsyncStepInfos, asyncStepInfo.CatchHandler);
-				Debug.Assert(!(asyncMethod is null));
-				if (!(asyncMethod is null))
+				Debug.Assert(!(asyncMethod == null));
+				if (!(asyncMethod == null))
 					result.Add(asyncMethod);
 			}
 			else if (symMethod.KickoffMethod != 0) {
 				var iteratorMethod = TryCreateIteratorMethod(module, symMethod.KickoffMethod);
-				Debug.Assert(!(iteratorMethod is null));
-				if (!(iteratorMethod is null))
+				Debug.Assert(!(iteratorMethod == null));
+				if (!(iteratorMethod == null))
 					result.Add(iteratorMethod);
 			}
 		}
@@ -401,7 +401,7 @@ namespace dnlib.DotNet.Pdb.Portable {
 		public override void GetCustomDebugInfos(int token, GenericParamContext gpContext, IList<PdbCustomDebugInfo> result) {
             PdbAsyncMethodSteppingInformationCustomDebugInfo asyncStepInfo;
             GetCustomDebugInfos(token, gpContext, result, null, null, out asyncStepInfo);
-			Debug.Assert(asyncStepInfo is null);
+			Debug.Assert(asyncStepInfo == null);
 		}
 
 		void GetCustomDebugInfos(int token, GenericParamContext gpContext, IList<PdbCustomDebugInfo> result, MethodDef methodOpt, CilBody bodyOpt, out PdbAsyncMethodSteppingInformationCustomDebugInfo asyncStepInfo) {
@@ -420,15 +420,15 @@ namespace dnlib.DotNet.Pdb.Portable {
                 DataReader reader;
                 if (!pdbMetadata.BlobStream.TryCreateReader(row.Value, out reader))
 					continue;
-				Debug.Assert(!(guid is null));
-				if (guid is null)
+				Debug.Assert(!(guid == null));
+				if (guid == null)
 					continue;
 				var cdi = PortablePdbCustomDebugInfoReader.Read(module, typeOpt, bodyOpt, gpContext, guid.Value, ref reader);
-				Debug.Assert(!(cdi is null));
-				if (!(cdi is null)) {
+				Debug.Assert(!(cdi == null));
+				if (!(cdi == null)) {
                     PdbAsyncMethodSteppingInformationCustomDebugInfo asyncStepInfoTmp;
                     if ((asyncStepInfoTmp = cdi as PdbAsyncMethodSteppingInformationCustomDebugInfo) != null) {
-						Debug.Assert(asyncStepInfo is null);
+						Debug.Assert(asyncStepInfo == null);
 						asyncStepInfo = asyncStepInfoTmp;
 					}
 					else

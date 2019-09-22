@@ -107,7 +107,7 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="methodBody">The method body</param>
 		/// <returns><see langword="true" /> if the method body is removed</returns>
 		public bool Remove(MethodBody methodBody) {
-			if (methodBody is null)
+			if (methodBody == null)
 				throw new ArgumentNullException("methodBody");
 			if (setOffsetCalled)
 				throw new InvalidOperationException("SetOffset() has already been called");

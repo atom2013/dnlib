@@ -45,7 +45,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<SecurityAttribute> SecurityAttributes {
 			get {
-				if (securityAttributes is null)
+				if (securityAttributes == null)
 					InitializeSecurityAttributes();
 				return securityAttributes;
 			}
@@ -62,7 +62,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public CustomAttributeCollection CustomAttributes {
 			get {
-				if (customAttributes is null)
+				if (customAttributes == null)
 					InitializeCustomAttributes();
 				return customAttributes;
 			}
@@ -88,7 +88,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PdbCustomDebugInfo> CustomDebugInfos {
 			get {
-				if (customDebugInfos is null)
+				if (customDebugInfos == null)
 					InitializeCustomDebugInfos();
 				return customDebugInfos;
 			}
@@ -118,15 +118,15 @@ namespace dnlib.DotNet {
 		public string GetNet1xXmlString() { return GetNet1xXmlStringInternal(SecurityAttributes); }
 
 		internal static string GetNet1xXmlStringInternal(IList<SecurityAttribute> secAttrs) {
-			if (secAttrs is null || secAttrs.Count != 1)
+			if (secAttrs == null || secAttrs.Count != 1)
 				return null;
 			var sa = secAttrs[0];
-			if (sa is null || sa.TypeFullName != "System.Security.Permissions.PermissionSetAttribute")
+			if (sa == null || sa.TypeFullName != "System.Security.Permissions.PermissionSetAttribute")
 				return null;
 			if (sa.NamedArguments.Count != 1)
 				return null;
 			var na = sa.NamedArguments[0];
-			if (na is null || !na.IsProperty || na.Name != "XML")
+			if (na == null || !na.IsProperty || na.Name != "XML")
 				return null;
 			if (na.ArgumentType.GetElementType() != ElementType.String)
 				return null;
@@ -134,7 +134,7 @@ namespace dnlib.DotNet {
 			if (arg.Type.GetElementType() != ElementType.String)
 				return null;
 			var utf8 = arg.Value as UTF8String;
-			if (!(utf8 is null))
+            if (!((object)utf8 == null))
 				return utf8;
             string s;
             if ((s = arg.Value as string) != null)
@@ -211,7 +211,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		public DeclSecurityMD(ModuleDefMD readerModule, uint rid) {
 #if DEBUG
-			if (readerModule is null)
+			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.DeclSecurityTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "DeclSecurity rid {0} does not exist", rid ) );

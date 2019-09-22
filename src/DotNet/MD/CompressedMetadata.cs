@@ -36,7 +36,7 @@ namespace dnlib.DotNet.MD {
 					var sh = mdHeader.StreamHeaders[i];
 					switch (sh.Name) {
 					case "#Strings":
-						if (stringsStream is null) {
+						if (stringsStream == null) {
 							stringsStream = new StringsStream(mdReaderFactory, metadataBaseOffset, sh);
 							newAllStreams.Add(stringsStream);
 							continue;
@@ -44,7 +44,7 @@ namespace dnlib.DotNet.MD {
 						break;
 
 					case "#US":
-						if (usStream is null) {
+						if (usStream == null) {
 							usStream = new USStream(mdReaderFactory, metadataBaseOffset, sh);
 							newAllStreams.Add(usStream);
 							continue;
@@ -52,7 +52,7 @@ namespace dnlib.DotNet.MD {
 						break;
 
 					case "#Blob":
-						if (blobStream is null) {
+						if (blobStream == null) {
 							blobStream = new BlobStream(mdReaderFactory, metadataBaseOffset, sh);
 							newAllStreams.Add(blobStream);
 							continue;
@@ -60,7 +60,7 @@ namespace dnlib.DotNet.MD {
 						break;
 
 					case "#GUID":
-						if (guidStream is null) {
+						if (guidStream == null) {
 							guidStream = new GuidStream(mdReaderFactory, metadataBaseOffset, sh);
 							newAllStreams.Add(guidStream);
 							continue;
@@ -68,7 +68,7 @@ namespace dnlib.DotNet.MD {
 						break;
 
 					case "#~":
-						if (tablesStream is null) {
+						if (tablesStream == null) {
 							tablesStream = new TablesStream(mdReaderFactory, metadataBaseOffset, sh, runtime);
 							newAllStreams.Add(tablesStream);
 							continue;
@@ -76,7 +76,7 @@ namespace dnlib.DotNet.MD {
 						break;
 
 					case "#Pdb":
-						if (isStandalonePortablePdb && pdbStream is null) {
+						if (isStandalonePortablePdb && pdbStream == null) {
 							pdbStream = new PdbStream(mdReaderFactory, metadataBaseOffset, sh);
 							newAllStreams.Add(pdbStream);
 							continue;
@@ -94,10 +94,10 @@ namespace dnlib.DotNet.MD {
 				allStreams = newAllStreams;
 			}
 
-			if (tablesStream is null)
+			if (tablesStream == null)
 				throw new BadImageFormatException("Missing MD stream");
 
-			if (!(pdbStream is null))
+			if (!(pdbStream == null))
 				tablesStream.Initialize(pdbStream.TypeSystemTableRows);
 			else
 				tablesStream.Initialize(null);

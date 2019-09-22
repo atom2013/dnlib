@@ -15,7 +15,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public override PublicKeyToken Token {
 			get {
-				if (publicKeyToken is null && !IsNullOrEmpty)
+				if (publicKeyToken == null && !IsNullOrEmpty)
 					Interlocked.CompareExchange(ref publicKeyToken, AssemblyHash.CreatePublicKeyToken(data), null);
 				return publicKeyToken;
 			}
@@ -51,7 +51,7 @@ namespace dnlib.DotNet {
 			if ((object)this == obj)
 				return true;
 			var other = obj as PublicKey;
-			if (other is null)
+			if (other == null)
 				return false;
 			return Utils.Equals(Data, other.Data);
 		}

@@ -22,7 +22,7 @@ namespace dnlib.DotNet.MD {
 				return Load(peImage = new PEImage(fileName), runtime);
 			}
 			catch {
-				if (!(peImage is null))
+				if (!(peImage == null))
 					peImage.Dispose();
 				throw;
 			}
@@ -34,7 +34,7 @@ namespace dnlib.DotNet.MD {
 				return Load(peImage = new PEImage(data), runtime);
 			}
 			catch {
-				if (!(peImage is null))
+				if (!(peImage == null))
 					peImage.Dispose();
 				throw;
 			}
@@ -48,7 +48,7 @@ namespace dnlib.DotNet.MD {
 				return Load(peImage = new PEImage(addr, ImageLayout.Memory, true), runtime);
 			}
 			catch {
-				if (!(peImage is null))
+				if (!(peImage == null))
 					peImage.Dispose();
 				peImage = null;
 			}
@@ -57,7 +57,7 @@ namespace dnlib.DotNet.MD {
 				return Load(peImage = new PEImage(addr, ImageLayout.File, true), runtime);
 			}
 			catch {
-				if (!(peImage is null))
+				if (!(peImage == null))
 					peImage.Dispose();
 				throw;
 			}
@@ -69,7 +69,7 @@ namespace dnlib.DotNet.MD {
 				return Load(peImage = new PEImage(addr, imageLayout, true), runtime);
 			}
 			catch {
-				if (!(peImage is null))
+				if (!(peImage == null))
 					peImage.Dispose();
 				throw;
 			}
@@ -107,7 +107,7 @@ namespace dnlib.DotNet.MD {
 		/// <param name="runtime">Runtime reader kind</param>
 		/// <param name="verify"><c>true</c> if we should verify that it's a .NET PE file</param>
 		/// <returns>A new <see cref="Metadata"/> instance</returns>
-		public static Metadata CreateMetadata(IPEImage peImage, CLRRuntimeReaderKind runtime, bool verify) => Create(peImage, runtime, verify);
+        public static Metadata CreateMetadata(IPEImage peImage, CLRRuntimeReaderKind runtime, bool verify) { return Create(peImage, runtime, verify); }
 
 		/// <summary>
 		/// Create a <see cref="MetadataBase"/> instance
@@ -155,7 +155,7 @@ namespace dnlib.DotNet.MD {
 				return md;
 			}
 			catch {
-				if (!(md is null))
+				if (!(md == null))
 					md.Dispose();
 				throw;
 			}
@@ -206,7 +206,7 @@ namespace dnlib.DotNet.MD {
 			MetadataType? mdType = null;
 			if (runtime == CLRRuntimeReaderKind.CLR) {
 				foreach (var sh in streamHeaders) {
-					if (mdType is null) {
+					if (mdType == null) {
 						if (sh.Name == "#~")
 							mdType = MetadataType.Compressed;
 						else if (sh.Name == "#-")
@@ -227,8 +227,8 @@ namespace dnlib.DotNet.MD {
 				}
 			}
 			else
-				throw new ArgumentOutOfRangeException(nameof(runtime));
-			if (mdType is null)
+				throw new ArgumentOutOfRangeException("runtime");
+			if (mdType == null)
 				return MetadataType.Unknown;
 			return mdType.Value;
 		}

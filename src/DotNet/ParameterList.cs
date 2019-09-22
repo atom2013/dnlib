@@ -116,7 +116,7 @@ namespace dnlib.DotNet {
 #if THREAD_SAFE
 			theLock.EnterWriteLock(); try {
 #endif
-			if (methodDeclaringType is null)
+			if (methodDeclaringType == null)
 				hiddenThisParameter.Type = null;
 			else if (methodDeclaringType.IsValueType)
 				hiddenThisParameter.Type = new ByRefSig(new ValueTypeSig(methodDeclaringType));
@@ -135,7 +135,7 @@ namespace dnlib.DotNet {
 			theLock.EnterWriteLock(); try {
 #endif
 			var sig = method.MethodSig;
-			if (sig is null) {
+			if (sig == null) {
 				methodSigIndexBase = -1;
 				parameters.Clear();
 				return;
@@ -155,7 +155,7 @@ namespace dnlib.DotNet {
 
 		bool UpdateThisParameter_NoLock(MethodSig methodSig) {
 			int newIndex;
-			if (methodSig is null)
+			if (methodSig == null)
 				newIndex = -1;
 			else
 				newIndex = methodSig.ImplicitThis ? 1 : 0;
@@ -201,7 +201,7 @@ namespace dnlib.DotNet {
 			int count = paramDefs.Count;
 			for (int i = 0; i < count; i++) {
 				var paramDef = paramDefs[i];
-				if (!(paramDef is null) && paramDef.Sequence == seq)
+				if (!(paramDef == null) && paramDef.Sequence == seq)
 					return paramDef;
 			}
 			return null;
@@ -209,7 +209,7 @@ namespace dnlib.DotNet {
 
 		internal void TypeUpdated(Parameter param) {
 			var sig = method.MethodSig;
-			if (sig is null)
+			if (sig == null)
 				return;
 			int index = param.MethodSigIndex;
 			if (index == Parameter.RETURN_TYPE_METHOD_SIG_INDEX)
@@ -223,7 +223,7 @@ namespace dnlib.DotNet {
 			theLock.EnterWriteLock(); try {
 #endif
 			var paramDef = FindParamDef_NoLock(param);
-			if (!(paramDef is null))
+			if (!(paramDef == null))
 				return;
 			if (param.IsHiddenThisParameter) {
 				hiddenThisParamDef = UpdateRowId_NoLock(new ParamDefUser(UTF8String.Empty, ushort.MaxValue, 0));
@@ -239,10 +239,10 @@ namespace dnlib.DotNet {
 
 		ParamDef UpdateRowId_NoLock(ParamDef pd) {
 			var dt = method.DeclaringType;
-			if (dt is null)
+			if (dt == null)
 				return pd;
 			var module = dt.Module;
-			if (module is null)
+			if (module == null)
 				return pd;
 			return module.UpdateRowId(pd);
 		}
@@ -404,7 +404,7 @@ namespace dnlib.DotNet {
 			get { return typeSig; }
 			set {
 				typeSig = value;
-				if (!(parameterList is null))
+				if (!(parameterList == null))
 					parameterList.TypeUpdated(this);
 			}
 		}
@@ -431,11 +431,11 @@ namespace dnlib.DotNet {
 		public string Name {
 			get {
 				var paramDef = ParamDef;
-				return paramDef is null ? string.Empty : UTF8String.ToSystemStringOrEmpty(paramDef.Name);
+				return paramDef == null ? string.Empty : UTF8String.ToSystemStringOrEmpty(paramDef.Name);
 			}
 			set {
 				var paramDef = ParamDef;
-				if (!(paramDef is null))
+				if (!(paramDef == null))
 					paramDef.Name = value;
 			}
 		}
@@ -492,7 +492,7 @@ namespace dnlib.DotNet {
 		/// Creates a <see cref="dnlib.DotNet.ParamDef"/> if it doesn't already exist
 		/// </summary>
 		public void CreateParamDef() {
-			if (!(parameterList is null))
+			if (!(parameterList == null))
 				parameterList.CreateParamDef(this);
 		}
 

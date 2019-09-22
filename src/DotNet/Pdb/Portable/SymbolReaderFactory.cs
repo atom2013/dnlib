@@ -15,7 +15,7 @@ namespace dnlib.DotNet.Pdb.Portable {
 			try {
 				if (!pdbContext.HasDebugInfo)
 					return null;
-				if (pdbStream is null)
+				if (pdbStream == null)
 					return null;
 				if (pdbStream.Length < 4)
 					return null;
@@ -23,7 +23,7 @@ namespace dnlib.DotNet.Pdb.Portable {
 					return null;
 
 				var debugDir = pdbContext.CodeViewDebugDirectory;
-				if (debugDir is null)
+				if (debugDir == null)
 					return null;
 				// Don't check that debugDir.MinorVersion == PortablePdbConstants.PortableCodeViewVersionMagic
 				// and debugDir.MajorVersion == PortablePdbConstants.FormatVersion since it could be a converted
@@ -49,13 +49,13 @@ namespace dnlib.DotNet.Pdb.Portable {
 		}
 
 		public static SymbolReader TryCreateEmbeddedPortablePdbReader(PdbReaderContext pdbContext, Metadata metadata) {
-			if (metadata is null)
+			if (metadata == null)
 				return null;
 			try {
 				if (!pdbContext.HasDebugInfo)
 					return null;
 				var embeddedDir = pdbContext.TryGetDebugDirectoryEntry(ImageDebugType.EmbeddedPortablePdb);
-				if (embeddedDir is null)
+				if (embeddedDir == null)
 					return null;
 				var reader = pdbContext.CreateReader(embeddedDir.AddressOfRawData, embeddedDir.SizeOfData);
 				if (reader.Length < 8)

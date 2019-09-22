@@ -68,7 +68,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 			Debug.Assert(!instructionToOffsetDictInitd);
 			instructionToOffsetDict.Clear();
 			var body = method.Body;
-			if (body is null)
+			if (body == null)
 				return;
 			var instrs = body.Instructions;
 			uint offset = 0;
@@ -84,7 +84,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 		uint GetInstructionOffset(Instruction instr, bool nullIsEndOfMethod) {
 			if (!instructionToOffsetDictInitd)
 				InitializeInstructionDictionary();
-			if (instr is null) {
+			if (instr == null) {
 				if (nullIsEndOfMethod)
 					return bodySize;
 				Error("Instruction is null");
@@ -113,7 +113,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 			for (int i = 0; i < customDebugInfos.Count; i++) {
 				var info = customDebugInfos[i];
-				if (info is null) {
+				if (info == null) {
 					Error("Custom debug info is null");
 					return null;
 				}
@@ -133,7 +133,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 				switch (info.Kind) {
 				case PdbCustomDebugInfoKind.UsingGroups:
 					var usingRec = info as PdbUsingGroupsCustomDebugInfo;
-					if (usingRec is null) {
+					if (usingRec == null) {
 						Error("Unsupported custom debug info type {0}", info.GetType());
 						return null;
 					}
@@ -149,7 +149,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 				case PdbCustomDebugInfoKind.ForwardMethodInfo:
 					var fwdMethodRec = info as PdbForwardMethodInfoCustomDebugInfo;
-					if (fwdMethodRec is null) {
+					if (fwdMethodRec == null) {
 						Error("Unsupported custom debug info type {0}", info.GetType());
 						return null;
 					}
@@ -161,7 +161,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 				case PdbCustomDebugInfoKind.ForwardModuleInfo:
 					var fwdModRec = info as PdbForwardModuleInfoCustomDebugInfo;
-					if (fwdModRec is null) {
+					if (fwdModRec == null) {
 						Error("Unsupported custom debug info type {0}", info.GetType());
 						return null;
 					}
@@ -173,7 +173,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 				case PdbCustomDebugInfoKind.StateMachineHoistedLocalScopes:
 					var smLocalScopesRec = info as PdbStateMachineHoistedLocalScopesCustomDebugInfo;
-					if (smLocalScopesRec is null) {
+					if (smLocalScopesRec == null) {
 						Error("Unsupported custom debug info type {0}", info.GetType());
 						return null;
 					}
@@ -194,12 +194,12 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 				case PdbCustomDebugInfoKind.StateMachineTypeName:
 					var smTypeRec = info as PdbStateMachineTypeNameCustomDebugInfo;
-					if (smTypeRec is null) {
+					if (smTypeRec == null) {
 						Error("Unsupported custom debug info type {0}", info.GetType());
 						return null;
 					}
 					var type = smTypeRec.Type;
-					if (type is null) {
+					if (type == null) {
 						Error("State machine type is null");
 						return null;
 					}
@@ -208,7 +208,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 				case PdbCustomDebugInfoKind.DynamicLocals:
 					var dynLocListRec = info as PdbDynamicLocalsCustomDebugInfo;
-					if (dynLocListRec is null) {
+					if (dynLocListRec == null) {
 						Error("Unsupported custom debug info type {0}", info.GetType());
 						return null;
 					}
@@ -216,7 +216,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 					writer.WriteInt32(count);
 					for (j = 0; j < count; j++) {
 						var dynLoc = dynLocListRec.Locals[j];
-						if (dynLoc is null) {
+						if (dynLoc == null) {
 							Error("Dynamic local is null");
 							return null;
 						}
@@ -225,7 +225,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 							return null;
 						}
 						var name = dynLoc.Name;
-						if (name is null)
+						if (name == null)
 							name = string.Empty;
 						if (name.Length > 64) {
 							Error("Dynamic local name is longer than 64 chars");
@@ -242,7 +242,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 							writer.WriteByte(0);
 						writer.WriteInt32(dynLoc.Flags.Count);
 
-						if (dynLoc.Local is null)
+						if (dynLoc.Local == null)
 							writer.WriteInt32(0);
 						else
 							writer.WriteInt32(dynLoc.Local.Index);
@@ -256,7 +256,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 				case PdbCustomDebugInfoKind.EditAndContinueLocalSlotMap:
 					var encLocalMapRec = info as PdbEditAndContinueLocalSlotMapCustomDebugInfo;
-					if (encLocalMapRec is null) {
+					if (encLocalMapRec == null) {
 						Error("Unsupported custom debug info type {0}", info.GetType());
 						return null;
 					}
@@ -265,7 +265,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 				case PdbCustomDebugInfoKind.EditAndContinueLambdaMap:
 					var encLambdaRec = info as PdbEditAndContinueLambdaMapCustomDebugInfo;
-					if (encLambdaRec is null) {
+					if (encLambdaRec == null) {
 						Error("Unsupported custom debug info type {0}", info.GetType());
 						return null;
 					}
@@ -274,7 +274,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 				case PdbCustomDebugInfoKind.TupleElementNames:
 					var tupleListRec = info as PdbTupleElementNamesCustomDebugInfo;
-					if (tupleListRec is null) {
+					if (tupleListRec == null) {
 						Error("Unsupported custom debug info type {0}", info.GetType());
 						return null;
 					}
@@ -282,7 +282,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 					writer.WriteInt32(count);
 					for (j = 0; j < count; j++) {
 						var tupleInfo = tupleListRec.Names[j];
-						if (tupleInfo is null) {
+						if (tupleInfo == null) {
 							Error("Tuple name info is null");
 							return null;
 						}
@@ -290,7 +290,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 						for (k = 0; k < tupleInfo.TupleElementNames.Count; k++)
 							WriteUTF8Z(tupleInfo.TupleElementNames[k]);
 
-						if (tupleInfo.Local is null) {
+						if (tupleInfo.Local == null) {
 							writer.WriteInt32(-1);
 							writer.WriteUInt32(GetInstructionOffset(tupleInfo.ScopeStart, /* nullIsEndOfMethod: */ false));
 							writer.WriteUInt32(GetInstructionOffset(tupleInfo.ScopeEnd, /* nullIsEndOfMethod: */ true));
@@ -305,7 +305,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 
 				default:
 					var unkRec = info as PdbUnknownCustomDebugInfo;
-					if (unkRec is null) {
+					if (unkRec == null) {
 						Error("Unsupported custom debug info class {0}", info.GetType());
 						return null;
 					}
@@ -336,7 +336,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 		}
 
 		string MetadataNameToRoslynName(string name) {
-			if (name is null)
+			if (name == null)
 				return name;
 			int index = name.LastIndexOf('`');
 			if (index < 0)
@@ -345,7 +345,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 		}
 
 		void WriteUnicodeZ(string s) {
-			if (s is null) {
+			if (s == null) {
 				Error("String is null");
 				return;
 			}
@@ -361,7 +361,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 		}
 
 		void WriteUTF8Z(string s) {
-			if (s is null) {
+			if (s == null) {
 				Error("String is null");
 				return;
 			}
@@ -376,7 +376,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 		}
 
 		uint GetMethodToken(IMethodDefOrRef method) {
-			if (method is null) {
+			if (method == null) {
 				Error("Method is null");
 				return 0;
 			}

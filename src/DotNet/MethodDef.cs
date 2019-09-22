@@ -118,7 +118,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<ParamDef> ParamDefs {
 			get {
-				if (paramDefs is null)
+				if (paramDefs == null)
 					InitializeParamDefs();
 				return paramDefs;
 			}
@@ -133,7 +133,7 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		public IList<GenericParam> GenericParameters {
 			get {
-				if (genericParameters is null)
+				if (genericParameters == null)
 					InitializeGenericParameters();
 				return genericParameters;
 			}
@@ -148,7 +148,7 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		public IList<DeclSecurity> DeclSecurities {
 			get {
-				if (declSecurities is null)
+				if (declSecurities == null)
 					InitializeDeclSecurities();
 				return declSecurities;
 			}
@@ -272,7 +272,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public CustomAttributeCollection CustomAttributes {
 			get {
-				if (customAttributes is null)
+				if (customAttributes == null)
 					InitializeCustomAttributes();
 				return customAttributes;
 			}
@@ -295,7 +295,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PdbCustomDebugInfo> CustomDebugInfos {
 			get {
-				if (customDebugInfos is null)
+				if (customDebugInfos == null)
 					InitializeCustomDebugInfos();
 				return customDebugInfos;
 			}
@@ -312,7 +312,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<MethodOverride> Overrides {
 			get {
-				if (overrides is null)
+				if (overrides == null)
 					InitializeOverrides();
 				return overrides;
 			}
@@ -354,9 +354,9 @@ namespace dnlib.DotNet {
 				var currentDeclaringType = DeclaringType2;
 				if (currentDeclaringType == value)
 					return;
-				if (!(currentDeclaringType is null))
+				if (!(currentDeclaringType == null))
 					currentDeclaringType.Methods.Remove(this);	// Will set DeclaringType2 = null
-				if (!(value is null))
+				if (!(value == null))
 					value.Methods.Add(this);	// Will set DeclaringType2 = value
 			}
 		}
@@ -459,7 +459,7 @@ namespace dnlib.DotNet {
 		int IGenericParameterProvider.NumberOfGenericParameters {
 			get {
 				var sig = MethodSig;
-				return sig is null ? 0 : (int)sig.GenParamCount;
+				return sig == null ? 0 : (int)sig.GenParamCount;
 			}
 		}
 
@@ -469,7 +469,7 @@ namespace dnlib.DotNet {
 		public bool HasThis {
 			get {
 				var ms = MethodSig;
-				return ms is null ? false : ms.HasThis;
+				return ms == null ? false : ms.HasThis;
 			}
 		}
 
@@ -479,7 +479,7 @@ namespace dnlib.DotNet {
 		public bool ExplicitThis {
 			get {
 				var ms = MethodSig;
-				return ms is null ? false : ms.ExplicitThis;
+				return ms == null ? false : ms.ExplicitThis;
 			}
 		}
 
@@ -489,7 +489,7 @@ namespace dnlib.DotNet {
 		public CallingConvention CallingConvention {
 			get {
 				var ms = MethodSig;
-				return ms is null ? 0 : ms.CallingConvention & CallingConvention.Mask;
+				return ms == null ? 0 : ms.CallingConvention & CallingConvention.Mask;
 			}
 		}
 
@@ -500,7 +500,7 @@ namespace dnlib.DotNet {
 			get { return (MethodSig != null)?MethodSig.RetType:null; }
 			set {
 				var ms = MethodSig;
-				if (!(ms is null))
+				if (!(ms == null))
 					ms.RetType = value;
 			}
 		}
@@ -942,7 +942,7 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		void IListListener<GenericParam>.OnAdd(int index, GenericParam value) {
-			if (!(value.Owner is null))
+			if (!(value.Owner == null))
 				throw new InvalidOperationException("Generic param is already owned by another type/method. Set Owner to null first.");
 			value.Owner = this;
 		}
@@ -972,7 +972,7 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		void IListListener<ParamDef>.OnAdd(int index, ParamDef value) {
-			if (!(value.DeclaringMethod is null))
+			if (!(value.DeclaringMethod == null))
 				throw new InvalidOperationException("Param is already owned by another method. Set DeclaringMethod to null first.");
 			value.DeclaringMethod = this;
 		}
@@ -1115,7 +1115,7 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		protected override void InitializeCustomDebugInfos() {
 			var list = new List<PdbCustomDebugInfo>();
-			if (Interlocked.CompareExchange(ref customDebugInfos, list, null) is null) {
+			if (Interlocked.CompareExchange(ref customDebugInfos, list, null) == null) {
 				var body = Body;
 				readerModule.InitializeCustomDebugInfos(this, body, list);
 			}
@@ -1124,7 +1124,7 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		protected override void InitializeOverrides() {
 			var dt = declaringType2 as TypeDefMD;
-			var tmp = dt is null ? new List<MethodOverride>() : dt.GetMethodOverrides(this, new GenericParamContext(declaringType2, this));
+			var tmp = dt == null ? new List<MethodOverride>() : dt.GetMethodOverrides(this, new GenericParamContext(declaringType2, this));
 			Interlocked.CompareExchange(ref overrides, tmp, null);
 		}
 
@@ -1145,7 +1145,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		public MethodDefMD(ModuleDefMD readerModule, uint rid) {
 #if DEBUG
-			if (readerModule is null)
+			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.MethodTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "Method rid {0} does not exist", rid ) );

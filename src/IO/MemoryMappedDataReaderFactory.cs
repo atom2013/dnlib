@@ -280,7 +280,7 @@ namespace dnlib.IO {
 		/// trying to access the memory since that could lead to an exception.
 		/// </summary>
 		internal void UnsafeDisableMemoryMappedIO() {
-			if (!(dataAry is null))
+			if (!(dataAry == null))
 				return;
 			var newAry = new byte[length];
 			Marshal.Copy(data, newAry, 0, newAry.Length);
@@ -294,7 +294,7 @@ namespace dnlib.IO {
 		}
 
 		void FreeMemoryMappedIoData() {
-			if (dataAry is null) {
+			if (dataAry == null) {
 				var origData = Interlocked.Exchange(ref data, IntPtr.Zero);
 				if (origData != IntPtr.Zero) {
 					length = 0;

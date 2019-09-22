@@ -111,7 +111,7 @@ namespace dnlib.DotNet.Resources {
 		void InitializeUserTypes() {
 			foreach (var resource in resources.ResourceElements) {
 				var data = resource.ResourceData as UserResourceData;
-				if (data is null)
+				if (data == null)
 					continue;
 				var newType = typeCreator.CreateUserResourceType(data.TypeName);
 				dataToNewType[data] = newType;

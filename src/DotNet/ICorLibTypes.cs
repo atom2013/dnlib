@@ -121,15 +121,15 @@ namespace dnlib.DotNet {
 
             TypeDef td;
 			if ((td = type as TypeDef) != null &&
-				td.DeclaringType is null &&
-				!((corLibType = self.GetCorLibTypeSig(td.Namespace, td.Name, td.DefinitionAssembly)) is null)) {
+				td.DeclaringType == null &&
+				!((corLibType = self.GetCorLibTypeSig(td.Namespace, td.Name, td.DefinitionAssembly)) == null)) {
 				return corLibType;
 			}
 
             TypeRef tr;
 			if ((tr = type as TypeRef) != null &&
 				!(tr.ResolutionScope is TypeRef) &&
-				!((corLibType = self.GetCorLibTypeSig(tr.Namespace, tr.Name, tr.DefinitionAssembly)) is null)) {
+				!((corLibType = self.GetCorLibTypeSig(tr.Namespace, tr.Name, tr.DefinitionAssembly)) == null)) {
 				return corLibType;
 			}
 
@@ -161,7 +161,7 @@ namespace dnlib.DotNet {
 		public static CorLibTypeSig GetCorLibTypeSig(this ICorLibTypes self, string @namespace, string name, IAssembly defAsm) {
 			if (@namespace != "System")
 				return null;
-			if (defAsm is null || !defAsm.IsCorLib())
+			if (defAsm == null || !defAsm.IsCorLib())
 				return null;
 			switch (name) {
 			case "Void":	return self.Void;

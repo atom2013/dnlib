@@ -16,11 +16,11 @@ namespace dnlib.DotNet.Pdb.Managed {
 		/// <param name="pdbStream">PDB file stream which is now owned by this method</param>
 		/// <returns>A new <see cref="SymbolReader"/> instance or <c>null</c>.</returns>
 		public static SymbolReader Create(PdbReaderContext pdbContext, DataReaderFactory pdbStream) {
-			if (pdbStream is null)
+			if (pdbStream == null)
 				return null;
 			try {
 				var debugDir = pdbContext.CodeViewDebugDirectory;
-				if (debugDir is null)
+				if (debugDir == null)
 					return null;
                 System.Guid pdbGuid;
                 uint age;

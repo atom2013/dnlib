@@ -110,11 +110,11 @@ namespace dnlib.DotNet.Pdb.Managed {
 						}
 						reader.Position += 4;// typeIndex or 0
 						name = ReadUnicodeString(ref reader, end);
-						Debug.Assert(!(name is null));
-						if (name is null)
+						Debug.Assert(!(name == null));
+						if (name == null)
 							break;
 						var data = reader.ReadBytes((int)(end - reader.Position));
-						if (oemInfos is null)
+						if (oemInfos == null)
 							oemInfos = new List<OemInfo>(1);
 						oemInfos.Add(new OemInfo(name, data));	
 						break;
@@ -124,7 +124,7 @@ namespace dnlib.DotNet.Pdb.Managed {
 						if (!NumericReader.TryReadNumeric(ref reader, end, out value))
 							break;
 						name = PdbReader.ReadCString(ref reader);
-						if (constants is null)
+						if (constants == null)
 							constants = new List<ConstantInfo>();
 						constants.Add(new ConstantInfo(name, signatureToken, value));
 						break;
@@ -135,7 +135,7 @@ namespace dnlib.DotNet.Pdb.Managed {
 				}
 
 				reader.Position = end;
-				if (!(child is null)) {
+				if (!(child == null)) {
 					child.Read(counter, ref reader, childEnd.Value);
 					childrenList.Add(child);
 					child = null;
@@ -170,15 +170,15 @@ namespace dnlib.DotNet.Pdb.Managed {
 		}
 
 		public override IList<PdbConstant> GetConstants(ModuleDef module, GenericParamContext gpContext) {
-			if (constants is null)
+			if (constants == null)
 				return Array2.Empty<PdbConstant>();
 			var res = new PdbConstant[constants.Count];
 			for (int i = 0; i < res.Length; i++) {
 				var info = constants[i];
 				TypeSig signature;
 				var saSig = module.ResolveToken(info.SignatureToken, gpContext) as StandAloneSig;
-				var fieldSig = saSig is null ? null : saSig.Signature as FieldSig;
-				if (fieldSig is null) {
+				var fieldSig = saSig == null ? null : saSig.Signature as FieldSig;
+				if (fieldSig == null) {
 					Debug.Fail("Constant without a signature");
 					signature = null;
 				}
@@ -190,7 +190,7 @@ namespace dnlib.DotNet.Pdb.Managed {
 		}
 
 		internal byte[] GetSymAttribute(string name) {
-			if (oemInfos is null)
+			if (oemInfos == null)
 				return null;
 			foreach (var info in oemInfos) {
 				if (info.Name == name)

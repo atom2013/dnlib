@@ -68,7 +68,7 @@ namespace dnlib.DotNet {
 				if (reader.reader.Length == 0)
 					return null;
 				var csig = reader.ReadSig();
-				if (!(csig is null))
+				if (!(csig == null))
 					csig.ExtraData = reader.GetExtraData();
 				return csig;
 			}
@@ -517,7 +517,7 @@ namespace dnlib.DotNet {
 			for (uint i = 0; i < numParams; i++) {
 				var type = ReadType();
 				if (type is SentinelSig) {
-					if (methodSig.ParamsAfterSentinel is null)
+					if (methodSig.ParamsAfterSentinel == null)
 						methodSig.ParamsAfterSentinel = parameters = new List<TypeSig>((int)(numParams - i));
 					i--;
 				}

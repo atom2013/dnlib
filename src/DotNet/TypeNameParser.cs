@@ -242,7 +242,7 @@ namespace dnlib.DotNet {
 		protected virtual void Dispose(bool disposing) {
 			if (!disposing)
 				return;
-			if (!(reader is null))
+			if (!(reader == null))
 				reader.Dispose();
 			reader = null;
 		}
@@ -398,12 +398,12 @@ namespace dnlib.DotNet {
 
 		internal AssemblyRef FindAssemblyRef(TypeRef nonNestedTypeRef) {
 			AssemblyRef asmRef = null;
-			if (!(nonNestedTypeRef is null) && !(typeNameParserHelper is null))
+			if (!(nonNestedTypeRef == null) && !(typeNameParserHelper == null))
 				asmRef = typeNameParserHelper.FindAssemblyRef(nonNestedTypeRef);
-			if (!(asmRef is null))
+			if (!(asmRef == null))
 				return asmRef;
 			var ownerAsm = ownerModule.Assembly;
-			if (!(ownerAsm is null))
+			if (!(ownerAsm == null))
 				return ownerModule.UpdateRowId(ownerAsm.ToAssemblyRef());
 			return AssemblyRef.CurrentAssembly;
 		}
@@ -583,12 +583,12 @@ namespace dnlib.DotNet {
 				result = null;
 				if (typeRef == nonNestedTypeRef) {
 					var corLibSig = ownerModule.CorLibTypes.GetCorLibTypeSig(typeRef.Namespace, typeRef.Name, typeRef.DefinitionAssembly);
-					if (!(corLibSig is null))
+					if (!(corLibSig == null))
 						result = corLibSig;
 				}
-				if (result is null) {
+				if (result == null) {
 					var typeDef = Resolve(asmRef, typeRef);
-					result = ToTypeSig(!(typeDef is null) ? (ITypeDefOrRef)typeDef : typeRef);
+					result = ToTypeSig(!(typeDef == null) ? (ITypeDefOrRef)typeDef : typeRef);
 				}
 
 				if (tspecs.Count != 0)
@@ -601,12 +601,12 @@ namespace dnlib.DotNet {
 
 		TypeDef Resolve(AssemblyRef asmRef, TypeRef typeRef) {
 			var asm = ownerModule.Assembly;
-			if (asm is null)
+			if (asm == null)
 				return null;
 			if (!(AssemblyNameComparer.CompareAll.Equals(asmRef, asm) && asmRef.IsRetargetable == asm.IsRetargetable))
 				return null;
 			var td = asm.Find(typeRef);
-			return !(td is null) && td.Module == ownerModule ? td : null;
+			return !(td == null) && td.Module == ownerModule ? td : null;
 		}
 
 		AssemblyRef ReadOptionalAssemblyRef() {
@@ -730,7 +730,7 @@ namespace dnlib.DotNet {
 
 		AssemblyRef ReadAssemblyRef() {
 			var asmRef = new AssemblyRefUser();
-			if (!(ownerModule is null))
+			if (!(ownerModule == null))
 				ownerModule.UpdateRowId(asmRef);
 
 			asmRef.Name = ReadAssemblyNameId();

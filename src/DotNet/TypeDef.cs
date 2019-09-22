@@ -224,7 +224,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<FieldDef> Fields {
 			get {
-				if (fields is null)
+				if (fields == null)
 					InitializeFields();
 				return fields;
 			}
@@ -241,7 +241,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<MethodDef> Methods {
 			get {
-				if (methods is null)
+				if (methods == null)
 					InitializeMethods();
 				return methods;
 			}
@@ -256,7 +256,7 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		public IList<GenericParam> GenericParameters {
 			get {
-				if (genericParameters is null)
+				if (genericParameters == null)
 					InitializeGenericParameters();
 				return genericParameters;
 			}
@@ -273,7 +273,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<InterfaceImpl> Interfaces {
 			get {
-				if (interfaces is null)
+				if (interfaces == null)
 					InitializeInterfaces();
 				return interfaces;
 			}
@@ -288,7 +288,7 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		public IList<DeclSecurity> DeclSecurities {
 			get {
-				if (declSecurities is null)
+				if (declSecurities == null)
 					InitializeDeclSecurities();
 				return declSecurities;
 			}
@@ -339,7 +339,7 @@ namespace dnlib.DotNet {
 		}
 		ClassLayout GetOrCreateClassLayout() {
 			var cl = ClassLayout;
-			if (!(cl is null))
+			if (!(cl == null))
 				return cl;
 			Interlocked.CompareExchange(ref classLayout, new ClassLayoutUser(0, 0), null);
 			return classLayout;
@@ -364,9 +364,9 @@ namespace dnlib.DotNet {
 				var currentDeclaringType = DeclaringType2;
 				if (currentDeclaringType == value)
 					return;
-				if (!(currentDeclaringType is null))
+				if (!(currentDeclaringType == null))
 					currentDeclaringType.NestedTypes.Remove(this);	// Will set DeclaringType2 = null
-				if (!(value is null))
+				if (!(value == null))
 					value.NestedTypes.Add(this);		// Will set DeclaringType2 = value
 
 				// Make sure this is clear. Will be set whenever it's inserted into ModulDef.Types
@@ -425,7 +425,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<TypeDef> NestedTypes {
 			get {
-				if (nestedTypes is null)
+				if (nestedTypes == null)
 					InitializeNestedTypes();
 				return nestedTypes;
 			}
@@ -442,7 +442,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<EventDef> Events {
 			get {
-				if (events is null)
+				if (events == null)
 					InitializeEvents();
 				return events;
 			}
@@ -459,7 +459,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PropertyDef> Properties {
 			get {
-				if (properties is null)
+				if (properties == null)
 					InitializeProperties();
 				return properties;
 			}
@@ -476,7 +476,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public CustomAttributeCollection CustomAttributes {
 			get {
-				if (customAttributes is null)
+				if (customAttributes == null)
 					InitializeCustomAttributes();
 				return customAttributes;
 			}
@@ -502,7 +502,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PdbCustomDebugInfo> CustomDebugInfos {
 			get {
-				if (customDebugInfos is null)
+				if (customDebugInfos == null)
 					InitializeCustomDebugInfos();
 				return customDebugInfos;
 			}
@@ -562,7 +562,7 @@ namespace dnlib.DotNet {
 		public ushort PackingSize {
 			get {
 				var cl = ClassLayout;
-				return cl is null ? ushort.MaxValue : cl.PackingSize;
+				return cl == null ? ushort.MaxValue : cl.PackingSize;
 			}
 			set {
 				var cl = GetOrCreateClassLayout();
@@ -578,7 +578,7 @@ namespace dnlib.DotNet {
 		public uint ClassSize {
 			get {
 				var cl = ClassLayout;
-				return cl is null ? uint.MaxValue : cl.ClassSize;
+				return cl == null ? uint.MaxValue : cl.ClassSize;
 			}
 			set {
 				var cl = GetOrCreateClassLayout();
@@ -594,7 +594,7 @@ namespace dnlib.DotNet {
 				if ((Attributes & TypeAttributes.ClassSemanticsMask) != TypeAttributes.Class)
 					return false;
 				var baseType = BaseType;
-				if (baseType is null)
+				if (baseType == null)
 					return false;
 				if (!baseType.DefinitionAssembly.IsCorLib())
 					return false;
@@ -608,7 +608,7 @@ namespace dnlib.DotNet {
 				}
 				else {
 					var baseTd = baseType as TypeDef;
-					if (baseTd is null)
+					if (baseTd == null)
 						return false;
 					baseName = baseTd.Name;
 					baseNamespace = baseTd.Namespace;
@@ -639,7 +639,7 @@ namespace dnlib.DotNet {
 				if ((Attributes & TypeAttributes.ClassSemanticsMask) != TypeAttributes.Class)
 					return false;
 				var baseType = BaseType;
-				if (baseType is null)
+				if (baseType == null)
 					return false;
 				if (!baseType.DefinitionAssembly.IsCorLib())
 					return false;
@@ -663,7 +663,7 @@ namespace dnlib.DotNet {
 				if ((Attributes & (TypeAttributes.Abstract | TypeAttributes.ClassSemanticsMask)) != TypeAttributes.Class)
 					return false;
 				var baseType = BaseType;
-				if (baseType is null)
+				if (baseType == null)
 					return false;
 				if (!baseType.DefinitionAssembly.IsCorLib())
 					return false;
@@ -916,7 +916,7 @@ namespace dnlib.DotNet {
 		public bool IsGlobalModuleType {
 			get {
 				var mod = Module;
-				return !(mod is null) && mod.GlobalType == this;
+				return !(mod == null) && mod.GlobalType == this;
 			}
 		}
 
@@ -936,7 +936,7 @@ namespace dnlib.DotNet {
 				var field = fields[i];
 				if (!field.IsLiteral && !field.IsStatic) {
 					var fieldSig = field.FieldSig;
-					if (!(fieldSig is null))
+					if (!(fieldSig == null))
 						return fieldSig.Type;
 				}
 			}
@@ -961,15 +961,15 @@ namespace dnlib.DotNet {
 		/// <returns>A <see cref="MethodDef"/> or a <see cref="FieldDef"/> instance or <c>null</c>
 		/// if it couldn't be resolved.</returns>
 		public IMemberForwarded Resolve(MemberRef memberRef, SigComparerOptions options) {
-			if (memberRef is null)
+			if (memberRef == null)
 				return null;
 
 			var methodSig = memberRef.MethodSig;
-			if (!(methodSig is null))
+			if (!(methodSig == null))
 				return FindMethodCheckBaseType(memberRef.Name, methodSig, options, memberRef.Module);
 
 			var fieldSig = memberRef.FieldSig;
-			if (!(fieldSig is null))
+			if (!(fieldSig == null))
 				return FindFieldCheckBaseType(memberRef.Name, fieldSig, options, memberRef.Module);
 
 			return null;
@@ -1001,7 +1001,7 @@ namespace dnlib.DotNet {
 		/// <param name="sourceModule">The module that needs to find the method or <c>null</c></param>
 		/// <returns>The first method that matches or <c>null</c> if none found</returns>
 		public MethodDef FindMethod(UTF8String name, MethodSig sig, SigComparerOptions options, ModuleDef sourceModule) {
-			if (UTF8String.IsNull(name) || sig is null)
+			if (UTF8String.IsNull(name) || sig == null)
 				return null;
 			var comparer = new SigComparer(options, sourceModule);
 			bool allowPrivateScope = (options & SigComparerOptions.PrivateScopeMethodIsComparable) != 0;
@@ -1073,7 +1073,7 @@ namespace dnlib.DotNet {
 		/// <returns>The class constructor</returns>
 		public MethodDef FindOrCreateStaticConstructor() {
 			var cctor = FindStaticConstructor();
-			if (!(cctor is null))
+			if (!(cctor == null))
 				return cctor;
 
 			var implFlags = MethodImplAttributes.IL | MethodImplAttributes.Managed;
@@ -1132,7 +1132,7 @@ namespace dnlib.DotNet {
 				if (!method.IsInstanceConstructor)
 					continue;
 				var sig = method.MethodSig;
-				if (!(sig is null) && sig.Params.Count == 0)
+				if (!(sig == null) && sig.Params.Count == 0)
 					return method;
 			}
 			return null;
@@ -1164,7 +1164,7 @@ namespace dnlib.DotNet {
 		/// <param name="sourceModule">The module that needs to find the field or <c>null</c></param>
 		/// <returns>The first field that matches or <c>null</c> if none found</returns>
 		public FieldDef FindField(UTF8String name, FieldSig sig, SigComparerOptions options, ModuleDef sourceModule) {
-			if (UTF8String.IsNull(name) || sig is null)
+			if (UTF8String.IsNull(name) || sig == null)
 				return null;
 			var comparer = new SigComparer(options, sourceModule);
 			bool allowPrivateScope = (options & SigComparerOptions.PrivateScopeFieldIsComparable) != 0;
@@ -1239,7 +1239,7 @@ namespace dnlib.DotNet {
 		/// <param name="sourceModule">The module that needs to find the event or <c>null</c></param>
 		/// <returns>A <see cref="EventDef"/> or <c>null</c> if not found</returns>
 		public EventDef FindEvent(UTF8String name, IType type, SigComparerOptions options, ModuleDef sourceModule) {
-			if (UTF8String.IsNull(name) || type is null)
+			if (UTF8String.IsNull(name) || type == null)
 				return null;
 			var comparer = new SigComparer(options, sourceModule);
 			var events = Events;
@@ -1311,7 +1311,7 @@ namespace dnlib.DotNet {
 		/// <param name="sourceModule">The module that needs to find the property or <c>null</c></param>
 		/// <returns>A <see cref="PropertyDef"/> or <c>null</c> if not found</returns>
 		public PropertyDef FindProperty(UTF8String name, CallingConventionSig propSig, SigComparerOptions options, ModuleDef sourceModule) {
-			if (UTF8String.IsNull(name) || propSig is null)
+			if (UTF8String.IsNull(name) || propSig == null)
 				return null;
 			var comparer = new SigComparer(options, sourceModule);
 			var properties = Properties;
@@ -1384,9 +1384,9 @@ namespace dnlib.DotNet {
 		/// <returns>The method or <c>null</c> if it wasn't found</returns>
 		public MethodDef FindMethodCheckBaseType(UTF8String name, MethodSig sig, SigComparerOptions options, ModuleDef sourceModule) {
 			var td = this;
-			while (!(td is null)) {
+			while (!(td == null)) {
 				var md = td.FindMethod(name, sig, options, sourceModule);
-				if (!(md is null))
+				if (!(md == null))
 					return md;
 				td = td.BaseType.ResolveTypeDef();
 			}
@@ -1400,9 +1400,9 @@ namespace dnlib.DotNet {
 		/// <returns>The method or <c>null</c> if it wasn't found</returns>
 		public MethodDef FindMethodCheckBaseType(UTF8String name) {
 			var td = this;
-			while (!(td is null)) {
+			while (!(td == null)) {
 				var md = td.FindMethod(name);
-				if (!(md is null))
+				if (!(md == null))
 					return md;
 				td = td.BaseType.ResolveTypeDef();
 			}
@@ -1436,9 +1436,9 @@ namespace dnlib.DotNet {
 		/// <returns>The field or <c>null</c> if it wasn't found</returns>
 		public FieldDef FindFieldCheckBaseType(UTF8String name, FieldSig sig, SigComparerOptions options, ModuleDef sourceModule) {
 			var td = this;
-			while (!(td is null)) {
+			while (!(td == null)) {
 				var fd = td.FindField(name, sig, options, sourceModule);
-				if (!(fd is null))
+				if (!(fd == null))
 					return fd;
 				td = td.BaseType.ResolveTypeDef();
 			}
@@ -1452,9 +1452,9 @@ namespace dnlib.DotNet {
 		/// <returns>The field or <c>null</c> if it wasn't found</returns>
 		public FieldDef FindFieldCheckBaseType(UTF8String name) {
 			var td = this;
-			while (!(td is null)) {
+			while (!(td == null)) {
 				var fd = td.FindField(name);
-				if (!(fd is null))
+				if (!(fd == null))
 					return fd;
 				td = td.BaseType.ResolveTypeDef();
 			}
@@ -1469,9 +1469,9 @@ namespace dnlib.DotNet {
 		/// <returns>The event or <c>null</c> if it wasn't found</returns>
 		public EventDef FindEventCheckBaseType(UTF8String name, ITypeDefOrRef eventType) {
 			var td = this;
-			while (!(td is null)) {
+			while (!(td == null)) {
 				var ed = td.FindEvent(name, eventType);
-				if (!(ed is null))
+				if (!(ed == null))
 					return ed;
 				td = td.BaseType.ResolveTypeDef();
 			}
@@ -1485,9 +1485,9 @@ namespace dnlib.DotNet {
 		/// <returns>The event or <c>null</c> if it wasn't found</returns>
 		public EventDef FindEventCheckBaseType(UTF8String name) {
 			var td = this;
-			while (!(td is null)) {
+			while (!(td == null)) {
 				var ed = td.FindEvent(name);
-				if (!(ed is null))
+				if (!(ed == null))
 					return ed;
 				td = td.BaseType.ResolveTypeDef();
 			}
@@ -1521,9 +1521,9 @@ namespace dnlib.DotNet {
 		/// <returns>The property or <c>null</c> if it wasn't found</returns>
 		public PropertyDef FindPropertyCheckBaseType(UTF8String name, PropertySig sig, SigComparerOptions options, ModuleDef sourceModule) {
 			var td = this;
-			while (!(td is null)) {
+			while (!(td == null)) {
 				var pd = td.FindProperty(name, sig, options, sourceModule);
-				if (!(pd is null))
+				if (!(pd == null))
 					return pd;
 				td = td.BaseType.ResolveTypeDef();
 			}
@@ -1537,9 +1537,9 @@ namespace dnlib.DotNet {
 		/// <returns>The property or <c>null</c> if it wasn't found</returns>
 		public PropertyDef FindPropertyCheckBaseType(UTF8String name) {
 			var td = this;
-			while (!(td is null)) {
+			while (!(td == null)) {
 				var pd = td.FindProperty(name);
-				if (!(pd is null))
+				if (!(pd == null))
 					return pd;
 				td = td.BaseType.ResolveTypeDef();
 			}
@@ -1559,7 +1559,7 @@ namespace dnlib.DotNet {
 		/// <param name="removeEmptyPropertiesEvents"><c>true</c> if we should remove all
 		/// empty properties and events.</param>
 		public void Remove(MethodDef method, bool removeEmptyPropertiesEvents) {
-			if (method is null)
+			if (method == null)
 				return;
 
 			var properties = Properties;
@@ -1620,7 +1620,7 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		void IListListener<FieldDef>.OnAdd(int index, FieldDef value) {
-			if (!(value.DeclaringType is null))
+			if (!(value.DeclaringType == null))
 				throw new InvalidOperationException("Field is already owned by another type. Set DeclaringType to null first.");
 			value.DeclaringType2 = this;
 		}
@@ -1650,7 +1650,7 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		void IListListener<MethodDef>.OnAdd(int index, MethodDef value) {
-			if (!(value.DeclaringType is null))
+			if (!(value.DeclaringType == null))
 				throw new InvalidOperationException("Method is already owned by another type. Set DeclaringType to null first.");
 			value.DeclaringType2 = this;
 			value.Parameters.UpdateThisParameterType(this);
@@ -1677,8 +1677,8 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		void IListListener<TypeDef>.OnLazyAdd(int index, ref TypeDef value) {
 #if DEBUG
-			if (!(value.Module2 is null))
-				throw new InvalidOperationException("Added nested type's !(Module is null)");
+			if (!(value.Module2 == null))
+				throw new InvalidOperationException("Added nested type's !(Module == null)");
 			if (value.DeclaringType != this)
 				throw new InvalidOperationException("Added nested type's DeclaringType != this");
 #endif
@@ -1686,9 +1686,9 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		void IListListener<TypeDef>.OnAdd(int index, TypeDef value) {
-			if (!(value.DeclaringType is null))
+			if (!(value.DeclaringType == null))
 				throw new InvalidOperationException("Nested type is already owned by another type. Set DeclaringType to null first.");
-			if (!(value.Module is null))
+			if (!(value.Module == null))
 				throw new InvalidOperationException("Type is already owned by another module. Remove it from that module's type list.");
 			value.DeclaringType2 = this;
 		}
@@ -1721,7 +1721,7 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		void IListListener<EventDef>.OnAdd(int index, EventDef value) {
-			if (!(value.DeclaringType is null))
+			if (!(value.DeclaringType == null))
 				throw new InvalidOperationException("Event is already owned by another type. Set DeclaringType to null first.");
 			value.DeclaringType2 = this;
 		}
@@ -1751,7 +1751,7 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		void IListListener<PropertyDef>.OnAdd(int index, PropertyDef value) {
-			if (!(value.DeclaringType is null))
+			if (!(value.DeclaringType == null))
 				throw new InvalidOperationException("Property is already owned by another type. Set DeclaringType to null first.");
 			value.DeclaringType2 = this;
 		}
@@ -1781,7 +1781,7 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		void IListListener<GenericParam>.OnAdd(int index, GenericParam value) {
-			if (!(value.Owner is null))
+			if (!(value.Owner == null))
 				throw new InvalidOperationException("Generic param is already owned by another type/method. Set Owner to null first.");
 			value.Owner = this;
 		}
@@ -1834,7 +1834,7 @@ namespace dnlib.DotNet {
 
 		internal static bool GetClassSize(TypeDef td, out uint size) {
 			size = 0;
-			if (td is null)
+			if (td == null)
 				return false;
 			if (!td.IsValueType)
 				return false;	// Not supported by us
@@ -1842,13 +1842,13 @@ namespace dnlib.DotNet {
 				if (td.Fields.Count != 1)
 					return false;
 				var fd = td.Fields[0];
-				if (fd is null)
+				if (fd == null)
 					return false;
 				return fd.GetFieldSize(out size);
 			}
 
 			var classLayout = td.ClassLayout;
-			if (classLayout is null)
+			if (classLayout == null)
 				return false;
 			uint classSize = classLayout.ClassSize;
 			if (classSize != 0) {
@@ -1873,29 +1873,29 @@ namespace dnlib.DotNet {
 
 			// Must be a member ref
 			var mr = mdr as MemberRef;
-			if (mr is null)
+			if (mr == null)
 				return null;
 
 			// If Class is MethodDef, then it should be a vararg method
 			var parent = mr.Class;
 			md = parent as MethodDef;
-			if (!(md is null))
+			if (!(md == null))
 				return md;
 
 			// If it's a TypeSpec, it must be a generic instance type
 			for (int i = 0; i < 10; i++) {
 				var ts = parent as TypeSpec;
-				if (ts is null)
+				if (ts == null)
 					break;
 
 				var gis = ts.TypeSig as GenericInstSig;
-				if (gis is null || gis.GenericType is null)
+				if (gis == null || gis.GenericType == null)
 					return null;
 				parent = gis.GenericType.TypeDefOrRef;
 			}
 
 			var td = parent as TypeDef;
-			if (td is null) {
+			if (td == null) {
                 // If it's a TypeRef, resolve it as if it is a reference to a type in the
                 // current module, even if its ResolutionScope happens to be some other
                 // assembly/module (that's what the CLR does)
@@ -1903,7 +1903,7 @@ namespace dnlib.DotNet {
                 if ((tr = parent as TypeRef) != null && Module != null)
 					td = Module.Find(tr);
 			}
-			if (td is null)
+			if (td == null)
 				return null;
 			return td.FindMethod(mr.Name, mr.MethodSig);
 		}
@@ -2084,7 +2084,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		public TypeDefMD(ModuleDefMD readerModule, uint rid) {
 #if DEBUG
-			if (readerModule is null)
+			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.TypeDefTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "TypeDef rid {0} does not exist", rid ) );
@@ -2108,10 +2108,10 @@ namespace dnlib.DotNet {
 		/// <param name="gpContext">Generic parameter context</param>
 		/// <returns>A list (possibly empty) of all methods <paramref name="method"/> overrides</returns>
 		internal IList<MethodOverride> GetMethodOverrides(MethodDefMD method, GenericParamContext gpContext) {
-			if (method is null)
+			if (method == null)
 				return new List<MethodOverride>();
 
-			if (methodRidToOverrides is null)
+			if (methodRidToOverrides == null)
 				InitializeMethodOverrides();
 
             IList<MethodOverrideTokens> overrides;
@@ -2150,14 +2150,14 @@ namespace dnlib.DotNet {
 
 				var methodBody = readerModule.ResolveMethodDefOrRef(row.MethodBody);
 				var methodDecl = readerModule.ResolveMethodDefOrRef(row.MethodDeclaration);
-				if (methodBody is null || methodDecl is null)
+				if (methodBody == null || methodDecl == null)
 					continue;	// Should only happen if some obfuscator added invalid metadata
 
 				// Find the real method. This is usually methodBody since it's usually a
 				// MethodDef. The CLR only allows method bodies in the current type, and
 				// so shall we.
 				var method = FindMethodImplMethod(methodBody);
-				if (method is null || method.DeclaringType != this)
+				if (method == null || method.DeclaringType != this)
 					continue;
 
 				uint rid = method.Rid;
@@ -2183,7 +2183,7 @@ namespace dnlib.DotNet {
                     if (!readerModule.TablesStream.TryReadMethodSemanticsRow(ridList[j], out row))
 						continue;
 					var method = readerModule.ResolveMethod(row.Method);
-					if (method is null)
+					if (method == null)
 						continue;
 
 					Interlocked.CompareExchange(ref method.semAttrs, row.Semantic | MethodDef.SEMATTRS_INITD, 0);
@@ -2199,7 +2199,7 @@ namespace dnlib.DotNet {
                     if (!readerModule.TablesStream.TryReadMethodSemanticsRow(ridList[j], out row))
 						continue;
 					var method = readerModule.ResolveMethod(row.Method);
-					if (method is null)
+					if (method == null)
 						continue;
 
 					Interlocked.CompareExchange(ref method.semAttrs, row.Semantic | MethodDef.SEMATTRS_INITD, 0);
@@ -2218,7 +2218,7 @@ namespace dnlib.DotNet {
 			getMethods = new List<MethodDef>();
 			setMethods = new List<MethodDef>();
 			otherMethods = new List<MethodDef>();
-			if (prop is null)
+			if (prop == null)
 				return;
 
 			var ridList = readerModule.Metadata.GetMethodSemanticsRidList(Table.Property, prop.OrigRid);
@@ -2227,7 +2227,7 @@ namespace dnlib.DotNet {
                 if (!readerModule.TablesStream.TryReadMethodSemanticsRow(ridList[i], out row))
 					continue;
 				var method = readerModule.ResolveMethod(row.Method);
-				if (method is null || method.DeclaringType != prop.DeclaringType)
+				if (method == null || method.DeclaringType != prop.DeclaringType)
 					continue;
 
 				// It's documented to be flags, but ignore those with more than one bit set
@@ -2267,7 +2267,7 @@ namespace dnlib.DotNet {
 			invokeMethod = null;
 			removeMethod = null;
 			otherMethods = new List<MethodDef>();
-			if (evt is null)
+			if (evt == null)
 				return;
 
 			var ridList = readerModule.Metadata.GetMethodSemanticsRidList(Table.Event, evt.OrigRid);
@@ -2276,23 +2276,23 @@ namespace dnlib.DotNet {
                 if (!readerModule.TablesStream.TryReadMethodSemanticsRow(ridList[i], out row))
 					continue;
 				var method = readerModule.ResolveMethod(row.Method);
-				if (method is null || method.DeclaringType != evt.DeclaringType)
+				if (method == null || method.DeclaringType != evt.DeclaringType)
 					continue;
 
 				// It's documented to be flags, but ignore those with more than one bit set
 				switch ((MethodSemanticsAttributes)row.Semantic) {
 				case MethodSemanticsAttributes.AddOn:
-					if (addMethod is null)
+					if (addMethod == null)
 						addMethod = method;
 					break;
 
 				case MethodSemanticsAttributes.RemoveOn:
-					if (removeMethod is null)
+					if (removeMethod == null)
 						removeMethod = method;
 					break;
 
 				case MethodSemanticsAttributes.Fire:
-					if (invokeMethod is null)
+					if (invokeMethod == null)
 						invokeMethod = method;
 					break;
 

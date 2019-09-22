@@ -14,7 +14,7 @@ namespace dnlib.DotNet.Emit {
 		/// <param name="instr">The instruction</param>
 		/// <returns>The result</returns>
 		public static string ToString(Instruction instr) {
-			if (instr is null)
+			if (instr == null)
 				return string.Empty;
 
 			var sb = new StringBuilder();
@@ -67,7 +67,7 @@ namespace dnlib.DotNet.Emit {
 				sb.Append(extra);
 				if (op is IFullName)
 					sb.Append((op as IFullName).FullName);
-				else if (!(op is null))
+				else if (!(op == null))
 					sb.Append(op.ToString());
 				else
 					sb.Append("null");
@@ -93,7 +93,7 @@ namespace dnlib.DotNet.Emit {
 
 			case OperandType.InlineSwitch:
 				var targets = op as IList<Instruction>;
-				if (targets is null)
+				if (targets == null)
 					sb.Append("null");
 				else {
 					sb.Append('(');
@@ -109,7 +109,7 @@ namespace dnlib.DotNet.Emit {
 			case OperandType.InlineVar:
 			case OperandType.ShortInlineVar:
 				sb.Append(extra);
-				if (op is null)
+				if (op == null)
 					sb.Append("null");
 				else
 					sb.Append(op.ToString());
@@ -123,14 +123,14 @@ namespace dnlib.DotNet.Emit {
 		}
 
 		static void AddInstructionTarget(StringBuilder sb, Instruction targetInstr) {
-			if (targetInstr is null)
+			if (targetInstr == null)
 				sb.Append("null");
 			else
 				sb.Append( string.Format( "IL_{0:X4}", targetInstr.Offset ) );
 		}
 
 		static void EscapeString(StringBuilder sb, string s, bool addQuotes) {
-			if (s is null) {
+			if (s == null) {
 				sb.Append("null");
 				return;
 			}

@@ -74,7 +74,7 @@ namespace dnlib.DotNet.Pdb {
 		/// <param name="module">Module</param>
 		/// <param name="pdbFileKind">PDB file kind</param>
 		public PdbState(ModuleDef module, PdbFileKind pdbFileKind) {
-			if (module is null)
+			if (module == null)
 				throw new ArgumentNullException("module");
 			compiler = CalculateCompiler(module);
 			PdbFileKind = pdbFileKind;
@@ -87,7 +87,7 @@ namespace dnlib.DotNet.Pdb {
 		/// <param name="reader">A <see cref="SymbolReader"/> instance</param>
 		/// <param name="module">Owner module</param>
 		public PdbState(SymbolReader reader, ModuleDefMD module) {
-			if (module is null)
+			if (module == null)
 				throw new ArgumentNullException("module");
             if (reader != null) this.reader = reader; else throw new ArgumentNullException("reader");
 			reader.Initialize(module);
@@ -199,11 +199,11 @@ namespace dnlib.DotNet.Pdb {
 		internal Compiler Compiler { get { return compiler; } }
 
 		internal void InitializeMethodBody(ModuleDefMD module, MethodDef ownerMethod, CilBody body) {
-			if (reader is null)
+			if (reader == null)
 				return;
 
 			var method = reader.GetMethod(ownerMethod, 1);
-			if (!(method is null)) {
+			if (!(method == null)) {
 				var pdbMethod = new PdbMethod();
 				pdbMethod.Scope = CreateScope(module, GenericParamContext.Create(ownerMethod), body, method.RootScope);
 				AddSequencePoints(body, method);
@@ -212,16 +212,16 @@ namespace dnlib.DotNet.Pdb {
 		}
 
 		internal void InitializeCustomDebugInfos(MethodDef ownerMethod, CilBody body, IList<PdbCustomDebugInfo> customDebugInfos) {
-			if (reader is null)
+			if (reader == null)
 				return;
 
 			var method = reader.GetMethod(ownerMethod, 1);
-			if (!(method is null))
+			if (!(method == null))
 				method.GetCustomDebugInfos(ownerMethod, body, customDebugInfos);
 		}
 
 		static Compiler CalculateCompiler(ModuleDef module) {
-			if (module is null)
+			if (module == null)
 				return Compiler.Other;
 
 			foreach (var asmRef in module.GetAssemblyRefs()) {
@@ -234,7 +234,7 @@ namespace dnlib.DotNet.Pdb {
 			// The VB runtime can also be embedded, and if so, it seems that "Microsoft.VisualBasic.Embedded"
 			// attribute is added to the assembly's custom attributes.
 			var asm = module.Assembly;
-			if (!(asm is null) && asm.CustomAttributes.IsDefined("Microsoft.VisualBasic.Embedded"))
+			if (!(asm == null) && asm.CustomAttributes.IsDefined("Microsoft.VisualBasic.Embedded"))
 				return Compiler.VisualBasic;
 #endif
 
@@ -251,7 +251,7 @@ namespace dnlib.DotNet.Pdb {
 			for (int i = 0; i < count; i++) {
 				var sp = sequencePoints[i];
 				var instr = GetInstruction(body.Instructions, sp.Offset, ref instrIndex);
-				if (instr is null)
+				if (instr == null)
 					continue;
 				var seqPoint = new SequencePoint() {
 					Document = Add_NoLock(sp.Document),
@@ -272,7 +272,7 @@ namespace dnlib.DotNet.Pdb {
 		}
 
 		PdbScope CreateScope(ModuleDefMD module, GenericParamContext gpContext, CilBody body, SymbolScope symScope) {
-			if (symScope is null)
+			if (symScope == null)
 				return null;
 
 			// Don't use recursive calls
@@ -322,7 +322,7 @@ recursive_call:
 			for (int i = 0; i < constants.Count; i++) {
 				var constant = constants[i];
 				var type = constant.Type.RemovePinnedAndModifiers();
-				if (!(type is null)) {
+				if (!(type == null)) {
 					// Fix a few values since they're stored as some other type in the PDB
 					switch (type.ElementType) {
 					case ElementType.Boolean:
@@ -363,7 +363,7 @@ recursive_call:
 							// "" is stored as null, and null is stored as (int)0
 							if (constant.Value is int && (int)constant.Value == 0)
 								constant.Value = null;
-							else if (constant.Value is null)
+							else if (constant.Value == null)
 								constant.Value = string.Empty;
 						}
 						else
@@ -385,7 +385,7 @@ recursive_call:
 					case ElementType.Var:
 					case ElementType.MVar:
 						var gp = ((GenericSig)type).GenericParam;
-						if (!(gp is null)) {
+						if (!(gp == null)) {
 							if (gp.HasNotNullableValueTypeConstraint)
 								break;
 							if (gp.HasReferenceTypeConstraint)

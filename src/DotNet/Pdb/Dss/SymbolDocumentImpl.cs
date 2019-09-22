@@ -86,9 +86,9 @@ namespace dnlib.DotNet.Pdb.Dss {
 
 		public override PdbCustomDebugInfo[] CustomDebugInfos {
 			get {
-				if (customDebugInfos is null) {
+				if (customDebugInfos == null) {
 					var sourceCode = SourceCode;
-					if (!(sourceCode is null))
+					if (!(sourceCode == null))
 						customDebugInfos = new PdbCustomDebugInfo[1] { new PdbEmbeddedSourceCustomDebugInfo(sourceCode) };
 					else
 						customDebugInfos = Array2.Empty<PdbCustomDebugInfo>();

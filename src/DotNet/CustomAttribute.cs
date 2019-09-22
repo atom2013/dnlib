@@ -39,7 +39,7 @@ namespace dnlib.DotNet {
                 MethodDef mdCtor;
 				if ((mdCtor = ctor as MethodDef) != null) {
 					var declType = mdCtor.DeclaringType;
-					if (!(declType is null))
+					if (!(declType == null))
 						return declType.FullName;
 				}
 
@@ -165,8 +165,8 @@ namespace dnlib.DotNet {
 		/// <param name="caBlobOffset">Original custom attribute #Blob offset or 0</param>
 		public CustomAttribute(ICustomAttributeType ctor, IEnumerable<CAArgument> arguments, IEnumerable<CANamedArgument> namedArguments, uint caBlobOffset) {
 			this.ctor = ctor;
-			this.arguments = arguments is null ? new List<CAArgument>() : new List<CAArgument>(arguments);
-			this.namedArguments = namedArguments is null ? new List<CANamedArgument>() : new List<CANamedArgument>(namedArguments);
+			this.arguments = arguments == null ? new List<CAArgument>() : new List<CAArgument>(arguments);
+			this.namedArguments = namedArguments == null ? new List<CANamedArgument>() : new List<CANamedArgument>(namedArguments);
 			this.caBlobOffset = caBlobOffset;
 		}
 

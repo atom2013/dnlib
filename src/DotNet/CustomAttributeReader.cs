@@ -23,22 +23,22 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		public AssemblyRef FindAssemblyRef(TypeRef nonNestedTypeRef) {
 			var modAsm = module.Assembly;
-			if (!(modAsm is null)) {
+			if (!(modAsm == null)) {
 				var type = modAsm.Find(nonNestedTypeRef);
-				if (!(type is null))
+				if (!(type == null))
 					return module.UpdateRowId(new AssemblyRefUser(modAsm));
 			}
-			else if (!(module.Find(nonNestedTypeRef) is null))
+			else if (!(module.Find(nonNestedTypeRef) == null))
 				return AssemblyRef.CurrentAssembly;
 
 			var corLibAsm = module.Context.AssemblyResolver.Resolve(module.CorLibTypes.AssemblyRef, module);
-			if (!(corLibAsm is null)) {
+			if (!(corLibAsm == null)) {
 				var type = corLibAsm.Find(nonNestedTypeRef);
-				if (!(type is null))
+				if (!(type == null))
 					return module.CorLibTypes.AssemblyRef;
 			}
 
-			if (!(modAsm is null))
+			if (!(modAsm == null))
 				return module.UpdateRowId(new AssemblyRefUser(modAsm));
 			return AssemblyRef.CurrentAssembly;
 		}
@@ -114,7 +114,7 @@ namespace dnlib.DotNet {
 		public static CustomAttribute Read(ModuleDefMD readerModule, ICustomAttributeType ctor, uint offset, GenericParamContext gpContext) {
 			var caReader = new CustomAttributeReader(readerModule, offset, gpContext);
 			try {
-				if (ctor is null)
+				if (ctor == null)
 					return caReader.CreateRaw(ctor);
 				return caReader.Read(ctor);
 			}
@@ -186,7 +186,7 @@ namespace dnlib.DotNet {
 			var caReader = new CustomAttributeReader(module, ref reader, gpContext);
 			CustomAttribute ca;
 			try {
-				if (ctor is null)
+				if (ctor == null)
 					ca = caReader.CreateRaw(ctor);
 				else
 					ca = caReader.Read(ctor);
@@ -248,7 +248,7 @@ namespace dnlib.DotNet {
 
 		CustomAttribute Read(ICustomAttributeType ctor) {
 			var methodSig = ctor != null?ctor.MethodSig:null;
-			if (methodSig is null)
+			if (methodSig == null)
 				throw new CABlobParserException("ctor is null or not a method");
 
             MemberRef mrCtor;
@@ -294,7 +294,7 @@ namespace dnlib.DotNet {
 		TypeSig FixTypeSig(TypeSig type) { return SubstituteGenericParameter(type.RemoveModifiers()).RemoveModifiers(); }
 
 		TypeSig SubstituteGenericParameter(TypeSig type) {
-			if (genericArguments is null)
+			if (genericArguments == null)
 				return type;
 			return genericArguments.Resolve(type);
 		}
@@ -302,7 +302,7 @@ namespace dnlib.DotNet {
 		CAArgument ReadFixedArg(TypeSig argType) {
 			if (!recursionCounter.Increment())
 				throw new CABlobParserException("Too much recursion");
-			if (argType is null)
+			if (argType == null)
 				throw new CABlobParserException("null argType");
 			CAArgument result;
 
@@ -317,11 +317,11 @@ namespace dnlib.DotNet {
 		}
 
 		CAArgument ReadElem(TypeSig argType) {
-			if (argType is null)
+			if (argType == null)
 				throw new CABlobParserException("null argType");
             TypeSig realArgType;
             var value = ReadValue((SerializationType)argType.ElementType, argType, out realArgType);
-			if (realArgType is null)
+			if (realArgType == null)
 				throw new CABlobParserException("Invalid arg type");
 
 			// One example when this is true is when prop/field type is object and
@@ -405,7 +405,7 @@ namespace dnlib.DotNet {
 
 			// It's ET.ValueType if it's eg. a ctor enum arg type
 			case (SerializationType)ElementType.ValueType:
-				if (argType is null)
+				if (argType == null)
 					throw new CABlobParserException("Invalid element type");
 				realArgType = argType;
 				result = ReadEnumValue(GetEnumUnderlyingType(argType));
@@ -426,7 +426,7 @@ namespace dnlib.DotNet {
 			// It's ET.Class if it's eg. a ctor System.Type arg type
 			case (SerializationType)ElementType.Class:
 				var tdr = argType as TypeDefOrRefSig;
-				if (!(tdr is null) && tdr.DefinitionAssembly.IsCorLib() && tdr.Namespace == "System") {
+				if (!(tdr == null) && tdr.DefinitionAssembly.IsCorLib() && tdr.Namespace == "System") {
 					if (tdr.TypeName == "Type") {
 						result = ReadValue(SerializationType.Type, tdr, out realArgType);
 						break;
@@ -465,7 +465,7 @@ namespace dnlib.DotNet {
 		}
 
 		object ReadEnumValue(TypeSig underlyingType) {
-			if (!(underlyingType is null)) {
+			if (!(underlyingType == null)) {
 				if (underlyingType.ElementType < ElementType.Boolean || underlyingType.ElementType > ElementType.U8)
 					throw new CABlobParserException("Invalid enum underlying type");
                 TypeSig realArgType;
@@ -482,11 +482,11 @@ namespace dnlib.DotNet {
 
 		TypeSig ReadType(bool canReturnNull) {
 			var name = ReadUTF8String();
-			if (canReturnNull && name is null)
+            if (canReturnNull && (object)name == null)
 				return null;
 			var asmRefFinder = new CAAssemblyRefFinder(module);
 			var type = TypeNameParser.ParseAsTypeSigReflection(module, UTF8String.ToSystemStringOrEmpty(name), asmRefFinder, gpContext);
-			if (type is null)
+			if (type == null)
 				throw new CABlobParserException("Could not parse type");
 			return type;
 		}
@@ -498,10 +498,10 @@ namespace dnlib.DotNet {
 		/// <returns>The underlying type or <c>null</c> if we couldn't resolve the type ref</returns>
 		/// <exception cref="CABlobParserException">If <paramref name="type"/> is not an enum or <c>null</c></exception>
 		static TypeSig GetEnumUnderlyingType(TypeSig type) {
-			if (type is null)
+			if (type == null)
 				throw new CABlobParserException("null enum type");
 			var td = GetTypeDef(type);
-			if (td is null)
+			if (td == null)
 				return null;
 			if (!td.IsEnum)
 				throw new CABlobParserException("Not an enum");
@@ -519,11 +519,11 @@ namespace dnlib.DotNet {
             TypeDefOrRefSig tdr;
             if ((tdr = type as TypeDefOrRefSig) != null) {
 				var td = tdr.TypeDef;
-				if (!(td is null))
+				if (!(td == null))
 					return td;
 
 				var tr = tdr.TypeRef;
-				if (!(tr is null))
+				if (!(tr == null))
 					return tr.Resolve();
 			}
 

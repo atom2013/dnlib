@@ -157,7 +157,7 @@ namespace dnlib.Utils {
 		internal TValue Get_NoLock(int index) { return  list[index].GetValue_NoLock(index); }
 
 		void Set_NoLock(int index, TValue value) {
-			if (!(listener is null)) {
+			if (!(listener == null)) {
 				listener.OnRemove(index, list[index].GetValue_NoLock(index));
 				listener.OnAdd(index, value);
 			}
@@ -217,10 +217,10 @@ namespace dnlib.Utils {
 		}
 
 		void Insert_NoLock(int index, TValue item) {
-			if (!(listener is null))
+			if (!(listener == null))
 				listener.OnAdd(index, item);
 			list.Insert(index, new Element(item));
-			if (!(listener is null))
+			if (!(listener == null))
 				listener.OnResize(index);
 			id++;
 		}
@@ -237,10 +237,10 @@ namespace dnlib.Utils {
 		}
 
 		void RemoveAt_NoLock(int index) {
-			if (!(listener is null))
+			if (!(listener == null))
 				listener.OnRemove(index, list[index].GetValue_NoLock(index));
 			list.RemoveAt(index);
-			if (!(listener is null))
+			if (!(listener == null))
 				listener.OnResize(index);
 			id++;
 		}
@@ -258,10 +258,10 @@ namespace dnlib.Utils {
 
 		void Add_NoLock(TValue item) {
 			int index = list.Count;
-			if (!(listener is null))
+			if (!(listener == null))
 				listener.OnAdd(index, item);
 			list.Add(new Element(item));
-			if (!(listener is null))
+			if (!(listener == null))
 				listener.OnResize(index);
 			id++;
 		}
@@ -278,10 +278,10 @@ namespace dnlib.Utils {
 		}
 
 		void Clear_NoLock() {
-			if (!(listener is null))
+			if (!(listener == null))
 				listener.OnClear();
 			list.Clear();
-			if (!(listener is null))
+			if (!(listener == null))
 				listener.OnResize(0);
 			id++;
 		}
@@ -448,7 +448,7 @@ namespace dnlib.Utils {
 
 			/// <inheritdoc/>
 			public override TValue GetValue_NoLock(int index) {
-				if (!(lazyList is null)) {
+				if (!(lazyList == null)) {
 					value = lazyList.ReadOriginalValue_NoLock(index, origIndex);
 					lazyList = null;
 				}
@@ -473,11 +473,11 @@ namespace dnlib.Utils {
 
 			/// <inheritdoc/>
 			public override string ToString() {
-				if (!(lazyList is null)) {
+				if (!(lazyList == null)) {
 					value = lazyList.ReadOriginalValue_NoLock(this);
 					lazyList = null;
 				}
-				return value is null ? string.Empty : value.ToString();
+				return value == null ? string.Empty : value.ToString();
 			}
 		}
 

@@ -90,7 +90,7 @@ namespace dnlib.DotNet.Writer {
 		/// </summary>
 		public int GetApproximateSizeOfMethodBody() {
 			int len = code.Length;
-			if (!(extraSections is null)) {
+			if (!(extraSections == null)) {
 				len = Utils.AlignUp(len, EXTRA_SECTIONS_ALIGNMENT);
 				len += extraSections.Length;
 				len = Utils.AlignUp(len, EXTRA_SECTIONS_ALIGNMENT);
@@ -148,7 +148,7 @@ namespace dnlib.DotNet.Writer {
 		/// <inheritdoc/>
 		public override bool Equals(object obj) {
 			var other = obj as MethodBody;
-			if (other is null)
+			if (other == null)
 				return false;
 			return Utils.Equals(code, other.code) &&
 				Utils.Equals(extraSections, other.extraSections);

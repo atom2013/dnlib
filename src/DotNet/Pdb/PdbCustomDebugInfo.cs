@@ -421,7 +421,7 @@ namespace dnlib.DotNet.Pdb {
 		public string Name {
 			get {
 				var n = name;
-				if (!(n is null))
+				if (!(n == null))
 					return n;
 				return local != null?local.Name:null;
 			}
@@ -429,7 +429,7 @@ namespace dnlib.DotNet.Pdb {
 		}
 
 		/// <summary>
-		/// true if it's a constant and not a variable (<see cref="Local"/> is null)
+		/// true if it's a constant and not a variable (<see cref="Local"/> == null)
 		/// </summary>
 		public bool IsConstant { get { return Local == null; } }
 
@@ -562,7 +562,7 @@ namespace dnlib.DotNet.Pdb {
 		public string Name {
 			get {
 				var n = name;
-				if (!(n is null))
+				if (!(n == null))
 					return n;
 				return local != null?local.Name:null;
 			}

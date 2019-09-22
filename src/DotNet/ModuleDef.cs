@@ -139,7 +139,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public CustomAttributeCollection CustomAttributes {
 			get {
-				if (customAttributes is null)
+				if (customAttributes == null)
 					InitializeCustomAttributes();
 				return customAttributes;
 			}
@@ -162,7 +162,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PdbCustomDebugInfo> CustomDebugInfos {
 			get {
-				if (customDebugInfos is null)
+				if (customDebugInfos == null)
 					InitializeCustomDebugInfos();
 				return customDebugInfos;
 			}
@@ -190,7 +190,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<TypeDef> Types {
 			get {
-				if (types is null)
+				if (types == null)
 					InitializeTypes();
 				return types;
 			}
@@ -207,7 +207,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<ExportedType> ExportedTypes {
 			get {
-				if (exportedTypes is null)
+				if (exportedTypes == null)
 					InitializeExportedTypes();
 				return exportedTypes;
 			}
@@ -321,7 +321,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public ResourceCollection Resources {
 			get {
-				if (resources is null)
+				if (resources == null)
 					InitializeResources();
 				return resources;
 			}
@@ -413,7 +413,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		TypeDefFinder TypeDefFinder {
 			get {
-				if (typeDefFinder is null)
+				if (typeDefFinder == null)
 					Interlocked.CompareExchange(ref typeDefFinder, new TypeDefFinder(Types), null);
 				return typeDefFinder;
 			}
@@ -424,7 +424,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public ModuleContext Context {
 			get {
-				if (context is null)
+				if (context == null)
 					Interlocked.CompareExchange(ref context, new ModuleContext(), null);
 				return context;
 			}
@@ -454,7 +454,7 @@ namespace dnlib.DotNet {
 		public bool IsManifestModule {
 			get {
 				var asm = assembly;
-				return !(asm is null) && asm.ManifestModule == this;
+				return !(asm == null) && asm.ManifestModule == this;
 			}
 		}
 
@@ -556,7 +556,7 @@ namespace dnlib.DotNet {
 		public WinMDStatus WinMDStatus {
 			get {
 				var cval = cachedWinMDStatus;
-				if (!(cval is null))
+				if (!(cval == null))
 					return cval.Value;
 				cachedWinMDStatus = cval = CalculateWinMDStatus(RuntimeVersion);
 				return cval.Value;
@@ -587,7 +587,7 @@ namespace dnlib.DotNet {
 		public string RuntimeVersionWinMD {
 			get {
 				var rtver = runtimeVersionWinMD;
-				if (!(rtver is null))
+				if (!(rtver == null))
 					return rtver;
 				runtimeVersionWinMD = rtver = CalculateRuntimeVersionWinMD(RuntimeVersion);
 				return rtver;
@@ -602,7 +602,7 @@ namespace dnlib.DotNet {
 		public string WinMDVersion {
 			get {
 				var ver = winMDVersion;
-				if (!(ver is null))
+				if (!(ver == null))
 					return ver;
 				winMDVersion = ver = CalculateWinMDVersion(RuntimeVersion);
 				return ver;
@@ -611,7 +611,7 @@ namespace dnlib.DotNet {
 		string winMDVersion;
 
 		static WinMDStatus CalculateWinMDStatus(string version) {
-			if (version is null)
+			if (version == null)
 				return WinMDStatus.None;
 			if (!version.StartsWith("WindowsRuntime ", StringComparison.Ordinal))
 				return WinMDStatus.None;
@@ -623,7 +623,7 @@ namespace dnlib.DotNet {
 			// Original parser code:
 			// CoreCLR file: src/md/winmd/adapter.cpp
 			// Func: WinMDAdapter::Create(IMDCommon *pRawMDCommon, /*[out]*/ WinMDAdapter **ppAdapter)
-			if (version is null)
+			if (version == null)
 				return null;
 			if (!version.StartsWith("WindowsRuntime ", StringComparison.Ordinal))
 				return null;
@@ -639,7 +639,7 @@ namespace dnlib.DotNet {
 		}
 
 		static string CalculateWinMDVersion(string version) {
-			if (version is null)
+			if (version == null)
 				return null;
 			if (!version.StartsWith("WindowsRuntime ", StringComparison.Ordinal))
 				return null;
@@ -865,7 +865,7 @@ namespace dnlib.DotNet {
 			if (!disposing)
 				return;
 			var tdf = typeDefFinder;
-			if (!(tdf is null)) {
+			if (!(tdf == null)) {
 				tdf.Dispose();
 				typeDefFinder = null;
 			}
@@ -884,7 +884,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="typeDef">The <see cref="TypeDef"/> to insert</param>
 		public void AddAsNonNestedType(TypeDef typeDef) {
-			if (typeDef is null)
+			if (typeDef == null)
 				return;
 			typeDef.DeclaringType = null;
 			Types.Add(typeDef);
@@ -1089,16 +1089,16 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="pdbState">New <see cref="dnlib.DotNet.Pdb.PdbState"/></param>
 		public void SetPdbState(PdbState pdbState) {
-			if (pdbState is null)
+			if (pdbState == null)
 				throw new ArgumentNullException("pdbState");
 			var orig = Interlocked.CompareExchange(ref this.pdbState, pdbState, null);
-			if (!(orig is null))
+			if (!(orig == null))
 				throw new InvalidOperationException("PDB file has already been initialized");
 		}
 
 		uint GetCor20RuntimeVersion() {
 			var rtVer = Cor20HeaderRuntimeVersion;
-			if (!(rtVer is null))
+			if (!(rtVer == null))
 				return rtVer.Value;
 			return IsClr1x ? 0x00020000U : 0x00020005;
 		}
@@ -1168,17 +1168,17 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		void IListListener<TypeDef>.OnLazyAdd(int index, ref TypeDef value) {
 #if DEBUG
-			if (!(value.DeclaringType is null))
-				throw new InvalidOperationException("Added type's !(DeclaringType is null)");
+			if (!(value.DeclaringType == null))
+				throw new InvalidOperationException("Added type's !(DeclaringType == null)");
 #endif
 			value.Module2 = this;
 		}
 
 		/// <inheritdoc/>
 		void IListListener<TypeDef>.OnAdd(int index, TypeDef value) {
-			if (!(value.DeclaringType is null))
+			if (!(value.DeclaringType == null))
 				throw new InvalidOperationException("Nested type is already owned by another type. Set DeclaringType to null first.");
-			if (!(value.Module is null))
+			if (!(value.Module == null))
 				throw new InvalidOperationException("Type is already owned by another module. Remove it from that module's type list.");
 			value.Module2 = this;
 		}
@@ -1231,18 +1231,18 @@ namespace dnlib.DotNet {
 				return Find(tr);
 
 			var ts = typeRef as TypeSpec;
-			if (ts is null)
+			if (ts == null)
 				return null;
 			var sig = ts.TypeSig as TypeDefOrRefSig;
-			if (sig is null)
+			if (sig == null)
 				return null;
 
 			td = sig.TypeDef;
-			if (!(td is null))
+			if (!(td == null))
 				return td.Module == this ? td : null;
 
 			tr = sig.TypeRef;
-			if (!(tr is null))
+			if (!(tr == null))
 				return Find(tr);
 
 			return null;
@@ -1329,7 +1329,7 @@ namespace dnlib.DotNet {
 		public IEnumerable<AssemblyRef> GetAssemblyRefs() {
 			for (uint rid = 1; ; rid++) {
 				var asmRef = ResolveToken(new MDToken(Table.AssemblyRef, rid).Raw) as AssemblyRef;
-				if (asmRef is null)
+				if (asmRef == null)
 					break;
 				yield return asmRef;
 			}
@@ -1341,7 +1341,7 @@ namespace dnlib.DotNet {
 		public IEnumerable<ModuleRef> GetModuleRefs() {
 			for (uint rid = 1; ; rid++) {
 				var modRef = ResolveToken(new MDToken(Table.ModuleRef, rid).Raw) as ModuleRef;
-				if (modRef is null)
+				if (modRef == null)
 					break;
 				yield return modRef;
 			}
@@ -1361,7 +1361,7 @@ namespace dnlib.DotNet {
 		public IEnumerable<MemberRef> GetMemberRefs(GenericParamContext gpContext) {
 			for (uint rid = 1; ; rid++) {
 				var mr = ResolveToken(new MDToken(Table.MemberRef, rid).Raw, gpContext) as MemberRef;
-				if (mr is null)
+				if (mr == null)
 					break;
 				yield return mr;
 			}
@@ -1373,7 +1373,7 @@ namespace dnlib.DotNet {
 		public IEnumerable<TypeRef> GetTypeRefs() {
 			for (uint rid = 1; ; rid++) {
 				var mr = ResolveToken(new MDToken(Table.TypeRef, rid).Raw) as TypeRef;
-				if (mr is null)
+				if (mr == null)
 					break;
 				yield return mr;
 			}
@@ -1404,11 +1404,11 @@ namespace dnlib.DotNet {
 		/// <param name="newOne">New asm ref</param>
 		/// <returns></returns>
 		protected static bool IsGreaterAssemblyRefVersion(AssemblyRef found, AssemblyRef newOne) {
-			if (found is null)
+			if (found == null)
 				return true;
 			var foundVer = found.Version;
 			var newVer = newOne.Version;
-			return foundVer is null || (!(newVer is null) && newVer >= foundVer);
+			return foundVer == null || (!(newVer == null) && newVer >= foundVer);
 		}
 
 		ITypeDefOrRef ISignatureReaderHelper.ResolveTypeDefOrRef(uint codedToken, GenericParamContext gpContext) {
@@ -1523,10 +1523,10 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentNullException">If <paramref name="readerModule"/> is <c>null</c></exception>
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		internal ModuleDefMD2(ModuleDefMD readerModule, uint rid) {
-			if (rid == 1 && readerModule is null)
+			if (rid == 1 && readerModule == null)
 				readerModule = (ModuleDefMD)this;
 #if DEBUG
-			if (readerModule is null)
+			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (rid != 1 && readerModule.TablesStream.ModuleTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "Module rid {0} does not exist", rid ) );

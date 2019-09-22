@@ -17,7 +17,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 			var reader = metadata.BlobStream.CreateReader();
 			addrToFree = Marshal.AllocHGlobal((int)reader.BytesLeft);
 			blobPtr = (byte*)addrToFree;
-			if (blobPtr is null)
+			if (blobPtr == null)
 				throw new OutOfMemoryException();
 			reader.ReadBytes(blobPtr, (int)reader.BytesLeft);
 		}
@@ -31,9 +31,9 @@ namespace dnlib.DotNet.Pdb.Dss {
             RawTypeRefRow row;
 			if (!metadata.TablesStream.TryReadTypeRefRow(token.Rid, out row))
 				throw new ArgumentException();
-			if (!(ptkResolutionScope is null))
+			if (!(ptkResolutionScope == null))
 				*ptkResolutionScope = row.ResolutionScope;
-			if (!(szName is null) || !(pchName is null)) {
+			if (!(szName == null) || !(pchName == null)) {
 				var typeNamespace = metadata.StringsStream.ReadNoNull(row.Namespace);
 				var typeName = metadata.StringsStream.ReadNoNull(row.Name);
 				CopyTypeName(typeNamespace, typeName, szName, cchName, pchName);
@@ -47,11 +47,11 @@ namespace dnlib.DotNet.Pdb.Dss {
             RawTypeDefRow row;
 			if (!metadata.TablesStream.TryReadTypeDefRow(token.Rid, out row))
 				throw new ArgumentException();
-			if (!(pdwTypeDefFlags is null))
+			if (!(pdwTypeDefFlags == null))
 				*pdwTypeDefFlags = row.Flags;
-			if (!(ptkExtends is null))
+			if (!(ptkExtends == null))
 				*ptkExtends = row.Extends;
-			if (!(szTypeDef is null) || !(pchTypeDef is null)) {
+			if (!(szTypeDef == null) || !(pchTypeDef == null)) {
 				var typeNamespace = metadata.StringsStream.ReadNoNull(row.Namespace);
 				var typeName = metadata.StringsStream.ReadNoNull(row.Name);
 				CopyTypeName(typeNamespace, typeName, szTypeDef, cchTypeDef, pchTypeDef);
@@ -68,9 +68,9 @@ namespace dnlib.DotNet.Pdb.Dss {
             DataReader reader;
 			if (!metadata.BlobStream.TryCreateReader(row.Signature, out reader))
 				throw new ArgumentException();
-			if (!(ppvSig is null))
+			if (!(ppvSig == null))
 				*ppvSig = blobPtr + (reader.StartOffset - (uint)metadata.BlobStream.StartOffset);
-			if (!(pcbSig is null))
+			if (!(pcbSig == null))
 				*pcbSig = reader.Length;
 		}
 

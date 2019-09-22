@@ -250,10 +250,10 @@ namespace dnlib.DotNet.Resources {
 
 		string GetRealTypeFullName(string fullName) {
 			var tr = TypeNameParser.ParseReflection(module, fullName, null);
-			if (tr is null)
+			if (tr == null)
 				return fullName;
 			var asmRef = tr.DefinitionAssembly;
-			if (asmRef is null)
+			if (asmRef == null)
 				return fullName;
 
 			var newFullName = fullName;
@@ -278,9 +278,9 @@ namespace dnlib.DotNet.Resources {
 			if (simpleName == module.CorLibTypes.AssemblyRef.Name)
 				return module.CorLibTypes.AssemblyRef.FullName;
 
-			if (!(moduleMD is null)) {
+			if (!(moduleMD == null)) {
 				var asmRef = moduleMD.GetAssemblyRef(simpleName);
-				if (!(asmRef is null))
+				if (!(asmRef == null))
 					return asmRef.FullName;
 			}
 

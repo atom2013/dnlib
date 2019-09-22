@@ -17,17 +17,17 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 			var asyncMethod = new PdbAsyncMethodCustomDebugInfo(asyncStepInfos.Count);
 			asyncMethod.KickoffMethod = kickoffMethod;
 
-			if (!(asyncCatchHandlerILOffset is null)) {
+			if (!(asyncCatchHandlerILOffset == null)) {
 				asyncMethod.CatchHandlerInstruction = GetInstruction(body, asyncCatchHandlerILOffset.Value);
-				Debug.Assert(!(asyncMethod.CatchHandlerInstruction is null));
+				Debug.Assert(!(asyncMethod.CatchHandlerInstruction == null));
 			}
 
 			int count = asyncStepInfos.Count;
 			for (int i = 0; i < count; i++) {
 				var rawInfo = asyncStepInfos[i];
 				var yieldInstruction = GetInstruction(body, rawInfo.YieldOffset);
-				Debug.Assert(!(yieldInstruction is null));
-				if (yieldInstruction is null)
+				Debug.Assert(!(yieldInstruction == null));
+				if (yieldInstruction == null)
 					continue;
 				MethodDef breakpointMethod;
 				Instruction breakpointInstruction;
@@ -41,13 +41,13 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 					if (breakpointMethodToken.Table != Table.Method)
 						continue;
 					breakpointMethod = module.ResolveToken(breakpointMethodToken) as MethodDef;
-					Debug.Assert(!(breakpointMethod is null));
-					if (breakpointMethod is null)
+					Debug.Assert(!(breakpointMethod == null));
+					if (breakpointMethod == null)
 						continue;
 					breakpointInstruction = GetInstruction(breakpointMethod.Body, rawInfo.BreakpointOffset);
 				}
-				Debug.Assert(!(breakpointInstruction is null));
-				if (breakpointInstruction is null)
+				Debug.Assert(!(breakpointInstruction == null));
+				if (breakpointInstruction == null)
 					continue;
 
 				asyncMethod.StepInfos.Add(new PdbAsyncStepInfo(yieldInstruction, breakpointMethod, breakpointInstruction));
@@ -57,7 +57,7 @@ namespace dnlib.DotNet.Pdb.WindowsPdb {
 		}
 
 		static Instruction GetInstruction(CilBody body, uint offset) {
-			if (body is null)
+			if (body == null)
 				return null;
 			var instructions = body.Instructions;
 			int lo = 0, hi = instructions.Count - 1;

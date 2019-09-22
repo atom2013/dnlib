@@ -85,7 +85,7 @@ namespace dnlib.DotNet.Writer {
 		byte[] GetResult() { return outStream.ToArray(); }
 
 		void Write(CustomAttribute ca) {
-			if (ca is null) {
+			if (ca == null) {
 				helper.Error("The custom attribute is null");
 				return;
 			}
@@ -93,26 +93,26 @@ namespace dnlib.DotNet.Writer {
 			// Check whether it's raw first. If it is, we don't care whether the ctor is
 			// invalid. Just use the raw data.
 			if (ca.IsRawBlob) {
-				if ((!(ca.ConstructorArguments is null) && ca.ConstructorArguments.Count > 0) || (!(ca.NamedArguments is null) && ca.NamedArguments.Count > 0))
+				if ((!(ca.ConstructorArguments == null) && ca.ConstructorArguments.Count > 0) || (!(ca.NamedArguments == null) && ca.NamedArguments.Count > 0))
 					helper.Error("Raw custom attribute contains arguments and/or named arguments");
 				writer.WriteBytes(ca.RawData);
 				return;
 			}
 
-			if (ca.Constructor is null) {
+			if (ca.Constructor == null) {
 				helper.Error("Custom attribute ctor is null");
 				return;
 			}
 
 			var methodSig = GetMethodSig(ca.Constructor);
-			if (methodSig is null) {
+			if (methodSig == null) {
 				helper.Error("Custom attribute ctor's method signature is invalid");
 				return;
 			}
 
 			if (ca.ConstructorArguments.Count != methodSig.Params.Count)
 				helper.Error("Custom attribute arguments count != method sig arguments count");
-			if (!(methodSig.ParamsAfterSentinel is null) && methodSig.ParamsAfterSentinel.Count > 0)
+			if (!(methodSig.ParamsAfterSentinel == null) && methodSig.ParamsAfterSentinel.Count > 0)
 				helper.Error("Custom attribute ctor has parameters after the sentinel");
 			if (ca.NamedArguments.Count > ushort.MaxValue)
 				helper.Error("Custom attribute has too many named arguments");
@@ -138,7 +138,7 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		void Write(IList<CANamedArgument> namedArgs) {
-			if (namedArgs is null || namedArgs.Count > 0x1FFFFFFF) {
+			if (namedArgs == null || namedArgs.Count > 0x1FFFFFFF) {
 				helper.Error("Too many custom attribute named arguments");
 				namedArgs = Array2.Empty<CANamedArgument>();
 			}
@@ -150,13 +150,13 @@ namespace dnlib.DotNet.Writer {
 		TypeSig FixTypeSig(TypeSig type) { return SubstituteGenericParameter(type.RemoveModifiers()).RemoveModifiers(); }
 
 		TypeSig SubstituteGenericParameter(TypeSig type) {
-			if (genericArguments is null)
+			if (genericArguments == null)
 				return type;
 			return genericArguments.Resolve(type);
 		}
 
 		void WriteValue(TypeSig argType, CAArgument value) {
-			if (argType is null || value.Type is null) {
+			if (argType == null || value.Type == null) {
 				helper.Error("Custom attribute argument type is null");
 				return;
 			}
@@ -168,7 +168,7 @@ namespace dnlib.DotNet.Writer {
             SZArraySig arrayType;
 			if ((arrayType = argType as SZArraySig) != null) {
 				var argsArray = value.Value as IList<CAArgument>;
-				if (argsArray is null && !(value.Value is null))
+				if (argsArray == null && !(value.Value == null))
 					helper.Error("CAArgument.Value is not null or an array");
 				WriteArrayValue(arrayType, argsArray);
 			}
@@ -179,12 +179,12 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		void WriteArrayValue(SZArraySig arrayType, IList<CAArgument> args) {
-			if (arrayType is null) {
+			if (arrayType == null) {
 				helper.Error("Custom attribute: Array type is null");
 				return;
 			}
 
-			if (args is null)
+			if (args == null)
 				writer.WriteUInt32(uint.MaxValue);
 			else {
 				writer.WriteUInt32((uint)args.Count);
@@ -211,17 +211,17 @@ namespace dnlib.DotNet.Writer {
 				helper.Error("Custom attribute arg type != value.Type");
 				return false;
 			}
-			return value.Value is null || value.Value.GetType() == valueType;
+			return value.Value == null || value.Value.GetType() == valueType;
 		}
 
 		static bool VerifyType(TypeSig type, ElementType etype) {
 			type = type.RemoveModifiers();
 			// Assume it's an enum if it's a ValueType
-			return !(type is null) && (etype == type.ElementType || type.ElementType == ElementType.ValueType);
+			return !(type == null) && (etype == type.ElementType || type.ElementType == ElementType.ValueType);
 		}
 
 		static bool VerifyValue(object o, ElementType etype) {
-			if (o is null)
+			if (o == null)
 				return false;
 
 			switch (Type.GetTypeCode(o.GetType())) {
@@ -248,7 +248,7 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		static bool ToUInt64(object o, out ulong result) {
-			if (o is null) {
+			if (o == null) {
 				result = 0;
 				return false;
 			}
@@ -314,7 +314,7 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		static bool ToDouble(object o, out double result) {
-			if (o is null) {
+			if (o == null) {
 				result = double.NaN;
 				return false;
 			}
@@ -379,10 +379,10 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="argType">The ctor arg type, field type, or property type</param>
 		/// <param name="value">The value to write</param>
 		void WriteElem(TypeSig argType, CAArgument value) {
-			if (argType is null) {
+			if (argType == null) {
 				helper.Error("Custom attribute: Arg type is null");
 				argType = value.Type;
-				if (argType is null)
+				if (argType == null)
 					return;
 			}
 			if (!recursionCounter.Increment()) {
@@ -489,7 +489,7 @@ namespace dnlib.DotNet.Writer {
 			case ElementType.ValueType:
 				tdr = ((TypeDefOrRefSig)argType).TypeDefOrRef;
 				underlyingType = GetEnumUnderlyingType(argType);
-				if (!(underlyingType is null))
+				if (!(underlyingType == null))
 					WriteElem(underlyingType, value);
 				else if (tdr is TypeRef && TryWriteEnumUnderlyingTypeValue(value.Value)) {
 					// No error. Assume it's an enum that couldn't be resolved.
@@ -505,7 +505,7 @@ namespace dnlib.DotNet.Writer {
                         TypeSig ts;
 						if ((ts = value.Value as TypeSig) != null)
 							WriteType(ts);
-						else if (value.Value is null)
+						else if (value.Value == null)
 							WriteUTF8String(null);
 						else {
 							helper.Error("Custom attribute value is not a type");
@@ -562,7 +562,7 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		bool TryWriteEnumUnderlyingTypeValue(object o) {
-			if (o is null)
+			if (o == null)
 				return false;
 			switch (Type.GetTypeCode(o.GetType())) {
 			case TypeCode.Boolean:	writer.WriteBoolean((bool)o); break;
@@ -587,16 +587,16 @@ namespace dnlib.DotNet.Writer {
 		/// <returns>The underlying type or <c>null</c> if we couldn't resolve the type ref</returns>
 		static TypeSig GetEnumUnderlyingType(TypeSig type) {
 			var td = GetEnumTypeDef(type);
-			if (td is null)
+			if (td == null)
 				return null;
 			return td.GetEnumUnderlyingType().RemoveModifiers();
 		}
 
 		static TypeDef GetEnumTypeDef(TypeSig type) {
-			if (type is null)
+			if (type == null)
 				return null;
 			var td = GetTypeDef(type);
-			if (td is null)
+			if (td == null)
 				return null;
 			if (!td.IsEnum)
 				return null;
@@ -614,11 +614,11 @@ namespace dnlib.DotNet.Writer {
             TypeDefOrRefSig tdr;
 			if ((tdr = type as TypeDefOrRefSig) != null) {
 				var td = tdr.TypeDef;
-				if (!(td is null))
+				if (!(td == null))
 					return td;
 
 				var tr = tdr.TypeRef;
-				if (!(tr is null))
+				if (!(tr == null))
 					return tr.Resolve();
 			}
 
@@ -626,7 +626,7 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		void Write(CANamedArgument namedArg) {
-			if (namedArg is null) {
+			if (namedArg == null) {
 				helper.Error("Custom attribute named arg is null");
 				return;
 			}
@@ -649,7 +649,7 @@ namespace dnlib.DotNet.Writer {
 
 		void WriteFieldOrPropType(TypeSig type) {
 			type = type.RemoveModifiers();
-			if (type is null) {
+			if (type == null) {
 				helper.Error("Custom attribute: Field/property type is null");
 				return;
 			}
@@ -698,7 +698,7 @@ namespace dnlib.DotNet.Writer {
 				tdr = ((TypeDefOrRefSig)type).TypeDefOrRef;
 				var enumType = GetEnumTypeDef(type);
 				// If TypeRef => assume it's an enum that couldn't be resolved
-				if (!(enumType is null) || tdr is TypeRef) {
+				if (!(enumType == null) || tdr is TypeRef) {
 					writer.WriteByte((byte)SerializationType.Enum);
 					WriteType(tdr);
 				}
@@ -719,7 +719,7 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		void WriteType(IType type) {
-			if (type is null) {
+			if (type == null) {
 				helper.Error("Custom attribute: Type is null");
 				WriteUTF8String(UTF8String.Empty);
 			}
@@ -729,13 +729,13 @@ namespace dnlib.DotNet.Writer {
 
 		static bool CheckCorLibType(TypeSig ts, string name) {
 			var tdrs = ts as TypeDefOrRefSig;
-			if (tdrs is null)
+			if (tdrs == null)
 				return false;
 			return CheckCorLibType(tdrs.TypeDefOrRef, name);
 		}
 
 		static bool CheckCorLibType(ITypeDefOrRef tdr, string name) {
-			if (tdr is null)
+			if (tdr == null)
 				return false;
 			if (!tdr.DefinitionAssembly.IsCorLib())
 				return false;
@@ -747,7 +747,7 @@ namespace dnlib.DotNet.Writer {
 		static MethodSig GetMethodSig(ICustomAttributeType ctor) { return (ctor != null)?ctor.MethodSig:null; }
 
 		void WriteUTF8String(UTF8String s) {
-			if (s is null || s.Data is null)
+            if ((object)s == null || s.Data == null)
 				writer.WriteByte((byte)0xFF);
 			else {
 				writer.WriteCompressedUInt32((uint)s.Data.Length);
@@ -759,7 +759,7 @@ namespace dnlib.DotNet.Writer {
 		public void Dispose() {
 			if (!disposeStream)
 				return;
-			if (!(outStream is null))
+			if (!(outStream == null))
 				outStream.Dispose();
 		}
 	}

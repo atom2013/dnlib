@@ -45,7 +45,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public string String {
 			get {
-				if (asString is null)
+				if (asString == null)
 					asString = ConvertFromUTF8(data);
 				return asString;
 			}
@@ -96,7 +96,7 @@ namespace dnlib.DotNet {
 		/// <param name="utf8">The UTF-8 string instace or <c>null</c></param>
 		/// <returns>A <see cref="string"/> or <c>null</c> if <paramref name="utf8"/> is <c>null</c></returns>
 		public static string ToSystemString(UTF8String utf8) {
-			if (utf8 is null || utf8.data is null)
+			if ((object)utf8 == null || utf8.data == null)
 				return null;
 			if (utf8.data.Length == 0)
 				return string.Empty;
@@ -144,9 +144,9 @@ namespace dnlib.DotNet {
 			var sb = ToSystemString(b);
 			if ((object)sa == (object)sb)
 				return 0;
-			if (sa is null)
+			if (sa == null)
 				return -1;
-			if (sb is null)
+			if (sb == null)
 				return 1;
 			return StringComparer.OrdinalIgnoreCase.Compare(sa, sb);
 		}
@@ -200,11 +200,11 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="s">The string</param>
 		public UTF8String(string s)
-			: this(s is null ? null : Encoding.UTF8.GetBytes(s)) {
+			: this(s == null ? null : Encoding.UTF8.GetBytes(s)) {
 		}
 
 		static string ConvertFromUTF8(byte[] data) {
-			if (data is null)
+			if (data == null)
 				return null;
 			try {
 				return Encoding.UTF8.GetString(data);
@@ -228,7 +228,7 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		public override bool Equals(object obj) {
 			var other = obj as UTF8String;
-			if (other is null)
+			if ((object)other == null)
 				return false;
 			return CompareTo(this, other) == 0;
 		}

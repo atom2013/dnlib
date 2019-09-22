@@ -41,7 +41,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 		public override void CloseScope(int endOffset) { writer.CloseScope((uint)endOffset); }
 
 		public override void DefineAsyncStepInfo(uint[] yieldOffsets, uint[] breakpointOffset, uint[] breakpointMethod) {
-			if (asyncMethodWriter is null)
+			if (asyncMethodWriter == null)
 				throw new InvalidOperationException();
 			if (yieldOffsets.Length != breakpointOffset.Length || yieldOffsets.Length != breakpointMethod.Length)
 				throw new ArgumentException();
@@ -49,7 +49,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 		}
 
 		public override void DefineCatchHandlerILOffset(uint catchHandlerOffset) {
-			if (asyncMethodWriter is null)
+			if (asyncMethodWriter == null)
 				throw new InvalidOperationException();
 			asyncMethodWriter.DefineCatchHandlerILOffset(catchHandlerOffset);
 		}
@@ -59,18 +59,18 @@ namespace dnlib.DotNet.Pdb.Dss {
 		public override ISymbolDocumentWriter DefineDocument(string url, Guid language, Guid languageVendor, Guid documentType) {
             ISymUnmanagedDocumentWriter unDocWriter;
             writer.DefineDocument(url, ref language, ref languageVendor, ref documentType, out unDocWriter);
-			return unDocWriter is null ? null : new SymbolDocumentWriter(unDocWriter);
+			return unDocWriter == null ? null : new SymbolDocumentWriter(unDocWriter);
 		}
 
 		public override void DefineKickoffMethod(uint kickoffMethod) {
-			if (asyncMethodWriter is null)
+			if (asyncMethodWriter == null)
 				throw new InvalidOperationException();
 			asyncMethodWriter.DefineKickoffMethod(kickoffMethod);
 		}
 
 		public override void DefineSequencePoints(ISymbolDocumentWriter document, uint arraySize, int[] offsets, int[] lines, int[] columns, int[] endLines, int[] endColumns) {
 			var doc = document as SymbolDocumentWriter;
-			if (doc is null)
+			if (doc == null)
 				throw new ArgumentException("document isn't a non-null SymbolDocumentWriter instance");
 			writer.DefineSequencePoints(doc.SymUnmanagedDocumentWriter, arraySize, offsets, lines, columns, endLines, endColumns);
 		}
@@ -145,7 +145,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 		}
 
 		public override unsafe void SetSourceServerData(byte[] data) {
-			if (data is null)
+			if (data == null)
 				return;
             ISymUnmanagedWriter8 writer8;
             if ((writer8 = writer as ISymUnmanagedWriter8) != null) {
@@ -155,7 +155,7 @@ namespace dnlib.DotNet.Pdb.Dss {
 		}
 
 		public override unsafe void SetSourceLinkData(byte[] data) {
-			if (data is null)
+			if (data == null)
 				return;
             ISymUnmanagedWriter8 writer8;
             if ((writer8 = writer as ISymUnmanagedWriter8) != null) {

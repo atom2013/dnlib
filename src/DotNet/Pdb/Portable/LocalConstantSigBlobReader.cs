@@ -190,7 +190,7 @@ namespace dnlib.DotNet.Pdb.Portable {
 						}
 					}
 				}
-				if (value is null && reader.Position != reader.Length)
+				if (value == null && reader.Position != reader.Length)
 					value = reader.ReadRemainingBytes();
 				res = true;
 				break;
@@ -283,7 +283,7 @@ namespace dnlib.DotNet.Pdb.Portable {
 			ISignatureReaderHelper helper = module;
 			var tdr = helper.ResolveTypeDefOrRef(codedToken, gpContext);
 			var corType = module.CorLibTypes.GetCorLibTypeSig(tdr);
-			if (!(corType is null))
+			if (!(corType == null))
 				return corType.TypeDefOrRef;
 			return tdr;
 		}

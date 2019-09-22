@@ -28,7 +28,7 @@ namespace dnlib.DotNet.MD {
 			var reader = dataReader;
 			reader.Position = offset;
 			data = reader.TryReadBytesUntil(0);
-			if (data is null)
+			if (data == null)
 				return null;
 			return new UTF8String(data);
 		}

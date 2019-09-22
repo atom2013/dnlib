@@ -67,7 +67,7 @@ namespace dnlib.DotNet.Pdb {
 		}
 
 		PdbDocument(SymbolDocument symDoc, bool partial) {
-			if (symDoc is null)
+			if (symDoc == null)
 				throw new ArgumentNullException("symDoc");
 			Url = symDoc.URL;
 			if (!partial)
@@ -113,7 +113,7 @@ namespace dnlib.DotNet.Pdb {
 		/// <inheritdoc/>
 		public override bool Equals(object obj) {
 			var other = obj as PdbDocument;
-			if (other is null)
+			if (other == null)
 				return false;
 			return StringComparer.OrdinalIgnoreCase.Equals(Url ?? string.Empty, other.Url ?? string.Empty);
 		}

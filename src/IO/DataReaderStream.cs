@@ -42,7 +42,7 @@ namespace dnlib.IO {
 		}
 
 		public override int Read(byte[] buffer, int offset, int count) {
-			if (buffer is null)
+			if (buffer == null)
 				throw new ArgumentNullException("buffer");
 			if (offset < 0)
 				throw new ArgumentOutOfRangeException("offset");

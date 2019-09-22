@@ -202,7 +202,7 @@ namespace dnlib.DotNet.Writer {
 				return Write();
 			}
 			finally {
-				if (!(origSections is null)) {
+				if (!(origSections == null)) {
 					foreach (var section in origSections)
 						section.Dispose();
 				}
@@ -255,7 +255,7 @@ namespace dnlib.DotNet.Writer {
 			textSection.Add(netResources, DEFAULT_NETRESOURCES_ALIGNMENT);
 			textSection.Add(metadata, DEFAULT_METADATA_ALIGNMENT);
 			textSection.Add(debugDirectory, DebugDirectory.DEFAULT_DEBUGDIRECTORY_ALIGNMENT);
-			if (!(rsrcSection is null))
+			if (!(rsrcSection == null))
 				rsrcSection.Add(win32Resources, DEFAULT_WIN32_RESOURCES_ALIGNMENT);
 		}
 
@@ -271,7 +271,7 @@ namespace dnlib.DotNet.Writer {
 		void CreatePESections() {
 			sections = new List<PESection>();
 			sections.Add(textSection = new PESection(".text", 0x60000020));
-			if (!(GetWin32Resources() is null))
+			if (!(GetWin32Resources() == null))
 				sections.Add(rsrcSection = new PESection(".rsrc", 0x40000040));
 		}
 
@@ -355,14 +355,14 @@ namespace dnlib.DotNet.Writer {
 		void ReuseIfPossible(PESection section, IReuseChunk chunk, RVA origRva, uint origSize, uint requiredAlignment) {
 			if (origRva == 0 || origSize == 0)
 				return;
-			if (chunk is null)
+			if (chunk == null)
 				return;
 			if (!chunk.CanReuse(origRva, origSize))
 				return;
 			if (((uint)origRva & (requiredAlignment - 1)) != 0)
 				return;
 
-			if (section.Remove(chunk) is null)
+			if (section.Remove(chunk) == null)
 				throw new InvalidOperationException();
 			reusedChunks.Add(new ReusedChunkInfo(chunk, origRva));
 		}
@@ -392,7 +392,7 @@ namespace dnlib.DotNet.Writer {
 				ReuseIfPossible(textSection, metadata, mdDataDir.VirtualAddress, mdDataDir.Size, DEFAULT_METADATA_ALIGNMENT);
 
 				var resourceDataDir = peImage.ImageNTHeaders.OptionalHeader.DataDirectories[2];
-				if (!(win32Resources is null) && resourceDataDir.VirtualAddress != 0 && resourceDataDir.Size != 0) {
+				if (!(win32Resources == null) && resourceDataDir.VirtualAddress != 0 && resourceDataDir.Size != 0) {
 					var win32ResourcesOffset = peImage.ToFileOffset(resourceDataDir.VirtualAddress);
 					if (win32Resources.CheckValidOffset(win32ResourcesOffset)) {
 						win32Resources.SetOffset(win32ResourcesOffset, resourceDataDir.VirtualAddress);
@@ -419,7 +419,7 @@ namespace dnlib.DotNet.Writer {
 				textSection.Remove(netResources);
 			if (textSection.IsEmpty)
 				sections.Remove(textSection);
-			if (!(rsrcSection is null) && rsrcSection.IsEmpty) {
+			if (!(rsrcSection == null) && rsrcSection.IsEmpty) {
 				sections.Remove(rsrcSection);
 				rsrcSection = null;
 			}
@@ -428,7 +428,7 @@ namespace dnlib.DotNet.Writer {
             var headerSection = CreateHeaderSection(out extraHeaderData);
 			var chunks = new List<IChunk>();
 			uint headerLen;
-			if (!(extraHeaderData is null)) {
+			if (!(extraHeaderData == null)) {
 				var list = new ChunkList<IChunk>();
 				list.Add(headerSection, 1);
 				list.Add(extraHeaderData, 1);
@@ -443,7 +443,7 @@ namespace dnlib.DotNet.Writer {
 				chunks.Add(origSection.Chunk);
 			foreach (var section in sections)
 				chunks.Add(section);
-			if (!(extraData is null))
+			if (!(extraData == null))
 				chunks.Add(extraData);
 
 			if (reusedChunks.Count > 0 || methodBodies.HasReusedMethods) {
@@ -490,7 +490,7 @@ namespace dnlib.DotNet.Writer {
 			OnWriterEvent(ModuleWriterEvent.EndWriteChunks);
 
 			OnWriterEvent(ModuleWriterEvent.BeginStrongNameSign);
-			if (!(Options.StrongNameKey is null))
+			if (!(Options.StrongNameKey == null))
 				StrongNameSign((long)strongNameSignature.FileOffset);
 			OnWriterEvent(ModuleWriterEvent.EndStrongNameSign);
 
@@ -636,7 +636,7 @@ namespace dnlib.DotNet.Writer {
 			}
 
 			// Update Win32 resources data directory, if we wrote a new one
-			if (!(win32Resources is null)) {
+			if (!(win32Resources == null)) {
 				writer.Position = dataDirOffset + 2 * 8;
 				writer.WriteDataDirectory(win32Resources);
 			}
@@ -687,49 +687,49 @@ namespace dnlib.DotNet.Writer {
 		}
 
 		static void WriteByte(DataWriter writer, byte? value) {
-			if (value is null)
+			if (value == null)
 				writer.Position++;
 			else
 				writer.WriteByte(value.Value);
 		}
 
 		static void WriteUInt16(DataWriter writer, ushort? value) {
-			if (value is null)
+			if (value == null)
 				writer.Position += 2;
 			else
 				writer.WriteUInt16(value.Value);
 		}
 
 		static void WriteUInt16(DataWriter writer, Subsystem? value) {
-			if (value is null)
+			if (value == null)
 				writer.Position += 2;
 			else
 				writer.WriteUInt16((ushort)value.Value);
 		}
 
 		static void WriteUInt16(DataWriter writer, DllCharacteristics? value) {
-			if (value is null)
+			if (value == null)
 				writer.Position += 2;
 			else
 				writer.WriteUInt16((ushort)value.Value);
 		}
 
 		static void WriteUInt32(DataWriter writer, uint? value) {
-			if (value is null)
+			if (value == null)
 				writer.Position += 4;
 			else
 				writer.WriteUInt32(value.Value);
 		}
 
 		static void WriteUInt32(DataWriter writer, ulong? value) {
-			if (value is null)
+			if (value == null)
 				writer.Position += 4;
 			else
 				writer.WriteUInt32((uint)value.Value);
 		}
 
 		static void WriteUInt64(DataWriter writer, ulong? value) {
-			if (value is null)
+			if (value == null)
 				writer.Position += 8;
 			else
 				writer.WriteUInt64(value.Value);
@@ -737,7 +737,7 @@ namespace dnlib.DotNet.Writer {
 
 		ComImageFlags GetComImageFlags(bool isManagedEntryPoint) {
 			var flags = Options.Cor20HeaderOptions.Flags ?? module.Cor20HeaderFlags;
-			if (!(Options.Cor20HeaderOptions.EntryPoint is null))
+			if (!(Options.Cor20HeaderOptions.EntryPoint == null))
 				return flags;
 			if (isManagedEntryPoint)
 				return flags & ~ComImageFlags.NativeEntryPoint;
@@ -774,7 +774,7 @@ namespace dnlib.DotNet.Writer {
 
 		void UpdateVTableFixups(DataWriter writer) {
 			var vtableFixups = module.VTableFixups;
-			if (vtableFixups is null || vtableFixups.VTables.Count == 0)
+			if (vtableFixups == null || vtableFixups.VTables.Count == 0)
 				return;
 
 			writer.Position = ToWriterOffset(vtableFixups.RVA);
@@ -822,7 +822,7 @@ namespace dnlib.DotNet.Writer {
             if ((ms = method as MethodSpec) != null)
 				return new MDToken(Table.MethodSpec, metadata.GetRid(ms)).Raw;
 
-			if (method is null)
+			if (method == null)
 				return 0;
 
 			Error("Invalid VTable method type: {0}", method.GetType());
@@ -837,7 +837,7 @@ namespace dnlib.DotNet.Writer {
 		/// <c>false</c> if it's a native entry point</returns>
 		bool GetEntryPoint(out uint ep) {
 			var tok = Options.Cor20HeaderOptions.EntryPoint;
-			if (!(tok is null)) {
+			if (!(tok == null)) {
 				ep = tok.Value;
 				return ep == 0 || ((Options.Cor20HeaderOptions.Flags ?? 0) & ComImageFlags.NativeEntryPoint) == 0;
 			}

@@ -72,7 +72,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public CustomAttributeCollection CustomAttributes {
 			get {
-				if (customAttributes is null)
+				if (customAttributes == null)
 					InitializeCustomAttributes();
 				return customAttributes;
 			}
@@ -95,7 +95,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PdbCustomDebugInfo> CustomDebugInfos {
 			get {
-				if (customDebugInfos is null)
+				if (customDebugInfos == null)
 					InitializeCustomDebugInfos();
 				return customDebugInfos;
 			}
@@ -112,12 +112,12 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public MethodDef AddMethod {
 			get {
-				if (otherMethods is null)
+				if (otherMethods == null)
 					InitializeEventMethods();
 				return addMethod;
 			}
 			set {
-				if (otherMethods is null)
+				if (otherMethods == null)
 					InitializeEventMethods();
 				addMethod = value;
 			}
@@ -128,12 +128,12 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public MethodDef InvokeMethod {
 			get {
-				if (otherMethods is null)
+				if (otherMethods == null)
 					InitializeEventMethods();
 				return invokeMethod;
 			}
 			set {
-				if (otherMethods is null)
+				if (otherMethods == null)
 					InitializeEventMethods();
 				invokeMethod = value;
 			}
@@ -144,12 +144,12 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public MethodDef RemoveMethod {
 			get {
-				if (otherMethods is null)
+				if (otherMethods == null)
 					InitializeEventMethods();
 				return removeMethod;
 			}
 			set {
-				if (otherMethods is null)
+				if (otherMethods == null)
 					InitializeEventMethods();
 				removeMethod = value;
 			}
@@ -160,7 +160,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<MethodDef> OtherMethods {
 			get {
-				if (otherMethods is null)
+				if (otherMethods == null)
 					InitializeEventMethods();
 				return otherMethods;
 			}
@@ -170,7 +170,7 @@ namespace dnlib.DotNet {
 #if THREAD_SAFE
 			theLock.EnterWriteLock(); try {
 #endif
-			if (otherMethods is null)
+			if (otherMethods == null)
 				InitializeEventMethods_NoLock();
 #if THREAD_SAFE
 			} finally { theLock.ExitWriteLock(); }
@@ -229,9 +229,9 @@ namespace dnlib.DotNet {
 				var currentDeclaringType = DeclaringType2;
 				if (currentDeclaringType == value)
 					return;
-				if (!(currentDeclaringType is null))
+				if (!(currentDeclaringType == null))
 					currentDeclaringType.Events.Remove(this);	// Will set DeclaringType2 = null
-				if (!(value is null))
+				if (!(value == null))
 					value.Events.Add(this);	// Will set DeclaringType2 = value
 			}
 		}
@@ -381,7 +381,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		public EventDefMD(ModuleDefMD readerModule, uint rid) {
 #if DEBUG
-			if (readerModule is null)
+			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.EventTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "Event rid {0} does not exist", rid ) );
@@ -415,7 +415,7 @@ namespace dnlib.DotNet {
 		protected override void InitializeEventMethods_NoLock() {
 			IList<MethodDef> newOtherMethods;
 			var dt = declaringType2 as TypeDefMD;
-			if (dt is null)
+			if (dt == null)
 				newOtherMethods = new List<MethodDef>();
 			else
 				dt.InitializeEvent(this, out addMethod, out invokeMethod, out removeMethod, out newOtherMethods);

@@ -215,7 +215,7 @@ namespace dnlib.DotNet.MD {
 			var dnTableSizes = new DotNetTableSizes();
             int maxPresentTables;
 			var tableInfos = dnTableSizes.CreateTables(majorVersion, minorVersion, out maxPresentTables);
-			if (!(typeSystemTableRows is null))
+			if (!(typeSystemTableRows == null))
 				maxPresentTables = DotNetTableSizes.normalMaxTables;
 			mdTables = new MDTable[tableInfos.Length];
 
@@ -236,7 +236,7 @@ namespace dnlib.DotNet.MD {
 				extraData = reader.ReadUInt32();
 
 			var debugSizes = sizes;
-			if (!(typeSystemTableRows is null)) {
+			if (!(typeSystemTableRows == null)) {
 				debugSizes = new uint[sizes.Length];
 				for (int i = 0; i < 64; i++) {
 					if (DotNetTableSizes.IsSystemTable((Table)i))
@@ -334,9 +334,9 @@ namespace dnlib.DotNet.MD {
 		protected override void Dispose(bool disposing) {
 			if (disposing) {
 				var mt = mdTables;
-				if (!(mt is null)) {
+				if (!(mt == null)) {
 					foreach (var mdTable in mt) {
-						if (!(mdTable is null))
+						if (!(mdTable == null))
 							mdTable.Dispose();
 					}
 					mdTables = null;

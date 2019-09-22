@@ -28,11 +28,11 @@ namespace dnlib.DotNet.Writer {
 		public void Populate(BlobStream blobStream) {
 			if (isReadOnly)
 				throw new ModuleWriterException("Trying to modify #Blob when it's read-only");
-			if (!(originalData is null))
+			if (!(originalData == null))
 				throw new InvalidOperationException("Can't call method twice");
 			if (nextOffset != 1)
 				throw new InvalidOperationException("Add() has already been called");
-			if (blobStream is null || blobStream.StreamLength == 0)
+			if (blobStream == null || blobStream.StreamLength == 0)
 				return;
 
 			var reader = blobStream.CreateReader();
@@ -68,7 +68,7 @@ namespace dnlib.DotNet.Writer {
 		public uint Add(byte[] data) {
 			if (isReadOnly)
 				throw new ModuleWriterException("Trying to modify #Blob when it's read-only");
-			if (data is null || data.Length == 0)
+			if (data == null || data.Length == 0)
 				return 0;
 
             uint offset;
@@ -101,12 +101,12 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		protected override void WriteToImpl(DataWriter writer) {
-			if (!(originalData is null))
+			if (!(originalData == null))
 				writer.WriteBytes(originalData);
 			else
 				writer.WriteByte(0);
 
-			uint offset = !(originalData is null) ? (uint)originalData.Length : 1;
+			uint offset = !(originalData == null) ? (uint)originalData.Length : 1;
 			foreach (var data in cached) {
 				int rawLen = GetRawDataSize(data);
                 byte[] rawData;
@@ -128,7 +128,7 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		public void SetRawData(uint offset, byte[] rawData) {
-			if (userRawData is null)
+			if (userRawData == null)
 				userRawData = new Dictionary<uint, byte[]>();
             if (rawData != null) userRawData[offset] = rawData; else throw new ArgumentNullException("rawData");
 		}
@@ -137,7 +137,7 @@ namespace dnlib.DotNet.Writer {
 		public IEnumerable<KeyValuePair<uint, byte[]>> GetAllRawData() {
 			var memStream = new MemoryStream();
 			var writer = new DataWriter(memStream);
-			uint offset = !(originalData is null) ? (uint)originalData.Length : 1;
+			uint offset = !(originalData == null) ? (uint)originalData.Length : 1;
 			foreach (var data in cached) {
 				memStream.Position = 0;
 				memStream.SetLength(0);

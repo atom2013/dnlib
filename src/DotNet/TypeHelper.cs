@@ -14,7 +14,7 @@ namespace dnlib.DotNet {
 		internal static bool ContainsGenericParameter(GenericParamConstraint gpc) { return gpc != null && ContainsGenericParameter(gpc.Constraint); }
 
 		internal static bool ContainsGenericParameter(MethodSpec ms) {
-			if (ms is null)
+			if (ms == null)
 				return false;
 
 			// A normal MethodSpec should always contain generic arguments and thus
@@ -23,7 +23,7 @@ namespace dnlib.DotNet {
 		}
 
 		internal static bool ContainsGenericParameter(MemberRef mr) {
-			if (mr is null)
+			if (mr == null)
 				return false;
 
 			if (ContainsGenericParameter(mr.Signature))
@@ -186,7 +186,7 @@ namespace dnlib.DotNet {
 		bool ContainsGenericParameterInternal(TypeRef type) { return false; }
 
 		bool ContainsGenericParameterInternal(TypeSpec type) {
-			if (type is null)
+			if (type == null)
 				return false;
 			if (!recursionCounter.Increment())
 				return false;
@@ -198,14 +198,14 @@ namespace dnlib.DotNet {
 		}
 
 		bool ContainsGenericParameterInternal(ITypeDefOrRef tdr) {
-			if (tdr is null)
+			if (tdr == null)
 				return false;
 			// TypeDef and TypeRef contain no generic parameters
 			return ContainsGenericParameterInternal(tdr as TypeSpec);
 		}
 
 		bool ContainsGenericParameterInternal(TypeSig type) {
-			if (type is null)
+			if (type == null)
 				return false;
 			if (!recursionCounter.Increment())
 				return false;
@@ -303,7 +303,7 @@ namespace dnlib.DotNet {
 		}
 
 		bool ContainsGenericParameterInternal(FieldSig fs) {
-			if (fs is null)
+			if (fs == null)
 				return false;
 			if (!recursionCounter.Increment())
 				return false;
@@ -315,7 +315,7 @@ namespace dnlib.DotNet {
 		}
 
 		bool ContainsGenericParameterInternal(MethodBaseSig mbs) {
-			if (mbs is null)
+			if (mbs == null)
 				return false;
 			if (!recursionCounter.Increment())
 				return false;
@@ -329,7 +329,7 @@ namespace dnlib.DotNet {
 		}
 
 		bool ContainsGenericParameterInternal(LocalSig ls) {
-			if (ls is null)
+			if (ls == null)
 				return false;
 			if (!recursionCounter.Increment())
 				return false;
@@ -341,7 +341,7 @@ namespace dnlib.DotNet {
 		}
 
 		bool ContainsGenericParameterInternal(GenericInstMethodSig gim) {
-			if (gim is null)
+			if (gim == null)
 				return false;
 			if (!recursionCounter.Increment())
 				return false;
@@ -353,7 +353,7 @@ namespace dnlib.DotNet {
 		}
 
 		bool ContainsGenericParameter(IList<TypeSig> types) {
-			if (types is null)
+			if (types == null)
 				return false;
 			if (!recursionCounter.Increment())
 				return false;

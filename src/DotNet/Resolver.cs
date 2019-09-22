@@ -31,14 +31,14 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		public TypeDef Resolve(TypeRef typeRef, ModuleDef sourceModule) {
-			if (typeRef is null)
+			if (typeRef == null)
 				return null;
 
 			if (ProjectWinMDRefs)
 				typeRef = WinMDHelpers.ToCLR(typeRef.Module ?? sourceModule, typeRef) ?? typeRef;
 
 			var nonNestedTypeRef = TypeRef.GetNonNestedTypeRef(typeRef);
-			if (nonNestedTypeRef is null)
+			if (nonNestedTypeRef == null)
 				return null;
 
 			var nonNestedResolutionScope = nonNestedTypeRef.ResolutionScope;
@@ -46,7 +46,7 @@ namespace dnlib.DotNet {
             AssemblyRef asmRef;
             if ((asmRef = nonNestedResolutionScope as AssemblyRef) != null) {
 				var asm = assemblyResolver.Resolve(asmRef, sourceModule ?? nonNestedModule);
-				return asm is null ? null : asm.Find(typeRef) ?? ResolveExportedType(asm.Modules, typeRef, sourceModule);
+				return asm == null ? null : asm.Find(typeRef) ?? ResolveExportedType(asm.Modules, typeRef, sourceModule);
 			}
 
             ModuleDef moduleDef;
@@ -55,16 +55,16 @@ namespace dnlib.DotNet {
 
             ModuleRef moduleRef;
             if ((moduleRef = nonNestedResolutionScope as ModuleRef) != null) {
-				if (nonNestedModule is null)
+				if (nonNestedModule == null)
 					return null;
 				if (new SigComparer().Equals(moduleRef, nonNestedModule))
 					return nonNestedModule.Find(typeRef) ??
 						ResolveExportedType(new ModuleDef[] { nonNestedModule }, typeRef, sourceModule);
 				var nonNestedAssembly = nonNestedModule.Assembly;
-				if (nonNestedAssembly is null)
+				if (nonNestedAssembly == null)
 					return null;
 				var resolvedModule = nonNestedAssembly.FindModule(moduleRef.Name);
-				return resolvedModule is null ? null : resolvedModule.Find(typeRef) ??
+				return resolvedModule == null ? null : resolvedModule.Find(typeRef) ??
 						ResolveExportedType(new ModuleDef[] { resolvedModule }, typeRef, sourceModule);
 			}
 
@@ -74,16 +74,16 @@ namespace dnlib.DotNet {
 		TypeDef ResolveExportedType(IList<ModuleDef> modules, TypeRef typeRef, ModuleDef sourceModule) {
 			for (int i = 0; i < 30; i++) {
 				var exportedType = FindExportedType(modules, typeRef);
-				if (exportedType is null)
+				if (exportedType == null)
 					return null;
 
 				var asmResolver = modules[0].Context.AssemblyResolver;
 				var etAsm = asmResolver.Resolve(exportedType.DefinitionAssembly, sourceModule ?? typeRef.Module);
-				if (etAsm is null)
+				if (etAsm == null)
 					return null;
 
 				var td = etAsm.Find(typeRef);
-				if (!(td is null))
+				if (!(td == null))
 					return td;
 
 				modules = etAsm.Modules;
@@ -93,7 +93,7 @@ namespace dnlib.DotNet {
 		}
 
 		static ExportedType FindExportedType(IList<ModuleDef> modules, TypeRef typeRef) {
-			if (typeRef is null)
+			if (typeRef == null)
 				return null;
 			int count = modules.Count;
 			for (int i = 0; i < count; i++) {
@@ -111,7 +111,7 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
 		public IMemberForwarded Resolve(MemberRef memberRef) {
-			if (memberRef is null)
+			if (memberRef == null)
 				return null;
 			if (ProjectWinMDRefs)
 				memberRef = WinMDHelpers.ToCLR(memberRef.Module, memberRef) ?? memberRef;
@@ -124,7 +124,7 @@ namespace dnlib.DotNet {
 		}
 
 		TypeDef GetDeclaringType(MemberRef memberRef, IMemberRefParent parent) {
-			if (memberRef is null || parent is null)
+			if (memberRef == null || parent == null)
 				return null;
 
             TypeSpec ts;
@@ -144,15 +144,15 @@ namespace dnlib.DotNet {
             ModuleRef moduleRef;
             if ((moduleRef = parent as ModuleRef) != null) {
 				var module = memberRef.Module;
-				if (module is null)
+				if (module == null)
 					return null;
 				TypeDef globalType = null;
 				if (new SigComparer().Equals(module, moduleRef))
 					globalType = module.GlobalType;
 				var modAsm = module.Assembly;
-				if (globalType is null && !(modAsm is null)) {
+				if (globalType == null && !(modAsm == null)) {
 					var moduleDef = modAsm.FindModule(moduleRef.Name);
-					if (!(moduleDef is null))
+					if (!(moduleDef == null))
 						globalType = moduleDef.GlobalType;
 				}
 				return globalType;

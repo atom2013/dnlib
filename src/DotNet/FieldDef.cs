@@ -49,7 +49,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public CustomAttributeCollection CustomAttributes {
 			get {
-				if (customAttributes is null)
+				if (customAttributes == null)
 					InitializeCustomAttributes();
 				return customAttributes;
 			}
@@ -72,7 +72,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		public IList<PdbCustomDebugInfo> CustomDebugInfos {
 			get {
-				if (customDebugInfos is null)
+				if (customDebugInfos == null)
 					InitializeCustomDebugInfos();
 				return customDebugInfos;
 			}
@@ -384,9 +384,9 @@ namespace dnlib.DotNet {
 				var currentDeclaringType = DeclaringType2;
 				if (currentDeclaringType == value)
 					return;
-				if (!(currentDeclaringType is null))
+				if (!(currentDeclaringType == null))
 					currentDeclaringType.Fields.Remove(this);	// Will set DeclaringType2 = null
-				if (!(value is null))
+				if (!(value == null))
 					value.Fields.Add(this);		// Will set DeclaringType2 = value
 			}
 		}
@@ -447,7 +447,7 @@ namespace dnlib.DotNet {
 		public ElementType ElementType {
 			get {
 				var c = Constant;
-				return c is null ? ElementType.End : c.Type;
+				return c == null ? ElementType.End : c.Type;
 			}
 		}
 
@@ -463,7 +463,7 @@ namespace dnlib.DotNet {
 			get { return FieldSig.GetFieldType(); }
 			set {
 				var sig = FieldSig;
-				if (!(sig is null))
+				if (!(sig == null))
 					sig.Type = value;
 			}
 		}
@@ -660,7 +660,7 @@ namespace dnlib.DotNet {
 		/// <returns><c>true</c> if <paramref name="size"/> is valid, <c>false</c> otherwise</returns>
 		protected bool GetFieldSize(TypeDef declaringType, FieldSig fieldSig, int ptrSize, out uint size) {
 			size = 0;
-			if (fieldSig is null)
+			if (fieldSig == null)
 				return false;
 			return GetClassSize(declaringType, fieldSig.Type, ptrSize, out size);
 		}
@@ -668,7 +668,7 @@ namespace dnlib.DotNet {
 		bool GetClassSize(TypeDef declaringType, TypeSig ts, int ptrSize, out uint size) {
 			size = 0;
 			ts = ts.RemovePinnedAndModifiers();
-			if (ts is null)
+			if (ts == null)
 				return false;
 
 			int size2 = ts.ElementType.GetPrimitiveSize(ptrSize);
@@ -678,25 +678,25 @@ namespace dnlib.DotNet {
 			}
 
 			var tdrs = ts as TypeDefOrRefSig;
-			if (tdrs is null)
+			if (tdrs == null)
 				return false;
 
 			var td = tdrs.TypeDef;
-			if (!(td is null))
+			if (!(td == null))
 				return TypeDef.GetClassSize(td, out size);
 
 			var tr = tdrs.TypeRef;
-			if (!(tr is null))
+			if (!(tr == null))
 				return TypeDef.GetClassSize(tr.Resolve(), out size);
 
 			return false;
 		}
 
 		int GetPointerSize(TypeDef declaringType) {
-			if (declaringType is null)
+			if (declaringType == null)
 				return 4;
 			var module = declaringType.Module;
-			if (module is null)
+			if (module == null)
 				return 4;
 			return module.GetPointerSize();
 		}
@@ -819,7 +819,7 @@ namespace dnlib.DotNet {
 		/// <exception cref="ArgumentException">If <paramref name="rid"/> is invalid</exception>
 		public FieldDefMD(ModuleDefMD readerModule, uint rid) {
 #if DEBUG
-			if (readerModule is null)
+			if (readerModule == null)
 				throw new ArgumentNullException("readerModule");
 			if (readerModule.TablesStream.FieldTable.IsInvalidRID(rid))
 				throw new BadImageFormatException( string.Format( "Field rid {0} does not exist", rid ) );
