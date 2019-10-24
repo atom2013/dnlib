@@ -25,23 +25,23 @@ namespace dnlib.IO {
 		/// <summary>
 		/// Gets the start offset of the data
 		/// </summary>
-		public readonly uint StartOffset { get { return startOffset; } }
+		public uint StartOffset { get { return startOffset; } }
 
 		/// <summary>
 		/// Gets the end offset of the data, not inclusive
 		/// </summary>
-		public readonly uint EndOffset { get { return endOffset; } }
+		public uint EndOffset { get { return endOffset; } }
 
 		/// <summary>
 		/// Gets the total length of the data
 		/// </summary>
-		public readonly uint Length { get { return endOffset - startOffset; } }
+		public uint Length { get { return endOffset - startOffset; } }
 
 		/// <summary>
 		/// Gets the current offset. This is between <see cref="StartOffset"/> and <see cref="EndOffset"/> (inclusive)
 		/// </summary>
 		public uint CurrentOffset {
-			readonly get { return currentOffset; }
+			get { return currentOffset; }
 			set {
 				VerifyState();
 				if (value < startOffset || value > endOffset) {
@@ -57,7 +57,7 @@ namespace dnlib.IO {
 		/// Gets/sets the position relative to <see cref="StartOffset"/>
 		/// </summary>
 		public uint Position {
-			readonly get { return currentOffset - startOffset; }
+			get { return currentOffset - startOffset; }
 			set {
 				VerifyState();
 				if (value > Length) {
@@ -72,7 +72,7 @@ namespace dnlib.IO {
 		/// <summary>
 		/// Gets the number of bytes that can be read without throwing an exception
 		/// </summary>
-		public readonly uint BytesLeft { get { return endOffset - currentOffset; } }
+		public uint BytesLeft { get { return endOffset - currentOffset; } }
 
 		readonly DataStream stream;
 		readonly uint startOffset;
@@ -96,7 +96,7 @@ namespace dnlib.IO {
 		}
 
 		[Conditional("DEBUG")]
-		readonly void VerifyState() {
+		void VerifyState() {
 			Debug.Assert(startOffset <= currentOffset);
 			Debug.Assert(currentOffset <= endOffset);
 		}
@@ -167,14 +167,14 @@ namespace dnlib.IO {
 		/// </summary>
 		/// <param name="length">Length of data</param>
 		/// <returns></returns>
-		public readonly bool CanRead(int length) { return length >= 0 && (uint)length <= BytesLeft; }
+		public bool CanRead(int length) { return length >= 0 && (uint)length <= BytesLeft; }
 
 		/// <summary>
 		/// Checks if it's possible to read <paramref name="length"/> bytes
 		/// </summary>
 		/// <param name="length">Length of data</param>
 		/// <returns></returns>
-		public readonly bool CanRead(uint length) { return length <= BytesLeft; }
+		public bool CanRead(uint length) { return length <= BytesLeft; }
 
 		/// <summary>
 		/// Reads a <see cref="bool"/>
@@ -642,7 +642,7 @@ namespace dnlib.IO {
 		/// Returns all data without updating the current position
 		/// </summary>
 		/// <returns></returns>
-		public readonly byte[] ToArray() {
+		public byte[] ToArray() {
 			int length = (int)Length;
 			if (length < 0)
 				ThrowInvalidOperationException();
@@ -754,9 +754,9 @@ namespace dnlib.IO {
 		/// Creates a <see cref="Stream"/> that can access this content. The caller doesn't have to dispose of the returned stream.
 		/// </summary>
 		/// <returns></returns>
-		public readonly Stream AsStream() { return new DataReaderStream(ref this); }
+		public Stream AsStream() { return new DataReaderStream(ref this); }
 
-		readonly byte[] AllocTempBuffer() { return new byte[(int)Math.Min(0x2000, BytesLeft)]; }
+		byte[] AllocTempBuffer() { return new byte[(int)Math.Min(0x2000, BytesLeft)]; }
 
 		/// <summary>
 		/// Copies the data, starting from <see cref="Position"/>, to <paramref name="destination"/>

@@ -27,7 +27,8 @@ namespace dnlib.DotNet {
 				var type = modAsm.Find(nonNestedTypeRef);
 				// If the user added a new type with the same name as a corelib type, don't return it,
 				// only return the type if it is this module's original type.
-				if (type is TypeDefMD td && td.ReaderModule == module)
+                TypeDefMD td = type as TypeDefMD;
+				if (td != null && td.ReaderModule == module)
 					return module.UpdateRowId(new AssemblyRefUser(modAsm));
 			}
 			else if (!(module.Find(nonNestedTypeRef) == null))

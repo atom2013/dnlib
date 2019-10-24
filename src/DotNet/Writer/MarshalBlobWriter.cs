@@ -22,8 +22,9 @@ namespace dnlib.DotNet.Writer {
 		/// <param name="helper">Helps this class</param>
 		/// <returns>A field marshal blob or <c>null</c> if <paramref name="marshalType"/> is
 		/// <c>null</c></returns>
-		public static byte[] Write(ModuleDef module, MarshalType marshalType, IWriterError helper) =>
-			Write(module, marshalType, helper, false);
+        public static byte[] Write(ModuleDef module, MarshalType marshalType, IWriterError helper) {
+            return Write(module, marshalType, helper, false);
+        }
 
 		/// <summary>
 		/// Creates a field marshal blob from <paramref name="marshalType"/>

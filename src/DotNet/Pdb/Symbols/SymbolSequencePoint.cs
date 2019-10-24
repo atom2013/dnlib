@@ -39,7 +39,7 @@ namespace dnlib.DotNet.Pdb.Symbols {
 		/// </summary>
 		public int EndColumn;
 
-		readonly string GetDebuggerString() {
+		string GetDebuggerString() {
 			var sb = new StringBuilder();
 			if (Line == 0xFEEFEE && EndLine == 0xFEEFEE)
 				sb.Append("<hidden>");

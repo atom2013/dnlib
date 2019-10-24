@@ -1969,7 +1969,7 @@ namespace dnlib.DotNet {
 		/// <summary>The module where this instance is located</summary>
 		readonly ModuleDefMD readerModule;
 
-		internal ModuleDefMD ReaderModule => readerModule;
+        internal ModuleDefMD ReaderModule { get { return readerModule; } }
 
 		readonly uint origRid;
 		readonly uint extendsCodedToken;

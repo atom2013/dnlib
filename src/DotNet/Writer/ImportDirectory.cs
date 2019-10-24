@@ -56,16 +56,16 @@ namespace dnlib.DotNet.Writer {
 		/// Gets/sets the name of the dll which should be imported.
 		/// </summary>
 		public string DllToImport {
-			get => dllToImport ?? "mscoree.dll";
-			set => dllToImport = value;
+			get { return dllToImport ?? (dllToImport = "mscoree.dll"); }
+			set { dllToImport = value; }
 		}
 
 		/// <summary>
 		/// Gets/sets the name of the entry point of the imported dll.
 		/// </summary>
 		public string EntryPointName {
-			get => entryPointName ?? (IsExeFile ? "_CorExeMain" : "_CorDllMain");
-			set => entryPointName = value;
+			get { return entryPointName ?? (entryPointName = (IsExeFile ? "_CorExeMain" : "_CorDllMain")); }
+            set { entryPointName = value; }
 		}
 
 		const uint STRINGS_ALIGNMENT = 16;

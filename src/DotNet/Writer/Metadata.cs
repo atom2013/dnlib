@@ -921,7 +921,7 @@ namespace dnlib.DotNet.Writer {
 		/// Gets/sets the <see cref="MetadataFlags.OptimizeCustomAttributeSerializedTypeNames"/> bit
 		/// </summary>
 		public bool OptimizeCustomAttributeSerializedTypeNames {
-			get => (options.Flags & MetadataFlags.OptimizeCustomAttributeSerializedTypeNames) != 0;
+            get { return (options.Flags & MetadataFlags.OptimizeCustomAttributeSerializedTypeNames) != 0; }
 			set {
 				if (value)
 					options.Flags |= MetadataFlags.OptimizeCustomAttributeSerializedTypeNames;
