@@ -1,4 +1,4 @@
-# dnlib  [![Build status](https://ci.appveyor.com/api/projects/status/h7dqmfac6qjh4hap/branch/master?svg=true)](https://ci.appveyor.com/project/0xd4d/dnlib/branch/master)  [![NuGet](https://img.shields.io/nuget/v/dnlib.svg)](https://www.nuget.org/packages/dnlib/)
+# dnlib [![NuGet](https://img.shields.io/nuget/v/dnlib.svg)](https://www.nuget.org/packages/dnlib/) [![](https://github.com/0xd4d/dnlib/workflows/GitHub%20CI/badge.svg)](https://github.com/0xd4d/dnlib/actions)
 
 .NET module/assembly reader/writer library
 
@@ -55,78 +55,77 @@ v3.0 breaking changes
 Examples
 --------
 
-All examples use C#, but since it's a .NET library, you can use any .NET
-language (eg. VB.NET).
+All examples use C#, but since it's a .NET library, you can use any .NET language (eg. VB.NET).
 
 See the Examples project for several examples.
 
 Opening a .NET assembly/module
 ------------------------------
 
-First of all, the important namespaces are `dnlib.DotNet` and
-`dnlib.DotNet.Emit`. `dnlib.DotNet.Emit` is only needed if you intend to
-read/write method bodies. All the examples below assume you have the
-appropriate using statements at the top of each source file:
+First of all, the important namespaces are `dnlib.DotNet` and `dnlib.DotNet.Emit`. `dnlib.DotNet.Emit` is only needed if you intend to read/write method bodies. All the examples below assume you have the appropriate using statements at the top of each source file:
 
-```csharp
+```C#
     using dnlib.DotNet;
     using dnlib.DotNet.Emit;
 ```
 
-ModuleDefMD is the class that is created when you open a .NET module. It has
-several `Load()` methods that will create a ModuleDefMD instance. If it's not a
-.NET module/assembly, a `BadImageFormatException` will be thrown.
+ModuleDefMD is the class that is created when you open a .NET module. It has several `Load()` methods that will create a ModuleDefMD instance. If it's not a .NET module/assembly, a `BadImageFormatException` will be thrown.
 
 Read a .NET module from a file:
 
-```csharp
-    ModuleDefMD module = ModuleDefMD.Load(@"C:\path\to\file.exe");
+```C#
+    // Create a default assembly resolver and type resolver and pass it to Load().
+    // If it's a .NET Core assembly, you'll need to disable GAC loading and add
+    // .NET Core reference assembly search paths.
+    ModuleContext modCtx = ModuleDef.CreateModuleContext();
+    ModuleDefMD module = ModuleDefMD.Load(@"C:\path\to\file.exe", modCtx);
 ```
 
 Read a .NET module from a byte array:
 
-```csharp
+```C#
     byte[] data = System.IO.File.ReadAllBytes(@"C:\path\of\file.dll");
-    ModuleDefMD module = ModuleDefMD.Load(data);
+    // See comment above about the assembly resolver
+    ModuleContext modCtx = ModuleDef.CreateModuleContext();
+    ModuleDefMD module = ModuleDefMD.Load(data, modCtx);
 ```
 
-You can also pass in a Stream instance, an address in memory (HINSTANCE) or
-even a System.Reflection.Module instance:
+You can also pass in a Stream instance, an address in memory (HINSTANCE) or even a System.Reflection.Module instance:
 
-```csharp
+```C#
     System.Reflection.Module reflectionModule = typeof(void).Module;	// Get mscorlib.dll's module
-    ModuleDefMD module = ModuleDefMD.Load(reflectionModule);
+    // See comment above about the assembly resolver
+    ModuleContext modCtx = ModuleDef.CreateModuleContext();
+    ModuleDefMD module = ModuleDefMD.Load(reflectionModule, modCtx);
 ```
 
 To get the assembly, use its Assembly property:
 
-```csharp
+```C#
     AssemblyDef asm = module.Assembly;
     Console.WriteLine("Assembly: {0}", asm);
 ```
 
-If it's an obfuscated Unity/Mono assembly, you need to create a `ModuleCreationOptions`
-and write `CLRRuntimeReaderKind.Mono` to `ModuleCreationOptions.Runtime` and pass in
-this `ModuleCreationOptions` instance to one of the `ModuleDefMD.Load(...)` methods.
+If it's an obfuscated Unity/Mono assembly, you need to create a `ModuleCreationOptions` instance and write `CLRRuntimeReaderKind.Mono` to `ModuleCreationOptions.Runtime` and pass in this `ModuleCreationOptions` instance to one of the `ModuleDefMD.Load(...)` methods.
 
 Saving a .NET assembly/module
 -----------------------------
 
 Use `module.Write()`. It can save the assembly to a file or a Stream.
 
-```csharp
+```C#
     module.Write(@"C:\saved-assembly.dll");
 ```
 
 If it's a C++/CLI assembly, you should use `NativeWrite()`
 
-```csharp
+```C#
     module.NativeWrite(@"C:\saved-assembly.dll");
 ```
 
 To detect it at runtime, use this code:
 
-```csharp
+```C#
     if (module.IsILOnly) {
     	// This assembly has only IL code, and no native code (eg. it's a C# or VB assembly)
     	module.Write(@"C:\saved-assembly.dll");
@@ -140,20 +139,14 @@ To detect it at runtime, use this code:
 PDB files
 ---------
 
-PDB files are read from disk by default. You can change this behaviour by
-creating a `ModuleCreationOptions` and passing it in to the code that creates
-a module.
+PDB files are read from disk by default. You can change this behaviour by creating a `ModuleCreationOptions` and passing it in to the code that creates a module.
 
-To save a PDB file, create a `ModuleWriterOptions` /
-`NativeModuleWriterOptions` and set its `WritePdb` property to `true`. By
-default, it will create a PDB file with the same name as the output assembly
-but with a `.pdb` extension. You can override this by writing the PDB file
-name to `PdbFileName` or writing your own stream to `PdbStream`. If
-`PdbStream` is initialized, `PdbFileName` should also be initialized because
-the name of the PDB file will be written to the PE file.
+To save a PDB file, create a `ModuleWriterOptions` / `NativeModuleWriterOptions` and set its `WritePdb` property to `true`. By default, it will create a PDB file with the same name as the output assembly but with a `.pdb` extension. You can override this by writing the PDB file name to `PdbFileName` or writing your own stream to `PdbStream`. If `PdbStream` is initialized, `PdbFileName` should also be initialized because the name of the PDB file will be written to the PE file.
 
-```csharp
-    var mod = ModuleDefMD.Load(@"C:\myfile.dll");
+```C#
+    // Create a default assembly resolver and type resolver
+    ModuleContext modCtx = ModuleDef.CreateModuleContext();
+    var mod = ModuleDefMD.Load(@"C:\myfile.dll", modCtx);
     // ...
     var wopts = new dnlib.DotNet.Writer.ModuleWriterOptions(mod);
     wopts.WritePdb = true;
@@ -179,7 +172,7 @@ Strong name signing an assembly
 
 Use the following code to strong name sign the assembly when saving it:
 
-```csharp
+```C#
     using dnlib.DotNet.Writer;
     ...
     // Open or create an assembly
@@ -201,12 +194,11 @@ Use the following code to strong name sign the assembly when saving it:
 Enhanced strong name signing an assembly
 ----------------------------------------
 
-See this [MSDN article](http://msdn.microsoft.com/en-us/library/hh415055.aspx)
-for info on enhanced strong naming.
+See this [MSDN article](http://msdn.microsoft.com/en-us/library/hh415055.aspx) for info on enhanced strong naming.
 
 Enhanced strong name signing without key migration:
 
-```csharp
+```C#
     using dnlib.DotNet.Writer;
     ...
     // Open or create an assembly
@@ -228,7 +220,7 @@ Enhanced strong name signing without key migration:
 
 Enhanced strong name signing with key migration:
 
-```csharp
+```C#
     using dnlib.DotNet.Writer;
     ...
     // Open or create an assembly
@@ -255,6 +247,7 @@ Exporting managed methods (DllExport)
 -------------------------------------
 
 dnlib supports exporting managed methods so the managed DLL file can be loaded by native code and then executed. .NET Framework supports this feature, but there's no guarantee that other CLRs (eg. .NET Core or Mono/Unity) support this feature.
+In case of .NET Core please be aware that `ijwhost.dll` has to be loaded prior to calling your exported method and that ijwhost currently (as of .NET Core 3.0) does not work if the calling app is self-contained.
 
 The `MethodDef` class has an `ExportInfo` property. If it gets initialized, the method gets exported when saving the module. At most 65536 (2^16) methods can be exported. This is a PE file limitation, not a dnlib limitation.
 
@@ -293,56 +286,43 @@ See the following issues: [#271](https://github.com/0xd4d/dnlib/issues/271), [#1
 Type classes
 ------------
 
-The metadata has three type tables: `TypeRef`, `TypeDef`, and `TypeSpec`. The
-classes dnlib use are called the same. These three classes all implement
-`ITypeDefOrRef`.
+The metadata has three type tables: `TypeRef`, `TypeDef`, and `TypeSpec`. The classes dnlib use are called the same. These three classes all implement `ITypeDefOrRef`.
 
-There's also type signature classes. The base class is `TypeSig`. You'll find
-`TypeSig`s in method signatures (return type and parameter types) and locals.
-The `TypeSpec` class also has a `TypeSig` property.
+There's also type signature classes. The base class is `TypeSig`. You'll find `TypeSig`s in method signatures (return type and parameter types) and locals. The `TypeSpec` class also has a `TypeSig` property.
 
 All of these types implement `IType`.
 
 `TypeRef` is a reference to a type in (usually) another assembly.
 
-`TypeDef` is a type definition and it's a type defined in some module. This
-class does *not* derive from `TypeRef`. :)
+`TypeDef` is a type definition and it's a type defined in some module. This class does *not* derive from `TypeRef`. :)
 
 `TypeSpec` can be a generic type, an array type, etc.
 
-`TypeSig` is the base class of all type signatures (found in method sigs and
-locals). It has a `Next` property that points to the next `TypeSig`. Eg. a
-Byte[] would first contain a `SZArraySig`, and its `Next` property would point
-to Byte signature.
+`TypeSig` is the base class of all type signatures (found in method sigs and locals). It has a `Next` property that points to the next `TypeSig`. Eg. a Byte[] would first contain a `SZArraySig`, and its `Next` property would point to Byte signature.
 
-`CorLibTypeSig` is a simple corlib type. You don't create these directly. Use
-eg. `module.CorLibTypes.Int32` to get a System.Int32 type signature.
+`CorLibTypeSig` is a simple corlib type. You don't create these directly. Use eg. `module.CorLibTypes.Int32` to get a System.Int32 type signature.
 
 `ValueTypeSig` is used when the next class is a value type.
 
 `ClassSig` is used when the next class is a reference type.
 
-`GenericInstSig` is a generic instance type. It has a reference to the generic
-type (a `TypeDef` or a `TypeRef`) and the generic arguments.
+`GenericInstSig` is a generic instance type. It has a reference to the generic type (a `TypeDef` or a `TypeRef`) and the generic arguments.
 
 `PtrSig` is a pointer sig.
 
 `ByRefSig` is a by reference type.
 
-`ArraySig` is a multi-dimensional array type. Most likely when you create an
-array, you should use `SZArraySig`, and *not* `ArraySig`.
+`ArraySig` is a multi-dimensional array type. Most likely when you create an array, you should use `SZArraySig`, and *not* `ArraySig`.
 
-`SZArraySig` is a single dimension, zero lower bound array. In C#, a `byte[]`
-is a `SZArraySig`, and *not* an `ArraySig`.
+`SZArraySig` is a single dimension, zero lower bound array. In C#, a `byte[]` is a `SZArraySig`, and *not* an `ArraySig`.
 
 `GenericVar` is a generic type variable.
 
 `GenericMVar` is a generic method variable.
 
-Some examples if you're not used to the way type signatures are represented
-in metadata:
+Some examples if you're not used to the way type signatures are represented in metadata:
 
-```csharp
+```C#
     ModuleDef mod = ....;
     
     // Create a byte[]
@@ -363,10 +343,9 @@ in metadata:
     SZArraySig array5 = new SZArraySig(new ClassSig(stream));
 ```
 
-Sometimes you must convert an `ITypeDefOrRef` (`TypeRef`, `TypeDef`, or
-`TypeSpec`) to/from a `TypeSig`. There's extension methods you can use:
+Sometimes you must convert an `ITypeDefOrRef` (`TypeRef`, `TypeDef`, or `TypeSpec`) to/from a `TypeSig`. There's extension methods you can use:
 
-```csharp
+```C#
     // array5 is defined above
     ITypeDefOrRef type1 = array5.ToTypeDefOrRef();
     TypeSig type2 = type1.ToTypeSig();
@@ -375,22 +354,9 @@ Sometimes you must convert an `ITypeDefOrRef` (`TypeRef`, `TypeDef`, or
 Naming conventions of metadata table classes
 --------------------------------------------
 
-For most tables in the metadata, there's a corresponding dnlib class with the
-exact same or a similar name. Eg. the metadata has a `TypeDef` table, and dnlib
-has a `TypeDef` class. Some tables don't have a class because they're
-referenced by other classes, and that information is part of some other class.
-Eg. the `TypeDef` class contains all its properties and events, even though the
-`TypeDef` table has no property or event column.
+For most tables in the metadata, there's a corresponding dnlib class with the exact same or a similar name. Eg. the metadata has a `TypeDef` table, and dnlib has a `TypeDef` class. Some tables don't have a class because they're referenced by other classes, and that information is part of some other class. Eg. the `TypeDef` class contains all its properties and events, even though the `TypeDef` table has no property or event column.
 
-For each of these table classes, there's an abstract base class, and two sub
-classes. These sub classes are named the same as the base class but ends in
-either `MD` (for classes created from the metadata) or `User` (for classes
-created by the user). Eg. `TypeDef` is the base class, and it has two sub
-classes `TypeDefMD` which is auto-created from metadata, and `TypeRefUser`
-which is created by the user when adding user types. Most of the XyzMD classes
-are internal and can't be referenced directly by the user. They're created by
-`ModuleDefMD` (which is the only public `MD` class). All XyzUser classes are
-public.
+For each of these table classes, there's an abstract base class, and two sub classes. These sub classes are named the same as the base class but ends in either `MD` (for classes created from the metadata) or `User` (for classes created by the user). Eg. `TypeDef` is the base class, and it has two sub classes `TypeDefMD` which is auto-created from metadata, and `TypeRefUser` which is created by the user when adding user types. Most of the XyzMD classes are internal and can't be referenced directly by the user. They're created by `ModuleDefMD` (which is the only public `MD` class). All XyzUser classes are public.
 
 Metadata table classes
 ----------------------
@@ -407,23 +373,19 @@ Here's a list of the most common metadata table classes
 
 `GenericParam` is a generic parameter (owned by a `MethodDef` or a `TypeDef`)
 
-`MemberRef` is what you create if you need a field reference or a method
-reference.
+`MemberRef` is what you create if you need a field reference or a method reference.
 
-`MethodDef` is a method definition. It usually has a `CilBody` with CIL
-instructions. Owned by a `TypeDef`.
+`MethodDef` is a method definition. It usually has a `CilBody` with CIL instructions. Owned by a `TypeDef`.
 
 `MethodSpec` is a instantiated generic method.
 
-`ModuleDef` is the base module class. When you read an existing module, a
-`ModuleDefMD` is created.
+`ModuleDef` is the base module class. When you read an existing module, a `ModuleDefMD` is created.
 
 `ModuleRef` is a module reference.
 
 `PropertyDef` is a property definition. Owned by a `TypeDef`.
 
-`TypeDef` is a type definition. It contains a lot of interesting stuff,
-including methods, fields, properties, etc.
+`TypeDef` is a type definition. It contains a lot of interesting stuff, including methods, fields, properties, etc.
 
 `TypeRef` is a type reference. Usually to a type in another assembly.
 
@@ -432,31 +394,23 @@ including methods, fields, properties, etc.
 Method classes
 --------------
 
-The following are the method classes: `MethodDef`, `MemberRef` (method ref) and
-`MethodSpec`. They all implement `IMethod`.
+The following are the method classes: `MethodDef`, `MemberRef` (method ref) and `MethodSpec`. They all implement `IMethod`.
 
 Field classes
 -------------
 
-The following are the field classes: `FieldDef` and `MemberRef` (field ref).
-They both implement `IField`.
+The following are the field classes: `FieldDef` and `MemberRef` (field ref). They both implement `IField`.
 
 Comparing types, methods, fields, etc
 -------------------------------------
 
-dnlib has a `SigComparer` class that can compare any type with any other type.
-Any method with any other method, etc. It also has several pre-created
-`IEqualityComparer<T>` classes (eg. `TypeEqualityComparer`,
-`FieldEqualityComparer`, etc) which you can use if you intend to eg. use a type
-as a key in a `Dictionary<TKey, TValue>`.
+dnlib has a `SigComparer` class that can compare any type with any other type. Any method with any other method, etc. It also has several pre-created `IEqualityComparer<T>` classes (eg. `TypeEqualityComparer`, `FieldEqualityComparer`, etc) which you can use if you intend to eg. use a type as a key in a `Dictionary<TKey, TValue>`.
 
-The `SigComparer` class can also compare types with `System.Type`, methods with
-`System.Reflection.MethodBase`, etc.
+The `SigComparer` class can also compare types with `System.Type`, methods with `System.Reflection.MethodBase`, etc.
 
-It has many options you can set, see `SigComparerOptions`. The default options
-is usually good enough, though.
+It has many options you can set, see `SigComparerOptions`. The default options is usually good enough, though.
 
-```csharp
+```C#
     // Compare two types
     TypeRef type1 = ...;
     TypeDef type2 = ...;
@@ -479,12 +433,9 @@ It has many `Equals()` and `GetHashCode()` overloads.
 .NET Resources
 --------------
 
-There's three types of .NET resource, and they all derive from the common base
-class `Resource`. `ModuleDef.Resources` is a list of all resources the module
-owns.
+There's three types of .NET resource, and they all derive from the common base class `Resource`. `ModuleDef.Resources` is a list of all resources the module owns.
 
-`EmbeddedResource` is a resource that has data embedded in the owner module.
-This is the most common type of resource and it's probably what you want.
+`EmbeddedResource` is a resource that has data embedded in the owner module. This is the most common type of resource and it's probably what you want.
 
 `AssemblyLinkedResource` is a reference to a resource in another assembly.
 
@@ -493,45 +444,36 @@ This is the most common type of resource and it's probably what you want.
 Win32 resources
 ---------------
 
-`ModuleDef.Win32Resources` can be null or a `Win32Resources` instance. You can
-add/remove any Win32 resource blob. dnlib doesn't try to parse these blobs.
+`ModuleDef.Win32Resources` can be null or a `Win32Resources` instance. You can add/remove any Win32 resource blob. dnlib doesn't try to parse these blobs.
 
 Parsing method bodies
 ---------------------
 
-This is usually only needed if you have decrypted a method body. If it's a
-standard method body, you can use `MethodBodyReader.Create()`. If it's similar
-to a standard method body, you can derive a class from `MethodBodyReaderBase`
-and override the necessary methods.
+This is usually only needed if you have decrypted a method body. If it's a standard method body, you can use `MethodBodyReader.Create()`. If it's similar to a standard method body, you can derive a class from `MethodBodyReaderBase` and override the necessary methods.
 
 Resolving references
 --------------------
 
-`TypeRef.Resolve()` and `MemberRef.Resolve()` both use
-`module.Context.Resolver` to resolve the type, field or method. The custom
-attribute parser code may also resolve type references.
+`TypeRef.Resolve()` and `MemberRef.Resolve()` both use `module.Context.Resolver` to resolve the type, field or method. The custom attribute parser code may also resolve type references.
 
-If you call Resolve() or read custom attributes, you should initialize
-module.Context to a `ModuleContext`. It should normally be shared between all
-modules you open.
+If you call `Resolve()` or read custom attributes, you should initialize module.Context to a `ModuleContext`. It should normally be shared between all modules you open.
 
-```csharp
-    AssemblyResolver asmResolver = new AssemblyResolver();
-    ModuleContext modCtx = new ModuleContext(asmResolver);
-    
-    // All resolved assemblies will also get this same modCtx
-    asmResolver.DefaultModuleContext = modCtx;
-    
+```C#
+    // You should pass this context to ModuleDefMD.Load(), but you can also write
+    // it to `module.Context`
+    ModuleContext modCtx = ModuleDef.CreateModuleContext();
+    // It creates the default assembly resolver
+    AssemblyResolver asmResolver = (AssemblyResolver)modCtx.AssemblyResolver;
+
     // Enable the TypeDef cache for all assemblies that are loaded
     // by the assembly resolver. Only enable it if all auto-loaded
     // assemblies are read-only.
     asmResolver.EnableTypeDefCache = true;
 ```
 
-All assemblies that you yourself open should be added to the assembly resolver
-cache.
+All assemblies that you yourself open should be added to the assembly resolver cache.
 
-```csharp
+```C#
     ModuleDefMD mod = ModuleDefMD.Load(...);
     mod.Context = modCtx;	// Use the previously created (and shared) context
     // This code assumes you're using the default assembly resolver
@@ -541,27 +483,23 @@ cache.
 Resolving types, methods, etc from metadata tokens
 --------------------------------------------------
 
-`ModuleDefMD` has several `ResolveXXX()` methods, eg. `ResolveTypeDef()`,
-`ResolveMethod()`, etc.
+`ModuleDefMD` has several `ResolveXXX()` methods, eg. `ResolveTypeDef()`, `ResolveMethod()`, etc.
 
 Creating mscorlib type references
 ---------------------------------
 
-Every module has a `CorLibTypes` property. It has references to a few of the
-simplest types such as all integer types, floating point types, Object, String,
-etc. If you need a type that's not there, you must create it yourself, eg.:
+Every module has a `CorLibTypes` property. It has references to a few of the simplest types such as all integer types, floating point types, Object, String, etc. If you need a type that's not there, you must create it yourself, eg.:
 
-```csharp
+```C#
     TypeRef consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
 ```
 
 Importing runtime types, methods, fields
 ----------------------------------------
 
-To import a `System.Type`, `System.Reflection.MethodInfo`,
-`System.Reflection.FieldInfo`, etc into a module, use the `Importer` class.
+To import a `System.Type`, `System.Reflection.MethodInfo`, `System.Reflection.FieldInfo`, etc into a module, use the `Importer` class.
 
-```csharp
+```C#
     Importer importer = new Importer(mod);
     ITypeDefOrRef consoleRef = importer.Import(typeof(System.Console));
     IMethod writeLine = importer.Import(typeof(System.Console).GetMethod("WriteLine"));
@@ -569,38 +507,27 @@ To import a `System.Type`, `System.Reflection.MethodInfo`,
 
 You can also use it to import types, methods etc from another `ModuleDef`.
 
-All imported types, methods etc will be references to the original assembly.
-I.e., it won't add the imported `TypeDef` to the target module. It will just
-create a `TypeRef` to it.
+All imported types, methods etc will be references to the original assembly. I.e., it won't add the imported `TypeDef` to the target module. It will just create a `TypeRef` to it.
 
 Using decrypted methods
 -----------------------
 
-If `ModuleDefMD.MethodDecrypter` is initialized, `ModuleDefMD` will call it and
-check whether the method has been decrypted. If it has, it calls
-`IMethodDecrypter.GetMethodBody()` which you should implement. Return the new
-`MethodBody`. `GetMethodBody()` should usually call `MethodBodyReader.Create()`
-which does the actual parsing of the CIL code.
+If `ModuleDefMD.MethodDecrypter` is initialized, `ModuleDefMD` will call it and check whether the method has been decrypted. If it has, it calls `IMethodDecrypter.GetMethodBody()` which you should implement. Return the new `MethodBody`. `GetMethodBody()` should usually call `MethodBodyReader.Create()` which does the actual parsing of the CIL code.
 
-It's also possible to override `ModuleDefMD.ReadUserString()`. This method is
-called by the CIL parser when it finds a `Ldstr` instruction. If
-`ModuleDefMD.StringDecrypter` is not null, its `ReadUserString()` method is
-called with the string token. Return the decrypted string or null if it should
-be read from the `#US` heap.
+It's also possible to override `ModuleDefMD.ReadUserString()`. This method is called by the CIL parser when it finds a `Ldstr` instruction. If `ModuleDefMD.StringDecrypter` is not null, its `ReadUserString()` method is called with the string token. Return the decrypted string or null if it should be read from the `#US` heap.
 
 Low level access to the metadata
 --------------------------------
 
 The low level classes are in the `dnlib.DotNet.MD` namespace.
 
-Open an existing .NET module/assembly and you get a ModuleDefMD. It has several
-properties, eg. `StringsStream` is the #Strings stream.
+Open an existing .NET module/assembly and you get a ModuleDefMD. It has several properties, eg. `StringsStream` is the #Strings stream.
 
 The `Metadata` property gives you full access to the metadata.
 
 To get a list of all valid TypeDef rids (row IDs), use this code:
 
-```csharp
+```C#
     using dnlib.DotNet.MD;
     // ...
     ModuleDefMD mod = ModuleDefMD.Load(...);

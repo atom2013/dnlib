@@ -1259,6 +1259,7 @@ namespace dnlib.DotNet {
 			var res = new Resolver(asmRes);
 			ctx.AssemblyResolver = asmRes;
 			ctx.Resolver = res;
+			asmRes.DefaultModuleContext = ctx;
 			return ctx;
 		}
 
