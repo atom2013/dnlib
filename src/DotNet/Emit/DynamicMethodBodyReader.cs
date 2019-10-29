@@ -493,12 +493,11 @@ namespace dnlib.DotNet.Emit {
             uint token;
             if (!CodedToken.TypeDefOrRef.Decode(codedToken, out token))
 				return null;
-			uint rid = MDToken.ToRID(token);
 			switch (MDToken.ToTable(token)) {
 			case Table.TypeDef:
 			case Table.TypeRef:
 			case Table.TypeSpec:
-				return ImportType(rid);
+				return module.ResolveToken(token) as ITypeDefOrRef;
 			}
 			return null;
 		}
