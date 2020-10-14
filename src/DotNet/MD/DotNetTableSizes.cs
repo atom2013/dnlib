@@ -62,8 +62,8 @@ namespace dnlib.DotNet.MD {
 				case ColumnSize.CustomAttributeType:info = CodedToken.CustomAttributeType; break;
 				case ColumnSize.ResolutionScope:	info = CodedToken.ResolutionScope; break;
 				case ColumnSize.TypeOrMethodDef:	info = CodedToken.TypeOrMethodDef; break;
-				case ColumnSize.HasCustomDebugInformation:info = CodedToken.HasCustomDebugInformation; break;
-				default: throw new InvalidOperationException( string.Format( "Invalid ColumnSize: {0}", columnSize ) );
+				case ColumnSize.HasCustomDebugInformation: info = CodedToken.HasCustomDebugInformation; break;
+				default: throw new InvalidOperationException(string.Format("Invalid ColumnSize: {0}",columnSize));
 				}
 				uint maxRows = 0;
 				foreach (var tableType in info.TableTypes) {

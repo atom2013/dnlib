@@ -147,7 +147,7 @@ namespace dnlib.DotNet.Writer {
 		public void Dispose() { if (outStream != null) outStream.Dispose(); }
 
 		bool IFullNameFactoryHelper.MustUseAssemblyName(IType type) {
-			return !optimizeCustomAttributeSerializedTypeNames || FullNameFactory.MustUseAssemblyName(module, type);
+			return FullNameFactory.MustUseAssemblyName(module, type, optimizeCustomAttributeSerializedTypeNames);
 		}
 	}
 }

@@ -161,11 +161,20 @@ namespace dnlib.DotNet {
 		}
 
 		/// <summary>
-		/// Imports a <see cref="Type"/> as a <see cref="ITypeDefOrRef"/>
+		/// Imports a <see cref="Type"/> as a <see cref="ITypeDefOrRef"/>. If it's a type that should be
+		/// the declaring type of a field/method reference, call <see cref="ImportDeclaringType(Type)"/> instead.
 		/// </summary>
 		/// <param name="type">The type</param>
 		/// <returns>The imported type or <c>null</c> if <paramref name="type"/> is invalid</returns>
 		public ITypeDefOrRef Import(Type type) { return module.UpdateRowId(ImportAsTypeSig(type).ToTypeDefOrRef()); }
+
+		/// <summary>
+		/// Imports a <see cref="Type"/> as a <see cref="ITypeDefOrRef"/>. Should be called if it's the
+		/// declaring type of a method/field reference. See also <see cref="Import(Type)"/>
+		/// </summary>
+		/// <param name="type">The type</param>
+		/// <returns></returns>
+		public ITypeDefOrRef ImportDeclaringType(Type type) => module.UpdateRowId(ImportAsTypeSig(type, type.IsGenericTypeDefinition).ToTypeDefOrRef());
 
 		/// <summary>
 		/// Imports a <see cref="Type"/> as a <see cref="ITypeDefOrRef"/>
@@ -219,8 +228,11 @@ namespace dnlib.DotNet {
 				return module.CorLibTypes.IntPtr;
 
 			case ElementType.Array:
-				FixSignature = true;	// We don't know sizes and lower bounds
-				return new ArraySig(ImportAsTypeSig(type.GetElementType(), treatAsGenericInst), (uint)type.GetArrayRank());
+				// We don't know sizes and lower bounds. Assume it's `0..`
+				var lowerBounds = new int[type.GetArrayRank()];
+				var sizes = Array2.Empty<uint>();
+				FixSignature = true;
+				return new ArraySig(ImportAsTypeSig(type.GetElementType(), treatAsGenericInst), (uint)type.GetArrayRank(), sizes, lowerBounds);
 
 			case ElementType.GenericInst:
 				var typeGenArgs = type.GetGenericArguments();
@@ -346,7 +358,7 @@ namespace dnlib.DotNet {
 
 		TypeRef CreateTypeRef2(Type type) {
 			if (!type.IsNested)
-				return module.UpdateRowId(new TypeRefUser(module, type.Namespace ?? string.Empty, type.Name ?? string.Empty, CreateScopeReference(type)));
+				return module.UpdateRowId(new TypeRefUser(module, type.Namespace ?? string.Empty, ReflectionExtensions.Unescape(type.Name) ?? string.Empty, CreateScopeReference(type)));
             string @namespace;
             string name;
 			type.GetTypeNamespaceAndName_TypeDefOrRef(out @namespace, out name);
@@ -448,7 +460,7 @@ namespace dnlib.DotNet {
 				IMethodDefOrRef method;
 				var origMethod = methodBase.Module.ResolveMethod(methodBase.MetadataToken);
 				if (methodBase.DeclaringType.GetElementType2() == ElementType.GenericInst)
-					method = module.UpdateRowId(new MemberRefUser(module, methodBase.Name, CreateMethodSig(origMethod), Import(methodBase.DeclaringType)));
+					method = module.UpdateRowId(new MemberRefUser(module, methodBase.Name, CreateMethodSig(origMethod), ImportDeclaringType(methodBase.DeclaringType)));
 				else
 					method = ImportInternal(origMethod) as IMethodDefOrRef;
 
@@ -468,7 +480,7 @@ namespace dnlib.DotNet {
 					parent = GetModuleParent(methodBase.Module);
 				}
 				else
-					parent = Import(methodBase.DeclaringType);
+					parent = ImportDeclaringType(methodBase.DeclaringType);
 				if (parent == null)
 					return null;
 
@@ -596,7 +608,7 @@ namespace dnlib.DotNet {
 				parent = GetModuleParent(fieldInfo.Module);
 			}
 			else
-				parent = Import(fieldInfo.DeclaringType);
+				parent = ImportDeclaringType(fieldInfo.DeclaringType);
 			if (parent == null)
 				return null;
 

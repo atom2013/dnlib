@@ -182,9 +182,12 @@ namespace dnlib.DotNet.Writer {
 
 		/// <summary>
 		/// Serialized type names stored in custom attributes are optimized if the types
-		/// exist in the current module or in the core library (eg. mscorlib/System.Private.CoreLib).
+		/// exist in the core library (eg. mscorlib/System.Private.CoreLib).
 		/// Instead of storing type-name + assembly-name, only type-name is stored. This results in
 		/// slightly smaller assemblies.
+		/// <br/>
+		/// <br/>
+		/// If it's a type in the current module, the type name is optimized and no assembly name is stored in the custom attribute.
 		/// <br/>
 		/// <br/>
 		/// This is disabled by default. It's safe to enable if the reference core assembly
@@ -3447,6 +3450,8 @@ namespace dnlib.DotNet.Writer {
 			case PdbCustomDebugInfoKind.DynamicLocalVariables:
 			case PdbCustomDebugInfoKind.EmbeddedSource:
 			case PdbCustomDebugInfoKind.SourceLink:
+			case PdbCustomDebugInfoKind.CompilationMetadataReferences:
+			case PdbCustomDebugInfoKind.CompilationOptions:
 				AddCustomDebugInformationCore(serializerMethodContext, encodedToken, cdi, cdi.Guid);
 				break;
 
@@ -3652,7 +3657,7 @@ namespace dnlib.DotNet.Writer {
 
 		/// <inheritdoc/>
 		bool IFullNameFactoryHelper.MustUseAssemblyName(IType type) {
-			return !OptimizeCustomAttributeSerializedTypeNames || FullNameFactory.MustUseAssemblyName(module, type);
+			return FullNameFactory.MustUseAssemblyName(module, type, OptimizeCustomAttributeSerializedTypeNames);
 		}
 
 		/// <summary>

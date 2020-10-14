@@ -1,54 +1,69 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
+using System.IO;
+using System.Linq;
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
 
-namespace dnlib.Examples
-{
-    /// <summary>
-    /// This example shows how to add byte array to the current assembly, and then save the assembly to disk.
-    /// To make things simpler, I decided not to create a holder class (named <PrivateImplementationDetails>{E21EC13E-4669-42C8-B7A5-2EE7FBD85904} in the example)
-    /// and put everything in global module instead.
-    /// </summary>
-    class Example7
-    {
-        public static void Run()
-        {
-            // First, we need to add the class with layout. It's called '__StaticArrayInitTypeSize=5' in the example.
-            ModuleDefMD mod = ModuleDefMD.Load(typeof(Example2).Module);
-            Importer importer = new Importer(mod);
-            ITypeDefOrRef valueTypeRef = importer.Import(typeof(System.ValueType));
-            TypeDef classWithLayout = new TypeDefUser("'__StaticArrayInitTypeSize=5'", valueTypeRef);
-            classWithLayout.Attributes |= TypeAttributes.Sealed | TypeAttributes.ExplicitLayout;
-            classWithLayout.ClassLayout = new ClassLayoutUser(1, 5);
-            mod.Types.Add(classWithLayout);
+namespace dnlib.Examples {
+	public class Example7 {
+		public static void Run() => new Example7().DoIt();
 
-            // Now we need to add the static field with data, called '$$method0x6000003-1'.
-            FieldDef fieldWithRVA = new FieldDefUser("'$$method0x6000003-1'", new FieldSig(classWithLayout.ToTypeSig(true)), FieldAttributes.Static | FieldAttributes.Assembly | FieldAttributes.HasFieldRVA);
-            fieldWithRVA.InitialValue = new byte[] { 1, 2, 3, 4, 5 };
-            mod.GlobalType.Fields.Add(fieldWithRVA);
+		void DoIt() {
+			var test1 = new OpCode(
+				"test1", 0xf0, 0x00, OperandType.InlineNone, FlowControl.Next, StackBehaviour.Push0, StackBehaviour.Pop0);
+			var test2 = new OpCode(
+				"test2", 0xf0, 0x01, OperandType.InlineBrTarget, FlowControl.Branch, StackBehaviour.Push0, StackBehaviour.Pop0);
+			var test3 = new OpCode(
+				"test3", 0xf0, 0x02, OperandType.InlineString, FlowControl.Next, StackBehaviour.Push1, StackBehaviour.Pop0);
 
-            // Once that is done, we can add our byte array field, called bla in the example.
-            ITypeDefOrRef byteArrayRef = importer.Import(typeof(System.Byte[]));
-            FieldDef fieldInjectedArray = new FieldDefUser("bla", new FieldSig(byteArrayRef.ToTypeSig(true)), FieldAttributes.Static | FieldAttributes.Public);
-            mod.GlobalType.Fields.Add(fieldInjectedArray);
+			var ctx = new ModuleContext();
 
-            // That's it, we have all the fields. Now we need to add code to global .cctor to initialize the array properly.
-            ITypeDefOrRef systemByte = importer.Import(typeof(System.Byte));
-            ITypeDefOrRef runtimeHelpers = importer.Import(typeof(System.Runtime.CompilerServices.RuntimeHelpers));
-            IMethod initArray = importer.Import(typeof(System.Runtime.CompilerServices.RuntimeHelpers).GetMethod("InitializeArray", new Type[] { typeof(System.Array), typeof(System.RuntimeFieldHandle) }));
+			ctx.RegisterExperimentalOpCode(test1);
+			ctx.RegisterExperimentalOpCode(test2);
+			ctx.RegisterExperimentalOpCode(test3);
 
-            MethodDef cctor = mod.GlobalType.FindOrCreateStaticConstructor();
-            IList<Instruction> instrs = cctor.Body.Instructions;
-            instrs.Insert(0, new Instruction(OpCodes.Ldc_I4, 5));
-            instrs.Insert(1, new Instruction(OpCodes.Newarr, systemByte));
-            instrs.Insert(2, new Instruction(OpCodes.Dup));
-            instrs.Insert(3, new Instruction(OpCodes.Ldtoken, fieldWithRVA));
-            instrs.Insert(4, new Instruction(OpCodes.Call, initArray));
-            instrs.Insert(5, new Instruction(OpCodes.Stsfld, fieldInjectedArray));
+			var mod = ModuleDefMD.Load(typeof(Example7).Module, ctx);
+			var body = mod.Types.Single(x => x.Name == nameof(Example7)).Methods.Single(x => x.Name == nameof(CustomCil)).Body;
 
-            // Save the assembly to a file on disk
-            mod.Write(@"D:\saved-assembly.exe");
-        }
-    }
+			Console.WriteLine("Original:");
+			foreach (var insn in body.Instructions)
+				Console.WriteLine("{0} (0x{1:X4})", insn, insn.OpCode.Value);
+			Console.WriteLine();
+
+			var code = body.Instructions;
+
+			code.Clear();
+
+			var label = OpCodes.Nop.ToInstruction();
+
+			code.Add(test1.ToInstruction());
+			code.Add(OpCodes.Nop.ToInstruction());
+			code.Add(label);
+			code.Add(OpCodes.Ret.ToInstruction());
+			code.Add(test2.ToInstruction(label));
+			code.Add(test3.ToInstruction("foo"));
+
+			Console.WriteLine("Modified:");
+			foreach (var insn in body.Instructions)
+				Console.WriteLine("{0} (0x{1:X4})", insn, insn.OpCode.Value);
+			Console.WriteLine();
+
+			using (var stream = new MemoryStream()) {
+				mod.Write(stream);
+
+				stream.Position = 0;
+
+				mod = ModuleDefMD.Load(stream, ctx);
+				body = mod.Types.Single(x => x.Name == nameof(Example7)).Methods.Single(x => x.Name == nameof(CustomCil)).Body;
+
+				Console.WriteLine("Roundtripped:");
+				foreach (var insn in body.Instructions)
+					Console.WriteLine("{0} (0x{1:X4})", insn, insn.OpCode.Value);
+				Console.WriteLine();
+			}
+		}
+
+		void CustomCil() {
+		}
+	}
 }

@@ -118,7 +118,7 @@ namespace dnlib.IO {
 		/// <param name="start">Start position relative to <see cref="StartOffset"/></param>
 		/// <param name="length">Length of data</param>
 		/// <returns></returns>
-		public DataReader Slice(uint start, uint length) {
+		public readonly DataReader Slice(uint start, uint length) {
 			if ((ulong)start + length > Length)
 				ThrowInvalidArgument("length");
 			return new DataReader(stream, startOffset + start, length);
@@ -129,7 +129,7 @@ namespace dnlib.IO {
 		/// </summary>
 		/// <param name="start">Start position relative to <see cref="StartOffset"/></param>
 		/// <returns></returns>
-		public DataReader Slice(uint start) {
+		public readonly DataReader Slice(uint start) {
 			if (start > Length)
 				ThrowInvalidArgument("start");
 			return Slice(start, Length - start);
@@ -141,7 +141,7 @@ namespace dnlib.IO {
 		/// <param name="start">Start position relative to <see cref="StartOffset"/></param>
 		/// <param name="length">Length of data</param>
 		/// <returns></returns>
-		public DataReader Slice(int start, int length) {
+		public readonly DataReader Slice(int start, int length) {
 			if (start < 0)
 				ThrowInvalidArgument("start");
 			if (length < 0)
@@ -154,7 +154,7 @@ namespace dnlib.IO {
 		/// </summary>
 		/// <param name="start">Start position relative to <see cref="StartOffset"/></param>
 		/// <returns></returns>
-		public DataReader Slice(int start) {
+		public readonly DataReader Slice(int start) {
 			if (start < 0)
 				ThrowInvalidArgument("start");
 			if ((uint)start > Length)

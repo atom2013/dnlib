@@ -115,7 +115,7 @@ namespace dnlib.DotNet {
 	/// <summary>
 	/// Created from a row in the GenericParamConstraint table
 	/// </summary>
-	sealed class GenericParamConstraintMD : GenericParamConstraint, IMDTokenProviderMD {
+	sealed class GenericParamConstraintMD : GenericParamConstraint, IMDTokenProviderMD, IContainsGenericParameter2 {
 		/// <summary>The module where this instance is located</summary>
 		readonly ModuleDefMD readerModule;
 
@@ -124,6 +124,8 @@ namespace dnlib.DotNet {
 
 		/// <inheritdoc/>
         public uint OrigRid { get { return origRid; } }
+
+		bool IContainsGenericParameter2.ContainsGenericParameter => TypeHelper.ContainsGenericParameter(this);
 
 		/// <inheritdoc/>
 		protected override void InitializeCustomAttributes() {

@@ -2221,6 +2221,7 @@ exit: ;
 				case CallingConvention.VarArg:
 				case CallingConvention.Property:
 				case CallingConvention.NativeVarArg:
+				case CallingConvention.Unmanaged:
 					MethodBaseSig ma = a as MethodBaseSig, mb = b as MethodBaseSig;
 					result = !(ma == null) && !(mb == null) && Equals(ma, mb);
 					break;
@@ -2240,7 +2241,6 @@ exit: ;
 					result = !(ga == null) && !(gb == null) && Equals(ga, gb);
 					break;
 
-				case CallingConvention.Unmanaged:
 				default:
 					result = false;
 					break;
@@ -2272,6 +2272,7 @@ exit: ;
 			case CallingConvention.VarArg:
 			case CallingConvention.Property:
 			case CallingConvention.NativeVarArg:
+			case CallingConvention.Unmanaged:
 				var ma = a as MethodBaseSig;
 				hash = ma == null ? 0 : GetHashCode(ma);
 				break;
@@ -2291,7 +2292,6 @@ exit: ;
 				hash = ga == null ? 0 : GetHashCode(ga);
 				break;
 
-			case CallingConvention.Unmanaged:
 			default:
 				hash = GetHashCode_CallingConvention(a);
 				break;
@@ -3163,7 +3163,7 @@ exit: ;
 				}
 			}
 			result = !b.HasElementType &&
-					Equals_TypeNames(a.Name, b.Name) &&
+					Equals_TypeNames(a.Name, ReflectionExtensions.Unescape(b.Name)) &&
 					Equals_TypeNamespaces(a.Namespace, b) &&
 					EnclosingTypeEquals(a.DeclaringType, b.DeclaringType) &&
 					(DontCompareTypeScope || Equals(a.Module, b.Module));
@@ -3217,7 +3217,7 @@ exit: ;
 
 			if (!b.IsTypeDef())
 				result = false;
-			else if (!Equals_TypeNames(a.Name, b.Name) || !Equals_TypeNamespaces(a.Namespace, b))
+			else if (!Equals_TypeNames(a.Name, ReflectionExtensions.Unescape(b.Name)) || !Equals_TypeNamespaces(a.Namespace, b))
 				result = false;
 			else if (!((dta = scope as TypeRef) == null))	// nested type
 				result = Equals(dta, b.DeclaringType);	// Compare enclosing types
@@ -3496,7 +3496,7 @@ exit: ;
 
 			if (!b.IsTypeDef())
 				result = false;
-			else if (!Equals_TypeNames(a.TypeName, b.Name) || !Equals_TypeNamespaces(a.TypeNamespace, b))
+			else if (!Equals_TypeNames(a.TypeName, ReflectionExtensions.Unescape(b.Name)) || !Equals_TypeNamespaces(a.TypeNamespace, b))
 				result = false;
 			else if (!((dta = scope as ExportedType) == null))	// nested type
 				result = Equals(dta, b.DeclaringType);	// Compare enclosing types
@@ -3682,7 +3682,7 @@ exit: ;
 			if (a == null)
 				return GetHashCodeGlobalType();
 			int hash;
-			hash = GetHashCode_TypeName(a.Name);
+			hash = GetHashCode_TypeName(ReflectionExtensions.Unescape(a.Name));
 			if (a.IsNested)
 				hash += HASHCODE_MAGIC_NESTED_TYPE;
 			else
