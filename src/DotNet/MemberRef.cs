@@ -458,7 +458,7 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		public uint OrigRid { get { return origRid; } }
 
-		bool IContainsGenericParameter2.ContainsGenericParameter => TypeHelper.ContainsGenericParameter(this);
+        bool IContainsGenericParameter2.ContainsGenericParameter { get { return TypeHelper.ContainsGenericParameter(this); } }
 
 		/// <inheritdoc/>
 		protected override void InitializeCustomAttributes() {

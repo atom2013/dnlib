@@ -208,7 +208,7 @@ namespace dnlib.DotNet {
 		/// <param name="dllName">Name of the DLL</param>
 		/// <param name="funcName">Name of the function within the DLL</param>
 		/// <returns><c>true</c> if it's the specified P/Invoke method, else <c>false</c></returns>
-		public bool IsPinvokeMethod(string dllName, string funcName) => IsPinvokeMethod(dllName, funcName, IsWindows());
+		public bool IsPinvokeMethod(string dllName, string funcName) { return IsPinvokeMethod(dllName, funcName, IsWindows()); }
 
 		/// <summary>
 		/// Checks whether this <see cref="ImplMap"/> is a certain P/Invoke method
@@ -234,12 +234,13 @@ namespace dnlib.DotNet {
 			return dllName;
 		}
 
-		static bool IsWindows() =>
+        static bool IsWindows() {
 #if NETSTANDARD
-			RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+			return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 #else
-			Path.DirectorySeparatorChar == '\\' || Path.AltDirectorySeparatorChar == '\\';
+            return Path.DirectorySeparatorChar == '\\' || Path.AltDirectorySeparatorChar == '\\';
 #endif
+        }
 
 		static readonly char[] trimChars = { ' ' };
 	}

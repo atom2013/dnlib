@@ -283,14 +283,14 @@ namespace dnlib.DotNet.Pdb.Portable {
 		void WriteCompilationMetadataReferences(PdbCompilationMetadataReferencesCustomDebugInfo cdi) {
 			foreach (var mdRef in cdi.References) {
 				var name = mdRef.Name;
-				if (name is null) {
+				if (name == null) {
 					helper.Error("Metadata reference name is null");
 					return;
 				}
 				WriteUTF8Z(name);
 
 				var aliases = mdRef.Aliases;
-				if (aliases is null) {
+				if (aliases == null) {
 					helper.Error("Metadata reference aliases is null");
 					return;
 				}
@@ -305,11 +305,11 @@ namespace dnlib.DotNet.Pdb.Portable {
 
 		void WriteCompilationOptions(PdbCompilationOptionsCustomDebugInfo cdi) {
 			foreach (var kv in cdi.Options) {
-				if (kv.Key is null) {
+				if (kv.Key == null) {
 					helper.Error("Compiler option `key` is null");
 					return;
 				}
-				if (kv.Value is null) {
+				if (kv.Value == null) {
 					helper.Error("Compiler option `value` is null");
 					return;
 				}

@@ -185,12 +185,12 @@ namespace dnlib.DotNet.Pdb.Portable {
 
 			while (reader.BytesLeft > 0) {
 				var name = reader.TryReadZeroTerminatedUtf8String();
-				Debug.Assert(!(name is null));
-				if (name is null)
+				Debug.Assert(!(name == null));
+				if (name == null)
 					break;
 				var aliases = reader.TryReadZeroTerminatedUtf8String();
-				Debug.Assert(!(aliases is null));
-				if (aliases is null)
+				Debug.Assert(!(aliases == null));
+				if (aliases == null)
 					break;
 
 				const uint RequiredBytes = 1 + 4 + 4 + 16;
@@ -215,12 +215,12 @@ namespace dnlib.DotNet.Pdb.Portable {
 
 			while (reader.BytesLeft > 0) {
 				var key = reader.TryReadZeroTerminatedUtf8String();
-				Debug.Assert(!(key is null));
-				if (key is null)
+				Debug.Assert(!(key == null));
+				if (key == null)
 					break;
 				var value = reader.TryReadZeroTerminatedUtf8String();
-				Debug.Assert(!(value is null));
-				if (value is null)
+				Debug.Assert(!(value == null));
+				if (value == null)
 					break;
 				cdi.Options.Add(new KeyValuePair<string, string>(key, value));
 			}

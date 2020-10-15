@@ -43,7 +43,7 @@ namespace dnlib.DotNet {
 		/// <param name="type">The type (<c>TypeDef</c>, <c>TypeRef</c> or <c>ExportedType</c>)
 		/// or <c>null</c></param>
 		/// <returns><c>true</c> if the assembly name must be included, <c>false</c> otherwise</returns>
-		public static bool MustUseAssemblyName(ModuleDef module, IType type) => MustUseAssemblyName(module, type, true);
+        public static bool MustUseAssemblyName(ModuleDef module, IType type) { return MustUseAssemblyName(module, type, true); }
 
 		/// <summary>
 		/// Checks whether the assembly name should be included when printing the full name.
@@ -70,7 +70,7 @@ namespace dnlib.DotNet {
 					return true;
 				// If it's present in this module, but it's a corlib type, then we will need the
 				// assembly name.
-				return !(module.Find(tr) is null);
+				return !(module.Find(tr) == null);
 			}
 			else
 				return true;

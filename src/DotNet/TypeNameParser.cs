@@ -845,15 +845,15 @@ namespace dnlib.DotNet {
 				ReadChar();
 				return ReadChar();
 
-			case ',':
-			case '+':
-			case '&':
-			case '*':
-			case '[':
-			case ']':
-			case '=' when ignoreEqualSign:
-				return -1;
-
+            case ',':
+            case '+':
+            case '&':
+            case '*':
+            case '[':
+            case ']':
+            case '=':
+                if (ignoreEqualSign) return -1;
+                goto default;
 			default:
 				return ReadChar();
 			}

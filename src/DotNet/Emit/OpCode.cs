@@ -59,7 +59,8 @@ namespace dnlib.DotNet.Emit {
 			: this(name, (Code)((first << 8) | second), operandType, flowControl, OpCodeType.Experimental, push, pop, true) {
 		}
 
-		internal OpCode(string name, Code code, OperandType operandType, FlowControl flowControl, OpCodeType opCodeType, StackBehaviour push, StackBehaviour pop, bool experimental = false) {
+        internal OpCode(string name, Code code, OperandType operandType, FlowControl flowControl, OpCodeType opCodeType, StackBehaviour push, StackBehaviour pop, bool experimental)
+        {
 			Name = name;
 			Code = code;
 			OperandType = operandType;
@@ -74,6 +75,10 @@ namespace dnlib.DotNet.Emit {
 					OpCodes.TwoByteOpCodes[(byte)code] = this;
 			}
 		}
+
+        internal OpCode(string name, Code code, OperandType operandType, FlowControl flowControl, OpCodeType opCodeType, StackBehaviour push, StackBehaviour pop)
+            : this(name, code, operandType, flowControl, opCodeType, push, pop, false) {
+        }
 
 		/// <summary>
 		/// Creates a new instruction with no operand

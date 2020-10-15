@@ -451,7 +451,7 @@ namespace dnlib.DotNet.Emit {
 				if ((options & DynamicMethodBodyReaderOptions.UnknownDeclaringType) != 0) {
 					// Sometimes it's a generic type but obj != `GenericMethodInfo`, so pass in 'default' and the
 					// runtime will try to figure out the declaring type. https://github.com/0xd4d/dnlib/issues/298
-					return importer.Import(SR.MethodBase.GetMethodFromHandle((RuntimeMethodHandle)obj, default));
+                    return importer.Import(SR.MethodBase.GetMethodFromHandle((RuntimeMethodHandle)obj, default(RuntimeTypeHandle)));
 				}
 				else
 					return importer.Import(SR.MethodBase.GetMethodFromHandle((RuntimeMethodHandle)obj));
@@ -500,7 +500,7 @@ namespace dnlib.DotNet.Emit {
 				if ((options & DynamicMethodBodyReaderOptions.UnknownDeclaringType) != 0) {
 					// Sometimes it's a generic type but obj != `GenericFieldInfo`, so pass in 'default' and the
 					// runtime will try to figure out the declaring type. https://github.com/0xd4d/dnlib/issues/298
-					return importer.Import(SR.FieldInfo.GetFieldFromHandle((RuntimeFieldHandle)obj, default));
+                    return importer.Import(SR.FieldInfo.GetFieldFromHandle((RuntimeFieldHandle)obj, default(RuntimeTypeHandle)));
 				}
 				else
 					return importer.Import(SR.FieldInfo.GetFieldFromHandle((RuntimeFieldHandle)obj));

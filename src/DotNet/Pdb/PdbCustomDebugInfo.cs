@@ -976,22 +976,22 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.CompilationMetadataReferences"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.CompilationMetadataReferences;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.CompilationMetadataReferences; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => CustomDebugInfoGuids.CompilationMetadataReferences;
+		public override Guid Guid { get { return CustomDebugInfoGuids.CompilationMetadataReferences; } }
 
 		/// <summary>
 		/// Gets all references
 		/// </summary>
-		public List<PdbCompilationMetadataReference> References { get; }
+        public List<PdbCompilationMetadataReference> References;
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public PdbCompilationMetadataReferencesCustomDebugInfo() => References = new List<PdbCompilationMetadataReference>();
+		public PdbCompilationMetadataReferencesCustomDebugInfo() { References = new List<PdbCompilationMetadataReference>(); }
 	}
 
 	/// <summary>
@@ -1083,22 +1083,22 @@ namespace dnlib.DotNet.Pdb {
 		/// <summary>
 		/// Returns <see cref="PdbCustomDebugInfoKind.CompilationOptions"/>
 		/// </summary>
-		public override PdbCustomDebugInfoKind Kind => PdbCustomDebugInfoKind.CompilationOptions;
+		public override PdbCustomDebugInfoKind Kind { get { return PdbCustomDebugInfoKind.CompilationOptions; } }
 
 		/// <summary>
 		/// Gets the custom debug info guid, see <see cref="CustomDebugInfoGuids"/>
 		/// </summary>
-		public override Guid Guid => CustomDebugInfoGuids.CompilationOptions;
+		public override Guid Guid { get { return CustomDebugInfoGuids.CompilationOptions; } }
 
 		/// <summary>
 		/// Gets all compilation options, see https://github.com/dotnet/roslyn/blob/master/docs/features/pdb-compilation-options.md .
 		/// Option names (key): see roslyn/src/Compilers/Core/Portable/PEWriter/CompilationOptionNames.cs
 		/// </summary>
-		public List<KeyValuePair<string, string>> Options { get; }
+        public List<KeyValuePair<string, string>> Options;
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public PdbCompilationOptionsCustomDebugInfo() => Options = new List<KeyValuePair<string, string>>();
+        public PdbCompilationOptionsCustomDebugInfo() { Options = new List<KeyValuePair<string, string>>(); }
 	}
 }

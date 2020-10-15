@@ -700,7 +700,7 @@ exit:
 				return null;
 			if (!allowTypeSpec && CodedToken.TypeDefOrRef.Decode2(codedToken).Table == Table.TypeSpec)
 				return null;
-			return helper.ResolveTypeDefOrRef(codedToken, default);
+            return helper.ResolveTypeDefOrRef(codedToken, default(GenericParamContext));
 		}
 	}
 }

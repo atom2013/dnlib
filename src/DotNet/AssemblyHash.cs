@@ -17,14 +17,15 @@ namespace dnlib.DotNet {
 		/// <remarks>If <paramref name="hashAlgo"/> is an unsupported hash algorithm, then
 		/// <see cref="AssemblyHashAlgorithm.SHA1"/> will be used as the hash algorithm.</remarks>
 		/// <param name="hashAlgo">The algorithm to use</param>
-		public AssemblyHash(AssemblyHashAlgorithm hashAlgo) =>
-			hasher = hashAlgo switch {
-				AssemblyHashAlgorithm.MD5 => MD5.Create(),
-				AssemblyHashAlgorithm.SHA_256 => SHA256.Create(),
-				AssemblyHashAlgorithm.SHA_384 => SHA384.Create(),
-				AssemblyHashAlgorithm.SHA_512 => SHA512.Create(),
-				_ => SHA1.Create(),
-			};
+		public AssemblyHash(AssemblyHashAlgorithm hashAlgo) {
+			switch (hashAlgo) {
+                case AssemblyHashAlgorithm.MD5:         hasher = MD5.Create(); break;
+				case AssemblyHashAlgorithm.SHA_256:     hasher = SHA256.Create(); break;
+				case AssemblyHashAlgorithm.SHA_384:     hasher = SHA384.Create(); break;
+				case AssemblyHashAlgorithm.SHA_512:     hasher = SHA512.Create(); break;
+                default: hasher = SHA1.Create(); break;
+			}
+        }
 
 		/// <inheritdoc/>
 		public void Dispose() {

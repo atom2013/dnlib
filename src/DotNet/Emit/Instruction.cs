@@ -589,7 +589,7 @@ namespace dnlib.DotNet.Emit {
 			case Code.Ldc_I4_8: return 8;
 			case Code.Ldc_I4_S: return (sbyte)Operand;
 			case Code.Ldc_I4: return (int)Operand;
-			default: throw new InvalidOperationException($"Not a ldc.i4 instruction: {this}");
+			default: throw new InvalidOperationException(string.Format("Not a ldc.i4 instruction: {0}",this));
 			}
 		}
 

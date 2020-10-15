@@ -613,21 +613,21 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="method">this</param>
 		/// <returns>The normal visible parameters</returns>
-		public static IList<TypeSig> GetParams(this IMethod method) => method?.MethodSig.GetParams();
+		public static IList<TypeSig> GetParams(this IMethod method) { return (method != null)?method.MethodSig.GetParams():null; }
 
 		/// <summary>
 		/// Gets the normal visible parameter count, doesn't include the hidden 'this' parameter
 		/// </summary>
 		/// <param name="method">this</param>
 		/// <returns>Normal visible parameter count</returns>
-		public static int GetParamCount(this IMethod method) => method?.MethodSig.GetParamCount() ?? 0;
+		public static int GetParamCount(this IMethod method) { return (method != null)?method.MethodSig.GetParamCount():0; }
 
 		/// <summary>
 		/// Checks whether any normal visible parameter exists, doesn't include the hidden 'this' parameter
 		/// </summary>
 		/// <param name="method">this</param>
 		/// <returns><c>true</c> if there's at least one normal visible parameter</returns>
-		public static bool HasParams(this IMethod method) => method.GetParamCount() > 0;
+		public static bool HasParams(this IMethod method) { return method.GetParamCount() > 0; }
 
 		/// <summary>
 		/// Gets a normal visible parameter, doesn't include the hidden 'this' parameter
@@ -635,7 +635,7 @@ namespace dnlib.DotNet {
 		/// <param name="method">this</param>
 		/// <param name="index">Normal visible parameter index</param>
 		/// <returns></returns>
-		public static TypeSig GetParam(this IMethod method, int index) => method?.MethodSig?.Params[index];
+		public static TypeSig GetParam(this IMethod method, int index) { return (method != null && method.MethodSig != null)?method.MethodSig.Params[index]:null; }
 	}
 
 	/// <summary>

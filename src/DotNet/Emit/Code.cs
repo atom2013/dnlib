@@ -284,7 +284,8 @@ namespace dnlib.DotNet.Emit {
 				return OpCodes.OneByteOpCodes[lo];
 			if (hi == 0xFE)
 				return OpCodes.TwoByteOpCodes[lo];
-			if (context.GetExperimentalOpCode(hi, lo) is OpCode op)
+            OpCode op = context.GetExperimentalOpCode(hi, lo) as OpCode;
+			if (op != null)
 				return op;
 			if (code == Code.UNKNOWN1)
 				return OpCodes.UNKNOWN1;

@@ -106,8 +106,9 @@ namespace dnlib.DotNet.Emit {
 		/// <param name="parameters">Method parameters</param>
 		/// <param name="gpContext">Generic parameter context</param>
 		/// <param name="context">The module context</param>
-		public static CilBody CreateCilBody(IInstructionOperandResolver opResolver, DataReader reader, IList<Parameter> parameters, GenericParamContext gpContext, ModuleContext context) =>
-			CreateCilBody(opResolver, reader, null, parameters, gpContext, context);
+		public static CilBody CreateCilBody(IInstructionOperandResolver opResolver, DataReader reader, IList<Parameter> parameters, GenericParamContext gpContext, ModuleContext context) {
+			return CreateCilBody(opResolver, reader, null, parameters, gpContext, context);
+        }
 
 		/// <summary>
 		/// Creates a CIL method body or returns an empty one if <paramref name="code"/> is not
@@ -159,8 +160,9 @@ namespace dnlib.DotNet.Emit {
 		/// present or if <paramref name="codeReader"/> contains the exception handlers</param>
 		/// <param name="parameters">Method parameters</param>
 		/// <param name="gpContext">Generic parameter context</param>
-		public static CilBody CreateCilBody(IInstructionOperandResolver opResolver, DataReader codeReader, DataReader? ehReader, IList<Parameter> parameters, GenericParamContext gpContext) =>
-			CreateCilBody(opResolver, codeReader, ehReader, parameters, gpContext, null);
+		public static CilBody CreateCilBody(IInstructionOperandResolver opResolver, DataReader codeReader, DataReader? ehReader, IList<Parameter> parameters, GenericParamContext gpContext) {
+			return CreateCilBody(opResolver, codeReader, ehReader, parameters, gpContext, null);
+        }
 
 		/// <summary>
 		/// Creates a CIL method body or returns an empty one if <paramref name="codeReader"/> doesn't
@@ -211,8 +213,9 @@ namespace dnlib.DotNet.Emit {
 		/// <param name="codeSize">Code size</param>
 		/// <param name="localVarSigTok">Local variable signature token or 0 if none</param>
 		/// <param name="gpContext">Generic parameter context</param>
-		public static CilBody CreateCilBody(IInstructionOperandResolver opResolver, byte[] code, byte[] exceptions, IList<Parameter> parameters, ushort flags, ushort maxStack, uint codeSize, uint localVarSigTok, GenericParamContext gpContext) =>
-			CreateCilBody(opResolver, code, exceptions, parameters, flags, maxStack, codeSize, localVarSigTok, gpContext, null);
+		public static CilBody CreateCilBody(IInstructionOperandResolver opResolver, byte[] code, byte[] exceptions, IList<Parameter> parameters, ushort flags, ushort maxStack, uint codeSize, uint localVarSigTok, GenericParamContext gpContext) {
+			return CreateCilBody(opResolver, code, exceptions, parameters, flags, maxStack, codeSize, localVarSigTok, gpContext, null);
+        }
 
 		/// <summary>
 		/// Creates a CIL method body or returns an empty one if <paramref name="code"/> is not

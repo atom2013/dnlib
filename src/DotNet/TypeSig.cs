@@ -441,7 +441,7 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="a">this</param>
 		/// <returns>A <see cref="ITypeDefOrRef"/> or <c>null</c> if none found</returns>
-		public static ITypeDefOrRef TryGetTypeDefOrRef(this TypeSig a) => (a.RemovePinnedAndModifiers() as TypeDefOrRefSig)?.TypeDefOrRef;
+        public static ITypeDefOrRef TryGetTypeDefOrRef(this TypeSig a) { return ((a.RemovePinnedAndModifiers() as TypeDefOrRefSig) != null) ? (a.RemovePinnedAndModifiers() as TypeDefOrRefSig).TypeDefOrRef:null; }
 
 		/// <summary>
 		/// Returns the <see cref="TypeRef"/> if it is a <see cref="TypeDefOrRefSig"/>.
